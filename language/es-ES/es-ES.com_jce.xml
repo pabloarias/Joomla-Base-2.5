@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="2.0" type="language" core="1" client="both" method="upgrade">
+	<name>Español (España)</name>
+	<tag>es-ES</tag>
+	<version>2.2.7</version>
+	<creationDate>12 Septiembre 2012</creationDate>
+	<author>Francisco J. Matas</author>
+	<authorEmail>fjmatad@hotmail.com</authorEmail>
+	<authorUrl>www.buscametales.com</authorUrl>
+	<copyright>Copyright (C) 2012 Francisco J. Matas. Todos los Derechos Reservados</copyright>
+	<license>GNU/GPL Version 2 o posterior - http://www.gnu.org/licenses/gpl-2.0.html</license>
+	<description>Español (España) Pack de idioma para JCE 2.x</description>
+	<site folder="language/es-ES">
+		<file>es-ES.com_jce.ini</file>
+		<file>es-ES.com_jce_caption.ini</file>
+		<file>es-ES.com_jce_emotions.ini</file>
+		<file>es-ES.com_jce_filemanager.ini</file>
+		<file>es-ES.com_jce_fullpage.ini</file>
+		<file>es-ES.com_jce_iframe.ini</file>
+		<file>es-ES.com_jce_imgmanager_ext.ini</file>
+		<file>es-ES.com_jce_mediamanager.ini</file>
+		<file>es-ES.com_jce_popups_rokbox.ini</file>
+		<file>es-ES.com_jce_popups_widgetkit.ini</file>
+		<file>es-ES.com_jce_templatemanager.ini</file>
+	</site>
+	<tinymce folder="components/com_jce/editor/tiny_mce">
+		<file>langs/es.js</file>
+		<file>langs/es_dlg.js</file>
+		<file>themes/advanced/langs/es.js</file>
+		<file>plugins/article/langs/es_dlg.js</file>
+		<file>plugins/browser/langs/es_dlg.js</file>
+		<file>plugins/imgmanager/langs/es_dlg.js</file>
+		<file>plugins/link/langs/es_dlg.js</file>
+		<file>plugins/searchreplace/langs/es_dlg.js</file>
+		<file>plugins/style/langs/es_dlg.js</file>
+		<file>plugins/table/langs/es_dlg.js</file>
+		<file>plugins/xhtmlxtras/langs/es_dlg.js</file>
+		<file>plugins/caption/langs/es.js</file>
+		<file>plugins/emotions/langs/es_dlg.js</file>
+		<file>plugins/fullpage/langs/es_dlg.js</file>
+		<file>plugins/filemanager/langs/es_dlg.js</file>
+		<file>plugins/iframe/langs/es.js</file>
+		<file>plugins/iframe/langs/es_dlg.js</file>
+		<file>plugins/imgmanager_ext/langs/es_dlg.js</file>
+		<file>plugins/mediamanager/langs/es_dlg.js</file>
+		<file>plugins/templatemanager/langs/es.js</file>
+		<file>plugins/templatemanager/langs/es_dlg.js</file>
+	</tinymce>
+	<administration folder="administrator/language/es-ES">
+		<file>es-ES.com_jce.ini</file>
+		<file>es-ES.com_jce.menu.ini</file>
+		<file>es-ES.com_jce.sys.ini</file>
+		<file>es-ES.plg_editors_jce.ini</file>
+		<file>es-ES.plg_editors_jce.sys.ini</file>
+		<file>es-ES.plg_quickicon_jcefilebrowser.ini</file>
+		<file>es-ES.plg_quickicon_jcefilebrowser.sys.ini</file>
+		<file>es-ES.plg_system_jcemediabox.ini</file>
+		<file>es-ES.plg_system_jcemediabox.sys.ini</file>
+	</administration>
+</install>
