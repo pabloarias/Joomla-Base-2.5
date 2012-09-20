@@ -1,0 +1,41 @@
+/**
+ * @version   $Id: fusionmenu-rtl.less 2273 2012-08-10 03:57:48Z kevin $
+ * @author    RocketTheme http://www.rockettheme.com
+ * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// Root Items
+body.rtl {
+	.menutop {
+		li.root {float: right;
+			> .item {
+				img {margin: 0 0 0 4px;}
+			}
+		}
+		li.parent.root {
+			.item {
+				span {padding-right: 15px;padding-left: 20px;}
+			}
+		}
+	}
+}
+
+// Dropdown Items
+body.rtl {
+	.menutop {
+		ul {float: right;
+			li {
+				.item {
+					img {float: right;margin: 8px 0 0 6px;}
+				}
+			}
+		}
+	}
+}
+
+body.rtl .menutop ul {float: right;}
+body.rtl .menutop ul li .item img {float: right;margin: 8px 0 0 6px;}
+body.rtl .menutop li.parent.root > .item span {background-position: 8px 50%;}
+body.rtl .menutop ul li > .daddy span {background-position: 0 50%;}
+body.rtl .menutop .fusion-grouped ol li > .item {background-position: 100% 50%;}

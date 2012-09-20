@@ -1,0 +1,144 @@
+/**
+ * @version   $Id: style.less 3109 2012-09-03 17:52:26Z rhuk $
+ * @author    RocketTheme http://www.rockettheme.com
+ * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// Color Variables
+
+// Body ------------------------
+@bodybackground:		#f5f5f5;
+@bodybackground2:		#f0f0f0;
+@bodybackground3:		#fcfcfc;
+@bodybackground4:		#eaeaea;
+@bodytext:				#6e6e6e;
+@bodytextlight:			#aaaaaa;
+@bodytitle:				#303030;
+@bodyborder:			#d5d5d5;
+@bodyborder2:			#dddddd;
+@bodycontrast:			#ffffff;
+
+// Main Top --------------------
+@maintopbackground:		#f0f0f0;
+
+// Footer ----------------------
+@footerbackground:		#eeeeee;
+@footertext:			#6e6e6e;
+
+// Form Feedbacks --------------
+@warningText:             #c09853;
+@warningBackground:       #fcf8e3;
+@warningBorder:           darken(spin(@warningBackground, -10), 3%);
+
+@errorText:               #b94a48;
+@errorBackground:         #f2dede;
+@errorBorder:             darken(spin(@errorBackground, -10), 3%);
+
+@successText:             #468847;
+@successBackground:       #dff0d8;
+@successBorder:           darken(spin(@successBackground, -10), 5%);
+
+@infoText:                #3a87ad;
+@infoBackground:          #d9edf7;
+@infoBorder:              darken(spin(@infoBackground, -10), 7%);
+
+@monoFontFamily:        Menlo, Monaco, Consolas, "Courier New", monospace;
+
+// Core
+body {background: @bodybackground;color: @bodytext;}
+a:hover {color: @bodytitle;}
+h1, h2, h3, h4, h5, h6 {color: @bodytitle;}
+
+// Main Top
+#rt-maintop {background: @maintopbackground url(../images/patterns/noise.png);border-bottom: 1px solid @white;box-shadow: 0 1px 0 #cecece, inset 0 2px 4px 0 rgba(0,0,0,0.1);}
+
+// Footer
+#rt-footer {color: @footertext;background: @footerbackground url(../images/patterns/noise.png);border-top: 1px solid #afafaf;box-shadow: inset 0 5px 12px rgba(0,0,0,0.13);}
+#rt-copyright {border-top: 1px solid @bodyborder;box-shadow: inset 0 1px 0 @white;}
+
+// Modules
+.title, .component-content h2 {color: @bodytitle;text-shadow: 1px 1px 0 @bodycontrast;border-bottom: 1px solid #d1d1d1;box-shadow: 0 1px 0 @bodycontrast;}
+.title1 {
+	.title {background: @bodycontrast;border: 1px solid @bodyborder;}
+}
+.title2 {
+	.title {color: @bodytitle;background: @footerbackground url(../images/patterns/noise.png);box-shadow: inset 0 2px 12px rgba(0,0,0,0.13);}
+}
+.title4 {
+	.title {color: @bodytext;}
+}
+.box1 {background: @bodycontrast;border: 1px solid @bodyborder;}
+.box2 {color: @bodytitle;background: @footerbackground url(../images/patterns/noise.png);box-shadow: inset 0 2px 12px rgba(0,0,0,0.13);}
+
+// Module Overrides
+#rt-showcase, #rt-top-surround {
+	.box1, .box2 {color: @bodytext;text-shadow: 1px 1px 0 @bodycontrast;
+		.title {color: @bodytitle;text-shadow: 1px 1px 0 @bodycontrast;border-bottom: 1px solid #d1d1d1;box-shadow: 0 1px 0 @bodycontrast;
+
+		}
+	}
+	.title1 {
+		.title {color: @bodytitle;text-shadow: 1px 1px 0 @bodycontrast;border: 1px solid @bodyborder;}
+	}
+	.title2 {
+		.title {color: @bodytitle;text-shadow: 1px 1px 0 @bodycontrast;box-shadow: inset 0 2px 12px rgba(0,0,0,0.13);}
+	}
+}
+
+// Menu Modules
+ul.menu {
+	li.active.current, li#current.active {
+		> a, > .item, > .separator {color: @bodytitle;}
+	}
+}
+
+// Buttons and Inputs
+.button, .readon, .readmore, button.validate, #member-profile a, #member-registration a, .formelm-buttons button {color: @white;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+	&:hover {color: @white;}
+	&:active {box-shadow: 0 1px 0 @bodycontrast;}
+}
+.readmore {
+	a {color: @white;
+		&:hover {color: @white;}
+	}
+}
+
+// Branding
+.powered-by {background: url(../images/logo/powered.png);}
+
+// Typography
+.pagenav {
+	li {background: @bodybackground2;border: 1px solid @bodyborder;box-shadow: inset 0 0 0 1px @white, 0 1px 2px rgba(0,0,0,0.2);}
+}
+.login-fields #username, .login-fields #password, #contact-form dd input, #contact-form dd textarea, #modlgn-username, #modlgn-passwd, #jform_email, #member-registration dd input, #search-searchword, .finder .inputbox, .inputbox {border: 1px solid #d9d9d9;}
+.component-content {
+	.contact {
+		.title {#gradient > .vertical(@bodycontrast, @bodyborder2);border: 1px solid @bodyborder;text-shadow: 0 1px 1px rgba(255,255,255,.75);}
+	}
+}
+.pagination {
+	ul {
+		li {
+			a {#gradient > .vertical(@bodycontrast, @bodyborder2);border: 1px solid @bodyborder;text-shadow: 0 1px 1px rgba(255,255,255,.75);}
+			span {background: @bodybackground4;border: 1px solid @bodyborder;color: @bodytextlight;}
+		}
+	}
+}
+.breadcrumbs {
+	a {
+		&:after {color: @bodytextlight;}
+	}
+	.showHere {font-weight: bold;margin-right: 5px;}
+}
+.article-info {
+		dd:before {text-shadow: 1px 1px 0 @bodycontrast;}
+}
+
+// Extras
+#gantry-totop {background: @bodybackground2;border: 1px solid @bodyborder;box-shadow: inset 0 0 0 1px @white, 0 1px 2px rgba(0,0,0,0.2);
+	&:active {box-shadow: 0 1px 0 @bodycontrast;}
+}
+.tip-wrap {background: @bodycontrast;box-shadow: 0 0 5px rgba(0,0,0,0.3);}
+.system-unpublished .system-unpublished {background: @bodycontrast;border-color: @bodyborder;}
+.btn {#gradient > .vertical(@bodycontrast, @bodyborder2);}

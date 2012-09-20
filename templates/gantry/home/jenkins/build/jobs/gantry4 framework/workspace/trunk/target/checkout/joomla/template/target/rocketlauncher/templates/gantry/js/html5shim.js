@@ -1,0 +1,12 @@
+/*! HTML5 Shiv vpre3.6 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+  Uncompressed source: https://github.com/aFarkas/html5shiv  */
+(function(r,q){function w(c,b){var a=c.createElement("p"),d=c.getElementsByTagName("head")[0]||c.documentElement;
+return a.innerHTML="x<style>"+b+"</style>",d.insertBefore(a.lastChild,d.firstChild);}function v(){var a=s.elements;return typeof a=="string"?a.split(" "):a;
+}function u(c){var b={},a=c.createElement,e=c.createDocumentFragment,d=e();c.createElement=function(g){if(!s.shivMethods){return a(g);}var f;return b[g]?f=b[g].cloneNode():n.test(g)?f=(b[g]=a(g)).cloneNode():f=a(g),f.canHaveChildren&&!o.test(g)?d.appendChild(f):f;
+},c.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+v().join().replace(/\w+/g,function(f){return a(f),d.createElement(f),'c("'+f+'")';
+})+");return n}")(s,d);}function t(a){var b;return a.documentShived?a:(s.shivCSS&&!m&&(b=!!w(a,"article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}audio{display:none}canvas,video{display:inline-block;*display:inline;*zoom:1}[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}mark{background:#FF0;color:#000}")),x||(b=!u(a)),b&&(a.documentShived=b),a);
+}var p=r.html5||{},o=/^<|^(?:button|form|map|select|textarea|object|iframe|option|optgroup)$/i,n=/^<|^(?:a|b|button|code|div|fieldset|form|h1|h2|h3|h4|h5|h6|i|iframe|img|input|label|li|link|ol|option|p|param|q|script|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|tr|ul)$/i,m,x;
+(function(){var a=q.createElement("a");a.innerHTML="<xyz></xyz>",m="hidden" in a,m&&typeof injectElementWithStyles=="function"&&injectElementWithStyles("#modernizr{}",function(b){b.hidden=!0,m=(r.getComputedStyle?getComputedStyle(b,null):b.currentStyle).display=="none";
+}),x=a.childNodes.length==1||function(){try{q.createElement("a");}catch(c){return !0;}var b=q.createDocumentFragment();return typeof b.cloneNode=="undefined"||typeof b.createDocumentFragment=="undefined"||typeof b.createElement=="undefined";
+}();})();var s={elements:p.elements||"abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video",shivCSS:p.shivCSS!==!1,shivMethods:p.shivMethods!==!1,type:"default",shivDocument:t};
+r.html5=s,t(q);})(this,document);

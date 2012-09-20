@@ -1,0 +1,17 @@
+/**
+* @version   $Id: icons.less 2224 2012-08-07 21:51:29Z djamil $
+* @author    RocketTheme http://www.rockettheme.com
+* @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+* @license   http://www.rockettheme.com/legal/license.php RocketTheme Proprietary Use License
+*/
+
+i {
+	background-image: url("@{iconSpritePath}") !important;
+	background-repeat: no-repeat;
+	background-position: 16px 16px; // reset of default position from 0 0 to a transparent location, out of the sprite
+	vertical-align: text-top;
+	font-style: normal;
+	display: inline-block;
+	.square(16px);
+	.ie7-restore-right-whitespace();
+}

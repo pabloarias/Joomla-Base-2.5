@@ -1,0 +1,128 @@
+/**
+* @version   $Id: fusionmenu.less 3383 2012-09-07 18:13:47Z kevin $
+ * @author    RocketTheme http://www.rockettheme.com
+ * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+// Global
+.menutop {margin: 0;
+	li {height: auto;margin: 0;padding: 0;position: relative;list-style: none;
+		.item {display: block;margin: 0;padding: 0;text-decoration: none;float: none;width: auto;cursor: pointer;position: relative;outline: none;}
+		.fusion-submenu-wrapper {float: none;left: -999em;position: absolute;z-index: 500;}
+		&:hover {
+			ul {top: 0;}
+			li {
+				ul {top: -999em;}
+			}
+		}
+	}
+	em {font-size: 80%;font-weight: normal;display: block;font-style: normal;}
+}
+
+// Root Items
+.rt-fusionmenu {float: left;}
+.menutop {padding: 0 10px;line-height: 1em;
+	li.root {float: left;
+		> .item {font-size: 1em;z-index: 100;height: 36px;padding: 12px 0;line-height: 1.8em;
+			> span {display: block;margin: 0;outline: none;padding: 5px 15px;width: auto;border-radius: 5px;}
+			em {font-size: 10px;display: block;text-transform: lowercase;line-height: 0.3em;}
+			img {margin: 0 4px 0 0;vertical-align: text-bottom;}
+		}
+		.subtext {
+				span {line-height: 1.9em;}
+		}
+	}
+	li.parent.root {
+		.item {
+			> span {padding-right: 22px;}
+			.daddyicon {width: 12px;height: 12px;display: block;position: absolute;top: 50%;margin-top: -6px;right: 4px;line-height: 12px;font-size: 0.8em;font-family: FontAwesome;}
+			.daddyicon:before {content: "\f078";}
+		}
+	}
+}
+
+// Fusion JS
+.fusion-js-container {display: block;height: 0;left: 0;overflow: visible;position: absolute;top: 0;z-index: 600000 !important;background: transparent !important;}
+.fusion-js-subs {display: none;margin: 0;overflow: hidden;padding: 0;position: absolute;}
+
+// Dropdown Items
+.menutop {
+	ul {padding: 0;margin: 0;float: left;
+		li {padding: 0;display: block;
+			> .item {padding: 0 15px;height: auto;display: block;font-size: 1em;
+				span {display: block;width: 100%;overflow: hidden;line-height: 3em;}
+			}
+			.item {cursor: pointer;outline: none;position: relative;
+				img {float: left;margin: 8px 6px 0 0;vertical-align: top;}
+			}
+			.nolink {
+				span {display: block;}
+			}
+			.subtext {
+				span {line-height: 1.9em;}
+				em {line-height: 0.6em;padding-bottom: 7px;text-transform: lowercase;}
+			}
+			> .daddy {
+				span:before {font-family: FontAwesome;content: "\f054";position: absolute;top: 2px;right: 10px;font-size: 0.8em;}
+			}
+		}
+		.grouped-parent {
+			> .daddy {
+				span:before {display: none;}
+			}
+		}
+	}
+	.drop-bot {height: 1px;overflow: hidden;clear: both;}
+	.fusion-submenu-wrapper {height: auto !important;-webkit-transition: box-shadow 0.4s ease-in;-moz-transition: box-shadow 0.4s ease-in;-o-transition: box-shadow 0.4s ease-in;-ms-transition: box-shadow 0.4s ease-in;transition: box-shadow 0.4s ease-in;}
+}
+
+// No JS
+.menutop {
+	li.root {
+		&:hover {
+			> .fusion-submenu-wrapper {top: 35px;left: 0;}
+		}
+	}
+	ul {
+		li {
+			&:hover {
+				> .fusion-submenu-wrapper {left: 180px;top: 0;}
+			}
+		}
+	}
+}
+
+/* Grouped & Modules */
+.menutop {
+	.fusion-grouped {padding-bottom: 10px;display: block;
+		ol {padding: 0;
+			li {padding: 0;
+				.item {padding: 0 8px;}
+				span {font-size: 85%;line-height: 2em;}
+			}
+		}
+	}
+	.type-module {
+		ol {padding: 0;
+			li {padding: 0;
+				.fusion-module {padding: 0;background: none;overflow: hidden;display: block;
+					em {display: inline;font-size: inherit;font-style: italic;}
+					a {font-size: inherit;line-height: 130%;}
+					p {line-height: 160%;}
+				}
+				.fusion-modules {background: none;display: block;
+					p {line-height: 160%;}
+				}
+				.fusion-modules.item {padding: 15px;}
+			}
+		}
+	}
+	ul {
+		li.grouped-parent {
+			> .daddy {
+				span {background: none;}
+			}
+		}
+	}
+}
