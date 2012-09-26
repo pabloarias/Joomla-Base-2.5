@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2012 at 08:24 PM
+-- Generation Time: Sep 26, 2012 at 08:41 PM
 -- Server version: 5.5.25a
 -- PHP Version: 5.4.4
 
@@ -19,6 +19,297 @@ SET time_zone = "+00:00";
 --
 -- Database: `joomlabase`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_config`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_config` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `config_key` varchar(50) NOT NULL DEFAULT '',
+  `config_value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+
+--
+-- Dumping data for table `oel6t_aicontactsafe_config`
+--
+
+INSERT INTO `oel6t_aicontactsafe_config` (`id`, `config_key`, `config_value`) VALUES
+(1, 'use_css_backend', '1'),
+(2, 'use_SqueezeBox', '0'),
+(3, 'highlight_errors', '1'),
+(4, 'keep_session_alive', '0'),
+(5, 'activate_help', '1'),
+(6, 'date_format', 'l, d F Y H:i'),
+(7, 'default_status_filter', '0'),
+(8, 'editbox_cols', '40'),
+(9, 'editbox_rows', '10'),
+(10, 'default_name', ''),
+(11, 'default_email', ''),
+(12, 'default_subject', ''),
+(13, 'activate_spam_control', '0'),
+(14, 'block_words', 'url='),
+(15, 'record_blocked_messages', '1'),
+(16, 'activate_ip_ban', '0'),
+(17, 'ban_ips', ''),
+(18, 'redirect_ips', ''),
+(19, 'ban_ips_blocked_words', '0'),
+(20, 'maximum_messages_ban_ip', '0'),
+(21, 'maximum_minutes_ban_ip', '0'),
+(22, 'email_ban_ip', ''),
+(23, 'set_sender_joomla', '0'),
+(24, 'upload_attachments', 'media&#92;aicontactsafe&#92;attachments'),
+(25, 'maximum_size', '5000000'),
+(26, 'attachments_types', 'rar,zip,doc,xls,txt,gif,jpg,png,bmp'),
+(27, 'attach_to_email', '1'),
+(28, 'delete_after_sent', '0'),
+(29, 'gid_messages', '8'),
+(30, 'users_all_messages', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_contactinformations`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_contactinformations` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `profile_id` int(11) unsigned NOT NULL,
+  `info_key` varchar(50) NOT NULL DEFAULT '',
+  `info_label` varchar(250) NOT NULL DEFAULT '',
+  `info_value` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `oel6t_aicontactsafe_contactinformations`
+--
+
+INSERT INTO `oel6t_aicontactsafe_contactinformations` (`id`, `profile_id`, `info_key`, `info_label`, `info_value`) VALUES
+(1, 1, 'contact_info', 'contact_info (Default form)', '&lt;p&gt;Puede ponerse en contacto con nosotros empleando cualquiera de los siguientes medios:&lt;/p&gt;\r\n&lt;p&gt;Teléfono: (+34) &lt;strong&gt;986 123 456&lt;/strong&gt;&lt;/p&gt;\r\n&lt;p&gt;Email: correo@empresa.com&lt;/p&gt;\r\n&lt;p&gt;Dirección: calle &lt;strong&gt;Reguerio nº 3&lt;/strong&gt; 36206 &lt;strong&gt;Vigo&lt;/strong&gt; (Pontevedra) Spain.&lt;/p&gt;'),
+(2, 2, 'contact_info', 'contact_info', '<img style="margin-left: 10px; float: right;" alt="powered by joomla" src="images/powered_by.png" width="165" height="68" /><div style="width: 150px; float: left;">Algis Info Grup SRL<br />Str. Hărmanului Nr.63<br />bl.1A sc.A ap.8<br />Brașov, România<br />500232<br /><a target="_blank" href="http://www.algisinfo.com/">www.algisinfo.com</a></div>'),
+(3, 1, 'meta_description', 'meta_description (Default form)', 'Para ponerse en contacto con nosotros utilice culquiera de los siguientes medios.'),
+(4, 2, 'meta_description', 'meta_description', ''),
+(5, 1, 'meta_keywords', 'meta_keywords (Default form)', 'contacto, dirección, teléfono'),
+(6, 2, 'meta_keywords', 'meta_keywords', ''),
+(7, 1, 'meta_robots', 'meta_robots (Default form)', ''),
+(8, 2, 'meta_robots', 'meta_robots', ''),
+(9, 1, 'thank_you_message', 'thank_you_message (Default form)', 'Su mensaje ha sido enviado. Gracias por contactar con nosotros.'),
+(10, 2, 'thank_you_message', 'thank_you_message', 'Email sent. Thank you for your message.'),
+(11, 1, 'required_field_notification', 'required_field_notification (Default form)', 'Los campos marcados con %mark% son obligatorios.'),
+(12, 2, 'required_field_notification', 'required_field_notification', 'Fields marked with %mark% are required.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_fields`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fields` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `field_label` text NOT NULL,
+  `label_parameters` text NOT NULL,
+  `field_label_message` text NOT NULL,
+  `label_message_parameters` text NOT NULL,
+  `label_after_field` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `field_type` varchar(2) NOT NULL DEFAULT 'TX',
+  `field_parameters` text NOT NULL,
+  `field_values` text NOT NULL,
+  `field_limit` int(11) NOT NULL DEFAULT '0',
+  `default_value` varchar(150) NOT NULL DEFAULT '',
+  `auto_fill` varchar(10) NOT NULL DEFAULT '',
+  `field_sufix` text NOT NULL,
+  `field_prefix` text NOT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `field_required` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `field_in_message` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `send_message` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `oel6t_aicontactsafe_fields`
+--
+
+INSERT INTO `oel6t_aicontactsafe_fields` (`id`, `name`, `field_label`, `label_parameters`, `field_label_message`, `label_message_parameters`, `label_after_field`, `field_type`, `field_parameters`, `field_values`, `field_limit`, `default_value`, `auto_fill`, `field_sufix`, `field_prefix`, `ordering`, `field_required`, `field_in_message`, `send_message`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
+(1, 'aics_name', 'Nombre', '', 'Nombre', '', 0, 'TX', 'class=&#039;textbox&#039;', '', 0, '', 'UN', '', '', 1, 1, 1, 0, '2012-09-25 19:00:49', '2012-09-25 18:11:39', 1, 0, '0000-00-00'),
+(2, 'aics_email', 'Email', '', 'Email', '', 0, 'EM', 'class=''email''', '', 0, '', 'UE', '', '', 2, 1, 1, 0, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00'),
+(3, 'aics_phone', 'Teléfono', '', 'Teléfono', '', 0, 'TX', 'class=&#039;textbox&#039;', '', 15, '', '', '', '', 3, 0, 1, 0, '2012-09-25 19:00:49', '2012-09-25 18:12:44', 1, 0, '0000-00-00'),
+(4, 'aics_subject', 'Subject', '', 'Subject', '', 0, 'TX', 'class=''textbox''', '', 0, '', '', '', '', 4, 1, 1, 0, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00'),
+(5, 'aics_message', 'Mensaje', '', 'Mensaje', '', 0, 'ED', 'class=&#039;editbox&#039;', '', 0, '', '', '', '', 5, 1, 1, 0, '2012-09-25 19:00:49', '2012-09-25 18:13:10', 1, 0, '0000-00-00'),
+(6, 'aics_send_to_sender', 'Send a copy of this message to yourself', '', 'Send a copy of this message to yourself', '', 1, 'CK', 'class=''checkbox''', '', 0, '', '', '', '', 6, 0, 0, 0, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_fieldvalues`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fieldvalues` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `field_id` int(11) unsigned NOT NULL,
+  `message_id` int(11) unsigned NOT NULL,
+  `field_value` text NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_messagefiles`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messagefiles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `message_id` int(11) unsigned NOT NULL,
+  `name` text NOT NULL,
+  `r_id` int(21) unsigned NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messages` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `email` varchar(100) NOT NULL DEFAULT '',
+  `subject` varchar(200) NOT NULL DEFAULT '',
+  `message` text NOT NULL,
+  `send_to_sender` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `sender_ip` varchar(20) NOT NULL DEFAULT '',
+  `profile_id` int(11) unsigned NOT NULL,
+  `status_id` int(11) unsigned NOT NULL,
+  `manual_status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `email_destination` text NOT NULL,
+  `email_reply` varchar(100) NOT NULL DEFAULT '',
+  `subject_reply` text NOT NULL,
+  `message_reply` text NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_profiles`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_profiles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `use_ajax` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `use_message_css` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `contact_form_width` int(11) NOT NULL DEFAULT '0',
+  `bottom_row_space` int(11) NOT NULL DEFAULT '0',
+  `align_buttons` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `contact_info_width` int(11) NOT NULL DEFAULT '0',
+  `use_captcha` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `captcha_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `align_captcha` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `email_address` varchar(100) NOT NULL DEFAULT '',
+  `always_send_to_email_address` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `subject_prefix` varchar(100) NOT NULL DEFAULT '',
+  `email_mode` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `record_message` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `record_fields` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `custom_date_format` varchar(30) NOT NULL DEFAULT '%d %B %Y',
+  `custom_date_years_back` int(11) NOT NULL DEFAULT '70',
+  `custom_date_years_forward` int(11) NOT NULL DEFAULT '0',
+  `required_field_mark` text NOT NULL,
+  `display_format` int(11) NOT NULL DEFAULT '2',
+  `plg_contact_info` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `use_random_letters` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `min_word_length` tinyint(2) unsigned NOT NULL DEFAULT '5',
+  `max_word_length` tinyint(2) unsigned NOT NULL DEFAULT '8',
+  `set_default` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `active_fields` text NOT NULL,
+  `captcha_width` smallint(4) NOT NULL DEFAULT '400',
+  `captcha_height` smallint(4) NOT NULL DEFAULT '55',
+  `captcha_bgcolor` varchar(10) NOT NULL DEFAULT '#FFFFFF',
+  `captcha_backgroundTransparent` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `captcha_colors` text NOT NULL,
+  `name_field_id` int(11) unsigned NOT NULL,
+  `email_field_id` int(11) unsigned NOT NULL,
+  `subject_field_id` int(11) unsigned NOT NULL,
+  `send_to_sender_field_id` int(11) NOT NULL,
+  `redirect_on_success` text NOT NULL,
+  `fields_order` text NOT NULL,
+  `use_mail_template` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `default_status_id` int(11) unsigned NOT NULL,
+  `read_status_id` int(11) unsigned NOT NULL,
+  `reply_status_id` int(11) unsigned NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `oel6t_aicontactsafe_profiles`
+--
+
+INSERT INTO `oel6t_aicontactsafe_profiles` (`id`, `name`, `use_ajax`, `use_message_css`, `contact_form_width`, `bottom_row_space`, `align_buttons`, `contact_info_width`, `use_captcha`, `captcha_type`, `align_captcha`, `email_address`, `always_send_to_email_address`, `subject_prefix`, `email_mode`, `record_message`, `record_fields`, `custom_date_format`, `custom_date_years_back`, `custom_date_years_forward`, `required_field_mark`, `display_format`, `plg_contact_info`, `use_random_letters`, `min_word_length`, `max_word_length`, `set_default`, `active_fields`, `captcha_width`, `captcha_height`, `captcha_bgcolor`, `captcha_backgroundTransparent`, `captcha_colors`, `name_field_id`, `email_field_id`, `subject_field_id`, `send_to_sender_field_id`, `redirect_on_success`, `fields_order`, `use_mail_template`, `default_status_id`, `read_status_id`, `reply_status_id`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
+(1, 'Default form', 0, 1, 0, 0, 1, 0, 0, 0, 1, '', 1, '', 1, 1, 0, 'dmy', 60, 0, '( &lt;span style=&quot;color: red;&quot;&gt;*&lt;/span&gt; )', 5, 1, 0, 5, 8, 1, '1,2,3,5', 300, 55, '#FFFFFF', 1, '#FF0000;#00FF00;#0000FF', 1, 2, 1, 0, '', '1,2,3,4,5,6', 0, 1, 2, 3, '2009-01-01 00:00:00', '2012-09-25 17:56:47', 1, 0, '0000-00-00'),
+(2, 'Module form', 0, 1, 0, 0, 1, 0, 1, 0, 1, '', 1, '', 1, 1, 0, '%d %B %Y', 60, 0, '( ! )', 1, 0, 0, 5, 8, 0, '0', 180, 55, '#FFFFFF', 1, '#FF0000;#00FF00;#0000FF', 1, 2, 4, 6, '', '', 0, 1, 2, 3, '2009-01-01 00:00:00', '2009-01-01 00:00:00', 1, 0, '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oel6t_aicontactsafe_statuses`
+--
+
+CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_statuses` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL DEFAULT '',
+  `color` varchar(10) NOT NULL DEFAULT '#FFFFFF',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_update` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `checked_out` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `oel6t_aicontactsafe_statuses`
+--
+
+INSERT INTO `oel6t_aicontactsafe_statuses` (`id`, `name`, `color`, `ordering`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
+(1, 'New', '#FF0000', 1, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00'),
+(2, 'Read', '#000000', 2, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00'),
+(3, 'Replied', '#009900', 3, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00'),
+(4, 'Archived', '#CCCCCC', 4, '2012-09-25 19:00:49', '2012-09-25 19:00:49', 1, 0, '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -39,14 +330,14 @@ CREATE TABLE IF NOT EXISTS `oel6t_assets` (
   UNIQUE KEY `idx_asset_name` (`name`),
   KEY `idx_lft_rgt` (`lft`,`rgt`),
   KEY `idx_parent_id` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 --
 -- Dumping data for table `oel6t_assets`
 --
 
 INSERT INTO `oel6t_assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES
-(1, 0, 1, 77, 0, 'root.1', 'Root Asset', '{"core.login.site":{"6":1,"2":1},"core.login.admin":{"6":1},"core.login.offline":{"6":1},"core.admin":{"8":1},"core.manage":{"7":1},"core.create":{"6":1,"3":1},"core.delete":{"6":1},"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1}}'),
+(1, 0, 1, 79, 0, 'root.1', 'Root Asset', '{"core.login.site":{"6":1,"2":1},"core.login.admin":{"6":1},"core.login.offline":{"6":1},"core.admin":{"8":1},"core.manage":{"7":1},"core.create":{"6":1,"3":1},"core.delete":{"6":1},"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},"core.edit.own":{"6":1,"3":1}}'),
 (2, 1, 1, 2, 1, 'com_admin', 'com_admin', '{}'),
 (3, 1, 3, 6, 1, 'com_banners', 'com_banners', '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}'),
 (4, 1, 7, 8, 1, 'com_cache', 'com_cache', '{"core.admin":{"7":1},"core.manage":{"7":1}}'),
@@ -84,7 +375,8 @@ INSERT INTO `oel6t_assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `t
 (36, 1, 73, 74, 1, 'com_xmap', 'com_xmap', '{}'),
 (37, 27, 19, 20, 3, 'com_content.article.1', 'Nota legal', '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'),
 (38, 27, 21, 22, 3, 'com_content.article.2', 'Política de privacidad', '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'),
-(39, 1, 75, 76, 1, 'com_gantry', 'gantry', '{}');
+(39, 1, 75, 76, 1, 'com_gantry', 'gantry', '{}'),
+(40, 1, 77, 78, 1, 'com_aicontactsafe', 'aicontactsafe', '{}');
 
 -- --------------------------------------------------------
 
@@ -360,8 +652,8 @@ CREATE TABLE IF NOT EXISTS `oel6t_content` (
 --
 
 INSERT INTO `oel6t_content` (`id`, `asset_id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, `sectionid`, `mask`, `catid`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `hits`, `metadata`, `featured`, `language`, `xreference`) VALUES
-(1, 37, 'Nota legal', 'nota-legal', '', '<h2>Condiciones de uso</h2>\r\n<p>Este es un sitio web en Internet cuya titularidad corresponde al propietario del dominio.</p>\r\n<p>El uso del sitio web implica la expresa y plena aceptación de las condiciones aquí expuestas, sin perjuicio de aquellas particulares que pudieran aplicarse a algunos de los servicios concretos ofrecidos a través del sitio web.</p>\r\n<p>El titular se reserva el derecho de modificar en cualquier momento las presentes condiciones de uso así como cualesquiera otras condiciones particulares.</p>\r\n<h2>Contenido, términos legales y responsabilidades</h2>\r\n<p>Los contenidos del portal tienen fines meramente informativos, ya que en alguna ocasión, éstos podrían no reflejar la actualidad más reciente, por lo que en cualquier momento dichos contenidos podrán ser modificados y/o sustituidos por unos nuevos, sin notificación previa, ni responsabilidad alguna.</p>\r\n<p>Los contenidos de la web no pueden ser considerados, en ningún caso, como sustitutivos de asesoramiento legal, ni de ningún otro tipo de asesoramiento. No existirá ningún tipo de relación comercial, profesional, ni ningún tipo de relación de otra índole con los profesionales que integran la web por el mero hecho del acceso a ella por parte de los usuarios.</p>\r\n<p>El usuario cuando accede a la web, lo hace por su propia cuenta y riesgo. No se garantiza ni la rapidez, ni la ininterrupción. Asimismo, el titular de la web, los colaboradores, sus socios, empleados y representantes tampoco podrán ser considerados responsables por cualesquiera daños derivados de la utilización de esta web, ni por cualquier actuación realizada sobre la base de la información que en ella se facilita.</p>\r\n<h2>LOPD (Ley Orgánica de Protección de Datos de Carácter Personal)</h2>\r\n<p>En cumplimiento de lo dispuesto en la Ley Orgánica 15/1999 de Protección de Datos de Carácter Personal, se le informa que los datos personales que nos sean proporcionados van a ser incorporados para su tratamiento en ficheros automatizados. La recogida y tratamiento de dichos datos tienen como finalidad la prestación de servicios personalizados, participación en procesos de selección de personal, comunicaciones electrónicas y/o la confección de estadísticas.</p>\r\n<p>El titular de este sitio web se compromete al cumplimiento de su obligación de secreto con respecto a los datos de carácter personal suministrados y al deber de tratarlos con confidencialidad y reserva, conforme a la legislación vigente. A estos efectos adoptará las medidas necesarias para evitar su alteración, pérdida, tratamiento o acceso no autorizado.</p>\r\n<p>Así mismo se le informa que, si lo desea puede ejercitar los derechos previstos en el Artículo 5 de la Ley a través del siguiente formulario de contacto, seleccionando como asunto LOPD e indicando su nombre completo, dirección de correo electrónico, y en el campo comentarios su <acronym title="Documento nacional de identidad" lang="es">DNI</acronym> y el tipo de derecho que desea ejercitar, Acceso, Rectificación, Cancelación u Oposición.</p>\r\n<h2>"Cookies"</h2>\r\n<p>Este web utiliza "cookies" (pequeños archivos de información que el servidor envía al ordenador de quien accede a la página) en la medida imprescindible para el correcto funcionamiento y visualización del sitio web por parte del usuario.</p>\r\n<p>Las "cookies" utilizadas en el sitio web tienen, en todo caso, carácter temporal y desaparecen al terminar la sesión del usuario. En ningún caso se utilizarán las "cookies" para recoger información de carácter personal.</p>\r\n<h2>Enlaces</h2>\r\n<p>Los enlaces contenidos en este sitio web pueden dirigir a contenidos de terceros. No se asume ninguna responsabilidad por el contenido, informaciones o servicios que pudieran aparecer en dichos sitios, que tendrán exclusivamente carácter informativo y que en ningún caso implican relación alguna entre este sitio y a las personas o entidades titulares de tales contenidos o titulares de los sitios donde se encuentren.</p>\r\n<h2>Ley aplicable y jurisdicción</h2>\r\n<p>Las presentes condiciones de uso se rigen por la legislación de España, siendo competentes sus Juzgados y Tribunales para conocer de cuantas cuestiones se susciten sobre la interpretación, aplicación y cumplimiento de las mismas. Los usuarios, por virtud de su aceptación a las condiciones generales recogidas en este aviso legal, renuncian expresamente a cualquier fuero que pudiera corresponderle.</p>\r\n<h2>Confidencialidad</h2>\r\n<p>Cualquier dato e información que sea enviado a este sitio web, cualesquiera que sean su formato y soporte, será tratado con absoluta confidencialidad y reserva. Sólo en el caso de que las Fuerzas y Cuerpos de Seguridad del Estado, requieran el acceso a esa información, en los estrictos términos de la legislación vigente y todos aquellos otros supuestos legalmente establecidos, le será proporcionada conforme a lo que exige la Ley.</p>\r\n<p>No se utilizará en beneficio propio o de terceros, cualquier información que le sea proporcionada, o una reproducción parcial o total de la misma por cualquier medio.</p>', '', 1, 0, 0, 2, '2012-09-19 18:09:20', 776, '', '2012-09-19 18:19:27', 776, 0, '0000-00-00 00:00:00', '2012-09-19 18:09:20', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":null,"urlatext":"","targeta":"","urlb":null,"urlbtext":"","targetb":"","urlc":null,"urlctext":"","targetc":""}', '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_layout":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":""}', 3, 0, 1, '', '', 1, 0, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', ''),
-(2, 38, 'Política de privacidad', 'politica-de-privacidad', '', '<p>Se informa a los usuarios del portal conforme a lo establecido en el <abbr title="artículo">art.</abbr> 5 de la Ley Orgánica 5/1990 de 13 diciembre de Protección de Datos de Carácter Personal que los datos que nos facilite a través de este sitio web, serán incorporados a un fichero automatizado responsabilidad del titular con objeto de servir de contacto profesional a través de la página web, realización de estadísticas, seguimiento y remisión de ofertas de productos y servicios.</p>\r\n<p>Si usted es menor de edad, deberá contar con el previo consentimiento de sus padres o tutores antes de proceder a la remisión de sus datos personales a través de este sitio web.</p>\r\n<p>Igualmente, el titular se obliga a cumplir la obligación de secreto respecto de los datos contenidos en el fichero automatizado establecida en la legislación de protección de datos aplicable.</p>\r\n<p>El usuario o persona que lo represente podrá ejercitar en cualquier momento el derecho de acceso, rectificación y cancelación, de acuerdo con lo establecido en la <acronym title="Ley Orgánica de Protección de Datos">L.O.P.D.</acronym> y demás normativa aplicable al efecto, mediante el envío de un mensaje a través de nuestro <a title="Formulario de contacto" href="/contacto?view=message&amp;layout=message&amp;pf=1">formulario de contacto</a>.</p>', '', 1, 0, 0, 2, '2012-09-19 18:11:03', 776, '', '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', '2012-09-19 18:11:03', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":null,"urlatext":"","targeta":"","urlb":null,"urlbtext":"","targetb":"","urlc":null,"urlctext":"","targetc":""}', '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_layout":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":""}', 1, 0, 0, '', '', 1, 0, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', '');
+(1, 37, 'Nota legal', 'nota-legal', '', '<h2>Condiciones de uso</h2>\r\n<p>Este es un sitio web en Internet cuya titularidad corresponde al propietario del dominio.</p>\r\n<p>El uso del sitio web implica la expresa y plena aceptación de las condiciones aquí expuestas, sin perjuicio de aquellas particulares que pudieran aplicarse a algunos de los servicios concretos ofrecidos a través del sitio web.</p>\r\n<p>El titular se reserva el derecho de modificar en cualquier momento las presentes condiciones de uso así como cualesquiera otras condiciones particulares.</p>\r\n<h2>Contenido, términos legales y responsabilidades</h2>\r\n<p>Los contenidos del portal tienen fines meramente informativos, ya que en alguna ocasión, éstos podrían no reflejar la actualidad más reciente, por lo que en cualquier momento dichos contenidos podrán ser modificados y/o sustituidos por unos nuevos, sin notificación previa, ni responsabilidad alguna.</p>\r\n<p>Los contenidos de la web no pueden ser considerados, en ningún caso, como sustitutivos de asesoramiento legal, ni de ningún otro tipo de asesoramiento. No existirá ningún tipo de relación comercial, profesional, ni ningún tipo de relación de otra índole con los profesionales que integran la web por el mero hecho del acceso a ella por parte de los usuarios.</p>\r\n<p>El usuario cuando accede a la web, lo hace por su propia cuenta y riesgo. No se garantiza ni la rapidez, ni la ininterrupción. Asimismo, el titular de la web, los colaboradores, sus socios, empleados y representantes tampoco podrán ser considerados responsables por cualesquiera daños derivados de la utilización de esta web, ni por cualquier actuación realizada sobre la base de la información que en ella se facilita.</p>\r\n<h2>LOPD (Ley Orgánica de Protección de Datos de Carácter Personal)</h2>\r\n<p>En cumplimiento de lo dispuesto en la Ley Orgánica 15/1999 de Protección de Datos de Carácter Personal, se le informa que los datos personales que nos sean proporcionados van a ser incorporados para su tratamiento en ficheros automatizados. La recogida y tratamiento de dichos datos tienen como finalidad la prestación de servicios personalizados, participación en procesos de selección de personal, comunicaciones electrónicas y/o la confección de estadísticas.</p>\r\n<p>El titular de este sitio web se compromete al cumplimiento de su obligación de secreto con respecto a los datos de carácter personal suministrados y al deber de tratarlos con confidencialidad y reserva, conforme a la legislación vigente. A estos efectos adoptará las medidas necesarias para evitar su alteración, pérdida, tratamiento o acceso no autorizado.</p>\r\n<p>Así mismo se le informa que, si lo desea puede ejercitar los derechos previstos en el Artículo 5 de la Ley a través del siguiente formulario de contacto, seleccionando como asunto LOPD e indicando su nombre completo, dirección de correo electrónico, y en el campo comentarios su <acronym title="Documento nacional de identidad" lang="es">DNI</acronym> y el tipo de derecho que desea ejercitar, Acceso, Rectificación, Cancelación u Oposición.</p>\r\n<h2>"Cookies"</h2>\r\n<p>Este web utiliza "cookies" (pequeños archivos de información que el servidor envía al ordenador de quien accede a la página) en la medida imprescindible para el correcto funcionamiento y visualización del sitio web por parte del usuario.</p>\r\n<p>Las "cookies" utilizadas en el sitio web tienen, en todo caso, carácter temporal y desaparecen al terminar la sesión del usuario. En ningún caso se utilizarán las "cookies" para recoger información de carácter personal.</p>\r\n<h2>Enlaces</h2>\r\n<p>Los enlaces contenidos en este sitio web pueden dirigir a contenidos de terceros. No se asume ninguna responsabilidad por el contenido, informaciones o servicios que pudieran aparecer en dichos sitios, que tendrán exclusivamente carácter informativo y que en ningún caso implican relación alguna entre este sitio y a las personas o entidades titulares de tales contenidos o titulares de los sitios donde se encuentren.</p>\r\n<h2>Ley aplicable y jurisdicción</h2>\r\n<p>Las presentes condiciones de uso se rigen por la legislación de España, siendo competentes sus Juzgados y Tribunales para conocer de cuantas cuestiones se susciten sobre la interpretación, aplicación y cumplimiento de las mismas. Los usuarios, por virtud de su aceptación a las condiciones generales recogidas en este aviso legal, renuncian expresamente a cualquier fuero que pudiera corresponderle.</p>\r\n<h2>Confidencialidad</h2>\r\n<p>Cualquier dato e información que sea enviado a este sitio web, cualesquiera que sean su formato y soporte, será tratado con absoluta confidencialidad y reserva. Sólo en el caso de que las Fuerzas y Cuerpos de Seguridad del Estado, requieran el acceso a esa información, en los estrictos términos de la legislación vigente y todos aquellos otros supuestos legalmente establecidos, le será proporcionada conforme a lo que exige la Ley.</p>\r\n<p>No se utilizará en beneficio propio o de terceros, cualquier información que le sea proporcionada, o una reproducción parcial o total de la misma por cualquier medio.</p>', '', 1, 0, 0, 2, '2012-09-19 18:09:20', 776, '', '2012-09-19 18:19:27', 776, 0, '0000-00-00 00:00:00', '2012-09-19 18:09:20', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":null,"urlatext":"","targeta":"","urlb":null,"urlbtext":"","targetb":"","urlc":null,"urlctext":"","targetc":""}', '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_layout":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":""}', 3, 0, 1, '', '', 1, 15, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', ''),
+(2, 38, 'Política de privacidad', 'politica-de-privacidad', '', '<p>Se informa a los usuarios del portal conforme a lo establecido en el <abbr title="artículo">art.</abbr> 5 de la Ley Orgánica 5/1990 de 13 diciembre de Protección de Datos de Carácter Personal que los datos que nos facilite a través de este sitio web, serán incorporados a un fichero automatizado responsabilidad del titular con objeto de servir de contacto profesional a través de la página web, realización de estadísticas, seguimiento y remisión de ofertas de productos y servicios.</p>\r\n<p>Si usted es menor de edad, deberá contar con el previo consentimiento de sus padres o tutores antes de proceder a la remisión de sus datos personales a través de este sitio web.</p>\r\n<p>Igualmente, el titular se obliga a cumplir la obligación de secreto respecto de los datos contenidos en el fichero automatizado establecida en la legislación de protección de datos aplicable.</p>\r\n<p>El usuario o persona que lo represente podrá ejercitar en cualquier momento el derecho de acceso, rectificación y cancelación, de acuerdo con lo establecido en la <acronym title="Ley Orgánica de Protección de Datos">L.O.P.D.</acronym> y demás normativa aplicable al efecto, mediante el envío de un mensaje a través de nuestro <a title="Formulario de contacto" href="index.php?option=com_aicontactsafe&amp;view=message&amp;layout=message&amp;pf=1&amp;redirect_on_success=&amp;Itemid=116">formulario de contacto</a>.</p>', '', 1, 0, 0, 2, '2012-09-19 18:11:03', 776, '', '2012-09-26 18:10:03', 776, 0, '0000-00-00 00:00:00', '2012-09-19 18:11:03', '0000-00-00 00:00:00', '{"image_intro":"","float_intro":"","image_intro_alt":"","image_intro_caption":"","image_fulltext":"","float_fulltext":"","image_fulltext_alt":"","image_fulltext_caption":""}', '{"urla":null,"urlatext":"","targeta":"","urlb":null,"urlbtext":"","targetb":"","urlc":null,"urlctext":"","targetc":""}', '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_vote":"","show_hits":"","show_noauth":"","urls_position":"","alternative_readmore":"","article_layout":"","show_publishing_options":"","show_article_options":"","show_urls_images_backend":"","show_urls_images_frontend":""}', 3, 0, 0, '', '', 1, 12, '{"robots":"","author":"","rights":"","xreference":""}', 0, '*', '');
 
 -- --------------------------------------------------------
 
@@ -428,7 +720,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_extensions` (
   KEY `element_clientid` (`element`,`client_id`),
   KEY `element_folder_clientid` (`element`,`folder`,`client_id`),
   KEY `extension` (`type`,`element`,`folder`,`client_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10022 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10023 ;
 
 --
 -- Dumping data for table `oel6t_extensions`
@@ -456,7 +748,7 @@ INSERT INTO `oel6t_extensions` (`extension_id`, `name`, `type`, `element`, `fold
 (19, 'com_search', 'component', 'com_search', '', 1, 1, 1, 1, '{"legacy":false,"name":"com_search","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\n\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_SEARCH_XML_DESCRIPTION","group":""}', '{"enabled":"0","show_date":"1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (20, 'com_templates', 'component', 'com_templates', '', 1, 1, 1, 1, '{"legacy":false,"name":"com_templates","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_TEMPLATES_XML_DESCRIPTION","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (21, 'com_weblinks', 'component', 'com_weblinks', '', 1, 1, 1, 0, '{"legacy":false,"name":"com_weblinks","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\n\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_WEBLINKS_XML_DESCRIPTION","group":""}', '{"show_comp_description":"1","comp_description":"","show_link_hits":"1","show_link_description":"1","show_other_cats":"0","show_headings":"0","show_numbers":"0","show_report":"1","count_clicks":"1","target":"0","link_icons":""}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(22, 'com_content', 'component', 'com_content', '', 1, 1, 0, 1, '{"legacy":false,"name":"com_content","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_CONTENT_XML_DESCRIPTION","group":""}', '{"article_layout":"_:default","show_title":"1","link_titles":"1","show_intro":"1","show_category":"1","link_category":"1","show_parent_category":"0","link_parent_category":"0","show_author":"1","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"1","show_item_navigation":"1","show_vote":"0","show_readmore":"1","show_readmore_title":"1","readmore_limit":"100","show_icons":"1","show_print_icon":"1","show_email_icon":"1","show_hits":"1","show_noauth":"0","show_publishing_options":"1","show_article_options":"1","show_urls_images_frontend":"0","show_urls_images_backend":"1","targeta":0,"targetb":0,"targetc":0,"float_intro":"left","float_fulltext":"left","category_layout":"_:blog","show_category_title":"0","show_description":"0","show_description_image":"0","maxLevel":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_desc":"1","show_cat_num_articles":"0","show_base_description":"1","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"1","show_cat_num_articles_cat":"1","num_leading_articles":"1","num_intro_articles":"4","num_columns":"2","num_links":"4","multi_column_order":"0","show_subcategory_content":"0","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_date":"0","date_format":"","list_show_hits":"1","list_show_author":"1","orderby_pri":"order","orderby_sec":"rdate","order_date":"published","show_pagination":"2","show_pagination_results":"1","show_feed_link":"1","feed_summary":"0"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(22, 'com_content', 'component', 'com_content', '', 1, 1, 0, 1, '{"legacy":false,"name":"com_content","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_CONTENT_XML_DESCRIPTION","group":""}', '{"article_layout":"_:default","show_title":"1","link_titles":"0","show_intro":"1","show_category":"0","link_category":"1","show_parent_category":"0","link_parent_category":"0","show_author":"0","link_author":"0","show_create_date":"0","show_modify_date":"0","show_publish_date":"0","show_item_navigation":"0","show_vote":"0","show_readmore":"1","show_readmore_title":"1","readmore_limit":"100","show_icons":"1","show_print_icon":"0","show_email_icon":"0","show_hits":"0","show_noauth":"0","urls_position":"0","show_publishing_options":"1","show_article_options":"1","show_urls_images_frontend":"0","show_urls_images_backend":"1","targeta":0,"targetb":0,"targetc":0,"float_intro":"left","float_fulltext":"left","category_layout":"_:blog","show_category_title":"0","show_description":"0","show_description_image":"0","maxLevel":"1","show_empty_categories":"0","show_no_articles":"1","show_subcat_desc":"1","show_cat_num_articles":"0","show_base_description":"1","maxLevelcat":"-1","show_empty_categories_cat":"0","show_subcat_desc_cat":"1","show_cat_num_articles_cat":"1","num_leading_articles":"1","num_intro_articles":"4","num_columns":"2","num_links":"4","multi_column_order":"0","show_subcategory_content":"0","show_pagination_limit":"1","filter_field":"hide","show_headings":"1","list_show_date":"0","date_format":"","list_show_hits":"1","list_show_author":"1","orderby_pri":"order","orderby_sec":"rdate","order_date":"published","show_pagination":"2","show_pagination_results":"1","show_feed_link":"1","feed_summary":"0","feed_show_readmore":"0"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (23, 'com_config', 'component', 'com_config', '', 1, 1, 0, 1, '{"legacy":false,"name":"com_config","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_CONFIG_XML_DESCRIPTION","group":""}', '{"filters":{"1":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"6":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"7":{"filter_type":"NONE","filter_tags":"","filter_attributes":""},"2":{"filter_type":"NH","filter_tags":"","filter_attributes":""},"3":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"4":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"5":{"filter_type":"BL","filter_tags":"","filter_attributes":""},"8":{"filter_type":"NONE","filter_tags":"","filter_attributes":""}}}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (24, 'com_redirect', 'component', 'com_redirect', '', 1, 1, 0, 1, '{"legacy":false,"name":"com_redirect","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_REDIRECT_XML_DESCRIPTION","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (25, 'com_users', 'component', 'com_users', '', 1, 1, 0, 1, '{"legacy":false,"name":"com_users","type":"component","creationDate":"April 2006","author":"Joomla! Project","copyright":"(C) 2005 - 2012 Open Source Matters. All rights reserved.\\t","authorEmail":"admin@joomla.org","authorUrl":"www.joomla.org","version":"2.5.0","description":"COM_USERS_XML_DESCRIPTION","group":""}', '{"allowUserRegistration":"1","new_usertype":"2","useractivation":"1","frontend_userparams":"1","mailSubjectPrefix":"","mailBodySuffix":""}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
@@ -575,12 +867,13 @@ INSERT INTO `oel6t_extensions` (`extension_id`, `name`, `type`, `element`, `fold
 (10012, 'Xmap - Virtuemart Plugin', 'plugin', 'com_virtuemart', 'xmap', 0, 0, 1, 0, '{"legacy":false,"name":"Xmap - Virtuemart Plugin","type":"plugin","creationDate":"January 2012","author":"Guillermo Vargas","copyright":"GNU GPL","authorEmail":"guille@vargas.co.cr","authorUrl":"joomla.vargas.co.cr","version":"2.0.0","description":"XMAP_VM_PLUGIN_DESCRIPTION","group":""}', '{"include_products":"1","cat_priority":"-1","cat_changefreq":"-1","prod_priority":"-1","prod_changefreq":"-1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10013, 'Xmap - WebLinks Plugin', 'plugin', 'com_weblinks', 'xmap', 0, 0, 1, 0, '{"legacy":false,"name":"Xmap - WebLinks Plugin","type":"plugin","creationDate":"Apr 2004","author":"Guillermo Vargas","copyright":"GNU GPL","authorEmail":"guille@vargas.co.cr","authorUrl":"joomla.vargas.co.cr","version":"2.0","description":"XMAP_WL_PLUGIN_DESCRIPTION","group":""}', '{"include_links":"1","max_links":"","cat_priority":"-1","cat_changefreq":"-1","link_priority":"-1","link_changefreq":"-1"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10014, 'xmap', 'package', 'pkg_xmap', '', 0, 1, 1, 0, '{"legacy":false,"name":"Xmap Package","type":"package","creationDate":"Unknown","author":"Unknown","copyright":"","authorEmail":"","authorUrl":"","version":"2.0.0","description":"The Site Map generator for Joomla!","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(10016, 'Gantry', 'library', 'lib_gantry', '', 0, 1, 1, 0, '{"legacy":false,"name":"Gantry","type":"library","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry Starting Template for Joomla! v4.0.5","group":""}', '{}', '{"last_update":1348159786}', '', 0, '0000-00-00 00:00:00', 0, 0),
+(10016, 'Gantry', 'library', 'lib_gantry', '', 0, 1, 1, 0, '{"legacy":false,"name":"Gantry","type":"library","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry Starting Template for Joomla! v4.0.5","group":""}', '{}', '{"last_update":1348655784}', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10017, 'gantry', 'component', 'com_gantry', '', 0, 1, 0, 0, '{"legacy":false,"name":"Gantry","type":"component","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry Starting Template for Joomla! v4.0.5","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10018, 'System - Gantry', 'plugin', 'gantry', 'system', 0, 1, 1, 0, '{"legacy":false,"name":"System - Gantry","type":"plugin","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry System Plugin for Joomla","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (10019, 'gantry', 'template', 'gantry', '', 0, 1, 1, 0, '{"legacy":false,"name":"gantry","type":"template","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry Starting Template for Joomla! v4.0.5","group":""}', '{"master":"true"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10020, 'System - RokExtender', 'plugin', 'rokextender', 'system', 0, 1, 1, 0, '{"legacy":false,"name":"System - RokExtender","type":"plugin","creationDate":"August 13, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"1.1","description":"System - Gantry","group":""}', '{"registered":"\\/modules\\/mod_roknavmenu\\/lib\\/RokNavMenuEvents.php"}', '', '', 0, '0000-00-00 00:00:00', 1, 0),
-(10021, 'RokNavMenu', 'module', 'mod_roknavmenu', '', 0, 1, 1, 0, '{"legacy":false,"name":"RokNavMenu","type":"module","creationDate":"September 14, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"1.16","description":"RocketTheme Customizable Navigation Menu","group":""}', '{"limit_levels":"0","startLevel":"0","endLevel":"0","showAllChildren":"0","filteringspacer2":"","theme":"default","custom_layout":"default.php","custom_formatter":"default.php","cache":"0","module_cache":"1","cache_time":"900","cachemode":"itemid"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(10021, 'RokNavMenu', 'module', 'mod_roknavmenu', '', 0, 1, 1, 0, '{"legacy":false,"name":"RokNavMenu","type":"module","creationDate":"September 14, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"1.16","description":"RocketTheme Customizable Navigation Menu","group":""}', '{"limit_levels":"0","startLevel":"0","endLevel":"0","showAllChildren":"0","filteringspacer2":"","theme":"default","custom_layout":"default.php","custom_formatter":"default.php","cache":"0","module_cache":"1","cache_time":"900","cachemode":"itemid"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(10022, 'aicontactsafe', 'component', 'com_aicontactsafe', '', 1, 1, 0, 0, '{"legacy":true,"name":"aiContactSafe","type":"component","creationDate":"April 2010","author":"Algis Info Grup SRL","copyright":"(c)2010 Algis Info Grup SRL. All rights reserved.","authorEmail":"contact@algis.ro","authorUrl":"www.algis.ro","version":"2.0.19.stable","description":"A contact form in which you can add any number of custom fields.","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1206,14 +1499,14 @@ CREATE TABLE IF NOT EXISTS `oel6t_menu` (
   KEY `idx_alias` (`alias`),
   KEY `idx_path` (`path`(255)),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=109 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=119 ;
 
 --
 -- Dumping data for table `oel6t_menu`
 --
 
 INSERT INTO `oel6t_menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES
-(1, '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 57, 0, '*', 0),
+(1, '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 0, 79, 0, '*', 0),
 (2, 'menu', 'com_banners', 'Banners', '', 'Banners', 'index.php?option=com_banners', 'component', 0, 1, 1, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 1, 10, 0, '*', 1),
 (3, 'menu', 'com_banners', 'Banners', '', 'Banners/Banners', 'index.php?option=com_banners', 'component', 0, 2, 2, 4, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners', 0, '', 2, 3, 0, '*', 1),
 (4, 'menu', 'com_banners_categories', 'Categories', '', 'Banners/Categories', 'index.php?option=com_categories&extension=com_banners', 'component', 0, 2, 2, 6, 0, 0, '0000-00-00 00:00:00', 0, 0, 'class:banners-cat', 0, '', 4, 5, 0, '*', 1),
@@ -1241,7 +1534,18 @@ INSERT INTO `oel6t_menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `l
 (104, 'main', 'WF_MENU_CONFIG', 'wf-menu-config', '', 'jce/wf-menu-config', 'index.php?option=com_jce&view=config', 'component', 0, 102, 2, 10006, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jce/media/img/menu/jce-config.png', 0, '', 48, 49, 0, '', 1),
 (105, 'main', 'WF_MENU_PROFILES', 'wf-menu-profiles', '', 'jce/wf-menu-profiles', 'index.php?option=com_jce&view=profiles', 'component', 0, 102, 2, 10006, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jce/media/img/menu/jce-profiles.png', 0, '', 50, 51, 0, '', 1),
 (106, 'main', 'WF_MENU_INSTALL', 'wf-menu-install', '', 'jce/wf-menu-install', 'index.php?option=com_jce&view=installer', 'component', 0, 102, 2, 10006, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_jce/media/img/menu/jce-install.png', 0, '', 52, 53, 0, '', 1),
-(107, 'main', 'COM_XMAP_TITLE', 'com-xmap-title', '', 'com-xmap-title', 'index.php?option=com_xmap', 'component', 0, 1, 1, 10007, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_xmap/images/xmap-favicon.png', 0, '', 55, 56, 0, '', 1);
+(107, 'main', 'COM_XMAP_TITLE', 'com-xmap-title', '', 'com-xmap-title', 'index.php?option=com_xmap', 'component', 0, 1, 1, 10007, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_xmap/images/xmap-favicon.png', 0, '', 55, 56, 0, '', 1),
+(108, 'main', 'COM_AICONTACTSAFE', 'com-aicontactsafe', '', 'com-aicontactsafe', 'index.php?option=com_aicontactsafe', 'component', 0, 1, 1, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 57, 72, 0, '', 1),
+(109, 'main', 'COM_AICONTACTSAFE_MESSAGES', 'com-aicontactsafe-messages', '', 'com-aicontactsafe/com-aicontactsafe-messages', 'index.php?option=com_aicontactsafe&sTask=messages', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 58, 59, 0, '', 1),
+(110, 'main', 'COM_AICONTACTSAFE_ATTACHMENTS', 'com-aicontactsafe-attachments', '', 'com-aicontactsafe/com-aicontactsafe-attachments', 'index.php?option=com_aicontactsafe&sTask=attachments', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 60, 61, 0, '', 1),
+(111, 'main', 'COM_AICONTACTSAFE_PROFILES', 'com-aicontactsafe-profiles', '', 'com-aicontactsafe/com-aicontactsafe-profiles', 'index.php?option=com_aicontactsafe&sTask=profiles', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 62, 63, 0, '', 1),
+(112, 'main', 'COM_AICONTACTSAFE_FIELDS', 'com-aicontactsafe-fields', '', 'com-aicontactsafe/com-aicontactsafe-fields', 'index.php?option=com_aicontactsafe&sTask=fields', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 64, 65, 0, '', 1),
+(113, 'main', 'COM_AICONTACTSAFE_STATUSES', 'com-aicontactsafe-statuses', '', 'com-aicontactsafe/com-aicontactsafe-statuses', 'index.php?option=com_aicontactsafe&sTask=statuses', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 66, 67, 0, '', 1),
+(114, 'main', 'COM_AICONTACTSAFE_CONTROL_PANEL', 'com-aicontactsafe-control-panel', '', 'com-aicontactsafe/com-aicontactsafe-control-panel', 'index.php?option=com_aicontactsafe&sTask=control_panel', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 68, 69, 0, '', 1),
+(115, 'main', 'COM_AICONTACTSAFE_ABOUT', 'com-aicontactsafe-about', '', 'com-aicontactsafe/com-aicontactsafe-about', 'index.php?option=com_aicontactsafe&sTask=about', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 70, 71, 0, '', 1),
+(116, 'mainmenu', 'Contacto', 'contacto', '', 'contacto', 'index.php?option=com_aicontactsafe&view=message&layout=message&pf=1&redirect_on_success=', 'component', 1, 1, 1, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"17","fusion_module_positions":"","splitmenu_item_subtext":""}', 73, 74, 0, '*', 0),
+(117, 'footer-menu', 'Nota legal', 'nota-legal', '', 'nota-legal', 'index.php?option=com_content&view=article&id=1', 'component', 1, 1, 1, 22, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_vote":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_hits":"","show_noauth":"","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"17","fusion_module_positions":"","splitmenu_item_subtext":""}', 75, 76, 0, '*', 0),
+(118, 'footer-menu', 'Privacidad', 'privacidad', '', 'privacidad', 'index.php?option=com_content&view=article&id=2', 'component', 1, 1, 1, 22, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_vote":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_hits":"","show_noauth":"","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"87","fusion_module_positions":"","splitmenu_item_subtext":""}', 77, 78, 0, '*', 0);
 
 -- --------------------------------------------------------
 
@@ -1256,14 +1560,15 @@ CREATE TABLE IF NOT EXISTS `oel6t_menu_types` (
   `description` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_menutype` (`menutype`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `oel6t_menu_types`
 --
 
 INSERT INTO `oel6t_menu_types` (`id`, `menutype`, `title`, `description`) VALUES
-(1, 'mainmenu', 'Main Menu', 'The main menu for the site');
+(1, 'mainmenu', 'Main Menu', 'The main menu for the site'),
+(2, 'footer-menu', 'Footer Menú', '');
 
 -- --------------------------------------------------------
 
@@ -1326,14 +1631,14 @@ CREATE TABLE IF NOT EXISTS `oel6t_modules` (
   KEY `published` (`published`,`access`),
   KEY `newsfeeds` (`module`,`published`),
   KEY `idx_language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=88 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
 
 --
 -- Dumping data for table `oel6t_modules`
 --
 
 INSERT INTO `oel6t_modules` (`id`, `title`, `note`, `content`, `ordering`, `position`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `published`, `module`, `access`, `showtitle`, `params`, `client_id`, `language`) VALUES
-(1, 'Main Menu', '', '', 1, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 1, '{"menutype":"mainmenu","startLevel":"0","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
+(1, 'Main Menu', '', '', 1, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', -2, 'mod_menu', 1, 1, '{"menutype":"mainmenu","startLevel":"0","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"","moduleclass_sfx":"_menu","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
 (2, 'Login', '', '', 1, 'login', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_login', 1, 1, '', 1, '*'),
 (3, 'Popular Articles', '', '', 3, 'cpanel', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_popular', 3, 1, '{"count":"5","catid":"","user_id":"0","layout":"_:default","moduleclass_sfx":"","cache":"0","automatic_title":"1"}', 1, '*'),
 (4, 'Recently Added Articles', '', '', 4, 'cpanel', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_latest', 3, 1, '{"count":"5","ordering":"c_dsc","catid":"","user_id":"0","layout":"_:default","moduleclass_sfx":"","cache":"0","automatic_title":"1"}', 1, '*'),
@@ -1344,10 +1649,12 @@ INSERT INTO `oel6t_modules` (`id`, `title`, `note`, `content`, `ordering`, `posi
 (13, 'Admin Submenu', '', '', 1, 'submenu', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_submenu', 3, 1, '', 1, '*'),
 (14, 'User Status', '', '', 2, 'status', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_status', 3, 1, '', 1, '*'),
 (15, 'Title', '', '', 1, 'title', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_title', 3, 1, '', 1, '*'),
-(16, 'Login Form', '', '', 7, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_login', 1, 1, '{"greeting":"1","name":"0"}', 0, '*'),
-(17, 'Breadcrumbs', '', '', 1, 'position-2', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_breadcrumbs', 1, 1, '{"moduleclass_sfx":"","showHome":"1","homeText":"Home","showComponent":"1","separator":"","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
+(16, 'Login Form', '', '', 7, 'position-7', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', -2, 'mod_login', 1, 1, '{"greeting":"1","name":"0"}', 0, '*'),
+(17, 'Breadcrumbs', '', '', 1, 'position-2', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', -2, 'mod_breadcrumbs', 1, 1, '{"moduleclass_sfx":"","showHome":"1","homeText":"Home","showComponent":"1","separator":"","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
 (79, 'Multilanguage status', '', '', 1, 'status', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 'mod_multilangstatus', 3, 1, '{"layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*'),
-(86, 'Joomla Version', '', '', 1, 'footer', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_version', 3, 1, '{"format":"short","product":"1","layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*');
+(86, 'Joomla Version', '', '', 1, 'footer', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_version', 3, 1, '{"format":"short","product":"1","layout":"_:default","moduleclass_sfx":"","cache":"0"}', 1, '*'),
+(87, 'Footer Menú', '', '', 1, 'footer-b', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_menu', 1, 0, '{"menutype":"footer-menu","startLevel":"1","endLevel":"0","showAllChildren":"0","tag_id":"","class_sfx":"","window_open":"","layout":"_:default","moduleclass_sfx":"","cache":"1","cache_time":"900","cachemode":"itemid"}', 0, '*'),
+(88, 'Contenido footer', '', '<p><a title="Inicio" href="index.php?option=com_content&amp;view=featured&amp;Itemid=101">Nombre empresa</a>. Dirección. Teléfono</p>', 1, 'footer-a', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 'mod_custom', 1, 0, '{"prepare_content":"1","backgroundimage":"","layout":"_:default","moduleclass_sfx":"","cache":"1","cache_time":"900","cachemode":"static"}', 0, '*');
 
 -- --------------------------------------------------------
 
@@ -1382,7 +1689,9 @@ INSERT INTO `oel6t_modules_menu` (`moduleid`, `menuid`) VALUES
 (16, 0),
 (17, 0),
 (79, 0),
-(86, 0);
+(86, 0),
+(87, 0),
+(88, 0);
 
 -- --------------------------------------------------------
 
@@ -1461,7 +1770,14 @@ CREATE TABLE IF NOT EXISTS `oel6t_redirect_links` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_link_old` (`old_url`),
   KEY `idx_link_modifed` (`modified_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `oel6t_redirect_links`
+--
+
+INSERT INTO `oel6t_redirect_links` (`id`, `old_url`, `new_url`, `referer`, `comment`, `hits`, `published`, `created_date`, `modified_date`) VALUES
+(1, 'http://localhost/joomla-base/8465', '', '', '', 1, 0, '2012-09-24 18:17:50', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1508,8 +1824,10 @@ CREATE TABLE IF NOT EXISTS `oel6t_session` (
 --
 
 INSERT INTO `oel6t_session` (`session_id`, `client_id`, `guest`, `time`, `data`, `userid`, `username`, `usertype`) VALUES
-('1jbdkubg6g0r7qmcm0bkjltd44', 0, 1, '1348161926', '__default|a:8:{s:15:"session.counter";i:6;s:19:"session.timer.start";i:1348159475;s:18:"session.timer.last";i:1348161923;s:17:"session.timer.now";i:1348161926;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"f57209dd25a418ab5f7e799207d080b7";}', 0, '', ''),
-('5u7hlt6f9d6g727a327g6rul73', 1, 0, '1348165390', '__default|a:8:{s:15:"session.counter";i:45;s:19:"session.timer.start";i:1348159480;s:18:"session.timer.last";i:1348165388;s:17:"session.timer.now";i:1348165390;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":4:{s:11:"application";O:8:"stdClass":1:{s:4:"lang";s:0:"";}s:13:"com_installer";O:8:"stdClass":3:{s:7:"message";s:0:"";s:17:"extension_message";s:0:"";s:12:"redirect_url";N;}s:13:"com_templates";O:8:"stdClass":2:{s:6:"styles";O:8:"stdClass":1:{s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:5:"style";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:10:"com_gantry";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:8:"template";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:1;s:2:"id";s:3:"776";s:4:"name";s:10:"Super User";s:8:"username";s:5:"admin";s:5:"email";s:13:"tar@adagal.es";s:8:"password";s:65:"26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u";s:14:"password_clear";s:0:"";s:8:"usertype";s:10:"deprecated";s:5:"block";s:1:"0";s:9:"sendEmail";s:1:"1";s:12:"registerDate";s:19:"2012-09-19 17:02:17";s:13:"lastvisitDate";s:19:"2012-09-19 18:22:03";s:10:"activation";s:1:"0";s:6:"params";s:0:"";s:6:"groups";a:1:{i:8;s:1:"8";}s:5:"guest";i:0;s:13:"lastResetTime";s:19:"0000-00-00 00:00:00";s:10:"resetCount";s:1:"0";s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:2:{i:0;i:1;i:1;i:8;}s:14:"\0*\0_authLevels";a:4:{i:0;i:1;i:1;i:1;i:2;i:2;i:3;i:3;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"1d37ffa1c4721f02b5d4791bd5735326";}__wf|a:1:{s:13:"session.token";s:32:"9c9bcb36aa5580406e0e78a929c1f893";}', 776, 'admin', '');
+('44r1u869ijhreu0sq9oimrads4', 0, 1, '1348657710', '__default|a:8:{s:15:"session.counter";i:20;s:19:"session.timer.start";i:1348652384;s:18:"session.timer.last";i:1348652909;s:17:"session.timer.now";i:1348657710;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:16:"com_mailto.links";a:2:{s:40:"0e6a4dd2b50c3402f5ffd2faf39b5c7f30bd8872";O:8:"stdClass":2:{s:4:"link";s:39:"http://localhost/Joomla-Base/nota-legal";s:6:"expiry";i:1348652628;}s:40:"5fe4014137adc6b669b3907aa27078519e71dfdb";O:8:"stdClass":2:{s:4:"link";s:51:"http://localhost/Joomla-Base/politica-de-privacidad";s:6:"expiry";i:1348652515;}}}', 0, '', ''),
+('9s13o9gaatsjf0onmiekm2dc36', 1, 0, '1348684651', '__default|a:8:{s:15:"session.counter";i:109;s:19:"session.timer.start";i:1348676699;s:18:"session.timer.last";i:1348684649;s:17:"session.timer.now";i:1348684650;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":10:{s:11:"application";O:8:"stdClass":1:{s:4:"lang";s:0:"";}s:13:"com_installer";O:8:"stdClass":2:{s:7:"message";s:0:"";s:17:"extension_message";s:0:"";}s:9:"com_menus";O:8:"stdClass":2:{s:5:"items";O:8:"stdClass":2:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:4:"item";O:8:"stdClass":4:{s:2:"id";a:0:{}s:4:"data";N;s:4:"type";N;s:4:"link";N;}}}s:11:"com_content";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:7:"article";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:13:"com_templates";O:8:"stdClass":1:{s:6:"styles";O:8:"stdClass":1:{s:10:"limitstart";i:0;}}s:10:"com_gantry";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:8:"template";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:4:"item";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}}s:11:"com_modules";O:8:"stdClass":4:{s:7:"modules";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:18:"client_id_previous";i:0;}}s:4:"edit";O:8:"stdClass":1:{s:6:"module";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}s:3:"add";O:8:"stdClass":1:{s:6:"module";O:8:"stdClass":2:{s:12:"extension_id";N;s:6:"params";N;}}s:9:"positions";O:8:"stdClass":4:{s:6:"filter";O:8:"stdClass":4:{s:6:"search";s:6:"footer";s:5:"state";s:0:"";s:8:"template";s:0:"";s:4:"type";s:0:"";}s:10:"limitstart";i:0;s:8:"ordercol";s:5:"value";s:9:"orderdirn";s:3:"asc";}}s:6:"global";O:8:"stdClass":1:{s:4:"list";O:8:"stdClass":1:{s:5:"limit";i:20;}}s:8:"com_xmap";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:7:"sitemap";O:8:"stdClass":1:{s:4:"data";N;}}}}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:1;s:2:"id";s:3:"776";s:4:"name";s:10:"Super User";s:8:"username";s:5:"admin";s:5:"email";s:13:"tar@adagal.es";s:8:"password";s:65:"26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u";s:14:"password_clear";s:0:"";s:8:"usertype";s:10:"deprecated";s:5:"block";s:1:"0";s:9:"sendEmail";s:1:"1";s:12:"registerDate";s:19:"2012-09-19 17:02:17";s:13:"lastvisitDate";s:19:"2012-09-26 09:27:41";s:10:"activation";s:1:"0";s:6:"params";s:0:"";s:6:"groups";a:1:{i:8;s:1:"8";}s:5:"guest";i:0;s:13:"lastResetTime";s:19:"0000-00-00 00:00:00";s:10:"resetCount";s:1:"0";s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:2:{i:0;i:1;i:1;i:8;}s:14:"\0*\0_authLevels";a:4:{i:0;i:1;i:1;i:1;i:2;i:2;i:3;i:3;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"5a9cfe9fad751870fb03f74475501185";}__wf|a:1:{s:13:"session.token";s:32:"c3e3ab13a12662cd08d61a28101a18b0";}', 776, 'admin', ''),
+('dg9maojh6r08f3sm3t2j435q72', 0, 1, '1348684660', '__default|a:31:{s:15:"session.counter";i:41;s:19:"session.timer.start";i:1348676710;s:18:"session.timer.last";i:1348684658;s:17:"session.timer.now";i:1348684660;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:16:"com_mailto.links";a:1:{s:40:"0e6a4dd2b50c3402f5ffd2faf39b5c7f30bd8872";O:8:"stdClass":2:{s:4:"link";s:39:"http://localhost/Joomla-Base/nota-legal";s:6:"expiry";i:1348680569;}}s:19:"messagefilter_order";s:0:"";s:23:"messagefilter_order_Dir";s:0:"";s:17:"global.list.limit";i:20;s:17:"messagelimitstart";i:0;s:20:"messagefilter_string";s:0:"";s:18:"postData:message_0";s:0:"";s:12:"isOK:message";b:1;s:16:"errorMsg:message";s:0:"";s:15:"idSaved:message";i:0;s:38:"confirmationMessage:message_1408226450";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:19:"return_task:message";a:1:{s:5:"sTask";s:7:"message";}s:13:"session.token";s:32:"dcd762af3533681316a95b28d1cb900a";s:14:"last_task_temp";a:2:{s:5:"sTask";s:7:"message";s:4:"task";s:7:"display";}s:38:"confirmationMessage:message_1233255104";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1029655670";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1328779382";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_126648377";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_251706951";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1281113010";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1131430192";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_305116166";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_963005535";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_644260026";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";}', 0, '', ''),
+('nl65a5iub090minbe1or3ddhk2', 1, 0, '1348657475', '__default|a:8:{s:15:"session.counter";i:76;s:19:"session.timer.start";i:1348651649;s:18:"session.timer.last";i:1348657473;s:17:"session.timer.now";i:1348657474;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":7:{s:11:"application";O:8:"stdClass":1:{s:4:"lang";s:0:"";}s:13:"com_installer";O:8:"stdClass":2:{s:7:"message";s:0:"";s:17:"extension_message";s:0:"";}s:9:"com_menus";O:8:"stdClass":2:{s:5:"items";O:8:"stdClass":2:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:4:"item";O:8:"stdClass":4:{s:4:"data";N;s:4:"type";N;s:4:"link";N;s:2:"id";a:0:{}}}}s:4:"item";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}}s:13:"com_templates";O:8:"stdClass":2:{s:6:"styles";O:8:"stdClass":1:{s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:6:"source";O:8:"stdClass":2:{s:2:"id";N;s:4:"data";N;}}}s:10:"com_gantry";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:8:"template";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:6:"editor";O:8:"stdClass":1:{s:6:"source";O:8:"stdClass":1:{s:6:"syntax";s:3:"css";}}}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:1;s:2:"id";s:3:"776";s:4:"name";s:10:"Super User";s:8:"username";s:5:"admin";s:5:"email";s:13:"tar@adagal.es";s:8:"password";s:65:"26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u";s:14:"password_clear";s:0:"";s:8:"usertype";s:10:"deprecated";s:5:"block";s:1:"0";s:9:"sendEmail";s:1:"1";s:12:"registerDate";s:19:"2012-09-19 17:02:17";s:13:"lastvisitDate";s:19:"2012-09-25 16:50:47";s:10:"activation";s:1:"0";s:6:"params";s:0:"";s:6:"groups";a:1:{i:8;s:1:"8";}s:5:"guest";i:0;s:13:"lastResetTime";s:19:"0000-00-00 00:00:00";s:10:"resetCount";s:1:"0";s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:2:{i:0;i:1;i:1;i:8;}s:14:"\0*\0_authLevels";a:4:{i:0;i:1;i:1;i:1;i:2;i:2;i:3;i:3;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"750d5d5881cc5b5f4313341964ae3280";}__wf|a:1:{s:13:"session.token";s:32:"de27034d6797425220b2d682a4285092";}', 776, 'admin', '');
 
 -- --------------------------------------------------------
 
@@ -1539,7 +1857,7 @@ INSERT INTO `oel6t_template_styles` (`id`, `template`, `client_id`, `home`, `tit
 (4, 'beez_20', 0, '0', 'Beez2 - Default', '{"wrapperSmall":"53","wrapperLarge":"72","logo":"images\\/joomla_black.gif","sitetitle":"Joomla!","sitedescription":"Open Source Content Management","navposition":"left","templatecolor":"personal","html5":"0"}'),
 (5, 'hathor', 1, '0', 'Hathor - Default', '{"showSiteName":"0","colourChoice":"","boldText":"0"}'),
 (6, 'beez5', 0, '0', 'Beez5 - Default', '{"wrapperSmall":"53","wrapperLarge":"72","logo":"images\\/sampledata\\/fruitshop\\/fruits.gif","sitetitle":"Joomla!","sitedescription":"Open Source Content Management","navposition":"left","html5":"0"}'),
-(8, 'gantry', 0, '1', 'gantry - Default', '{"master":"true","current_id":"8","template_full_name":"Gantry","grid_system":"12","template_prefix":"gantry-","cookie_time":"31536000","name":"Preset1","copy_lang_files_if_diff":"1","logo":{"enabled":"1","position":"header-a","type":"gantry","custom":{"image":""}},"headerstyle":"dark","linkcolor":"#2698de","font":{"family":"s:helvetica","size":"default","size-is":"default"},"viewswitcher-priority":"1","logo-priority":"2","copyright-priority":"3","styledeclaration-priority":"4","fontsizer-priority":"5","date-priority":"7","totop-priority":"8","systemmessages-priority":"9","morearticles-priority":"12","smartload-priority":"13","pagesuffix-priority":"14","resetsettings-priority":"15","analytics-priority":"16","fusionmenu-priority":"18","jstools-priority":"21","moduleoverlays-priority":"22","rtl-priority":"23","splitmenu-priority":"24","webfonts-priority":"27","styledeclaration-enabled":"1","date":{"enabled":"0","position":"top-d","clientside":"0","formats":"%A, %B %d, %Y"},"fontsizer":{"enabled":"0","position":"feature-b"},"branding":{"enabled":"0","position":"copyright-a"},"copyright":{"enabled":"0","position":"copyright-a","text":"Designed by RocketTheme","layout":"3,3,3,3","showall":"0","showmax":"6"},"totop":{"enabled":"0","position":"copyright-b","text":"Back to Top"},"systemmessages":{"enabled":"1","position":"drawer"},"resetsettings":{"enabled":"0","position":"copyright-d","text":"Reset Settings"},"analytics":{"enabled":"0","code":"","position":"analytics"},"menu":{"enabled":"1","type":"fusionmenu","fusionmenu":{"menutype":"mainmenu","position":"header-b","enable_js":"1","opacity":"1","effect":"slidefade","hidedelay":"500","menu-animation":"Circ.easeOut","menu-duration":"300","centered-offset":"0","tweak-initial-x":"-10","tweak-initial-y":"-10","tweak-subsequent-x":"0","tweak-subsequent-y":"0","tweak-width":"20","tweak-height":"20","enable-current-id":"0","theme":"gantry-fusion","limit_levels":"0","startLevel":"0","showAllChildren":"1","class_sfx":"top","cache":"0","module_cache":"1"},"splitmenu":{"roknavmenu_fusion_enable-current-id":"0","menutype":"mainmenu","theme":"gantry-splitmenu","mainmenu-position":"header-b","mainmenu-limit_levels":"1","mainmenu-startLevel":"0","mainmenu-endLevel":"0","mainmenu-class_sfx":"top","submenu-position":"sidebar-a","submenu-title":"1","submenu-limit_levels":"1","submenu-startLevel":"1","submenu-endLevel":"9","submenu-class_sfx":"","submenu-module_sfx":"","cache":"0","module_cache":"1"}},"top":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"header":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"showcase":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"feature":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"utility":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"maintop":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"mainbodyPosition":"6,3,3","mainbottom":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"extension":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"bottom":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"footer":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"layout-mode":"responsive","loadtransition":"0","component-enabled":"1","mainbody-enabled":"1","rtl-enabled":"0","pagesuffix-enabled":"0","selectivizr-enabled":"0","less":{"compression":"1","compilewait":"2","debugheader":"0"}}');
+(8, 'gantry', 0, '1', 'gantry - Default', '{"master":"true","current_id":"8","template_full_name":"Gantry","grid_system":"12","template_prefix":"gantry-","cookie_time":"31536000","name":"Preset1","copy_lang_files_if_diff":"1","logo":{"enabled":"1","position":"header-a","type":"gantry","custom":{"image":""}},"headerstyle":"dark","linkcolor":"#2698de","font":{"family":"s:helvetica","size":"default","size-is":"small"},"viewswitcher-priority":"1","logo-priority":"2","copyright-priority":"3","styledeclaration-priority":"4","fontsizer-priority":"5","date-priority":"7","totop-priority":"8","systemmessages-priority":"9","morearticles-priority":"12","smartload-priority":"13","pagesuffix-priority":"14","resetsettings-priority":"15","analytics-priority":"16","fusionmenu-priority":"18","jstools-priority":"21","moduleoverlays-priority":"22","rtl-priority":"23","splitmenu-priority":"24","webfonts-priority":"27","styledeclaration-enabled":"1","date":{"enabled":"0","position":"top-d","clientside":"0","formats":"%A, %B %d, %Y"},"fontsizer":{"enabled":"0","position":"feature-b"},"branding":{"enabled":"0","position":"copyright-a"},"copyright":{"enabled":"0","position":"copyright-a","text":"Designed by RocketTheme","layout":"3,3,3,3","showall":"0","showmax":"6"},"totop":{"enabled":"0","position":"copyright-b","text":"Back to Top"},"systemmessages":{"enabled":"1","position":"drawer"},"resetsettings":{"enabled":"0","position":"copyright-d","text":"Reset Settings"},"analytics":{"enabled":"0","code":"","position":"analytics"},"menu":{"enabled":"1","type":"fusionmenu","fusionmenu":{"menutype":"mainmenu","position":"header-b","enable_js":"1","opacity":"1","effect":"slidefade","hidedelay":"500","menu-animation":"Circ.easeOut","menu-duration":"300","centered-offset":"0","tweak-initial-x":"-10","tweak-initial-y":"-10","tweak-subsequent-x":"0","tweak-subsequent-y":"0","tweak-width":"20","tweak-height":"20","enable-current-id":"0","theme":"gantry-fusion","limit_levels":"0","startLevel":"0","showAllChildren":"1","class_sfx":"top","cache":"0","module_cache":"1"},"splitmenu":{"roknavmenu_fusion_enable-current-id":"0","menutype":"mainmenu","theme":"gantry-splitmenu","mainmenu-position":"header-b","mainmenu-limit_levels":"1","mainmenu-startLevel":"0","mainmenu-endLevel":"0","mainmenu-class_sfx":"top","submenu-position":"sidebar-a","submenu-title":"1","submenu-limit_levels":"1","submenu-startLevel":"1","submenu-endLevel":"9","submenu-class_sfx":"","submenu-module_sfx":"","cache":"0","module_cache":"1"}},"top":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"header":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"showcase":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"feature":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"utility":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"maintop":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"mainbodyPosition":"6,3,3","mainbottom":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"extension":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"bottom":{"layout":"3,3,3,3","showall":"0","showmax":"6"},"footer":{"layout":"a:1:{i:12;a:1:{i:2;a:2:{i:0;i:9;i:1;i:3;}}}","showall":"0","showmax":"6"},"layout-mode":"responsive","loadtransition":"0","component-enabled":"1","mainbody-enabled":"1","rtl-enabled":"0","pagesuffix-enabled":"0","selectivizr-enabled":"0","less":{"compression":"1","compilewait":"2","debugheader":"0"}}');
 
 -- --------------------------------------------------------
 
@@ -1563,7 +1881,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_updates` (
   `detailsurl` text NOT NULL,
   `infourl` text NOT NULL,
   PRIMARY KEY (`update_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Available Updates' AUTO_INCREMENT=62 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Available Updates' AUTO_INCREMENT=105 ;
 
 --
 -- Dumping data for table `oel6t_updates`
@@ -1630,7 +1948,50 @@ INSERT INTO `oel6t_updates` (`update_id`, `update_site_id`, `extension_id`, `cat
 (58, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.6.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
 (59, 7, 0, 0, 'RokBooster', '', 'rokbooster', 'plugin', 'system', 0, '1.0.2', '', 'http://updates.rockettheme.com/joomla/plugins/rokbooster.xml', ''),
 (60, 7, 0, 0, 'RokPad', '', 'rokpad', 'plugin', 'editors', 0, '2.0.4', '', 'http://updates.rockettheme.com/joomla/plugins/rokpad.xml', ''),
-(61, 7, 0, 0, 'RokSprocket', '', 'mod_roksprocket', 'module', '', 0, '1.6.1', '', 'http://updates.rockettheme.com/joomla/modules/roksprocket.xml', '');
+(61, 7, 0, 0, 'RokSprocket', '', 'mod_roksprocket', 'module', '', 0, '1.6.1', '', 'http://updates.rockettheme.com/joomla/modules/roksprocket.xml', ''),
+(62, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(63, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(64, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(65, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(66, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(67, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(68, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(69, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(70, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(71, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(72, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(73, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(74, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(75, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(76, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(77, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(78, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(79, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(80, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(81, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(82, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(83, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(84, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(85, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(86, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(87, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(88, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(89, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(90, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(91, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(92, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(93, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(94, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(95, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(96, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(97, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(98, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(99, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(100, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(101, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(102, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(103, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(104, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', '');
 
 -- --------------------------------------------------------
 
@@ -1668,13 +2029,13 @@ CREATE TABLE IF NOT EXISTS `oel6t_update_sites` (
 --
 
 INSERT INTO `oel6t_update_sites` (`update_site_id`, `name`, `type`, `location`, `enabled`, `last_check_timestamp`) VALUES
-(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 1348159781),
-(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 1348159781),
-(3, 'Accredited Joomla! Translations', 'collection', 'http://update.joomla.org/language/translationlist.xml', 1, 1348159781),
-(4, 'Accredited Joomla! Translations (es-ES)', 'collection', 'http://updates.comunidadjoomla.org/es-ES_joomla_lang_packs_list.xml', 1, 1348159781),
+(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 1348676725),
+(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 1348676725),
+(3, 'Accredited Joomla! Translations', 'collection', 'http://update.joomla.org/language/translationlist.xml', 1, 1348676725),
+(4, 'Accredited Joomla! Translations (es-ES)', 'collection', 'http://updates.comunidadjoomla.org/es-ES_joomla_lang_packs_list.xml', 1, 1348676725),
 (5, 'JCE Editor Updates', 'extension', 'https://www.joomlacontenteditor.net/index.php?option=com_updates&view=update&format=xml&id=1\n        ', 0, 1348076354),
-(6, 'Gantry Framework Update Site', 'extension', 'http://www.gantry-framework.org/updates/joomla16/gantry.xml', 1, 1348159781),
-(7, 'RocketTheme Update Directory', 'collection', 'http://updates.rockettheme.com/joomla/updates.xml', 1, 1348159781);
+(6, 'Gantry Framework Update Site', 'extension', 'http://www.gantry-framework.org/updates/joomla16/gantry.xml', 1, 1348676725),
+(7, 'RocketTheme Update Directory', 'collection', 'http://updates.rockettheme.com/joomla/updates.xml', 1, 1348676725);
 
 -- --------------------------------------------------------
 
@@ -1769,7 +2130,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_users` (
 --
 
 INSERT INTO `oel6t_users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `registerDate`, `lastvisitDate`, `activation`, `params`, `lastResetTime`, `resetCount`) VALUES
-(776, 'Super User', 'admin', 'tar@adagal.es', '26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u', 'deprecated', 0, 1, '2012-09-19 17:02:17', '2012-09-20 16:44:55', '0', '', '0000-00-00 00:00:00', 0);
+(776, 'Super User', 'admin', 'tar@adagal.es', '26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u', 'deprecated', 0, 1, '2012-09-19 17:02:17', '2012-09-26 16:25:20', '0', '', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -1981,7 +2342,14 @@ CREATE TABLE IF NOT EXISTS `oel6t_xmap_sitemap` (
   `lastvisit_xml` int(11) DEFAULT NULL,
   `lastvisit_html` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `oel6t_xmap_sitemap`
+--
+
+INSERT INTO `oel6t_xmap_sitemap` (`id`, `title`, `alias`, `introtext`, `metadesc`, `metakey`, `attribs`, `selections`, `excluded_items`, `is_default`, `state`, `access`, `created`, `count_xml`, `count_html`, `views_xml`, `views_html`, `lastvisit_xml`, `lastvisit_html`) VALUES
+(1, 'Mapa web', 'mapa-web', '', NULL, NULL, '{"showintro":"1","show_menutitle":"1","classname":"","columns":"","exlinks":"img_blue.gif","compress_xml":"1","beautify_xml":"1","news_publication_name":""}', '{"mainmenu":{"priority":"1","changefreq":"weekly","ordering":0},"footer-menu":{"priority":"0.1","changefreq":"yearly","ordering":1}}', NULL, 1, 1, 1, '2012-09-26 16:37:29', 4, 0, 1, 0, 1348684659, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
