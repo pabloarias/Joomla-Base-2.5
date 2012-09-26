@@ -1,0 +1,45 @@
+/* 
+    Document   : gantry-custom
+    Created on : 26-sep-2012, 18:50:45
+    Author     : Gestion
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* Content */
+.title,
+.component-content h2 {
+    padding-bottom: 5px;
+}
+
+/* Footer */
+div#rt-footer a {
+    color: #808080;
+}
+
+div#rt-footer p {
+    margin: 0;
+}
+
+div#rt-footer ul.menu {
+    text-align: right;
+}
+
+div#rt-footer ul.menu li {
+    display: inline;
+}
+
+div#rt-footer ul.menu li a,
+div#rt-footer ul.menu li .item,
+div#rt-footer ul.menu li .separator {
+    display: inline;
+    padding: 0 1em;
+    color: #808080;
+    font-size: .9em;
+}
+
+div#rt-footer ul.menu li a:before,
+div#rt-footer ul.menu li .item:before,
+div#rt-footer ul.menu li .separator:before {
+    content: "";
+}
