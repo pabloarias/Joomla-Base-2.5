@@ -7,6 +7,8 @@ Paquetes utilizados:
 - Idioma español 2.5.7v1
 - JCE 2.2.7.2 y traducción al español 2.2.7.2
 - Xmap 2.2.1
+- Framework Gantry 4.0.5
+- aiContactSafe 2.0.19
 
 Contenidos:
 - Nota legal
