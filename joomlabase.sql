@@ -2,10 +2,10 @@
 -- version 3.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Sep 26, 2012 at 08:41 PM
--- Server version: 5.5.25a
--- PHP Version: 5.4.4
+-- Servidor: localhost
+-- Tiempo de generación: 08-10-2012 a las 20:08:05
+-- Versión del servidor: 5.5.25a
+-- Versión de PHP: 5.4.4
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `joomlabase`
+-- Base de datos: `joomlabase`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_config`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_config`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_config` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_config` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
--- Dumping data for table `oel6t_aicontactsafe_config`
+-- Volcado de datos para la tabla `oel6t_aicontactsafe_config`
 --
 
 INSERT INTO `oel6t_aicontactsafe_config` (`id`, `config_key`, `config_value`) VALUES
@@ -72,7 +72,7 @@ INSERT INTO `oel6t_aicontactsafe_config` (`id`, `config_key`, `config_value`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_contactinformations`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_contactinformations`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_contactinformations` (
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_contactinformations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
--- Dumping data for table `oel6t_aicontactsafe_contactinformations`
+-- Volcado de datos para la tabla `oel6t_aicontactsafe_contactinformations`
 --
 
 INSERT INTO `oel6t_aicontactsafe_contactinformations` (`id`, `profile_id`, `info_key`, `info_label`, `info_value`) VALUES
@@ -105,7 +105,7 @@ INSERT INTO `oel6t_aicontactsafe_contactinformations` (`id`, `profile_id`, `info
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_fields`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_fields`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fields` (
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fields` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `oel6t_aicontactsafe_fields`
+-- Volcado de datos para la tabla `oel6t_aicontactsafe_fields`
 --
 
 INSERT INTO `oel6t_aicontactsafe_fields` (`id`, `name`, `field_label`, `label_parameters`, `field_label_message`, `label_message_parameters`, `label_after_field`, `field_type`, `field_parameters`, `field_values`, `field_limit`, `default_value`, `auto_fill`, `field_sufix`, `field_prefix`, `ordering`, `field_required`, `field_in_message`, `send_message`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
@@ -151,7 +151,7 @@ INSERT INTO `oel6t_aicontactsafe_fields` (`id`, `name`, `field_label`, `label_pa
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_fieldvalues`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_fieldvalues`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fieldvalues` (
@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_fieldvalues` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_messagefiles`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_messagefiles`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messagefiles` (
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messagefiles` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_messages`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_messages`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messages` (
@@ -219,7 +219,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_profiles`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_profiles`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_profiles` (
@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_profiles` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `oel6t_aicontactsafe_profiles`
+-- Volcado de datos para la tabla `oel6t_aicontactsafe_profiles`
 --
 
 INSERT INTO `oel6t_aicontactsafe_profiles` (`id`, `name`, `use_ajax`, `use_message_css`, `contact_form_width`, `bottom_row_space`, `align_buttons`, `contact_info_width`, `use_captcha`, `captcha_type`, `align_captcha`, `email_address`, `always_send_to_email_address`, `subject_prefix`, `email_mode`, `record_message`, `record_fields`, `custom_date_format`, `custom_date_years_back`, `custom_date_years_forward`, `required_field_mark`, `display_format`, `plg_contact_info`, `use_random_letters`, `min_word_length`, `max_word_length`, `set_default`, `active_fields`, `captcha_width`, `captcha_height`, `captcha_bgcolor`, `captcha_backgroundTransparent`, `captcha_colors`, `name_field_id`, `email_field_id`, `subject_field_id`, `send_to_sender_field_id`, `redirect_on_success`, `fields_order`, `use_mail_template`, `default_status_id`, `read_status_id`, `reply_status_id`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
@@ -285,7 +285,7 @@ INSERT INTO `oel6t_aicontactsafe_profiles` (`id`, `name`, `use_ajax`, `use_messa
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_aicontactsafe_statuses`
+-- Estructura de tabla para la tabla `oel6t_aicontactsafe_statuses`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_statuses` (
@@ -302,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_aicontactsafe_statuses` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `oel6t_aicontactsafe_statuses`
+-- Volcado de datos para la tabla `oel6t_aicontactsafe_statuses`
 --
 
 INSERT INTO `oel6t_aicontactsafe_statuses` (`id`, `name`, `color`, `ordering`, `date_added`, `last_update`, `published`, `checked_out`, `checked_out_time`) VALUES
@@ -314,7 +314,7 @@ INSERT INTO `oel6t_aicontactsafe_statuses` (`id`, `name`, `color`, `ordering`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_assets`
+-- Estructura de tabla para la tabla `oel6t_assets`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_assets` (
@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_assets` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
 
 --
--- Dumping data for table `oel6t_assets`
+-- Volcado de datos para la tabla `oel6t_assets`
 --
 
 INSERT INTO `oel6t_assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES
@@ -381,7 +381,7 @@ INSERT INTO `oel6t_assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `t
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_associations`
+-- Estructura de tabla para la tabla `oel6t_associations`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_associations` (
@@ -395,7 +395,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_associations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_banners`
+-- Estructura de tabla para la tabla `oel6t_banners`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_banners` (
@@ -439,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_banners` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_banner_clients`
+-- Estructura de tabla para la tabla `oel6t_banner_clients`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_banner_clients` (
@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_banner_clients` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_banner_tracks`
+-- Estructura de tabla para la tabla `oel6t_banner_tracks`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_banner_tracks` (
@@ -482,7 +482,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_banner_tracks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_categories`
+-- Estructura de tabla para la tabla `oel6t_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_categories` (
@@ -523,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_categories` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Dumping data for table `oel6t_categories`
+-- Volcado de datos para la tabla `oel6t_categories`
 --
 
 INSERT INTO `oel6t_categories` (`id`, `asset_id`, `parent_id`, `lft`, `rgt`, `level`, `path`, `extension`, `title`, `alias`, `note`, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`, `metadesc`, `metakey`, `metadata`, `created_user_id`, `created_time`, `modified_user_id`, `modified_time`, `hits`, `language`) VALUES
@@ -538,7 +538,7 @@ INSERT INTO `oel6t_categories` (`id`, `asset_id`, `parent_id`, `lft`, `rgt`, `le
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_contact_details`
+-- Estructura de tabla para la tabla `oel6t_contact_details`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_contact_details` (
@@ -598,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_contact_details` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_content`
+-- Estructura de tabla para la tabla `oel6t_content`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_content` (
@@ -648,7 +648,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_content` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `oel6t_content`
+-- Volcado de datos para la tabla `oel6t_content`
 --
 
 INSERT INTO `oel6t_content` (`id`, `asset_id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, `sectionid`, `mask`, `catid`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `hits`, `metadata`, `featured`, `language`, `xreference`) VALUES
@@ -658,7 +658,7 @@ INSERT INTO `oel6t_content` (`id`, `asset_id`, `title`, `alias`, `title_alias`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_content_frontpage`
+-- Estructura de tabla para la tabla `oel6t_content_frontpage`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_content_frontpage` (
@@ -670,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_content_frontpage` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_content_rating`
+-- Estructura de tabla para la tabla `oel6t_content_rating`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_content_rating` (
@@ -684,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_content_rating` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_core_log_searches`
+-- Estructura de tabla para la tabla `oel6t_core_log_searches`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_core_log_searches` (
@@ -695,7 +695,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_core_log_searches` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_extensions`
+-- Estructura de tabla para la tabla `oel6t_extensions`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_extensions` (
@@ -720,10 +720,10 @@ CREATE TABLE IF NOT EXISTS `oel6t_extensions` (
   KEY `element_clientid` (`element`,`client_id`),
   KEY `element_folder_clientid` (`element`,`folder`,`client_id`),
   KEY `extension` (`type`,`element`,`folder`,`client_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10023 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10024 ;
 
 --
--- Dumping data for table `oel6t_extensions`
+-- Volcado de datos para la tabla `oel6t_extensions`
 --
 
 INSERT INTO `oel6t_extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
@@ -873,12 +873,13 @@ INSERT INTO `oel6t_extensions` (`extension_id`, `name`, `type`, `element`, `fold
 (10019, 'gantry', 'template', 'gantry', '', 0, 1, 1, 0, '{"legacy":false,"name":"gantry","type":"template","creationDate":"September 18, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"4.0.5","description":"Gantry Starting Template for Joomla! v4.0.5","group":""}', '{"master":"true"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (10020, 'System - RokExtender', 'plugin', 'rokextender', 'system', 0, 1, 1, 0, '{"legacy":false,"name":"System - RokExtender","type":"plugin","creationDate":"August 13, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"1.1","description":"System - Gantry","group":""}', '{"registered":"\\/modules\\/mod_roknavmenu\\/lib\\/RokNavMenuEvents.php"}', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (10021, 'RokNavMenu', 'module', 'mod_roknavmenu', '', 0, 1, 1, 0, '{"legacy":false,"name":"RokNavMenu","type":"module","creationDate":"September 14, 2012","author":"RocketTheme, LLC","copyright":"(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.","authorEmail":"support@rockettheme.com","authorUrl":"http:\\/\\/www.rockettheme.com","version":"1.16","description":"RocketTheme Customizable Navigation Menu","group":""}', '{"limit_levels":"0","startLevel":"0","endLevel":"0","showAllChildren":"0","filteringspacer2":"","theme":"default","custom_layout":"default.php","custom_formatter":"default.php","cache":"0","module_cache":"1","cache_time":"900","cachemode":"itemid"}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(10022, 'aicontactsafe', 'component', 'com_aicontactsafe', '', 1, 1, 0, 0, '{"legacy":true,"name":"aiContactSafe","type":"component","creationDate":"April 2010","author":"Algis Info Grup SRL","copyright":"(c)2010 Algis Info Grup SRL. All rights reserved.","authorEmail":"contact@algis.ro","authorUrl":"www.algis.ro","version":"2.0.19.stable","description":"A contact form in which you can add any number of custom fields.","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(10022, 'aicontactsafe', 'component', 'com_aicontactsafe', '', 1, 1, 0, 0, '{"legacy":true,"name":"aiContactSafe","type":"component","creationDate":"April 2010","author":"Algis Info Grup SRL","copyright":"(c)2010 Algis Info Grup SRL. All rights reserved.","authorEmail":"contact@algis.ro","authorUrl":"www.algis.ro","version":"2.0.19.stable","description":"A contact form in which you can add any number of custom fields.","group":""}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(10023, 'Google Maps', 'plugin', 'plugin_googlemap2', 'system', 0, 0, 1, 0, '{"legacy":false,"name":"Google Maps","type":"plugin","creationDate":"June 2012","author":"Mike Reumer","copyright":"(C) 2012 Reumer","authorEmail":"tech@reumer.net","authorUrl":"tech.reumer.net","version":"2.17","description":"PLUGIN_GOOGLE_MAPS_INSTALLATION","group":""}', '{"publ":"1","debug":"0","plugincode":"mosmap","brackets":"{","Google_API_version":"3.x","show":"1","mapclass":"","loadmootools":"1","timeinterval":"500","Google_API_key":"","Google_Multi_API_key":"","urlsetting":"http_host","googlewebsite":"maps.google.com","googleindexing":"1","styledmap":"","align":"center","langtype":"site","lang":"","width":"500","height":"400","effect":"none","lat":"52.075581","lon":"4.541513","centerlat":"","centerlon":"","address":"","latitudeid":"","latitudedesc":"1","latitudecoord":"0","latitudeform":"0","controltype":"UI","zoomType":"3D-large","svcontrol":"1","zoom":"10","corzoom":"0","minzoom":"0","maxzoom":"19","rotation":"1","zoomnew":"0","zoomWheel":"0","keyboard":"0","mapType":"Normal","showmaptype":"1","showNormalMaptype":"1","showSatelliteMaptype":"1","showHybridMaptype":"1","showTerrainMaptype":"1","showEarthMaptype":"1","showscale":"0","overview":"0","ovzoom":"-3","navlabel":"0","dragging":"1","marker":"1","icon":"","iconwidth":"","iconheight":"","iconanchorx":"","iconanchory":"","iconshadow":"","iconshadowwidth":"","iconshadowheight":"","iconinfoanchorx":"","iconinfoanchory":"","icontransparent":"","iconimagemap":"","traffic":"0","panoramio":"none","panotype":"none","panoorder":"popularity","panomax":"50","youtube":"none","wiki":"none","adsmanager":"0","maxads":"3","localsearch":"0","adsense":"","channel":"","googlebar":"0","searchlist":"inline","searchtarget":"_blank","searchzoompan":"1","weather":"0","weathercloud":"0","weatherinfo":"1","weathertempunit":"celsius","weatherwindunit":"km","dir":"0","dirtype":"D","avoidhighways":"0","diroptimize":"0","diralternatives":"0","showdir":"1","animdir":"0","animspeed":"1","animautostart":"0","animunit":"kilometers","formspeed":"0","formdirtype":"0","formaddress":"0","formdir":"0","autocompl":"both","langanim":"en;The requested panorama could not be displayed|Could not generate a route for the current start and end addresses|Street View coverage is not available for this route|You have reached your destination|miles|miles|ft|kilometers|kilometer|meters|In|You will reach your destination|Stop|Drive|Press Drive to follow your route|Route|Speed|Fast|Medium|Slow","txtdir":"Directions: ","txtgetdir":"Get Directions","txtfrom":"From here","txtto":"To here","txtdiraddr":"Address: ","txt_driving":"","txt_avhighways":"","txt_walking":"","txt_optimize":"","txt_alternatives":"","dirdefault":"0","gotoaddr":"0","gotoaddrzoom":"0","txtaddr":"Address: ##","erraddr":"Address ## not found!","clientgeotype":"google","lightbox":"0","txtlightbox":"Open lightbox","lbxcaption":"","lbxwidth":"500","lbxheight":"700","lbxcenterlat":"","lbxcenterlon":"","lbxzoom":"","sv":"none","svwidth":"100%","svheight":"300","svyaw":"0","svpitch":"0","svzoom":"","svautorotate":"0","svaddress":"1","earthtimeout":"100","earthborders":"1","earthbuildings":"0","earthroads":"0","earthterrain":"0","kmlrenderer":"google","kmlsidebar":"none","kmlsbwidth":"200","kmlfoldersopen":"0","kmlhide":"0","kmlscale":"0","kmlopenmethod":"click","kmlsbsort":"none","kmllightbox":"0","kmlmessshow":"0","kmlclickablemarkers":"1","kmlzoommarkers":"0","kmlopendivmarkers":"","kmlcontentlinkmarkers":"0","kmllinkablemarkers":"0","kmllinktarget":"_self","kmllinkmethod":"dblclick","kmlmarkerlabel":"100","kmlmarkerlabelclass":"","kmlpolylabel":"100","kmlpolylabelclass":"","proxy":"1","maxcluster":"","gridsize":"","minmarkerscluster":"","maxlinesinfocluster":"","clusterinfowindow":"click","clusterzoom":"dblclick","clustermarkerzoom":"16","tilelayer":"","tilemethod":"","tileopacity":"1","tilebounds":"","tileminzoom":"0","tilemaxzoom":"19","imageurl":"","imagex":"","imagey":"","imagexyunits":"pixels","imagewidth":"","imageheight":"","imageanchorx":"","imageanchory":"","imageanchorunits":"pixels"}', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_filters`
+-- Estructura de tabla para la tabla `oel6t_finder_filters`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_filters` (
@@ -902,7 +903,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_filters` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links`
+-- Estructura de tabla para la tabla `oel6t_finder_links`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links` (
@@ -937,7 +938,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms0`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms0`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms0` (
@@ -952,7 +953,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms0` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms1`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms1`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms1` (
@@ -967,7 +968,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms1` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms2`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms2`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms2` (
@@ -982,7 +983,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms2` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms3`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms3`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms3` (
@@ -997,7 +998,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms3` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms4`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms4`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms4` (
@@ -1012,7 +1013,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms4` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms5`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms5`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms5` (
@@ -1027,7 +1028,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms5` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms6`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms6`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms6` (
@@ -1042,7 +1043,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms6` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms7`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms7`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms7` (
@@ -1057,7 +1058,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms7` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms8`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms8`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms8` (
@@ -1072,7 +1073,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms8` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_terms9`
+-- Estructura de tabla para la tabla `oel6t_finder_links_terms9`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms9` (
@@ -1087,7 +1088,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_terms9` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termsa`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termsa`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsa` (
@@ -1102,7 +1103,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsa` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termsb`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termsb`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsb` (
@@ -1117,7 +1118,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsb` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termsc`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termsc`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsc` (
@@ -1132,7 +1133,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsc` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termsd`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termsd`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsd` (
@@ -1147,7 +1148,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsd` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termse`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termse`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termse` (
@@ -1162,7 +1163,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termse` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_links_termsf`
+-- Estructura de tabla para la tabla `oel6t_finder_links_termsf`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsf` (
@@ -1177,7 +1178,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_links_termsf` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_taxonomy`
+-- Estructura de tabla para la tabla `oel6t_finder_taxonomy`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_taxonomy` (
@@ -1196,7 +1197,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_taxonomy` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `oel6t_finder_taxonomy`
+-- Volcado de datos para la tabla `oel6t_finder_taxonomy`
 --
 
 INSERT INTO `oel6t_finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`, `ordering`) VALUES
@@ -1205,7 +1206,7 @@ INSERT INTO `oel6t_finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `acces
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_taxonomy_map`
+-- Estructura de tabla para la tabla `oel6t_finder_taxonomy_map`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_taxonomy_map` (
@@ -1219,7 +1220,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_taxonomy_map` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_terms`
+-- Estructura de tabla para la tabla `oel6t_finder_terms`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_terms` (
@@ -1241,7 +1242,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_terms` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_terms_common`
+-- Estructura de tabla para la tabla `oel6t_finder_terms_common`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_terms_common` (
@@ -1252,7 +1253,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_terms_common` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `oel6t_finder_terms_common`
+-- Volcado de datos para la tabla `oel6t_finder_terms_common`
 --
 
 INSERT INTO `oel6t_finder_terms_common` (`term`, `language`) VALUES
@@ -1375,7 +1376,7 @@ INSERT INTO `oel6t_finder_terms_common` (`term`, `language`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_tokens`
+-- Estructura de tabla para la tabla `oel6t_finder_tokens`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_tokens` (
@@ -1392,7 +1393,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_tokens` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_tokens_aggregate`
+-- Estructura de tabla para la tabla `oel6t_finder_tokens_aggregate`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_tokens_aggregate` (
@@ -1413,7 +1414,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_tokens_aggregate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_finder_types`
+-- Estructura de tabla para la tabla `oel6t_finder_types`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_finder_types` (
@@ -1427,7 +1428,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_finder_types` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_languages`
+-- Estructura de tabla para la tabla `oel6t_languages`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_languages` (
@@ -1453,7 +1454,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_languages` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `oel6t_languages`
+-- Volcado de datos para la tabla `oel6t_languages`
 --
 
 INSERT INTO `oel6t_languages` (`lang_id`, `lang_code`, `title`, `title_native`, `sef`, `image`, `description`, `metakey`, `metadesc`, `sitename`, `published`, `access`, `ordering`) VALUES
@@ -1462,7 +1463,7 @@ INSERT INTO `oel6t_languages` (`lang_id`, `lang_code`, `title`, `title_native`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_menu`
+-- Estructura de tabla para la tabla `oel6t_menu`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_menu` (
@@ -1502,7 +1503,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_menu` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=119 ;
 
 --
--- Dumping data for table `oel6t_menu`
+-- Volcado de datos para la tabla `oel6t_menu`
 --
 
 INSERT INTO `oel6t_menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`) VALUES
@@ -1543,14 +1544,14 @@ INSERT INTO `oel6t_menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `l
 (113, 'main', 'COM_AICONTACTSAFE_STATUSES', 'com-aicontactsafe-statuses', '', 'com-aicontactsafe/com-aicontactsafe-statuses', 'index.php?option=com_aicontactsafe&sTask=statuses', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 66, 67, 0, '', 1),
 (114, 'main', 'COM_AICONTACTSAFE_CONTROL_PANEL', 'com-aicontactsafe-control-panel', '', 'com-aicontactsafe/com-aicontactsafe-control-panel', 'index.php?option=com_aicontactsafe&sTask=control_panel', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 68, 69, 0, '', 1),
 (115, 'main', 'COM_AICONTACTSAFE_ABOUT', 'com-aicontactsafe-about', '', 'com-aicontactsafe/com-aicontactsafe-about', 'index.php?option=com_aicontactsafe&sTask=about', 'component', 0, 108, 2, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, 'components/com_aicontactsafe/images/aicontactsafe_icon.gif', 0, '', 70, 71, 0, '', 1),
-(116, 'mainmenu', 'Contacto', 'contacto', '', 'contacto', 'index.php?option=com_aicontactsafe&view=message&layout=message&pf=1&redirect_on_success=', 'component', 1, 1, 1, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"17","fusion_module_positions":"","splitmenu_item_subtext":""}', 73, 74, 0, '*', 0),
+(116, 'mainmenu', 'Contacto', 'contacto', '', 'contacto', 'index.php?option=com_aicontactsafe&view=message&layout=message&pf=1&redirect_on_success=', 'component', 1, 1, 1, 10022, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":1,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"17","fusion_module_positions":"","splitmenu_item_subtext":""}', 73, 74, 0, '*', 0),
 (117, 'footer-menu', 'Nota legal', 'nota-legal', '', 'nota-legal', 'index.php?option=com_content&view=article&id=1', 'component', 1, 1, 1, 22, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_vote":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_hits":"","show_noauth":"","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"17","fusion_module_positions":"","splitmenu_item_subtext":""}', 75, 76, 0, '*', 0),
 (118, 'footer-menu', 'Privacidad', 'privacidad', '', 'privacidad', 'index.php?option=com_content&view=article&id=2', 'component', 1, 1, 1, 22, 0, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '{"show_title":"","link_titles":"","show_intro":"","show_category":"","link_category":"","show_parent_category":"","link_parent_category":"","show_author":"","link_author":"","show_create_date":"","show_modify_date":"","show_publish_date":"","show_item_navigation":"","show_vote":"","show_icons":"","show_print_icon":"","show_email_icon":"","show_hits":"","show_noauth":"","urls_position":"","menu-anchor_title":"","menu-anchor_css":"","menu_image":"","menu_text":1,"page_title":"","show_page_heading":0,"page_heading":"","pageclass_sfx":"","menu-meta_description":"","menu-meta_keywords":"","robots":"","secure":0,"fusion_item_subtext":"","fusion_customclass":"","fusion_columns":"1","fusion_distribution":"even","fusion_manual_distribution":"","fusion_dropdown_width":"","fusion_column_widths":"","fusion_children_group":"0","fusion_children_type":"menuitems","fusion_modules":"87","fusion_module_positions":"","splitmenu_item_subtext":""}', 77, 78, 0, '*', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_menu_types`
+-- Estructura de tabla para la tabla `oel6t_menu_types`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_menu_types` (
@@ -1563,7 +1564,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_menu_types` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Dumping data for table `oel6t_menu_types`
+-- Volcado de datos para la tabla `oel6t_menu_types`
 --
 
 INSERT INTO `oel6t_menu_types` (`id`, `menutype`, `title`, `description`) VALUES
@@ -1573,7 +1574,7 @@ INSERT INTO `oel6t_menu_types` (`id`, `menutype`, `title`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_messages`
+-- Estructura de tabla para la tabla `oel6t_messages`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_messages` (
@@ -1593,7 +1594,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_messages_cfg`
+-- Estructura de tabla para la tabla `oel6t_messages_cfg`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_messages_cfg` (
@@ -1606,7 +1607,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_messages_cfg` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_modules`
+-- Estructura de tabla para la tabla `oel6t_modules`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_modules` (
@@ -1634,7 +1635,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_modules` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
 
 --
--- Dumping data for table `oel6t_modules`
+-- Volcado de datos para la tabla `oel6t_modules`
 --
 
 INSERT INTO `oel6t_modules` (`id`, `title`, `note`, `content`, `ordering`, `position`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, `published`, `module`, `access`, `showtitle`, `params`, `client_id`, `language`) VALUES
@@ -1659,7 +1660,7 @@ INSERT INTO `oel6t_modules` (`id`, `title`, `note`, `content`, `ordering`, `posi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_modules_menu`
+-- Estructura de tabla para la tabla `oel6t_modules_menu`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_modules_menu` (
@@ -1669,7 +1670,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_modules_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `oel6t_modules_menu`
+-- Volcado de datos para la tabla `oel6t_modules_menu`
 --
 
 INSERT INTO `oel6t_modules_menu` (`moduleid`, `menuid`) VALUES
@@ -1696,7 +1697,7 @@ INSERT INTO `oel6t_modules_menu` (`moduleid`, `menuid`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_newsfeeds`
+-- Estructura de tabla para la tabla `oel6t_newsfeeds`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_newsfeeds` (
@@ -1740,7 +1741,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_newsfeeds` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_overrider`
+-- Estructura de tabla para la tabla `oel6t_overrider`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_overrider` (
@@ -1754,7 +1755,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_overrider` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_redirect_links`
+-- Estructura de tabla para la tabla `oel6t_redirect_links`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_redirect_links` (
@@ -1773,7 +1774,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_redirect_links` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `oel6t_redirect_links`
+-- Volcado de datos para la tabla `oel6t_redirect_links`
 --
 
 INSERT INTO `oel6t_redirect_links` (`id`, `old_url`, `new_url`, `referer`, `comment`, `hits`, `published`, `created_date`, `modified_date`) VALUES
@@ -1782,7 +1783,7 @@ INSERT INTO `oel6t_redirect_links` (`id`, `old_url`, `new_url`, `referer`, `comm
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_schemas`
+-- Estructura de tabla para la tabla `oel6t_schemas`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_schemas` (
@@ -1792,7 +1793,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_schemas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `oel6t_schemas`
+-- Volcado de datos para la tabla `oel6t_schemas`
 --
 
 INSERT INTO `oel6t_schemas` (`extension_id`, `version_id`) VALUES
@@ -1801,7 +1802,7 @@ INSERT INTO `oel6t_schemas` (`extension_id`, `version_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_session`
+-- Estructura de tabla para la tabla `oel6t_session`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_session` (
@@ -1820,19 +1821,17 @@ CREATE TABLE IF NOT EXISTS `oel6t_session` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `oel6t_session`
+-- Volcado de datos para la tabla `oel6t_session`
 --
 
 INSERT INTO `oel6t_session` (`session_id`, `client_id`, `guest`, `time`, `data`, `userid`, `username`, `usertype`) VALUES
-('44r1u869ijhreu0sq9oimrads4', 0, 1, '1348657710', '__default|a:8:{s:15:"session.counter";i:20;s:19:"session.timer.start";i:1348652384;s:18:"session.timer.last";i:1348652909;s:17:"session.timer.now";i:1348657710;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:16:"com_mailto.links";a:2:{s:40:"0e6a4dd2b50c3402f5ffd2faf39b5c7f30bd8872";O:8:"stdClass":2:{s:4:"link";s:39:"http://localhost/Joomla-Base/nota-legal";s:6:"expiry";i:1348652628;}s:40:"5fe4014137adc6b669b3907aa27078519e71dfdb";O:8:"stdClass":2:{s:4:"link";s:51:"http://localhost/Joomla-Base/politica-de-privacidad";s:6:"expiry";i:1348652515;}}}', 0, '', ''),
-('9s13o9gaatsjf0onmiekm2dc36', 1, 0, '1348684651', '__default|a:8:{s:15:"session.counter";i:109;s:19:"session.timer.start";i:1348676699;s:18:"session.timer.last";i:1348684649;s:17:"session.timer.now";i:1348684650;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":10:{s:11:"application";O:8:"stdClass":1:{s:4:"lang";s:0:"";}s:13:"com_installer";O:8:"stdClass":2:{s:7:"message";s:0:"";s:17:"extension_message";s:0:"";}s:9:"com_menus";O:8:"stdClass":2:{s:5:"items";O:8:"stdClass":2:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:4:"item";O:8:"stdClass":4:{s:2:"id";a:0:{}s:4:"data";N;s:4:"type";N;s:4:"link";N;}}}s:11:"com_content";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:7:"article";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:13:"com_templates";O:8:"stdClass":1:{s:6:"styles";O:8:"stdClass":1:{s:10:"limitstart";i:0;}}s:10:"com_gantry";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:8:"template";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:4:"item";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}}s:11:"com_modules";O:8:"stdClass":4:{s:7:"modules";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:18:"client_id_previous";i:0;}}s:4:"edit";O:8:"stdClass":1:{s:6:"module";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}s:3:"add";O:8:"stdClass":1:{s:6:"module";O:8:"stdClass":2:{s:12:"extension_id";N;s:6:"params";N;}}s:9:"positions";O:8:"stdClass":4:{s:6:"filter";O:8:"stdClass":4:{s:6:"search";s:6:"footer";s:5:"state";s:0:"";s:8:"template";s:0:"";s:4:"type";s:0:"";}s:10:"limitstart";i:0;s:8:"ordercol";s:5:"value";s:9:"orderdirn";s:3:"asc";}}s:6:"global";O:8:"stdClass":1:{s:4:"list";O:8:"stdClass":1:{s:5:"limit";i:20;}}s:8:"com_xmap";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:7:"sitemap";O:8:"stdClass":1:{s:4:"data";N;}}}}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:1;s:2:"id";s:3:"776";s:4:"name";s:10:"Super User";s:8:"username";s:5:"admin";s:5:"email";s:13:"tar@adagal.es";s:8:"password";s:65:"26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u";s:14:"password_clear";s:0:"";s:8:"usertype";s:10:"deprecated";s:5:"block";s:1:"0";s:9:"sendEmail";s:1:"1";s:12:"registerDate";s:19:"2012-09-19 17:02:17";s:13:"lastvisitDate";s:19:"2012-09-26 09:27:41";s:10:"activation";s:1:"0";s:6:"params";s:0:"";s:6:"groups";a:1:{i:8;s:1:"8";}s:5:"guest";i:0;s:13:"lastResetTime";s:19:"0000-00-00 00:00:00";s:10:"resetCount";s:1:"0";s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:2:{i:0;i:1;i:1;i:8;}s:14:"\0*\0_authLevels";a:4:{i:0;i:1;i:1;i:1;i:2;i:2;i:3;i:3;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"5a9cfe9fad751870fb03f74475501185";}__wf|a:1:{s:13:"session.token";s:32:"c3e3ab13a12662cd08d61a28101a18b0";}', 776, 'admin', ''),
-('dg9maojh6r08f3sm3t2j435q72', 0, 1, '1348684660', '__default|a:31:{s:15:"session.counter";i:41;s:19:"session.timer.start";i:1348676710;s:18:"session.timer.last";i:1348684658;s:17:"session.timer.now";i:1348684660;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:16:"com_mailto.links";a:1:{s:40:"0e6a4dd2b50c3402f5ffd2faf39b5c7f30bd8872";O:8:"stdClass":2:{s:4:"link";s:39:"http://localhost/Joomla-Base/nota-legal";s:6:"expiry";i:1348680569;}}s:19:"messagefilter_order";s:0:"";s:23:"messagefilter_order_Dir";s:0:"";s:17:"global.list.limit";i:20;s:17:"messagelimitstart";i:0;s:20:"messagefilter_string";s:0:"";s:18:"postData:message_0";s:0:"";s:12:"isOK:message";b:1;s:16:"errorMsg:message";s:0:"";s:15:"idSaved:message";i:0;s:38:"confirmationMessage:message_1408226450";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:19:"return_task:message";a:1:{s:5:"sTask";s:7:"message";}s:13:"session.token";s:32:"dcd762af3533681316a95b28d1cb900a";s:14:"last_task_temp";a:2:{s:5:"sTask";s:7:"message";s:4:"task";s:7:"display";}s:38:"confirmationMessage:message_1233255104";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1029655670";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1328779382";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_126648377";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_251706951";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1281113010";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:38:"confirmationMessage:message_1131430192";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_305116166";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_963005535";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:37:"confirmationMessage:message_644260026";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";}', 0, '', ''),
-('nl65a5iub090minbe1or3ddhk2', 1, 0, '1348657475', '__default|a:8:{s:15:"session.counter";i:76;s:19:"session.timer.start";i:1348651649;s:18:"session.timer.last";i:1348657473;s:17:"session.timer.now";i:1348657474;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":7:{s:11:"application";O:8:"stdClass":1:{s:4:"lang";s:0:"";}s:13:"com_installer";O:8:"stdClass":2:{s:7:"message";s:0:"";s:17:"extension_message";s:0:"";}s:9:"com_menus";O:8:"stdClass":2:{s:5:"items";O:8:"stdClass":2:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:4:"item";O:8:"stdClass":4:{s:4:"data";N;s:4:"type";N;s:4:"link";N;s:2:"id";a:0:{}}}}s:4:"item";O:8:"stdClass":1:{s:6:"filter";O:8:"stdClass":1:{s:8:"menutype";s:11:"footer-menu";}}s:13:"com_templates";O:8:"stdClass":2:{s:6:"styles";O:8:"stdClass":1:{s:10:"limitstart";i:0;}s:4:"edit";O:8:"stdClass":1:{s:6:"source";O:8:"stdClass":2:{s:2:"id";N;s:4:"data";N;}}}s:10:"com_gantry";O:8:"stdClass":1:{s:4:"edit";O:8:"stdClass":1:{s:8:"template";O:8:"stdClass":2:{s:2:"id";a:0:{}s:4:"data";N;}}}s:6:"editor";O:8:"stdClass":1:{s:6:"source";O:8:"stdClass":1:{s:6:"syntax";s:3:"css";}}}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:1;s:2:"id";s:3:"776";s:4:"name";s:10:"Super User";s:8:"username";s:5:"admin";s:5:"email";s:13:"tar@adagal.es";s:8:"password";s:65:"26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u";s:14:"password_clear";s:0:"";s:8:"usertype";s:10:"deprecated";s:5:"block";s:1:"0";s:9:"sendEmail";s:1:"1";s:12:"registerDate";s:19:"2012-09-19 17:02:17";s:13:"lastvisitDate";s:19:"2012-09-25 16:50:47";s:10:"activation";s:1:"0";s:6:"params";s:0:"";s:6:"groups";a:1:{i:8;s:1:"8";}s:5:"guest";i:0;s:13:"lastResetTime";s:19:"0000-00-00 00:00:00";s:10:"resetCount";s:1:"0";s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:2:{i:0;i:1;i:1;i:8;}s:14:"\0*\0_authLevels";a:4:{i:0;i:1;i:1;i:1;i:2;i:2;i:3;i:3;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"750d5d5881cc5b5f4313341964ae3280";}__wf|a:1:{s:13:"session.token";s:32:"de27034d6797425220b2d682a4285092";}', 776, 'admin', '');
+('kl02m0ulf25bf958udjueupvs1', 1, 1, '1349719666', '__default|a:8:{s:15:"session.counter";i:1;s:19:"session.timer.start";i:1349719666;s:18:"session.timer.last";i:1349719666;s:17:"session.timer.now";i:1349719666;s:22:"session.client.browser";s:74:"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";N;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";N;s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:13:"session.token";s:32:"929189fe84db5fe3250535fe840944a8";}', 0, '', ''),
+('uo0ei9a5540a5rvupes0kpjem6', 0, 1, '1349709824', '__default|a:20:{s:15:"session.counter";i:2;s:19:"session.timer.start";i:1349709794;s:18:"session.timer.last";i:1349709794;s:17:"session.timer.now";i:1349709824;s:22:"session.client.browser";s:158:"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; InfoPath.2; .NET CLR 1.1.4322)";s:8:"registry";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:4:"user";O:5:"JUser":25:{s:9:"\0*\0isRoot";b:0;s:2:"id";i:0;s:4:"name";N;s:8:"username";N;s:5:"email";N;s:8:"password";N;s:14:"password_clear";s:0:"";s:8:"usertype";N;s:5:"block";N;s:9:"sendEmail";i:0;s:12:"registerDate";N;s:13:"lastvisitDate";N;s:10:"activation";N;s:6:"params";N;s:6:"groups";a:0:{}s:5:"guest";i:1;s:13:"lastResetTime";N;s:10:"resetCount";N;s:10:"\0*\0_params";O:9:"JRegistry":1:{s:7:"\0*\0data";O:8:"stdClass":0:{}}s:14:"\0*\0_authGroups";a:1:{i:0;i:1;}s:14:"\0*\0_authLevels";a:2:{i:0;i:1;i:1;i:1;}s:15:"\0*\0_authActions";N;s:12:"\0*\0_errorMsg";N;s:10:"\0*\0_errors";a:0:{}s:3:"aid";i:0;}s:19:"messagefilter_order";s:0:"";s:23:"messagefilter_order_Dir";s:0:"";s:17:"global.list.limit";i:20;s:17:"messagelimitstart";i:0;s:20:"messagefilter_string";s:0:"";s:18:"postData:message_0";s:0:"";s:12:"isOK:message";b:1;s:16:"errorMsg:message";s:0:"";s:15:"idSaved:message";i:0;s:37:"confirmationMessage:message_967170081";s:63:"Su mensaje ha sido enviado. Gracias por contactar con nosotros.";s:19:"return_task:message";a:1:{s:5:"sTask";s:7:"message";}s:13:"session.token";s:32:"21698527b1344080e37fdc0cccb80aee";s:14:"last_task_temp";a:2:{s:5:"sTask";s:7:"message";s:4:"task";s:7:"display";}}', 0, '', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_template_styles`
+-- Estructura de tabla para la tabla `oel6t_template_styles`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_template_styles` (
@@ -1848,7 +1847,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_template_styles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `oel6t_template_styles`
+-- Volcado de datos para la tabla `oel6t_template_styles`
 --
 
 INSERT INTO `oel6t_template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`) VALUES
@@ -1862,7 +1861,7 @@ INSERT INTO `oel6t_template_styles` (`id`, `template`, `client_id`, `home`, `tit
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_updates`
+-- Estructura de tabla para la tabla `oel6t_updates`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_updates` (
@@ -1881,10 +1880,10 @@ CREATE TABLE IF NOT EXISTS `oel6t_updates` (
   `detailsurl` text NOT NULL,
   `infourl` text NOT NULL,
   PRIMARY KEY (`update_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Available Updates' AUTO_INCREMENT=105 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Available Updates' AUTO_INCREMENT=193 ;
 
 --
--- Dumping data for table `oel6t_updates`
+-- Volcado de datos para la tabla `oel6t_updates`
 --
 
 INSERT INTO `oel6t_updates` (`update_id`, `update_site_id`, `extension_id`, `categoryid`, `name`, `description`, `element`, `type`, `folder`, `client_id`, `version`, `data`, `detailsurl`, `infourl`) VALUES
@@ -1991,12 +1990,100 @@ INSERT INTO `oel6t_updates` (`update_id`, `update_site_id`, `extension_id`, `cat
 (101, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
 (102, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
 (103, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
-(104, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', '');
+(104, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(105, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(106, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(107, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(108, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(109, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(110, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(111, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(112, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(113, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(114, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(115, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(116, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(117, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(118, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(119, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(120, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(121, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(122, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(123, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(124, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(125, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(126, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(127, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(128, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(129, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(130, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(131, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(132, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(133, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(134, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(135, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(136, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(137, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(138, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(139, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(140, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(141, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(142, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(143, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(144, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(145, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(146, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(147, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(148, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(149, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(150, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(151, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(152, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(153, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(154, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(155, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(156, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(157, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(158, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(159, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(160, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(161, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(162, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(163, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(164, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(165, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(166, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(167, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(168, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(169, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(170, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(171, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(172, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(173, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(174, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(175, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(176, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(177, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(178, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(179, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(180, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(181, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', ''),
+(182, 3, 0, 0, 'Danish', '', 'pkg_da-DK', 'package', '', 0, '2.5.7.3', '', 'http://update.joomla.org/language/details/da-DK_details.xml', ''),
+(183, 3, 0, 0, 'Hungarian', '', 'pkg_hu-HU', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/hu-HU_details.xml', ''),
+(184, 3, 0, 0, 'Bulgarian', '', 'pkg_bg-BG', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/bg-BG_details.xml', ''),
+(185, 3, 0, 0, 'French', '', 'pkg_fr-FR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fr-FR_details.xml', ''),
+(186, 3, 0, 0, 'Ukrainian', '', 'pkg_uk-UA', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/uk-UA_details.xml', ''),
+(187, 3, 0, 0, 'Estonian', '', 'pkg_et-EE', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/et-EE_details.xml', ''),
+(188, 3, 0, 0, 'English US', '', 'pkg_en-US', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/en-US_details.xml', ''),
+(189, 3, 0, 0, 'Persian', '', 'pkg_fa-IR', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/fa-IR_details.xml', ''),
+(190, 3, 0, 0, 'Chinese Traditional', '', 'pkg_zh-TW', 'package', '', 0, '2.5.7.2', '', 'http://update.joomla.org/language/details/zh-TW_details.xml', ''),
+(191, 3, 0, 0, 'Norwegian Nynorsk', '', 'pkg_nn-NO', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/nn-NO_details.xml', ''),
+(192, 3, 0, 0, 'Scottish Gaelic', '', 'pkg_gd-GB', 'package', '', 0, '2.5.7.1', '', 'http://update.joomla.org/language/details/gd-GB_details.xml', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_update_categories`
+-- Estructura de tabla para la tabla `oel6t_update_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_update_categories` (
@@ -2011,7 +2098,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_update_categories` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_update_sites`
+-- Estructura de tabla para la tabla `oel6t_update_sites`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_update_sites` (
@@ -2022,25 +2109,26 @@ CREATE TABLE IF NOT EXISTS `oel6t_update_sites` (
   `enabled` int(11) DEFAULT '0',
   `last_check_timestamp` bigint(20) DEFAULT '0',
   PRIMARY KEY (`update_site_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Update Sites' AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Update Sites' AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `oel6t_update_sites`
+-- Volcado de datos para la tabla `oel6t_update_sites`
 --
 
 INSERT INTO `oel6t_update_sites` (`update_site_id`, `name`, `type`, `location`, `enabled`, `last_check_timestamp`) VALUES
-(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 1348676725),
-(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 1348676725),
-(3, 'Accredited Joomla! Translations', 'collection', 'http://update.joomla.org/language/translationlist.xml', 1, 1348676725),
-(4, 'Accredited Joomla! Translations (es-ES)', 'collection', 'http://updates.comunidadjoomla.org/es-ES_joomla_lang_packs_list.xml', 1, 1348676725),
+(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 1349719125),
+(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 1349719125),
+(3, 'Accredited Joomla! Translations', 'collection', 'http://update.joomla.org/language/translationlist.xml', 1, 1349719127),
+(4, 'Accredited Joomla! Translations (es-ES)', 'collection', 'http://updates.comunidadjoomla.org/es-ES_joomla_lang_packs_list.xml', 1, 1349719127),
 (5, 'JCE Editor Updates', 'extension', 'https://www.joomlacontenteditor.net/index.php?option=com_updates&view=update&format=xml&id=1\n        ', 0, 1348076354),
-(6, 'Gantry Framework Update Site', 'extension', 'http://www.gantry-framework.org/updates/joomla16/gantry.xml', 1, 1348676725),
-(7, 'RocketTheme Update Directory', 'collection', 'http://updates.rockettheme.com/joomla/updates.xml', 1, 1348676725);
+(6, 'Gantry Framework Update Site', 'extension', 'http://www.gantry-framework.org/updates/joomla16/gantry.xml', 1, 1349719127),
+(7, 'RocketTheme Update Directory', 'collection', 'http://updates.rockettheme.com/joomla/updates.xml', 1, 1349719127),
+(8, 'Plugin Googlemap Update Site', 'extension', 'http://tech.reumer.net/update/plugin_googlemap2/extension.xml', 1, 1349719199);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_update_sites_extensions`
+-- Estructura de tabla para la tabla `oel6t_update_sites_extensions`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_update_sites_extensions` (
@@ -2050,7 +2138,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_update_sites_extensions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Links extensions to update sites';
 
 --
--- Dumping data for table `oel6t_update_sites_extensions`
+-- Volcado de datos para la tabla `oel6t_update_sites_extensions`
 --
 
 INSERT INTO `oel6t_update_sites_extensions` (`update_site_id`, `extension_id`) VALUES
@@ -2061,12 +2149,13 @@ INSERT INTO `oel6t_update_sites_extensions` (`update_site_id`, `extension_id`) V
 (4, 10003),
 (5, 10006),
 (6, 10016),
-(7, 10021);
+(7, 10021),
+(8, 10023);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_usergroups`
+-- Estructura de tabla para la tabla `oel6t_usergroups`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_usergroups` (
@@ -2083,7 +2172,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_usergroups` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Dumping data for table `oel6t_usergroups`
+-- Volcado de datos para la tabla `oel6t_usergroups`
 --
 
 INSERT INTO `oel6t_usergroups` (`id`, `parent_id`, `lft`, `rgt`, `title`) VALUES
@@ -2099,7 +2188,7 @@ INSERT INTO `oel6t_usergroups` (`id`, `parent_id`, `lft`, `rgt`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_users`
+-- Estructura de tabla para la tabla `oel6t_users`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_users` (
@@ -2126,16 +2215,16 @@ CREATE TABLE IF NOT EXISTS `oel6t_users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=777 ;
 
 --
--- Dumping data for table `oel6t_users`
+-- Volcado de datos para la tabla `oel6t_users`
 --
 
 INSERT INTO `oel6t_users` (`id`, `name`, `username`, `email`, `password`, `usertype`, `block`, `sendEmail`, `registerDate`, `lastvisitDate`, `activation`, `params`, `lastResetTime`, `resetCount`) VALUES
-(776, 'Super User', 'admin', 'tar@adagal.es', '26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u', 'deprecated', 0, 1, '2012-09-19 17:02:17', '2012-09-26 16:25:20', '0', '', '0000-00-00 00:00:00', 0);
+(776, 'Super User', 'admin', 'tar@adagal.es', '26489e1bd37aa58b8180527ec23ccaf2:qa254GIFC61PPkiBBFShvKtKhEVRKJ5u', 'deprecated', 0, 1, '2012-09-19 17:02:17', '2012-10-08 18:07:45', '0', '', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_user_notes`
+-- Estructura de tabla para la tabla `oel6t_user_notes`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_user_notes` (
@@ -2162,7 +2251,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_user_notes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_user_profiles`
+-- Estructura de tabla para la tabla `oel6t_user_profiles`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_user_profiles` (
@@ -2176,7 +2265,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_user_profiles` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_user_usergroup_map`
+-- Estructura de tabla para la tabla `oel6t_user_usergroup_map`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_user_usergroup_map` (
@@ -2186,7 +2275,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_user_usergroup_map` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `oel6t_user_usergroup_map`
+-- Volcado de datos para la tabla `oel6t_user_usergroup_map`
 --
 
 INSERT INTO `oel6t_user_usergroup_map` (`user_id`, `group_id`) VALUES
@@ -2195,7 +2284,7 @@ INSERT INTO `oel6t_user_usergroup_map` (`user_id`, `group_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_viewlevels`
+-- Estructura de tabla para la tabla `oel6t_viewlevels`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_viewlevels` (
@@ -2208,7 +2297,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_viewlevels` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `oel6t_viewlevels`
+-- Volcado de datos para la tabla `oel6t_viewlevels`
 --
 
 INSERT INTO `oel6t_viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES
@@ -2219,7 +2308,7 @@ INSERT INTO `oel6t_viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_weblinks`
+-- Estructura de tabla para la tabla `oel6t_weblinks`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_weblinks` (
@@ -2267,7 +2356,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_weblinks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_wf_profiles`
+-- Estructura de tabla para la tabla `oel6t_wf_profiles`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_wf_profiles` (
@@ -2290,7 +2379,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_wf_profiles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Dumping data for table `oel6t_wf_profiles`
+-- Volcado de datos para la tabla `oel6t_wf_profiles`
 --
 
 INSERT INTO `oel6t_wf_profiles` (`id`, `name`, `description`, `users`, `types`, `components`, `area`, `device`, `rows`, `plugins`, `published`, `ordering`, `checked_out`, `checked_out_time`, `params`) VALUES
@@ -2301,7 +2390,7 @@ INSERT INTO `oel6t_wf_profiles` (`id`, `name`, `description`, `users`, `types`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_xmap_items`
+-- Estructura de tabla para la tabla `oel6t_xmap_items`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_xmap_items` (
@@ -2318,7 +2407,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_xmap_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `oel6t_xmap_sitemap`
+-- Estructura de tabla para la tabla `oel6t_xmap_sitemap`
 --
 
 CREATE TABLE IF NOT EXISTS `oel6t_xmap_sitemap` (
@@ -2345,7 +2434,7 @@ CREATE TABLE IF NOT EXISTS `oel6t_xmap_sitemap` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Dumping data for table `oel6t_xmap_sitemap`
+-- Volcado de datos para la tabla `oel6t_xmap_sitemap`
 --
 
 INSERT INTO `oel6t_xmap_sitemap` (`id`, `title`, `alias`, `introtext`, `metadesc`, `metakey`, `attribs`, `selections`, `excluded_items`, `is_default`, `state`, `access`, `created`, `count_xml`, `count_html`, `views_xml`, `views_html`, `lastvisit_xml`, `lastvisit_html`) VALUES
