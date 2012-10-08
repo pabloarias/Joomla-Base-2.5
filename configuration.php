@@ -28,7 +28,7 @@ class JConfig {
 	public $ftp_pass = '';
 	public $ftp_root = '';
 	public $ftp_enable = '0';
-	public $offset = 'UTC';
+	public $offset = 'Europe/Madrid';
 	public $mailer = 'mail';
 	public $mailfrom = 'tar@adagal.es';
 	public $fromname = 'Joomla-base';
@@ -58,7 +58,7 @@ class JConfig {
 	public $lifetime = '480';
 	public $session_handler = 'database';
 	public $MetaRights = '';
-	public $sitename_pagetitles = '0';
+	public $sitename_pagetitles = '1';
 	public $force_ssl = '0';
 	public $feed_email = 'author';
 	public $cookie_domain = '';
