@@ -1,3 +1,5 @@
+@import "bootstrap.less";
+
 // Core variables and mixins
 @import "variables.less";
 @import "mixins/index.less";
@@ -9,10 +11,10 @@
 // Template core styling and layout
 @import "template.less";
 @import "style.less";
-@import @headerstyle;
-@import "font-awesome.less";
-@import "typography.less";
+@import "header-@{headerstyle}.less";
+@import "jui/less/font-awesome.less";
 @import "utilities.less";
 @import "prettify.less";
 @import "offline.less";
 @import "error.less";
+@import "jui/less/bootstrap-overrides.less";

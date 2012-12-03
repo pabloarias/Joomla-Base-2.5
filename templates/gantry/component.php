@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: component.php 2901 2012-08-30 20:47:24Z kevin $
+* @version   $Id: component.php 5057 2012-11-06 04:48:10Z rhuk $
  * @author RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted index access' );
 
 // load and inititialize gantry class
-require_once('lib/gantry/gantry.php');
+require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 ?>
@@ -22,21 +22,22 @@ $gantry->init();
 	<!doctype html>
 	<html xml:lang="<?php echo $gantry->language; ?>" lang="<?php echo $gantry->language;?>" >
 		<head>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+			<?php if ($gantry->get('layout-mode') == '960fixed') : ?>
+			<meta name="viewport" content="width=960px">
+			<?php elseif ($gantry->get('layout-mode') == '1200fixed') : ?>
+			<meta name="viewport" content="width=1200px">
+			<?php else : ?>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<?php endif; ?>
 			<?php
 				$gantry->displayHead();
-				$gantry->addLess('global.less', $gantry->templateName . '-compiled.css', 8, array('headerstyle'=>'"header-'.$gantry->get('headerstyle','dark').'.less"'));
+				$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 			?>
 		</head>
 		<body class="component-body">
-			<div id="rt-main">
-					<div class="rt-block">
-						<div id="rt-mainbody">
-						<div class="component-content">
-					    	<jdoc:include type="component" />
-						</div>
-					</div>
-				</div>
+			<div class="component-content">
+		    	<jdoc:include type="message" />
+				<jdoc:include type="component" />
 			</div>
 		</body>
 	</html>

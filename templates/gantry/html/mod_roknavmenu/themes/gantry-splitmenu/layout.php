@@ -1,9 +1,12 @@
 <?php
 /**
-* @version   $Id: layout.php 3559 2012-09-13 10:08:59Z james $
+* @version   $Id: layout.php 4419 2012-10-22 15:38:25Z james $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+*
+* Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
+*
  */
 
 // no direct access
@@ -36,80 +39,78 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
 
         //don't include class_sfx on 3rd level menu
         $this->args['class_sfx'] =  (array_key_exists('startlevel', $this->args) && $this->args['startLevel']==1) ? '' : $this->args['class_sfx'];
-        $this->activeid = (array_key_exists('splitmenu_fusion_enable_current_id', $this->args) && $this->args['splitmenu_fusion_enable_current_id']== 0) ? false : true;
+        $this->activeid = (array_key_exists('splitmenu_enable_current_id', $this->args) && $this->args['splitmenu_enable_current_id']== 0) ? false : true;
 
-        JHtml::_('behavior.mootools');
+
+        JHtml::_('behavior.framework', true);
 
 		if (!self::$jsLoaded){
-			$mobileScript = "
-			window.addEvent('domready', function(){
-				document.getElements('[data-rt-menu-mobile]').addEvent('change', function(){
-					window.location.href = this.value;
-				});
-			});";
-
-			$this->appendInlineScript($mobileScript);
+            if (!($gantry->browser->name == 'ie' && $gantry->browser->shortver < 9)){
+                $gantry->addScript($gantry->baseUrl . 'modules/mod_roknavmenu/themes/default/js/rokmediaqueries.js');
+                $gantry->addScript($gantry->baseUrl . 'modules/mod_roknavmenu/themes/default/js/responsive.js');
+                if ($this->args['responsive-menu'] == 'selectbox') $gantry->addScript($gantry->baseUrl . 'modules/mod_roknavmenu/themes/default/js/responsive-selectbox.js');
+            }
 			self::$jsLoaded = true;
 		}
-    }
+        $gantry->addLess('menu.less', 'menu.css', 1, array('headerstyle'=>$gantry->get('headerstyle','dark'), 'menuHoverColor'=>$gantry->get('linkcolor')));
 
-    function isIe($version = false)
-    {
-        $agent=$_SERVER['HTTP_USER_AGENT'];
-        $found = strpos($agent,'MSIE ');
-        if ($found) {
-                if ($version) {
-                    $ieversion = substr(substr($agent,$found+5),0,1);
-                    if ($ieversion == $version) return true;
-                    else return false;
-                } else {
-                    return true;
-                }
-
-            } else {
-                    return false;
-            }
-        if (stristr($agent, 'msie'.$ieversion)) return true;
-        return false;
+        // no media queries for IE8 so we compile and load the hovers
+        if ($gantry->browser->name == 'ie' && $gantry->browser->shortver < 9){
+            $gantry->addLess('menu-hovers.less', 'menu-hovers.css', 1, array('headerstyle'=>$gantry->get('headerstyle','dark'), 'menuHoverColor'=>$gantry->get('linkcolor')));
+        }
     }
 
 
     protected function renderItem(JoomlaRokMenuNode &$item, RokMenuNodeTree &$menu)
     {
+        global $gantry;
+
         $item_params = $item->getParams();
         //not so elegant solution to add subtext
         $item_subtext = $item_params->get('splitmenu_item_subtext','');
         if ($item_subtext=='') $item_subtext = false;
         else $item->addLinkClass('subtext');
 
+        //get custom image
+        $custom_image = $item_params->get('splitmenu_customimage');
+        //get the custom icon
+        $custom_icon = $item_params->get('splitmenu_customicon');
+        //get the custom class
+        $custom_class = $item_params->get('splitmenu_customclass');
+
+        //add default link class
+        $item->addLinkClass('item');
+
+        if ($custom_image && $custom_image != -1) $item->addLinkClass('image');
+        if ($custom_icon && $custom_icon != -1) $item->addLinkClass('icon');
+        if ($custom_class != '') $item->addListItemClass($custom_class);
+
 		if ($item_params->get('splitmenu_menu_entry_type','normal') == 'normal'):
+
+        if ($item->getType() != 'menuitem') {
+            $item->setLink('javascript:void(0);');
+        }
+
         ?>
         <li <?php if($item->hasListItemClasses()) : ?>class="<?php echo $item->getListItemClasses()?>"<?php endif;?> <?php if($item->hasCssId() && $this->activeid):?>id="<?php echo $item->getCssId();?>"<?php endif;?>>
-            <?php if ($item->getType() == 'menuitem') : ?>
+
                 <a <?php if($item->hasLinkClasses()):?>class="<?php echo $item->getLinkClasses();?>"<?php endif;?> <?php if($item->hasLink()):?>href="<?php echo $item->getLink();?>"<?php endif;?> <?php if($item->hasTarget()):?>target="<?php echo $item->getTarget();?>"<?php endif;?> <?php if ($item->hasAttribute('onclick')): ?>onclick="<?php echo $item->getAttribute('onclick'); ?>"<?php endif; ?><?php if ($item->hasLinkAttribs()): ?> <?php echo $item->getLinkAttribs(); ?><?php endif; ?>>
-                    <span>
-                    <?php echo $item->getTitle();?>
-                    <?php if (!empty($item_subtext)) :?>
-                    <em><?php echo $item_subtext; ?></em>
+
+                <?php if ($custom_image && $custom_image != -1) :?>
+                    <img class="menu-image" src="<?php echo $gantry->templateUrl."/images/icons/".$custom_image; ?>" alt="<?php echo $custom_image; ?>" />
                     <?php endif; ?>
-                    <?php if ($item->getParent() == 0 && $item->hasChildren()): ?>
-                    <span class="daddyicon"></span>
-                    <?php endif; ?>
-                    </span>
+                <?php
+                if ($custom_icon && $custom_icon != -1) {
+                    echo '<i class="' . $custom_icon . '">' . $item->getTitle() . '</i>';
+                } else {
+                    echo $item->getTitle();
+                }
+                if (!empty($item_subtext)) {
+                    echo '<em>'. $item_subtext . '</em>';
+                }
+                ?>
                 </a>
-            <?php elseif($item->getType() == 'separator') : ?>
-                <span <?php if($item->hasLinkClasses()):?>class="<?php echo $item->getLinkClasses();?> nolink"<?php endif;?>>
-                    <span>
-                    <?php echo $item->getTitle();?>
-                    <?php if (!empty($item_subtext)) :?>
-                    <em><?php echo $item_subtext; ?></em>
-                    <?php endif; ?>
-                    <?php if ($item->getParent() == 0 && $item->hasChildren()): ?>
-                    <span class="daddyicon"></span>
-                    <?php endif; ?>
-                    </span>
-                </span>
-            <?php endif; ?>
+
             <?php if ($item->hasChildren()): ?>
             <ul class="level<?php echo intval($item->getLevel())+2; ?>">
                 <?php foreach ($item->getChildren() as $child) : ?>
@@ -124,7 +125,7 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
 			$menu_module    = $this->getModule($module_id);
 			$document       = JFactory::getDocument();
 			$renderer       = $document->loadRenderer('module');
-			$params         = array('style'=> 'fusion');
+			$params         = array('style'=> 'splitmenu');
 			$module_content = $renderer->render($menu_module, $params);
 			?>
 		<li <?php if ($item->hasListItemClasses()) : ?>class="<?php echo $item->getListItemClasses()?>"<?php endif;?> <?php if ($item->hasCssId() && $this->activeid): ?>id="<?php echo $item->getCssId();?>"<?php endif;?>>
@@ -132,6 +133,22 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
 		</li>
         <?php
 		endif;
+    }
+
+    function getModule ($id=0, $name='')
+    {
+
+        $modules    =& RokNavMenu::loadModules();
+        $total      = count($modules);
+        for ($i = 0; $i < $total; $i++)
+        {
+            // Match the name of the module
+            if ($modules[$i]->id == $id || $modules[$i]->name == $name)
+            {
+                return $modules[$i];
+            }
+        }
+        return null;
     }
 
 	public function curPageURL($link) {
@@ -152,66 +169,20 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
     public function renderMenu(&$menu) {
 
         ob_start();
-		/** @var $gantry Gantry */
-		global $gantry;
+        $menuname = $this->args['style'] == 'mainmenu' ? 'gf-menu gf-splitmenu' : 'menu';
 ?>
-<?php if ($this->args['style'] != 'mobile' && $menu->getChildren()) : ?>
-<div class="rt-menubar splitmenu">
-    <ul class="menu<?php echo $this->args['class_sfx']; ?> level1" <?php if(array_key_exists('tag_id',$this->args)):?>id="<?php echo $this->args['tag_id'];?>"<?php endif;?>>
-        <?php foreach ($menu->getChildren() as $item) :  ?>
-             <?php $this->renderItem($item, $menu); ?>
-        <?php endforeach; ?>
-    </ul>
-	<div class="clear"></div>
-</div>
+
+<?php if ($menu->getChildren()) : ?>
+<?php if ($this->args['style'] == 'mainmenu'): ?>
+<div class="gf-menu-device-container"></div>
 <?php endif; ?>
-<?php if ($this->args['style'] == 'mobile'): ?>
-<div class="rt-menu-mobile">
-	<select data-rt-menu-mobile>
-		<?php foreach ($menu->getChildren() as $item) : ?>
-		<?php $this->renderMobileItem($item, $menu); ?>
-		<?php endforeach; ?>
-	</select>
-</div>
+<ul class="<?php echo $menuname; ?> l1 <?php echo $this->args['class_sfx']; ?>" <?php if(array_key_exists('tag_id',$this->args)):?>id="<?php echo $this->args['tag_id'];?>"<?php endif;?>>
+    <?php foreach ($menu->getChildren() as $item) :  ?>
+         <?php $this->renderItem($item, $menu); ?>
+    <?php endforeach; ?>
+</ul>
 <?php endif; ?>
 <?php
         return ob_get_clean();
     }
-
-	function renderMobileItem(JoomlaRokMenuNode &$item, RokMenuNodeTree &$menu){
-		$item_params = new JParameter($item->getParams());
-		$level = str_repeat("&mdash;", $item->getLevel()) . " ";
-		$isActive = in_array('active', explode(" ", $item->getListItemClasses())) ? ' selected="selected"' : '';
-		?>
-		<?php if ($item_params->get('splitmenu_menu_entry_type','normal') == 'normal' && $item->getType() == 'menuitem') : ?>
-			<option value="<?php echo $item->getLink();?>"<?php echo $isActive;?>><?php echo $level.$item->getTitle();?></option>
-
-			<?php
-				if ($item->hasChildren()){
-					foreach($item->getChildren() as $child){
-						if ($item->getType() == 'menuitem'){
-							$this->renderMobileItem($child, $menu);
-						}
-					}
-				}
-			?>
-		<?php endif; ?>
-		<?php
-	}
-
-	function getModule ($id=0, $name='')
-	{
-
-		$modules	=& RokNavMenu::loadModules();
-		$total		= count($modules);
-		for ($i = 0; $i < $total; $i++)
-		{
-			// Match the name of the module
-			if ($modules[$i]->id == $id || $modules[$i]->name == $name)
-			{
-				return $modules[$i];
-			}
-		}
-		return null;
-	}
 }

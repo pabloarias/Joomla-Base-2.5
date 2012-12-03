@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: modules.php 3581 2012-09-14 15:37:30Z james $
+* @version   $Id: modules.php 4672 2012-10-29 12:48:57Z james $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -55,8 +55,8 @@ global $Itemid;
 		        <h2 class="title"><?php echo $menu_title_item->title.' '.JText::_('Menu'); ?></h2>
 			</div>
 			<?php endif; ?>
-			<div class="module-content">
-		            	<?php echo $module->content; ?>
+			<div class="module-content submenu">
+		    	<?php echo $module->content; ?>
 			</div>
 		</div>
 	</div>

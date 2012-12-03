@@ -2,7 +2,7 @@
 /**
 * @version   $Id: offline.php 2907 2012-08-30 22:29:16Z btowles $
 * @author    RocketTheme http://www.rockettheme.com
-* @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+* @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -11,13 +11,13 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // load and inititialize gantry class
-require_once('lib/gantry/gantry.php');
+require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 $doc = JFactory::getDocument();
 
 $gantry->addStyle('grid-responsive.css', 5);
-$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=> '"header-' . $gantry->get('headerstyle', 'dark') . '.less"'));
+$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 if ($gantry->browser->name == 'ie') {
 	if ($gantry->browser->shortversion == 8) {
 		$gantry->addScript('html5shim.js');
@@ -45,7 +45,7 @@ ob_start();
 					<div class="rt-block">
 						<div class="table">
 							<div class="row">
-								<div class="cell width-50 center">
+								<div class="cell gantry-width-50 center">
 									<div class="rt-block offline">
 										<h1>Site Offline</h1>
 										<?php if ($app->getCfg('display_offline_message', 1) == 1 && str_replace(' ', '', $app->getCfg('offline_message')) != ''): ?>
@@ -59,7 +59,7 @@ ob_start();
 										<?php  endif; ?>
 									</div>
 								</div>
-								<div class="cell width-50 center">
+								<div class="cell gantry-width-50 center">
 									<div class="rt-block box1">
 										<h1 class="title"><?php echo JText::_("AUTHORIZED_LOGIN"); ?></h1>
 										<form class="form-horizontal" action="<?php echo JRoute::_('index.php', true); ?>" method="post" id="form-login">
@@ -116,7 +116,13 @@ ob_start();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<?php echo $header_contents; ?>
+	<?php if ($gantry->get('layout-mode') == '960fixed') : ?>
+	<meta name="viewport" content="width=960px">
+	<?php elseif ($gantry->get('layout-mode') == '1200fixed') : ?>
+	<meta name="viewport" content="width=1200px">
+	<?php else : ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<?php endif; ?>
 </head>
 <?php
 $header = ob_get_clean();

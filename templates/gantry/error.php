@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: error.php 2970 2012-08-31 22:45:34Z kevin $
+* @version   $Id: error.php 5279 2012-11-19 20:11:52Z kevin $
 * @author    RocketTheme http://www.rockettheme.com
-* @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+* @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -10,19 +10,20 @@
 */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 if (!isset($this->error)) {
-	$this->error = JError::raiseWarning( 403, JText::_('ALERTNOTAUTH') );
+	$this->error = JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	$this->debug = false;
 }
 
 // load and inititialize gantry class
-require_once('lib/gantry/gantry.php');
+global $gantry;
+require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 $doc = JFactory::getDocument();
 $doc->setTitle($this->error->getCode() . ' - '.$this->title);
 
 $gantry->addStyle('grid-responsive.css', 5);
-$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=> '"header-' . $gantry->get('headerstyle', 'dark') . '.less"'));
+$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 if ($gantry->browser->name == 'ie') {
 	if ($gantry->browser->shortversion == 8) {
 		$gantry->addScript('html5shim.js');
@@ -80,7 +81,13 @@ ob_start();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<?php echo $header_contents; ?>
+	<?php if ($gantry->get('layout-mode') == '960fixed') : ?>
+	<meta name="viewport" content="width=960px">
+	<?php elseif ($gantry->get('layout-mode') == '1200fixed') : ?>
+	<meta name="viewport" content="width=1200px">
+	<?php else : ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<?php endif; ?>
 </head>
 <?php
 $header = ob_get_clean();

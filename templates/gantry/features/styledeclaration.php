@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: styledeclaration.php 3364 2012-09-06 18:54:59Z kevin $
+* @version   $Id: styledeclaration.php 4699 2012-10-29 19:14:22Z james $
  * @author		RocketTheme http://www.rockettheme.com
- * @copyright 	Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @copyright 	Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -31,7 +31,7 @@ class GantryFeatureStyleDeclaration extends GantryFeature {
 
         // Colors
         $linkColor = new Color($gantry->get('linkcolor'));
-        $css = 'a {color:'.$gantry->get('linkcolor').';}';
+        $css = 'a, ul.menu li .separator {color:'.$gantry->get('linkcolor').';}';
         $css .= '.button, .readon, .readmore, button.validate, #member-profile a, #member-registration a, .formelm-buttons button, .btn-primary {border-color:'.$linkColor->darken('20%').';}';
 
         // Gradients

@@ -3,7 +3,7 @@
 defined( '_JEXEC' ) or die( 'Restricted index access' );
 
 // load and inititialize gantry class
-require_once('lib/gantry/gantry.php');
+require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 //        'mb12' => array(''),

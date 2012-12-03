@@ -17,6 +17,9 @@
     <field name="template_prefix" type="hidden" default="gantry-"/>
     <field name="cookie_time" type="hidden" default="31536000"/>
 
+    <field name="override_set" type="hidden" default="2.5"/>
+
+
     <field name="name" type="hidden" default="Preset1" setinsession="true" setbysession="true" setincookie="true" setbycookie="true" />
     <field name="copy_lang_files_if_diff" type="hidden" default="1"/>
 
@@ -31,7 +34,7 @@
             </fields>
         </fields>
 
-    <field name="headerstyle" type="selectbox" default="dark" label="HEADER_STYLE" description="HEADER_STYLE_DESC" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
+    <field name="headerstyle" type="selectbox" default="dark" label="HEADER_STYLE" isbodyclass="true" description="HEADER_STYLE_DESC" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
         <option value="dark">DARK</option>
         <option value="light">LIGHT</option>
     </field>
@@ -76,7 +79,7 @@
         <field name="pagesuffix-priority" type="hidden" default="14"/>
         <field name="resetsettings-priority" type="hidden" default="15"/>
         <field name="analytics-priority" type="hidden" default="16"/>
-        <field name="fusionmenu-priority" type="hidden" default="18"/>
+        <field name="dropdownmenu-priority" type="hidden" default="18"/>
         <field name="jstools-priority" type="hidden" default="21"/>
         <field name="moduleoverlays-priority" type="hidden" default="22"/>
         <field name="rtl-priority" type="hidden" default="23"/>
@@ -144,54 +147,47 @@
     <fieldset name="menu" label="MENU">
            <fields name="menu" type="selectedset" label="MENU_CTRL" description="MENU_CTRL_DESC">
             <field name="enabled" type="toggle" default="1" label="SHOW" enabler="true" />
-            <field name="type" type="selectbox" selector="true" default="fusionmenu" label="TYPE" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true"/>
-            <fields type="set" name="fusionmenu" label="FUSION">
-                <field name="menutype" type="menus" default="mainmenu" label="MENU_SELECT" description="MENU_SELECT_DESC"/>
-                <field name="position" type="position" translation="false" default="header-b" label="POSITION" description="POSITION_DESC"/>
-                <field name="enable_js" type="toggle" default="1" label="ENABLE_JS" description="ENABLE_JS_DESC"/>
-                <field name="opacity" type="hidden" default="1" label="MENU_OPACITY" class="text-short" />
-                <field name="effect" type="selectbox" default="slidefade" label="MENU_EFFECT" description="MENU_EFFECT_DESC">
-                    <option value="slide">SLIDE</option>
-                    <option value="slidefade">SLIDEFADE</option>
-                </field>
-                <field name="hidedelay" type="textplus" default="500" append="ms" label="MENU_DELAY" description="MENU_DELAY_DESC" class="text-short" />
-                <field name="menu-animation" type="animation" default="Circ.easeOut" label="MENU_ANIMATION" description="MENU_ANIMATION_DESC"/>
-                <field name="menu-duration" type="textplus" default="300" append="ms" label="MENU_DURATION" description="MENU_DURATION_DESC" class="text-short" />
-                <field name="centered-offset" type="hidden" default="0" label="CENTERED_DROPDOWN" />
-                <field name="tweak-initial-x" type="hidden" default="-10" label="X_OFFSET" class="text-short" />
-                <field name="tweak-initial-y" type="hidden" default="-10" label="Y_OFFSET" class="text-short" />
-                <field name="tweak-subsequent-x" type="hidden" default="0" label="X_OFFSET" class="text-short" />
-                <field name="tweak-subsequent-y" type="hidden" default="0" label="Y_OFFSET" class="text-short" />
-                <field name="tweak-width" type="hidden" default="20" />
-                <field name="tweak-height" type="hidden" default="20" />
-
-                <field name="enable-current-id" type="toggle" default="0" label="ENABLE_ID" description="ENABLE_ID_DESC"/>
-                <field name="theme" type="hidden" default="gantry-fusion"/>
+            <field name="type" type="selectbox" selector="true" default="dropdownmenu" label="TYPE" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true"/>
+            <fields type="set" name="dropdownmenu" label="DROPDOWN">
+                <field name="theme" type="hidden" default="gantry-dropdown"/>
                 <field name="limit_levels" type="hidden" default="0"/>
                 <field name="startLevel" type="hidden" default="0"/>
                 <field name="showAllChildren" type="hidden" default="1"/>
                 <field name="class_sfx" type="hidden" default="top"/>
                 <field name="cache" type="hidden" default="0"/>
+
+                <field name="menutype" type="menus" default="mainmenu" label="MENU_SELECT" description="MENU_SELECT_DESC"/>
+                <field name="position" type="position" translation="false" default="header-b" label="POSITION" description="POSITION_DESC"/>
+                <field name="responsive-menu" type="selectbox" default="panel" label="RESPONSIVE_MENU" description="RESPONSIVE_MENU_DESC">
+                    <option value="panel">PANEL</option>
+                    <option value="selectbox">SELECTBOX</option>
+                </field>
+                <field name="enable-current-id" type="toggle" default="0" label="ENABLE_ID" description="ENABLE_ID_DESC"/>
                 <field name="module_cache" label="MODULE_CACHE" description="MODULE_CACHE_DESC" type="toggle" default="1"/>
             </fields>
             <fields type="set" name="splitmenu" label="SPLITMENU">
-                <field name="roknavmenu_fusion_enable-current-id" type="toggle" default="0" label="ENABLE_ID" description="ENABLE_ID_DESC"/>
-                <field name="menutype" type="menus" default="mainmenu" label="MENU_SELECT" description="MENU_SELECT_DESC"/>
-                <field name="theme" type="hidden" default="gantry-splitmenu"/>
-                <field name="mainmenu-position" type="position" translation="false" default="header-b" label="MAINMENU_POS" description="MAINMENU_POS_DESC"/>
                 <field name="mainmenu-limit_levels" type="hidden" default="1"/>
                 <field name="mainmenu-startLevel" type="hidden" default="0"/>
                 <field name="mainmenu-endLevel" type="hidden" default="0"/>
                 <field name="mainmenu-class_sfx" type="hidden" default="top"/>
-
-                <field name="submenu-position" type="position" translation="false" default="sidebar-a" label="SUBMENU_POS" description="SUBMENU_POS_DESC"/>
-                <field name="submenu-title" type="toggle" default="1" label="SUBMENU_TITLE" description="SUBMENU_TITLE_DESC" />
                 <field name="submenu-limit_levels" type="hidden" default="1"/>
                 <field name="submenu-startLevel" type="hidden" default="1"/>
                 <field name="submenu-endLevel" type="hidden" default="9"/>
-                <field name="submenu-class_sfx" type="text" default="" label="SUBMENU_CLASS_SFX" description="SUBMENU_CLASS_SFX_DESC" class="text-short" />
-                <field name="submenu-module_sfx" type="text" default="" label="SUBMENUMODULE_CLASS_SFX" description="SUBMENUMODULE_CLASS_SFX_DESC" class="text-short" />
                 <field name="cache" type="hidden" default="0"/>
+
+
+                <field name="menutype" type="menus" default="mainmenu" label="MENU_SELECT" description="MENU_SELECT_DESC"/>
+                <field name="theme" type="hidden" default="gantry-splitmenu"/>
+                <field name="mainmenu-position" type="position" translation="false" default="header-b" label="MAINMENU_POS" description="MAINMENU_POS_DESC"/>
+                <field name="submenu-position" type="position" translation="false" default="sidebar-a" label="SUBMENU_POS" description="SUBMENU_POS_DESC"/>
+                <field name="submenu-title" type="toggle" default="1" label="SUBMENU_TITLE" description="SUBMENU_TITLE_DESC" />
+                <field name="submenu-class_sfx" type="text" default="" label="SUBMENU_CLASS_SFX" description="SUBMENU_CLASS_SFX_DESC" class="text-medium" />
+                <field name="submenu-module_sfx" type="text" default="" label="SUBMENUMODULE_CLASS_SFX" description="SUBMENUMODULE_CLASS_SFX_DESC" class="text-medium" />
+                <field name="responsive-menu" type="selectbox" default="panel" label="RESPONSIVE_MENU" description="RESPONSIVE_MENU_DESC">
+                    <option value="panel">PANEL</option>
+                    <option value="selectbox">SELECTBOX</option>
+                </field>
+                <field name="roknavmenu_dropdown_enable-current-id" type="toggle" default="0" label="ENABLE_ID" description="ENABLE_ID_DESC"/>
                 <field name="module_cache" label="MODULE_CACHE" description="MODULE_CACHE_DESC" type="toggle" default="1"/>
             </fields>
         </fields>
@@ -307,10 +303,10 @@
     <fieldset name="advanced" label="ADVANCED">
 
         <field name="layout-mode" type="selectbox" default="responsive" label="LAYOUT_MODE" description="LAYOUT_MODE_DESC" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true" isbodyclass="true">
-        <option value="responsive">RESPONSIVE</option>
-        <option value="1200fixed">1200FIXED</option>
-        <option value="960fixed">960FIXED</option>
-    </field>
+            <option value="responsive">RESPONSIVE</option>
+            <option value="1200fixed">1200FIXED</option>
+            <option value="960fixed">960FIXED</option>
+        </field>
 
         <field name="loadtransition" type="toggle" default="0" label="LOAD_TRANSITION" description="LOAD_TRANSITION_DESC"/>
 
@@ -330,6 +326,7 @@
             <field name="debugheader" type="toggle" default="0" label="LESS_DEBUGHEADER" description="LESS_DEBUGHEADER_DESC"/>
             <field name="clear" type="ajaxbutton" text="LESS_COMPILE_CLEAR_TEXT" model="lesscompiler" action="clear" label="LESS_COMPILE_CLEAR" setinoverride="false" />
         </fields>
+        <field name="isis-dropdowns" type="toggle" default="0" label="ISIS_DROPDOWNS" description="ISIS_DROPDOWNS_DESC" />
     </fieldset>
     <fieldset name="assignment" label="ASSIGNMENTS">
         <field name="assignments" type="assignments" panel_position="left" setinoverride="false"/>

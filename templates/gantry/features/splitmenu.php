@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: splitmenu.php 2381 2012-08-15 04:14:26Z btowles $
+* @version   $Id: splitmenu.php 3895 2012-09-25 04:02:54Z rhuk $
 * @author    RocketTheme http://www.rockettheme.com
-* @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+* @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -10,7 +10,6 @@
 */
 
 defined('JPATH_BASE') or die();
-
 gantry_import('core.gantryfeature');
 
 
@@ -22,12 +21,6 @@ class GantryFeatureSplitMenu extends GantryFeature {
     var $_feature_name = 'splitmenu';
     var $_feature_prefix = 'menu';
     var $_menu_picker = 'menu-type';
-
-	function init() {
-		/** @var $gantry Gantry */
-		global $gantry;
-		$gantry->addLess('splitmenu.less');
-	}
 
     function isEnabled() {
         /** @var $gantry Gantry */
@@ -43,6 +36,7 @@ class GantryFeatureSplitMenu extends GantryFeature {
         if ($this->get('mainmenu-position') == $position || $this->get('submenu-position') == $position || $this->get('sidemenu-position') == $position) return true;
         return false;
     }
+
 	function isOrderable(){
 		return false;
 	}
@@ -78,14 +72,6 @@ class GantryFeatureSplitMenu extends GantryFeature {
 
             $output .= $renderer->render( $module, $options );
 
-			$reg->set('style', 'mobile');
-			$reg->set('endLevel', '9');
-			$reg->set('showAllChildren', '1');
-			$reg->set('mainmenu-endLevel', '9');
-			$reg->set('submenu-endLevel', '9');
-			$module->params = $reg->toString();
-			$output .= $renderer->render($module, array('style', 'mobile-menu-block'));
-
         }
 
         if ($position == $this->get('submenu-position')) {
@@ -113,10 +99,12 @@ class GantryFeatureSplitMenu extends GantryFeature {
             foreach($params as $param_name => $param_value){
                 $reg->set($param_name, $param_value['value']);
             }
+            $reg->set('style','sidemenu');
             $reg->merge($group_params_reg);
             $module->params = $reg->toString();
             $output .= $renderer->render( $module, $options );
         }
+
 		return $output;
 	}
 }

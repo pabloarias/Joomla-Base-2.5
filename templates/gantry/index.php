@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: index.php 2968 2012-08-31 22:19:53Z kevin $
+* @version   $Id: index.php 5057 2012-11-06 04:48:10Z rhuk $
  * @author RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - ${copyright_year} RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -12,8 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted index access' );
 
 // load and inititialize gantry class
-require_once('lib/gantry/gantry.php');
-/** @var $gantry Gantry */
+require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 // get the current preset
@@ -23,34 +22,32 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
 <!doctype html>
 <html xml:lang="<?php echo $gantry->language; ?>" lang="<?php echo $gantry->language;?>" >
 <head>
+	<?php if ($gantry->get('layout-mode') == '960fixed') : ?>
+	<meta name="viewport" content="width=960px">
+	<?php elseif ($gantry->get('layout-mode') == '1200fixed') : ?>
+	<meta name="viewport" content="width=1200px">
+	<?php else : ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<?php endif; ?>
     <?php
         $gantry->displayHead();
 
 		$gantry->addStyle('grid-responsive.css', 5);
-        $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>'"header-'.$gantry->get('headerstyle','dark').'.less"'));
+        $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 
         if ($gantry->browser->name == 'ie'){
 			if ($gantry->browser->shortversion == 8){
 				$gantry->addScript('html5shim.js');
 			}
 		}
-
-        $gantry->addScript('rokmediaqueries.js');
+		if ($gantry->get('layout-mode', 'responsive') == 'responsive') $gantry->addScript('rokmediaqueries.js');
+		if ($gantry->get('loadtransition')) {
 		$gantry->addScript('load-transition.js');
-		$hidden = ' class="rt-hidden"';
+		$hidden = ' class="rt-hidden"';}
 
     ?>
 </head>
 <body <?php echo $gantry->displayBodyTag(); ?>>
-    <?php /** Begin Drawer **/ if ($gantry->countModules('drawer')) : ?>
-    <div id="rt-drawer">
-        <div class="rt-container">
-            <?php echo $gantry->displayModules('drawer','standard','standard'); ?>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <?php /** End Drawer **/ endif; ?>
     <?php /** Begin Top Surround **/ if ($gantry->countModules('top') or $gantry->countModules('header')) : ?>
     <header id="rt-top-surround">
 		<?php /** Begin Top **/ if ($gantry->countModules('top')) : ?>
@@ -71,6 +68,14 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
 		<?php /** End Header **/ endif; ?>
 	</header>
 	<?php /** End Top Surround **/ endif; ?>
+	<?php /** Begin Drawer **/ if ($gantry->countModules('drawer')) : ?>
+    <div id="rt-drawer">
+        <div class="rt-container">
+            <?php echo $gantry->displayModules('drawer','standard','standard'); ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <?php /** End Drawer **/ endif; ?>
 	<?php /** Begin Showcase **/ if ($gantry->countModules('showcase')) : ?>
 	<div id="rt-showcase">
 		<div class="rt-showcase-pattern">
@@ -81,7 +86,7 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
 		</div>
 	</div>
 	<?php /** End Showcase **/ endif; ?>
-	<div id="rt-transition"<?php echo $hidden; ?>>
+	<div id="rt-transition"<?php if ($gantry->get('loadtransition')) echo $hidden; ?>>
 		<div id="rt-mainbody-surround">
 			<?php /** Begin Feature **/ if ($gantry->countModules('feature')) : ?>
 			<div id="rt-feature">
@@ -115,8 +120,16 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
 				</div>
 			</div>
 			<?php /** End Main Top **/ endif; ?>
+			<?php /** Begin Full Width**/ if ($gantry->countModules('fullwidth')) : ?>
+			<div id="rt-fullwidth">
+				<?php echo $gantry->displayModules('fullwidth','basic','basic'); ?>
+					<div class="clear"></div>
+				</div>
+			<?php /** End Full Width **/ endif; ?>
 			<?php /** Begin Main Body **/ ?>
-		    	<?php echo $gantry->displayMainbody('mainbody','sidebar','standard','standard','standard','standard','standard'); ?>
+			<div class="rt-container">
+		    		<?php echo $gantry->displayMainbody('mainbody','sidebar','standard','standard','standard','standard','standard'); ?>
+		    	</div>
 			<?php /** End Main Body **/ ?>
 			<?php /** Begin Main Bottom **/ if ($gantry->countModules('mainbottom')) : ?>
 			<div id="rt-mainbottom">

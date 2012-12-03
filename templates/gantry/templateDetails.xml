@@ -2,19 +2,18 @@
 <extension method="upgrade" type="template" version="2.5">
     <name>gantry</name>
     <author>RocketTheme, LLC</author>
-    <creationDate>September 18, 2012</creationDate>
+    <creationDate>November 22, 2012</creationDate>
     <copyright>(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@rockettheme.com</authorEmail>
     <authorUrl>http://www.rockettheme.com</authorUrl>
-    <version>4.0.5</version>
-    <description>Gantry Starting Template for Joomla! v4.0.5</description>
+    <version>4.1.4</version>
+    <description>Gantry Starting Template for Joomla! v4.1.4</description>
     <legacycss>false</legacycss>
     <gridcss>false</gridcss>
     <files>
         <folder>admin</folder>
         <filename>index.php</filename>
-        <folder>fonts</folder>
         <filename>error.php</filename>
         <folder>images</folder>
         <filename>component.php</filename>
@@ -22,9 +21,11 @@
         <filename>template_preview.png</filename>
         <filename>gantry.config.php</filename>
         <filename>htaccess.txt</filename>
+        <folder>fields</folder>
         <folder>language</folder>
         <filename>debugbody.php</filename>
         <filename>template-overview.php</filename>
+        <filename>MD5SUMS</filename>
         <folder>css-compiled</folder>
         <folder>less</folder>
         <folder>custom</folder>
@@ -33,8 +34,6 @@
         <filename>template-options.xml</filename>
         <filename>offline.php</filename>
         <folder>features</folder>
-        <filename>checksums</filename>
-        <folder>home</folder>
         <filename>template_thumbnail.png</filename>
         <folder>lib</folder>
         <filename>tests.php</filename>
@@ -79,6 +78,7 @@
         <position>maintop-d</position>
         <position>maintop-e</position>
         <position>maintop-f</position>
+        <position>fullwidth</position>
         <position>breadcrumb</position>
         <position>sidebar-a</position>
         <position>sidebar-b</position>
