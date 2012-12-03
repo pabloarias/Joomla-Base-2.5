@@ -11,8 +11,8 @@
 
 defined( '_JEXEC' ) or die('RESTRICTED');
 
-require_once(dirname( __FILE__ ).'/classes/paste.php' );
+require_once(dirname( __FILE__ ).'/classes/clipboard.php' );
 
-$plugin = WFPastePlugin::getInstance();
+$plugin = WFClipboardPlugin::getInstance();
 $plugin->execute();
 ?>

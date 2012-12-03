@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -37,4 +37,4 @@ context.fill();context.stroke();context.closePath();},_locate:function(e){this._
 switch(position){case'top center':pos.x=(page.x-Math.round((tip.x/2)))+o.x;pos.y=(page.y-tip.y)-o.y;break;case'bottom center':pos.x=(page.x-(tip.x/2))+o.x;pos.y=page.y+o.y;break;}
 if(pos.x<0){pos.x=5;}
 if(pos.x>parseFloat($(window).width())){pos.x=parseFloat($(window).width())-(tip.x/2+5);}
-$tips.css({top:pos.y,left:pos.x});},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.tips,{version:"2.2.7.2"});})(jQuery);
+$tips.css({top:pos.y,left:pos.x});},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.tips,{version:"2.2.9.1"});})(jQuery);

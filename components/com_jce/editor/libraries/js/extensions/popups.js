@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,7 +17,7 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-var WFPopups=WFExtensions.add('Popups',{popups:{},popup:'',config:{},addPopup:function(n,o){this.popups[n]=o;WFExtensions.addExtension('popups',n,o);},getPopups:function(){return this.popups;},setup:function(){var self=this,ed=tinyMCEPopup.editor,s=ed.selection,n;if(!s.isCollapsed()){n=s.getNode();var state=true,v;function setText(state,v){if(state&&v){$('#popup_text').val(v);$('#popup_text').attr('disabled',false);}else{$('#popup_text').val(tinyMCEPopup.getLang('dlg.element_selection','Element Selection'));$('#popup_text').attr('disabled',true);$('#popup_text').addClass('disabled');}}
+var WFPopups=WFExtensions.add('Popups',{popups:{},popup:'',config:{},addPopup:function(n,o){this.popups[n]=o;WFExtensions.addExtension('popups',n,o);},getPopups:function(){return this.popups;},setup:function(){var self=this,ed=tinyMCEPopup.editor,s=ed.selection,n;$('#popup_list').change(function(){self.selectPopup(this.value);}).change();if(!s.isCollapsed()){n=s.getNode();var state=true,v;function setText(state,v){if(state&&v){$('#popup_text').val(v);$('#popup_text').attr('disabled',false);}else{$('#popup_text').val(tinyMCEPopup.getLang('dlg.element_selection','Element Selection'));$('#popup_text').attr('disabled',true);$('#popup_text').addClass('disabled');}}
 v=s.getContent({format:'text'});if(n){var children=tinymce.grep(n.childNodes,function(node){return ed.dom.is(node,'br[data-mce-bogus]')==false;});state=children.length==1&&children[0].nodeType==3;}
 setText(state,v);}
 $.each(this.popups,function(k,v){self._call('setup','',v);});},isPopup:function(n,v){return n&&n.nodeName=='A'&&this._call('check',n,v);},getPopup:function(n){var self=this,ed=tinyMCEPopup.editor,popup,popups=this.getPopups();if(n.nodeName!='A'){n=ed.dom.getParent(n,'a');}

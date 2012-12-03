@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -25,7 +25,7 @@ return site;},init:function(settings){var self=this;var base=settings.base_url;v
 settings.token=settings.token||0;settings.component_id=settings.component_id||0;window.tinyMCEPreInit={};tinymce.extend(tinymce,{baseURL:base+'components/com_jce/editor/tiny_mce',suffix:'',query:settings.token+'=1&component_id='+settings.component_id});var indent='p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,ul,li,area,table,thead,tfoot,tbody,tr,section,article,hgroup,aside,figure,object,video,audio';this.settings=tinymce.extend({document_base_url:base,site_url:site,mode:'textareas',editor_selector:'wfEditor',editor_deselector:'wfNoEditor',urlconverter_callback:'WFEditor.convertURL',popup_css:base+'components/com_jce/editor/libraries/css/popup.css',add_form_submit_trigger:false,submit_patch:false,theme:'none',invalid_elements:'applet,iframe,object,embed,script,style,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',plugins:'',whitespace_elements:'pre,script,style,textarea,code',fix_list_elements:true,formats:{'span':{inline:'span'},'section':{block:'section',wrapper:true,merge_siblings:false},'article':{block:'article',wrapper:true,merge_siblings:false},'hroup':{block:'hgroup',wrapper:true},'aside':{block:'aside',wrapper:true},'figure':{block:'figure',wrapper:true},'dl':{block:'dl',wrapper:true}},indent_before:indent,indent_after:indent},settings);if(this.settings){try{if(this.settings.compress.css){tinymce.extend(this.settings,{content_css:false,editor_css:false});}
 if(this.settings.compress.javascript){this._markLoaded();}
 var s=this.settings;if(s.skip_plugin_languages){var sl=tinymce.ScriptLoader,URI=tinyMCE.baseURI;each(s.skip_plugin_languages.split(','),function(n){if(n){sl.markDone(URI.toAbsolute('plugins/'+n+'/langs/'+s.language+'.js'));sl.add(URI.toAbsolute('plugins/'+n+'/langs/en.js'));}});}
-each(explode(s.plugins),function(p){if(p.charAt(0)=='-'){p=p.substr(1,p.length);tinymce.PluginManager.load(p,s.base_url+'plugins/jce/'+p+'/editor_plugin.js');}});WFEditor.load();}catch(e){}}},_markLoaded:function(){var self=this,s=this.settings,each=tinymce.each,ln=s.language.split(',');var suffix=s.suffix||'';function load(u){tinymce.ScriptLoader.markDone(tinyMCE.baseURI.toAbsolute(u));}
+WFEditor.load();}catch(e){}}},_markLoaded:function(){var self=this,s=this.settings,each=tinymce.each,ln=s.language.split(',');var suffix=s.suffix||'';function load(u){tinymce.ScriptLoader.markDone(tinyMCE.baseURI.toAbsolute(u));}
 each(ln,function(c){if(c){load('langs/'+c+'.js');}});each(s.theme.split(','),function(n){if(n){load('themes/'+n+'/editor_template'+suffix+'.js');each(ln,function(c){if(c){load('themes/'+n+'/langs/'+c+'.js');}});}});each(s.plugins.split(','),function(n){if(n){load('plugins/'+n+'/editor_plugin'+suffix+'.js');each(ln,function(c){if(c){load('plugins/'+n+'/langs/'+c+'.js');}});}});},setBookmark:function(ed){var self=this,DOM=tinymce.DOM,Event=tinymce.dom.Event;function isHidden(ed){return ed.isHidden()||DOM.getStyle(ed.id+'_ifr','visibility')=='hidden';}
 function isEditor(el){return DOM.getParent(el,'div.mceEditor, div.mceSplitButtonMenu, div.mceListBoxMenu, div.mceDropDown');}
 Event.add(document.body,'mousedown',function(e){var el=e.target;if(isEditor(el)){return;}

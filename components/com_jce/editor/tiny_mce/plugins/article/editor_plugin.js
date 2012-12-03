@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -32,4 +32,4 @@ ns=marker.nextSibling;if(!ns){var el=ed.getParam('forced_root_block')||'br';ns=e
 ed.dom.insertAfter(ns,marker);s=ed.selection.select(ns);ed.selection.collapse(1);}}
 ed.dom.replace(hr,marker);ed.undoManager.add();},createControl:function(n,cm){var self=this,ed=this.editor;switch(n){case'pagebreak':if(ed.getParam('article_show_pagebreak',true)){var content=DOM.create('div');var fieldset=DOM.add(content,'fieldset',{},'<legend>'+ed.getLang('article.pagebreak','Insert / Edit Pagebreak')+'</legend>');var n=DOM.add(fieldset,'div');DOM.add(n,'label',{'for':ed.id+'_title'},ed.getLang('article.title','Title'));var title=DOM.add(n,'input',{type:'text',id:ed.id+'_title',style:{'width':180}});n=DOM.add(fieldset,'div');DOM.add(n,'label',{'for':ed.id+'_alt'},ed.getLang('article.alias','Alias'));var alt=DOM.add(n,'input',{type:'text',id:ed.id+'_alt',style:{'width':180}});var c=new tinymce.ui.ButtonDialog(cm.prefix+'pagebreak',{title:ed.getLang('article.pagebreak','Insert / Edit Pagebreak'),'class':'mce_pagebreak','dialog_class':ed.getParam('skin')+'Skin','content':content,'width':250,buttons:[{title:ed.getLang('common.insert','Insert'),id:'insert',click:function(e){c.restoreSelection();ed.execCommand('mcePageBreak',false,{title:title.value,alt:alt.value});return true;},scope:self}]},ed);c.onShowDialog.add(function(){title.value=alt.value='';var label=ed.getLang('common.insert','Insert');var o=self._getPageBreak(),active=false;if(o){title.value=o.title||'';alt.value=o.alt||'';label=ed.getLang('common.update','Update');active=true;}
 c.setActive(active);c.setButtonLabel('insert',label);title.focus();});c.onHideDialog.add(function(){title.value=alt.value='';});ed.onRemove.add(function(){c.destroy();});return cm.add(c);break;}}
-return null;},getInfo:function(){return{longname:'Article',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.7.2'};}});tinymce.PluginManager.add('article',tinymce.plugins.ArticlePlugin);})();
+return null;},getInfo:function(){return{longname:'Article',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};}});tinymce.PluginManager.add('article',tinymce.plugins.ArticlePlugin);})();

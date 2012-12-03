@@ -14,7 +14,7 @@ defined( 'WF_EDITOR' ) or die('RESTRICTED');
 require_once( WF_EDITOR_LIBRARIES . '/classes/plugin.php' );
 
 
-class WFPastePlugin extends WFEditorPlugin 
+class WFClipboardPlugin extends WFEditorPlugin 
 {
 	
 	public function __construct() {	
@@ -35,7 +35,7 @@ class WFPastePlugin extends WFEditorPlugin
 		static $instance;
 
 		if ( !is_object( $instance ) ){
-			$instance = new WFPastePlugin();
+			$instance = new WFClipboardPlugin();
 		}
 		return $instance;
 	}
@@ -46,8 +46,8 @@ class WFPastePlugin extends WFEditorPlugin
 
 		$document = WFDocument::getInstance();
 
-		$document->addScript(array('paste'), 'plugins');
-		$document->addStyleSheet(array('paste'), 'plugins');
+		$document->addScript(array('clipboard'), 'plugins');
+		$document->addStyleSheet(array('clipboard'), 'plugins');
 	}
 	
 	function getSettings()

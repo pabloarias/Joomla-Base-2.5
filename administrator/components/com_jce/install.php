@@ -11,34 +11,6 @@
  */
 defined('_JEXEC') or die('RESTRICTED');
 
-/**
- * Installer function
- * @return
- */
-function com_install() {
-
-    if (!defined('JPATH_PLATFORM')) {
-        $installer = JInstaller::getInstance();
-        return WFInstall::install($installer);
-    }
-
-    return true;
-}
-
-/**
- * Uninstall function
- * @return
- */
-function com_uninstall() {
-
-    if (!defined('JPATH_PLATFORM')) {
-        $installer = JInstaller::getInstance();
-        return WFInstall::uninstall();
-    }
-
-    return true;
-}
-
 abstract class WFInstall {
 
     private static function cleanupInstall() {
@@ -51,11 +23,38 @@ abstract class WFInstall {
 
             // cleanup menus
             if (defined('JPATH_PLATFORM')) {
-                $db->setQuery('DELETE FROM #__menu WHERE alias = ' . $db->Quote('jce') . ' AND menutype = ' . $db->Quote('main'));
-                $db->query();
+                $query = $db->getQuery(true);
+                $query->select('id')->from('#__menu')->where(array('alias = ' . $db->Quote('jce'), 'menutype = ' . $db->Quote('main')));
 
-                $db->setQuery('DELETE FROM #__menu WHERE alias LIKE ' . $db->Quote('wf-menu-%') . ' AND menutype = ' . $db->Quote('main'));
-                $db->query();
+                $db->setQuery($query);
+                $id = $db->loadResult();
+
+                $query->clear();
+
+                if ($id) {
+                    $table = JTable::getInstance('menu');
+
+                    // delete main item
+                    $table->delete((int) $id);
+
+                    // delete children
+                    $query->select('id')->from('#__menu')->where('parent_id = ' . $db->Quote($id));
+
+                    $db->setQuery($query);
+                    $ids = $db->loadColumn();
+
+                    $query->clear();
+
+                    if (!empty($ids)) {
+                        // Iterate the items to delete each one.
+                        foreach ($ids as $menuid) {
+                            $table->delete((int) $menuid);
+                        }
+                    }
+                    
+                    // Rebuild the whole tree
+                    $table->rebuild();
+                }
             } else {
                 $db->setQuery('DELETE FROM #__components WHERE `option` = ' . $db->Quote('com_jce'));
                 $db->query();
@@ -190,7 +189,6 @@ abstract class WFInstall {
         if (self::checkTableColumn('#__wf_profiles', 'device') === false) {
             $db = JFactory::getDBO();
 
-            // Change description field to TEXT
             $query = 'ALTER TABLE #__wf_profiles CHANGE `description` `description` TEXT';
             $db->setQuery($query);
             $db->query();
@@ -202,6 +200,11 @@ abstract class WFInstall {
 
             // Add device field
             $query = 'ALTER TABLE #__wf_profiles ADD `device` VARCHAR(255) AFTER `area`';
+
+            if (strtolower($db->name) == 'sqlsrv' || strtolower($db->name) == 'sqlazure') {
+                $query = 'ALTER TABLE #__wf_profiles ADD `device` NVARCHAR(250)';
+            }
+
             $db->setQuery($query);
             $db->query();
         }
@@ -312,7 +315,19 @@ abstract class WFInstall {
             $db->setQuery($query);
             $plugins = $db->loadAssocList('id');
 
-            $map = array('advlink' => 'link', 'advcode' => 'source', 'tablecontrols' => 'table', 'styleprops' => 'style');
+            $map = array(
+                'advlink' => 'link',
+                'advcode' => 'source',
+                'tablecontrols' => 'table',
+                'cut,copy,paste' => 'clipboard',
+                'paste' => 'clipboard',
+                'search,replace' => 'searchreplace',
+                'cite,abbr,acronym,del,ins,attribs' => 'xhtmlxtras',
+                'styleprops' => 'style',
+                'readmore,pagebreak' => 'article',
+                'ltr,rtl' => 'directionality',
+                'insertlayer,moveforward,movebackward,absolute' => 'layer'
+            );
 
             if (self::createProfilesTable()) {
                 foreach ($groups as $group) {
@@ -332,20 +347,25 @@ abstract class WFInstall {
                                     $icon = $plugins[$id]['icon'];
 
                                     // map old icon names to new
-                                    if (isset($map[$icon])) {
+                                    if (array_key_exists($icon, $map)) {
                                         $icon = $map[$icon];
                                     }
                                 }
                             }
+
                             $icons[] = $icon;
                         }
-
-                        $rows[] = str_replace(array('cite,abbr,acronym,del,ins,attribs', 'search,replace', 'ltr,rtl', 'readmore,pagebreak', 'cut,copy,paste'), array('xhtmlxtras', 'searchreplace', 'directionality', 'article', 'paste'), implode(',', $icons));
+                        $rows[] = implode(',', $icons);
                     }
                     // re-assign rows
                     $row->rows = implode(';', $rows);
-
+                    
                     $names = array('anchor');
+                    
+                    // add lists
+                    if (preg_match('#(numlist|bullist)#', $row->rows)) {
+                        $names[] = 'lists';
+                    }
 
                     // transfer plugin ids to names
                     foreach (explode(',', $group->plugins) as $id) {
@@ -353,7 +373,7 @@ abstract class WFInstall {
                             $name = $plugins[$id]['name'];
 
                             // map old icon names to new
-                            if (isset($map[$name])) {
+                            if (array_key_exists($name, $map)) {
                                 $name = $map[$name];
                             }
 
@@ -362,11 +382,36 @@ abstract class WFInstall {
                     }
                     // re-assign plugins
                     $row->plugins = implode(',', $names);
-
+                    
                     // convert params to JSON
                     $params = self::paramsToObject($group->params);
-                    $data = new StdClass();
+                    $data   = new StdClass();
+                    
+                    // Add lists plugin
+                    $buttons = array();
+                    
+                    if (strpos($row->rows, 'numlist') !== false) {
+                        $buttons[] = 'numlist';
+                        // replace "numlist" with "lists"
+                        $row->rows = str_replace('numlist', 'lists', $row->rows);
+                    }
+                    
+                    if (strpos($row->rows, 'bullist') !== false) {
+                        $buttons[] = 'bullist';
+                        // replace "bullist" with "lists"
+                        if (strpos($row->rows, 'lists') === false) {
+                            $row->rows = str_replace('bullist', 'lists', $row->rows);
+                        }
+                    }
+                    // remove bullist and numlist
+                    $row->rows = str_replace(array('bullist', 'numlist'), '', $row->rows);
 
+                    // add lists buttons parameter
+                    if (!empty($buttons)) {
+                        $params->lists_buttons = $buttons;
+                    }
+
+                    // convert parameters
                     foreach ($params as $key => $value) {
                         $parts = explode('_', $key);
 
@@ -381,7 +426,7 @@ abstract class WFInstall {
                         if (isset($map[$node])) {
                             $node = $map[$node];
                         }
-
+                        // convert key to string
                         $key = implode('_', $parts);
 
                         if ($value !== '') {
@@ -412,8 +457,14 @@ abstract class WFInstall {
                             }
                         }
                     }
+
                     // re-assign params
                     $row->params = json_encode($data);
+                    
+                    // replace multiple commas with a single one
+                    $row->rows = preg_replace('#,+#', ',', $row->rows);
+                    // fix row separations
+                    $row->rows = str_replace(',;', ';', $row->rows);
 
                     // re-assign other values
                     $row->name = $group->name;
@@ -579,10 +630,17 @@ abstract class WFInstall {
     private static function installProfile($name) {
         $db = JFactory::getDBO();
 
-        $query = 'SELECT COUNT(id) FROM #__wf_profiles WHERE name = ' . $db->Quote($name);
+        $query = $db->getQuery(true);
+
+        if (is_object($query)) {
+            $query->select('id')->from('#__wf_profiles')->where('name = ' . $db->Quote($name));
+        } else {
+            $query = 'SELECT COUNT(id) FROM #__wf_profiles WHERE name = ' . $db->Quote($name);
+        }
+
         $db->setQuery($query);
         $id = (int) $db->loadResult();
-        
+
         if (!$id) {
             // Blogger
             $file = JPATH_ADMINISTRATOR . '/components/com_jce/models/profiles.xml';
@@ -637,7 +695,6 @@ abstract class WFInstall {
         if (version_compare($version, '2.0.0', '<') && !defined('JPATH_PLATFORM')) {
             return self::upgradeLegacy();
         }// end JCE 1.5 upgrade
-
         // Remove folders
         $folders = array(
             // Remove JQuery folders from admin
@@ -656,7 +713,9 @@ abstract class WFInstall {
             $site . '/editor/tiny_mce/plugins/searchreplace/langs',
             $site . '/editor/tiny_mce/plugins/style/langs',
             $site . '/editor/tiny_mce/plugins/table/langs',
-            $site . '/editor/tiny_mce/plugins/xhtmlxtras/langs'
+            $site . '/editor/tiny_mce/plugins/xhtmlxtras/langs',
+            // remove paste folder
+            $site . '/editor/tiny_mce/plugins/paste'
         );
 
         foreach ($folders as $folder) {
@@ -673,6 +732,8 @@ abstract class WFInstall {
             $admin . '/media/js/html5.js',
             $admin . '/media/js/select.js',
             $admin . '/media/js/tips.js',
+            // remove legend.js
+            $admin . '/media/js/legend.js',
             // remove css files from admin (moved to site)
             $admin . '/media/css/help.css',
             $admin . '/media/css/select.css',
@@ -707,11 +768,7 @@ abstract class WFInstall {
 
         // 2.1 - Add visualblocks plugin
         if (version_compare($version, '2.1', '<')) {
-            // Add Visualblocks plugin
-            $query = 'SELECT id FROM #__wf_profiles';
-            $db->setQuery($query);
-            $profiles = $db->loadObjectList();
-
+            $profiles = self::getProfiles();
             $profile = JTable::getInstance('Profiles', 'WFTable');
 
             if (!empty($profiles)) {
@@ -731,11 +788,8 @@ abstract class WFInstall {
         }
 
         // 2.1.1 - Add anchor plugin
-        if (version_compare($version, '2.1.1', '<')) { 
-            $query = 'SELECT id FROM #__wf_profiles';
-            $db->setQuery($query);
-            $profiles = $db->loadObjectList();
-
+        if (version_compare($version, '2.1.1', '<')) {
+            $profiles = self::getProfiles();
             $profile = JTable::getInstance('Profiles', 'WFTable');
 
             if (!empty($profiles)) {
@@ -767,10 +821,91 @@ abstract class WFInstall {
             }
         }
 
+        // replace some profile row items
+        if (version_compare($version, '2.2.8', '<')) {
+            $profiles = self::getProfiles();
+            $profile = JTable::getInstance('Profiles', 'WFTable');
+
+            if (!empty($profiles)) {
+                foreach ($profiles as $item) {
+                    $profile->load($item->id);
+
+                    $profile->rows = str_replace('paste', 'clipboard', $profile->rows);
+                    $profile->plugins = str_replace('paste', 'clipboard', $profile->plugins);
+
+                    $data = json_decode($profile->params, true);
+
+                    // swap paste data to 'clipboard'
+                    if ($data && array_key_exists('paste', $data)) {
+                        $params = array();
+
+                        // add 'paste_' prefix
+                        foreach ($data['paste'] as $k => $v) {
+                            $params['paste_' . $k] = $v;
+                        }
+
+                        // remove paste parameters
+                        unset($data['paste']);
+
+                        // assign new params to clipboard
+                        $data['clipboard'] = $params;
+                    }
+
+                    $profile->params = json_encode($data);
+
+                    $profile->store();
+                }
+            }
+        }
+        
+        if (version_compare($version, '2.2.9', '<')) {
+            $profiles = self::getProfiles();
+            $profile = JTable::getInstance('Profiles', 'WFTable');
+
+            if (!empty($profiles)) {
+                foreach ($profiles as $item) {
+                    $profile->load($item->id);
+                    
+                    $buttons = array('buttons' => array());
+                    
+                    if (strpos($profile->rows, 'numlist') !== false) {
+                        $buttons['buttons'][] = 'numlist';
+                        
+                        $profile->rows = str_replace('numlist', 'lists', $profile->rows);
+                    }
+                    
+                    if (strpos($profile->rows, 'bullist') !== false) {
+                        $buttons['buttons'][] = 'bullist';
+                        
+                        if (strpos($profile->rows, 'lists') === false) {
+                            $profile->rows = str_replace('bullist', 'lists', $profile->rows);
+                        }
+                    }
+                    // remove bullist and numlist
+                    $profile->rows = str_replace(array('bullist', 'numlist'), '', $profile->rows);
+                    // replace multiple commas with a single one
+                    $profile->rows = preg_replace('#,+#', ',', $profile->rows);
+                    // fix rows
+                    $profile->rows = str_replace(',;', ';', $profile->rows);
+                    
+                    if (!empty($buttons['buttons'])) {
+                        $profile->plugins .= ',lists';
+                        
+                        $data = json_decode($profile->params, true);
+                        $data['lists'] = $buttons;
+                        
+                        $profile->params = json_encode($data);
+                        
+                        $profile->store();
+                    }
+                }
+            }
+        }
+
         // Cleanup JQuery
-        $path       = $site . '/editor/libraries/js/jquery';
-        $files      = JFolder::files($path, '\.js');
-        $exclude    = array('jquery-1.7.2.min.js', 'jquery-ui-1.8.21.custom.min.js', 'jquery-ui-layout.js');
+        $path = $site . '/editor/libraries/js/jquery';
+        $files = JFolder::files($path, '\.js');
+        $exclude = array('jquery-1.7.2.min.js', 'jquery-ui-1.8.21.custom.min.js', 'jquery-ui-layout.js');
 
         foreach ($files as $file) {
             if (in_array(basename($file), $exclude) === false) {
@@ -781,12 +916,25 @@ abstract class WFInstall {
         return true;
     }
 
+    private static function getProfiles() {
+        $db = JFactory::getDBO();
+
+        if (is_object($query)) {
+            $query->select('id')->from('#__wf_profiles');
+        } else {
+            $query = 'SELECT id FROM #__wf_profiles';
+        }
+
+        $db->setQuery($query);
+        return $db->loadObjectList();
+    }
+
     private static function createProfilesTable() {
         include_once (dirname(__FILE__) . '/includes/base.php');
         include_once (dirname(__FILE__) . '/models/profiles.php');
-        
+
         $profiles = new WFModelProfiles();
-        
+
         if (method_exists($profiles, 'createProfilesTable')) {
             return $profiles->createProfilesTable();
         }
@@ -799,7 +947,7 @@ abstract class WFInstall {
         include_once (dirname(__FILE__) . '/models/profiles.php');
 
         $profiles = new WFModelProfiles();
-        
+
         if (method_exists($profiles, 'installProfiles')) {
             return $profiles->installProfiles();
         }
@@ -878,6 +1026,15 @@ abstract class WFInstall {
                         $module->ordering = 100;
                         $module->published = 1;
                         $module->store();
+                    }
+                }
+                
+                if ($folder == 'editors') {
+                    $manifest = $installer->getPath('manifest');
+                    
+                    if (basename($manifest) == 'legacy.xml') {
+                        // rename legacy.xml to jce.xml
+                        JFile::move($installer->getPath('extension_root') . '/' . basename($manifest), $installer->getPath('extension_root') . '/jce.xml');
                     }
                 }
 
@@ -1009,7 +1166,7 @@ abstract class WFInstall {
         $query = 'DROP TABLE IF EXISTS #__jce_plugins';
         $db->setQuery($query);
         $db->query();
-        
+
         $query = 'DROP TABLE IF EXISTS #__jce_extensions';
         $db->setQuery($query);
         $db->query();
@@ -1030,7 +1187,14 @@ abstract class WFInstall {
         }
 
         // try with query
-        $query = 'SELECT COUNT(id) FROM ' . $table;
+        $query = $db->getQuery(true);
+
+        if (is_object($query)) {
+            $query->select('COUNT(id)')->from($table);
+        } else {
+            $query = 'SELECT COUNT(id) FROM ' . $table;
+        }
+
         $db->setQuery($query);
 
         return $db->query();
@@ -1038,12 +1202,20 @@ abstract class WFInstall {
 
     /**
      * Check table contents
-     * @return boolean
+     * @return integer
      * @param string $table Table name
      */
     private static function checkTableContents($table) {
         $db = JFactory::getDBO();
-        $query = 'SELECT COUNT(id) FROM ' . $table;
+
+        $query = $db->getQuery(true);
+
+        if (is_object($query)) {
+            $query->select('COUNT(id)')->from($table);
+        } else {
+            $query = 'SELECT COUNT(id) FROM ' . $table;
+        }
+
         $db->setQuery($query);
 
         return $db->loadResult();
@@ -1051,11 +1223,19 @@ abstract class WFInstall {
 
     private static function checkTableColumn($table, $column) {
         $db = JFactory::getDBO();
-        
-        $db->setQuery('DESCRIBE ' . $table);
-        $fields = $db->loadResultArray();
 
-        return in_array($column, (array) $fields);
+        // use built in function
+        if (method_exists($db, 'getTableColumns')) {
+            $fields = $db->getTableColumns($table);
+        } else {
+            $db->setQuery('DESCRIBE ' . $table);
+            $fields = $db->loadResultArray();
+
+            // we need to check keys not values
+            $fields = array_flip($fields);
+        }
+
+        return array_key_exists($column, $fields);
     }
 
 }

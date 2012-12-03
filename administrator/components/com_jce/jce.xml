@@ -2,12 +2,12 @@
 <extension version="1.6" type="component" method="upgrade">
     <name>JCE</name>
     <author>Ryan Demmer</author>
-    <creationDate>12 September 2012</creationDate>
+    <creationDate>10 November 2012</creationDate>
     <copyright>Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved</copyright>
     <license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
     <authorEmail>info@joomlacontenteditor.net</authorEmail>
     <authorUrl>www.joomlacontenteditor.net</authorUrl>
-    <version>2.2.7.2</version>
+    <version>2.2.9.1</version>
     <description>WF_ADMIN_DESC</description>
     
     <scriptfile>install.script.php</scriptfile>
@@ -68,6 +68,7 @@
             <file>config.xml</file>
             <file>index.html</file>
             <file>install.php</file>
+            <file>install.script.php</file>
             <file>jce.php</file>
             <file>licence.txt</file>
         </files>

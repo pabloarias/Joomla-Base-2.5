@@ -9,7 +9,7 @@
         <row>4</row>
         <core>1</core>
     </plugin>
-    <plugin name="advlist">
+    <!--plugin name="advlist">
         <name>advlist</name>
         <title>WF_ADVLIST_TITLE</title>
         <description>WF_ADVLIST_DESC</description>
@@ -17,7 +17,7 @@
         <editable>0</editable>
         <row>0</row>
         <core>1</core>
-    </plugin>
+    </plugin-->
     <plugin name="anchor">
         <title>WF_ANCHOR_TITLE</title>
         <description>WF_ANCHOR_DESC</description>
@@ -52,6 +52,15 @@
         <icon>cleanup</icon>
         <editable>0</editable>
         <row>0</row>
+        <core>1</core>
+    </plugin>
+    <plugin name="clipboard">
+        <name>clipboard</name>
+        <title>WF_CLIPBOARD_TITLE</title>
+        <description>WF_CLIPBOARD_DESC</description>
+        <icon>cut,copy,paste</icon>
+        <editable>1</editable>
+        <row>2</row>
         <core>1</core>
     </plugin>
     <plugin name="code">
@@ -135,6 +144,15 @@
         <row>4</row>
         <core>1</core>
     </plugin>
+    <plugin name="lists">
+        <name>lists</name>
+        <title>WF_LISTS_TITLE</title>
+        <description>WF_LISTS_DESC</description>
+        <icon>numlist,bullist</icon>
+        <editable>1</editable>
+        <row>2</row>
+        <core>1</core>
+    </plugin>
     <plugin name="media">
         <name>media</name>
         <title>WF_MEDIA_TITLE</title>
@@ -151,15 +169,6 @@
         <icon>nonbreaking</icon>
         <editable>0</editable>
         <row>4</row>
-        <core>1</core>
-    </plugin>
-    <plugin name="paste">
-        <name>paste</name>
-        <title>WF_PASTE_TITLE</title>
-        <description>WF_PASTE_DESC</description>
-        <icon>cut,copy,paste</icon>
-        <editable>1</editable>
-        <row>2</row>
         <core>1</core>
     </plugin>
     <plugin name="preview">
@@ -266,7 +275,7 @@
         <title>WF_XHTMLXTRAS_TITLE</title>
         <description>WF_XHTMLXTRAS_DESC</description>
         <icon>cite,abbr,acronym,del,ins,attribs</icon>
-        <editable>0</editable>
+        <editable>1</editable>
         <row>4</row>
         <core>1</core>
     </plugin>

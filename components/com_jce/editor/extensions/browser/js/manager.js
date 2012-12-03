@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -30,7 +30,7 @@ if($(this).hasClass('details-nav-right')){$item.nextAll('li.selected:first').add
 self._showItemDetails();});$(dialog.limit+'-select').val($.Cookie.get('jce_'+$.Plugin.getName()+'_limit')||this.options.listlimit);$(dialog.limit+'-select').change(function(){self._limitcount=0;if(self.options.use_cookies){$.Cookie.set('wf_'+$.Plugin.getName()+'_limit',$(this).val());}
 self.refresh();});$('ul li',dialog.limit).click(function(){var x=0,count=self._limitcount,limit=parseInt(self._limit);if($(this).hasClass('limit-left')){x=count-limit;}
 if($(this).hasClass('limit-right')){x=count+limit;}
-if($(this).hasClass('limit-left-end')){x=count=self._limitend;}
+if($(this).hasClass('limit-right-end')){x=count=self._limitend;}
 self._limitcount=x;self.refresh();});$('span.checkbox','#check-all').click(function(e){var el=e.target;if($(el).hasClass('checked')){$(el).removeClass('checked').attr('aria-checked',false);$('span.checkbox',$(dialog.list)).removeClass('checked').attr('aria-checked',false);self._deselectItems();}else{$(el).addClass('checked').attr('aria-checked',true);self._selectItems($('li.folder, li.file',$(dialog.list)).not('li.folder-up'),true);}});this._setupSortables();if(!this.options.search){$('#block-search-icon').addClass('hide');}
 if(!this.options.details||!this._treeLoaded()){$('#block-details-icon').addClass('hide');$('#show-details span').addClass('disabled');}
 this._toggleTree(this._treeLoaded());$('#show-search').click(function(){$('#searchbox').toggleClass('hide').attr('aria-hidden',function(){return $(this).hasClass('hide');});$(this).toggleClass('active');if($(this).hasClass('active')){var end=$(this).prevAll(':visible').get(1);var width=$(end).parent().width()-$(end).position().left-parseInt($('#searchbox').css('right'));var spacers=$(end).nextAll(':visible').not(this).children('div.spacer');$('#searchbox').width(width-(spacers.length*$(spacers).outerWidth(true)));$('#search').focus();}});$('body').click(function(e){if($(e.target).is('#show-search, span.layout-icon.search')||$(e.target).parents('#searchbox').length){return;}
@@ -115,7 +115,7 @@ if(this._pasteitems){this._showPasteButton();}},_showButton:function(button,sing
 $(button).toggleClass('hide',!show).toggleClass('show',!show);if(!show){$(button).attr('aria-hidden',false);}}},_getButton:function(type,name){return this._buttons[type][name]||null;},_showPasteButton:function(){this._showButton($('div.paste','#browser-buttons'),true,true);},_isSelectedItem:function(el){return $(el).is('li.selected');},_deselectItems:function(){var dialog=this.options.dialog;$('li.selected','#item-list').removeClass('selected active').children('span.checkbox').removeClass('checked').attr('aria-checked',false);$(dialog.info).empty();$(dialog.comments).empty();var nav=dialog.nav;$.each([nav+'-left',nav+'-right',nav+'-text'],function(i,el){$(el).css('visibility','hidden').attr('aria-hidden',true);});this._hideAllButtons();$('span.checkbox','#check-all').removeClass('checked');},_selectItems:function(items,show){$(items).addClass('selected').children('span.checkbox').addClass('checked').attr('aria-checked',true);if(show){this._showSelectedItems();}
 var $list=$('#item-list');if($('span.checked',$list).length==$('li',$list).length){$('span.checkbox','#check-all').addClass('checked').attr('aria-checked',true);}
 this._trigger('onSelectItems',null,items);},_removeSelectedItems:function(items,show){$(items).removeClass('selected').children('span.checkbox').removeClass('checked').attr('aria-checked',false);if(show){this._showSelectedItems();}
-this._trigger('onRemoveItems',null,items);},getSelectedItems:function(key){var $items=$('li.selected','#item-list');return $items.get(key)||$items;},_setSelectedItems:function(e,multiple){var checkbox=false;var el=e.target;var $list=$('#item-list');if(e.type=='keydown'){el=$('li.selected:last',$list).get(0);$list=$(this.options.dialog.list);if(e.which==38){el=el.previousSibling;}
+this._trigger('onRemoveItems',null,items);},getSelectedItems:function(key){var $items=$('li.selected','#item-list');return $items.get(key)||$items;},setSelectedItems:function(items){this._findItem(items);},_setSelectedItems:function(e,multiple){var checkbox=false;var el=e.target;var $list=$('#item-list');if(e.type=='keydown'){el=$('li.selected:last',$list).get(0);$list=$(this.options.dialog.list);if(e.which==38){el=el.previousSibling;}
 if(e.which==40){el=el.nextSibling;}
 if(!el){return;}
 if(el.offsetTop>$list.innerHeight()||el.offsetTop<$list.scrollTop()){$list.scrollTop((el.offsetTop+$(el).innerHeight())-$list.height());}}
@@ -143,4 +143,4 @@ if($(item).data('preview')){$('#info-preview').empty().append('<dl>'+'<dt>'+self
 if($.support.backgroundSize){$('dd','#info-preview').css('background-image','url("'+img.src+'")');if(w>100||h>80){$('dd','#info-preview').addClass('resize');}}else{var dim=$.Plugin.sizeToFit(img,{width:100,height:80});$('dd','#info-preview').append($(img).attr('alt',self._translate('preview','Preview')).css(dim));}
 $('dd','#info-preview').removeClass('loader');};img.onerror=function(){$('dd',$('#info-preview')).removeClass('loader').addClass('preview-error');};src=/http(s)?:\/\//.test(src)?src:$.String.encodeURI(src);img.src=src+(/\?/.test(src)?'&':'?')+new Date().getTime();}
 if(comments){$(dialog.comments).empty().append('<ul>'+comments+'</ul>');}
-$('span.hastip',$(dialog.comments)).tips();var cb=(type=='folder')?'onFolderDetails':'onFileDetails';self._trigger(cb,null,item);},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.MediaManager,{version:"2.2.7.2"});})(jQuery);
+$('span.hastip',$(dialog.comments)).tips();var cb=(type=='folder')?'onFolderDetails':'onFileDetails';self._trigger(cb,null,item);},destroy:function(){$.Widget.prototype.destroy.apply(this,arguments);}});$.extend($.ui.MediaManager,{version:"2.2.9.1"});})(jQuery);

@@ -42,15 +42,15 @@ class WFElementList extends WFElement {
 
         foreach ($node->children() as $option) {
             $val        = (string) $option->attributes()->value;
-            $text       = WFText::_((string) $option);
+            $text       = (string) $option;
             $disabled   = (string) $option->attributes()->disabled ? true : false;
 
-            $text = strpos($text, 'WF_') === false ? $text : WFText::_($text);
+            $text = is_numeric($text) ? $text : WFText::_($text);
 
             if (is_array($value)) {
                 $key = array_search($val, $value);
                 if ($key !== false) {
-                    $options[$key] = JHTML::_('select.option', $val, $text, 'value', 'text', $disabled);
+                    $options[$key] = JHTML::_('select.option', $val,  $text, 'value', 'text', $disabled);
                 }
             } else {
                 $options[] = JHTML::_('select.option', $val, $text, 'value', 'text', $disabled);

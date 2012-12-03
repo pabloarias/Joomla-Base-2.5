@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -27,7 +27,7 @@ lookup['mceItem'+k]=v;lookup[k.toLowerCase()]=v;});self.lookup=lookup;function i
 ed.schema.addValidElements('iframe[longdesc|name|src|frameborder|marginwidth|marginheight|scrolling|align|width|height|allowtransparency|*]');ed.schema.addCustomElements('comment');invalid=tinymce.explode(invalid,',');ed.parser.addNodeFilter('object,embed,video,audio,script,iframe',function(nodes){for(var i=0,len=nodes.length;i<len;i++){if(tinymce.inArray(invalid,nodes[i].name)==-1){self.toImage(nodes[i]);}else{nodes[i].remove();}}});ed.serializer.addNodeFilter('img',function(nodes,name,args){for(var i=0,len=nodes.length;i<len;i++){var node=nodes[i];if(/mceItem(Flash|ShockWave|WindowsMedia|QuickTime|RealMedia|DivX|Silverlight|Audio|Video|Generic|Embed|Iframe)/.test(node.attr('class')||'')){self.restoreElement(node,args);}}});});ed.onInit.add(function(){if(ed.theme&&ed.theme.onResolveName){ed.theme.onResolveName.add(function(theme,o){if(o.name==='img'&&/mceItem(Object|Embed|Audio|Video|Generic)/.test(o.node.className)){o.name='media';}
 if(o.name==='img'&&/mceItemIframe/.test(o.node.className)){o.name='iframe';}});}
 if(!ed.settings.compress.css)
-ed.dom.loadCSS(url+"/css/content.css");});ed.onBeforeSetContent.add(function(ed,o){var h=o.content;h=h.replace(/<(audio|embed|object|video|iframe)([^>]*?)>([\w\W]+?)<\/\1>/gi,function(a,b,c,d){d=d.replace(/<!--\[if([^\]]*)\]>(<!)?-->/gi,'<![if$1]>');d=d.replace(/<!\[if([^\]]+)\]>/gi,function(a,b){return'<comment data-comment-condition="[if'+b+']">';});d=d.replace(/<!(--<!)?\[endif\](--)?>/gi,'</comment>');return'<'+b+c+'>'+d+'</'+b+'>';});o.content=h;});},getInfo:function(){return{longname:'Media',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.7.2'};},convertUrl:function(url,force_absolute){var self=this,ed=self.editor,settings=ed.settings,converter=settings.url_converter,scope=settings.url_converter_scope||self;if(!url)
+ed.dom.loadCSS(url+"/css/content.css");});ed.onBeforeSetContent.add(function(ed,o){var h=o.content;h=h.replace(/<(audio|embed|object|video|iframe)([^>]*?)>([\w\W]+?)<\/\1>/gi,function(a,b,c,d){d=d.replace(/<!--\[if([^\]]*)\]>(<!)?-->/gi,'<![if$1]>');d=d.replace(/<!\[if([^\]]+)\]>/gi,function(a,b){return'<comment data-comment-condition="[if'+b+']">';});d=d.replace(/<!(--<!)?\[endif\](--)?>/gi,'</comment>');return'<'+b+c+'>'+d+'</'+b+'>';});o.content=h;});},getInfo:function(){return{longname:'Media',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};},convertUrl:function(url,force_absolute){var self=this,ed=self.editor,settings=ed.settings,converter=settings.url_converter,scope=settings.url_converter_scope||self;if(!url)
 return url;if(force_absolute)
 return ed.documentBaseURI.toAbsolute(url);return converter.call(scope,url,'src','object');},createTemplate:function(n,o){var self=this,ed=this.editor,dom=ed.dom,nn,hc,cn,html;hc=n.firstChild;nn=n.name;o=o||{};function is_child(n){return/^(audio|embed|object|video|iframe)$/.test(n.parent.name);}
 if(/^(audio|embed|object|param|source|video|iframe)$/.test(nn)){var at=this.serializeAttributes(n);switch(nn){case'audio':case'embed':case'object':case'video':case'iframe':case'param':if(hc||is_child(n)){if(typeof o[nn]=='undefined'){o[nn]={};}

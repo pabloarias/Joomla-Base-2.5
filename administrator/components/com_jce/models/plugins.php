@@ -75,7 +75,7 @@ class WFModelPlugins extends WFModel {
                     //$plugins[$name]->version = '';
                     //$plugins[$name]->creationdate = '';
                     //$plugins[$name]->description = '';
-                    
+
                     $plugins[$name]->path = str_replace(JPATH_SITE, '', WF_EDITOR_PLUGINS) . '/' . $name;
                 }
             }
@@ -85,18 +85,6 @@ class WFModelPlugins extends WFModel {
 
         // get all Plugins
         $folders = JFolder::folders(WF_EDITOR_PLUGINS, '.', false, true, array_merge(array('.svn', 'CVS'), array_keys($plugins)));
-
-        jimport('joomla.plugin.helper');
-        $external = JPluginHelper::getPlugin('jce');
-
-        // get external
-        foreach ($external as $plugin) {
-            $path = JPATH_PLUGINS . '/jce/' . $plugin->name;
-
-            if (is_dir($path) && is_file($path . '/editor_plugin.js')) {
-                $folders[] = $path;
-            }
-        }
 
         foreach ($folders as $folder) {
             $name = basename($folder);
@@ -211,6 +199,46 @@ class WFModelPlugins extends WFModel {
         return true;
     }
 
+    public static function addToProfile($id, $plugin) {
+        JTable::addIncludePath(dirname(dirname(__FILE__)) . '/tables');
+        // Add to Default Group
+        $profile = JTable::getInstance('profiles', 'WFTable');
+
+        if ($profile->load($id)) {
+            // Add to plugins list
+            $plugins = explode(',', $profile->plugins);
+
+            if (!in_array($plugin->name, $plugins)) {
+                $plugins[] = $plugin->name;
+            }
+
+            $profile->plugins = implode(',', $plugins);
+
+            if ($plugin->icon) {
+                if (!in_array($plugin, preg_split('/[;,]+/', $profile->rows))) {
+                    // get rows as array	
+                    $rows = explode(';', $profile->rows);
+                    // get key (row number)
+                    $key = (int) $plugin->row - 1;
+                    // get row contents as array
+                    $row = explode(',', $rows[$key]);
+                    // add plugin name to end of row
+                    $row[] = $plugin->name;
+                    // add row data back to rows array
+                    $rows[$key] = implode(',', $row);
+
+                    $profile->rows = implode(';', $rows);
+                }
+
+                if (!$profile->store()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     /**
      * Enable the installed plugin and add it to the editor toolbar
      * @param object $plugin Plugin object
@@ -218,7 +246,7 @@ class WFModelPlugins extends WFModel {
      */
     public static function installPostflight($name, $installer) {
         $db = JFactory::getDBO();
-        
+
         jimport('joomla.filesystem.folder');
 
         $plugin = JTable::getInstance('extension');
@@ -228,13 +256,13 @@ class WFModelPlugins extends WFModel {
         // load the plugin and enable
         if ($id) {
             $plugin->load($id);
-            
+
             // plugin is installed
             if ($plugin->extension_id) {
                 $plugin->publish(1);
-                
+
                 $legacy = JPATH_SITE . '/components/com_jce/editor/tiny_mce/plugins/' . $name;
-                
+
                 // remove old version
                 if (JFolder::exists($legacy)) {
                     @JFolder::delete($legacy);
@@ -244,51 +272,27 @@ class WFModelPlugins extends WFModel {
                 $xml = $installer->manifest;
 
                 if ($xml) {
-                    $plugin->row = (string) $xml->attributes()->row;
-                    $plugin->icon = (string) $xml->icon;
+                    $plugin->row    = (string) $xml->attributes()->row;
+                    $plugin->icon   = (string) $xml->icon;
+                    $plugin->name   = (string) $plugin->element;
 
                     // Install plugin install default profile layout if a row is set
                     if (is_numeric($plugin->row) && (int) $plugin->row) {
-                        JTable::addIncludePath(dirname(dirname(__FILE__)) . '/tables');
-                        // Add to Default Group
-                        $profile = JTable::getInstance('profiles', 'WFTable');
+                        $query = $db->getQuery(true);
 
-                        $query = 'SELECT id'
-                                . ' FROM #__wf_profiles'
-                                . ' WHERE name = '
-                                . $db->Quote('Default');
+                        if (is_object($query)) {
+                            $query->select('id')->from('#__wf_profiles')->where('name = ' . $db->Quote('Default'));
+                        } else {
+                            $query = 'SELECT id'
+                            . ' FROM #__wf_profiles'
+                            . ' WHERE name = ' . $db->Quote('Default');
+                        }
+
                         $db->setQuery($query);
                         $id = $db->loadResult();
 
-                        $profile->load($id);
-                        // Add to plugins list
-                        $plugins = explode(',', $profile->plugins);
-
-                        if (!in_array($plugin->element, $plugins)) {
-                            $plugins[] = $plugin->element;
-                        }
-
-                        $profile->plugins = implode(',', $plugins);
-
-                        if ($plugin->icon) {
-                            if (!in_array($plugin->element, preg_split('/[;,]+/', $profile->rows))) {
-                                // get rows as array	
-                                $rows = explode(';', $profile->rows);
-                                // get key (row number)
-                                $key = (int) $plugin->row - 1;
-                                // get row contents as array
-                                $row = explode(',', $rows[$key]);
-                                // add plugin name to end of row
-                                $row[] = $plugin->element;
-                                // add row data back to rows array
-                                $rows[$key] = implode(',', $row);
-
-                                $profile->rows = implode(';', $rows);
-                            }
-                        }
-
-                        if (!$profile->store()) {
-                            return false;
+                        if ($id) {
+                            return self::addToProfile($id, $plugin);
                         }
                     }
                 }

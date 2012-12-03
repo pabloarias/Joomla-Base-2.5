@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.7.2
+ * JCE Editor                 2.2.9.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    12 September 2012
+ * @date                    10 November 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,7 +17,7 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-(function(){var options={'indent_size':1,'indent_char':'\t','unformatted':['a','abbr','acronym','b','bdo','big','br','cite','code','dfn','em','i','img','input','kbd','label','q','samp','select','small','span','strong','sub','sup','textarea','tt','var'],'max_char':0};SourceEditor.formatHTML=function(html,o){for(var n in o){options[n]=o[n];}
+(function(){var options={'indent_size':1,'indent_char':'\t','unformatted':['a','abbr','acronym','b','bdo','big','br','cite','code','dfn','em','i','img','input','kbd','label','q','samp','select','small','span','strong','sub','sup','textarea','tt','var','pre'],'max_char':0};SourceEditor.formatHTML=function(html,o){for(var n in o){options[n]=o[n];}
 html=style_html(html,options);return html.replace(new RegExp('\n*\t*<('+options.unformatted.join('|')+')','gi'),'<$1').replace(/\n\t<\/(li|dt|dd)>/gi,'</$1>').replace(/\n+/g,'\n');};function js_beautify(js_source_text,options){var input,output,token_text,last_type,last_text,last_last_text,last_word,flags,flag_store,indent_string;var whitespace,wordchar,punct,parser_pos,line_starters,digits;var prefix,token_type,do_block_just_closed;var wanted_newline,just_added_newline,n_newlines;var preindent_string='';options=options?options:{};var opt_brace_style;if(options.space_after_anon_function!==undefined&&options.jslint_happy===undefined){options.jslint_happy=options.space_after_anon_function;}
 if(options.braces_on_own_line!==undefined){opt_brace_style=options.braces_on_own_line?"expand":"collapse";}
 opt_brace_style=options.brace_style?options.brace_style:(opt_brace_style?opt_brace_style:"collapse");var opt_indent_size=options.indent_size?options.indent_size:4;var opt_indent_char=options.indent_char?options.indent_char:' ';var opt_preserve_newlines=typeof options.preserve_newlines==='undefined'?true:options.preserve_newlines;var opt_max_preserve_newlines=typeof options.max_preserve_newlines==='undefined'?false:options.max_preserve_newlines;var opt_jslint_happy=options.jslint_happy==='undefined'?false:options.jslint_happy;var opt_keep_array_indentation=typeof options.keep_array_indentation==='undefined'?false:options.keep_array_indentation;var opt_space_before_conditional=typeof options.space_before_conditional==='undefined'?true:options.space_before_conditional;var opt_indent_case=typeof options.indent_case==='undefined'?false:options.indent_case;just_added_newline=false;var input_length=js_source_text.length;function trim_output(eat_newlines){eat_newlines=typeof eat_newlines==='undefined'?false:eat_newlines;while(output.length&&(output[output.length-1]===' '||output[output.length-1]===indent_string||output[output.length-1]===preindent_string||(eat_newlines&&(output[output.length-1]==='\n'||output[output.length-1]==='\r')))){output.pop();}}
