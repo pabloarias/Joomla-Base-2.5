@@ -7,12 +7,13 @@
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>tech@reumer.net</authorEmail>
 	<authorUrl>tech.reumer.net</authorUrl>
-	<version>2.17</version>
+	<version>2.18</version>
 	<description>PLUGIN_GOOGLE_MAPS_INSTALLATION</description>
 	<files>
 		<filename plugin="plugin_googlemap2">plugin_googlemap2.php</filename>
 		<filename>plugin_googlemap2_helper.php</filename>
 		<filename>plugin_googlemap2_proxy.php</filename>
+		<filename>plugin_googlemap2_twitter_kml.php</filename>
 		<filename>plugin_googlemap2.perm</filename>
 		<filename>gpl.txt</filename>
 		<filename>index.html</filename>
@@ -54,6 +55,7 @@
 					<option value="0">No</option>
 				</field>
 				<field name="mapclass" type="text" size= "40" default="" export='1' label="GOOGLEMAPS_MAP_CLASS" description="GOOGLEMAPS_TT_MAP_CLASS" />
+				<field name="mapcss" type="textarea" rows="3" cols="40" default="/* For img in the map remove borders, shadow, no margin and no max-width&#13;*/&#13;.map img {&#13;    border: 0px;&#13;    box-shadow: 0px;&#13;    margin: 0px;&#13;    max-width: none !important;&#13;}&#13;&#13;/* Make sure the directions are below the map&#13;*/&#13;.directions {&#13;    clear: left;&#13;}&#13;&#13;/* Solve problems in chrome with the show of the direction steps in full width&#13;*/&#13;.adp-placemark {&#13;    width : 100%&#13;}" export='0' label="GOOGLEMAPS_MAPS_CSS" description="GOOGLEMAPS_TT_MAPS_CSS" />
 				<field name="loadmootools" type="radio" size= "1" default="1" export='1' label="GOOGLEMAPS_LOADWITHMOOTOOLS" description="GOOGLEMAPS_TT_LOADWITHMOOTOOLS">
 					<option value="1">GOOGLEMAPS_LOADWITHMOOTOOLSMOOTOOLS</option>
 					<option value="0">GOOGLEMAPS_LOADWITHMOOTOOLSTIMEINTERVAL</option>
@@ -85,7 +87,7 @@
 					<option value='maps.google.be'>Belgium - maps.google.be</option>
 					<option value='maps.google.com.bz'>Belize - maps.google.com.bz</option>
 					<option value='maps.google.com.bo'>Bolivia - maps.google.com.bo</option>
-					<option value='maps.google.ba'>Bosnia &amp; Herzegovina - maps.google.ba</option>
+					<option value='maps.google.ba'>Bosnia and Herzegovina - maps.google.ba</option>
 					<option value='maps.google.co.bw'>Botswana - maps.google.co.bw</option>
 					<option value='maps.google.com.br'>Brazil - maps.google.com.br</option>
 					<option value='maps.google.vg'>British Virgin Islands - maps.google.vg</option>
@@ -189,7 +191,7 @@
 					<option value='maps.google.ru'>Russia - maps.google.ru</option>
 					<option value='maps.google.rw'>Rwanda - maps.google.rw</option>
 					<option value='maps.google.sh'>Saint Helena - maps.google.sh</option>
-					<option value='maps.google.com.vc'>Saint Vincent &amp; the Grenadines - maps.google.com.vc</option>
+					<option value='maps.google.com.vc'>Saint Vincent and the Grenadines - maps.google.com.vc</option>
 					<option value='maps.google.ws'>Samoa - maps.google.ws</option>
 					<option value='maps.google.st'>Sao Tome and Principe - maps.google.st</option>
 					<option value='maps.google.com.sa'>Saudi Arabia - maps.google.com.sa</option>
@@ -489,6 +491,14 @@
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
+				<field name="transit" type="radio" size= "1" default="0" export='1' label="GOOGLEMAPS_MAPS_TRANSIT" description="GOOGLEMAPS_TT_MAPS_TRANSIT">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
+				<field name="bicycle" type="radio" size= "1" default="0" export='1' label="GOOGLEMAPS_MAPS_BICYCLE" description="GOOGLEMAPS_TT_MAPS_BICYCLE">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+				</field>
 				<field name="panoramio" type="radio" size= "1" default="none" export='1' label="GOOGLEMAPS_MAPS_PANORAMIO" description="GOOGLEMAPS_TT_MAPS_PANORAMIO">
 					<option value="none">GOOGLEMAPS_MAPS_PANORAMIONO</option>
 					<option value="all">GOOGLEMAPS_MAPS_PANORAMIOALL</option>
@@ -565,6 +575,8 @@
 				<field name="dirtype" type="radio" size= "1" default="D" export='1' label="GOOGLEMAPS_MAPS_DIRTYPE" description="GOOGLEMAPS_TT_MAPS_DIRTYPE">
 					<option value="D">GOOGLEMAPS_MAPS_DIRTYPEDRIVING</option>
 					<option value="W">GOOGLEMAPS_MAPS_DIRTYPEWALKING</option>
+					<option value="B">GOOGLEMAPS_MAPS_DIRTYPEBICYCLE</option>
+					<option value="R">GOOGLEMAPS_MAPS_DIRTYPETRANSIT</option>
 				</field>
 				<field name="avoidhighways" type="radio" size="1" default="0" export='1' label="GOOGLEMAPS_MAPS_AVOIDHIGHWAYS" description="GOOGLEMAPS_TT_MAPS_AVOIDHIGHWAYS">
 					<option value="0">No</option>
@@ -628,6 +640,8 @@
 				<field name="txt_driving" type="textarea" filter="raw" rows="3" cols="40" default="" value="Driving" export='1' label="GOOGLEMAPS_MAPS_TXTLABELDRIVING" description="GOOGLEMAPS_TT_MAPS_TXTLABELDRIVING" />
 				<field name="txt_avhighways" type="textarea" filter="raw" rows="3" cols="40" default="" value="Avoid highways" export='1' label="GOOGLEMAPS_MAPS_TXTAVOIDHIGHWAYS" description="GOOGLEMAPS_TT_MAPS_TXTAVOIDHIGHWAYS" />
 				<field name="txt_walking" type="textarea" filter="raw" rows="3" cols="40" default="" value="Walking" export='1' label="GOOGLEMAPS_MAPS_TXTWALKING" description="GOOGLEMAPS_TT_MAPS_TXTWALKING" />
+				<field name="txt_bicycle" type="textarea" rows="3" cols="40" default="" value="Bicycle" export='1' label="GOOGLEMAPS_MAPS_TXTBICYCLE" description="GOOGLEMAPS_TT_MAPS_TXTBICYCLE" />
+				<field name="txt_transit" type="textarea" rows="3" cols="40" default="" value="Transit" export='1' label="GOOGLEMAPS_MAPS_TXTTRANSIT" description="GOOGLEMAPS_TT_MAPS_TXTTRANSIT" />
 				<field name="txt_optimize" type="textarea" rows="3" cols="40" default="" value="Optimize route" export='1' label="GOOGLEMAPS_MAPS_TXTOPTIMIZE" description="GOOGLEMAPS_TT_MAPS_TXTOPTIMIZE" />
 				<field name="txt_alternatives" type="textarea" rows="3" cols="40" default="" value="Route alternatives" export='1' label="GOOGLEMAPS_MAPS_TXTALTERNATIVES" description="GOOGLEMAPS_TT_MAPS_TXTALTERNATIVES" />
 				<field name="dirdefault" type="radio" size= "1" default="0" export='1' label="GOOGLEMAPS_MAPS_FROMTODEFAULT" description="GOOGLEMAPS_TT_MAPS_FROMTODEFAULT">
@@ -931,9 +945,17 @@
 				<field name="imageanchorx" type="text" size= "3" default="" export='1' label="GOOGLEMAPS_IMAGE_ANCHORX" description="GOOGLEMAPS_TT_IMAGE_ANCHORX" />
 				<field name="imageanchory" type="text" size= "3" default="" export='1' label="GOOGLEMAPS_IMAGE_ANCHORY" description="GOOGLEMAPS_TT_IMAGE_ANCHORY" />
 				<field name="imageanchorunits" type="radio" size= "8" default="pixels" export='1' label="GOOGLEMAPS_IMAGE_ANCHORUNITS" description="GOOGLEMAPS_TT_IMAGE_ANCHORUNITS">
-					<option value="fraction">GOOGLEMAPS_TT_IMAGE_UNITFRACTION</option>
-					<option value="pixels">GOOGLEMAPS_TT_IMAGE_UNITPIXELS</option>
+					<option value="fraction">GOOGLEMAPS_IMAGE_UNITFRACTION</option>
+					<option value="pixels">GOOGLEMAPS_IMAGE_UNITPIXELS</option>
 				</field>		
+			</fieldset>
+			<fieldset name="GOOGLEMAP_TWITTER">
+				<field name="twittername" type="text" size= "60" default="" export='1' label="GOOGLEMAPS_TWITTER_NAME" description="GOOGLEMAPS_TT_TWITTER_NAME" />
+				<field name="twittertweets" type="text" size= "3" default="15" export='1' label="GOOGLEMAPS_TWITTER_TWEETS" description="GOOGLEMAPS_TT_TWITTER_TWEETS" />
+				<field name="twittericon" type="text" size= "255" default="/media/plugin_googlemap2/site/Twitter/twitter_map_icon.png" export='1' label="GOOGLEMAPS_TWITTER_ICON" description="GOOGLEMAPS_TT_TWITTER_ICON" />
+				<field name="twitterline" type="text" size= "10" default="#ff0000ff" export='1' label="GOOGLEMAPS_TWITTER_LINE" description="GOOGLEMAPS_TT_TWITTER_LINE" />
+				<field name="twitterlinewidth" type="text" size= "2" default="4" export='1' label="GOOGLEMAPS_TWITTER_LINEWIDTH" description="GOOGLEMAPS_TT_TWITTER_LINEWIDTH" />
+				<field name="twitterstartloc" type="text" size= "30" default="0,0,0" export='1' label="GOOGLEMAPS_TWITTER_STARTLOC" description="GOOGLEMAPS_TT_TWITTER_STARTLOC" />
 			</fieldset>
 		</fields>
 	</config>

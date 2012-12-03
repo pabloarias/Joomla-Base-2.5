@@ -13,6 +13,12 @@
 // No protection of Joomla because this php program may be called directly to deliver content
 // defined( '_JEXEC' ) or die( 'Restricted access' );
 
+$debug = urldecode($_GET['debug']);
+if ($debug!="1")
+	@ob_start();
+	
+header('content-type:text/xml;');
+
 if (!isset($HTTP_RAW_POST_DATA)){
 $HTTP_RAW_POST_DATA = file_get_contents('php://input');
 }
@@ -33,13 +39,14 @@ if (!$ok) {
 	$ch = curl_init( $url );
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	if( !ini_get('safe_mode')&&!ini_get('open_basedir') )
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		
 	curl_setopt($ch, CURLOPT_TIMEOUT, 80);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_FAILONERROR, 0);
 	curl_setopt($ch, CURLOPT_VERBOSE, 1);
-	curl_setopt($ch, CURLOPT_COOKIEFILE, 1);
-	
+
 	if ( strlen($post_data)>0 ){
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
 	}
@@ -69,7 +76,7 @@ if (!$ok) {
 			$ch = curl_init( $url );
 		
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 80);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 0);
@@ -93,7 +100,6 @@ if (!$ok) {
 
 if ($ok) {
 	while (@ob_end_clean());
-	header('content-type:text/xml;');
 }
 
 print $response;

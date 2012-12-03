@@ -33,6 +33,7 @@ class plgSystemPlugin_googlemap2_helper
 	var $no_javascript;
 	var $pagebreak;
 	var	$google_API_version;
+	var $mapcss;
 	var	$timeinterval;
 	var	$googleindexing;
 	var	$langanim;
@@ -96,7 +97,9 @@ class plgSystemPlugin_googlemap2_helper
 		// Get language
 		$this->langtype = $this->params->get( 'langtype', '' );
 		$this->lang = JFactory::getLanguage();
-		$this->lang->load("plg_system_plugin_googlemap2", JPATH_SITE."/administrator", $this->lang->getTag(), true);
+		// Load the language files for Joomla 1.5. In Joomla 1.6 it is done in the construct of the plugin
+		if (substr($this->jversion,0,3)=="1.5")
+			$this->lang->load("plg_system_plugin_googlemap2", JPATH_SITE."/administrator", $this->lang->getTag(), true);
 		$this->language = $this->_getlang();
 		$this->no_javascript = JText::_( 'CMN_JAVASCRIPT', _CMN_JAVASCRIPT);
 		// Get region
@@ -114,6 +117,7 @@ class plgSystemPlugin_googlemap2_helper
 			$this->urlsetting = $_SERVER['HTTP_HOST'];
 		$this->google_API_version = $this->params->get( 'Google_API_version', '2.x' );
 		$this->googleindexing = $this->params->get( 'googleindexing', '1' );
+		$this->mapcss = $this->params->get( 'mapcss', '' );
 		$this->timeinterval = $this->params->get( 'timeinterval', '500' );
 		$this->clientgeotype = $this->params->get( 'clientgeotype', '0' );
 		$this->langanim = $this->params->get( 'langanim', 'en;The requested panorama could not be displayed|Could not generate a route for the current start and end addresses|Street View coverage is not available for this route|You have reached your destination|miles|miles|ft|kilometers|kilometer|meters|In|You will reach your destination|Stop|Drive|Press Drive to follow your route|Route|Speed|Fast|Medium|Slow' );
@@ -367,6 +371,19 @@ class plgSystemPlugin_googlemap2_helper
 			unset($url, $getpage, $expr, $xml, $coord, $coordinates, $descr, $desc);
 		}
 
+		if ($this->_mp->twittername!="") {
+			$url = $this->base."/plugins/system/plugin_googlemap2_twitter_kml.php?";
+			$url .= "twittername=".urlencode($this->_mp->twittername);
+			$url .= "&twittertweets=".urlencode($this->_mp->twittertweets);
+			$url .= "&twittericon=".urlencode($this->_mp->twittericon);
+			$url .= "&twitterline=".urlencode($this->_mp->twitterline);
+			$url .= "&twitterlinewidth=".urlencode($this->_mp->twitterlinewidth);
+			$url .= "&twitterstartloc=".urlencode($this->_mp->twitterstartloc);
+			
+			$this->_mp->kml[] = $url;
+			unset($url, $this->_mp->twittername, $this->_mp->twittertweets, $this->_mp->twittericon, $this->_mp->twitterline, $this->_mp->twitterlinewidth, $this->_mp->twitterstartloc);
+		}
+
 		if($this->_inline_coords == 0 && !empty($this->_mp->address))	{
 			if ($this->clientgeotype=="local")
 				$coord = "";
@@ -444,7 +461,7 @@ class plgSystemPlugin_googlemap2_helper
 		$this->_debug_log("Memory Usage End: " . $endmem . " KB (".$diffmem." KB)");
 
 		// Add code to text
-		$code = "\n<!-- Plugin Google Maps version 2.17 by Mike Reumer ".(($this->debug_text!='')?$this->debug_text."\n":"")."-->".$code;
+		$code = "\n<!-- Plugin Google Maps version 2.18 by Mike Reumer ".(($this->debug_text!='')?$this->debug_text."\n":"")."-->".$code;
 
 		// Clean up debug text for next _process
 		$this->debug_text = '';
@@ -609,6 +626,10 @@ class plgSystemPlugin_googlemap2_helper
 				$code.="<br/><input ".(($this->_mp->txt_driving=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='' ".(($this->_mp->dirtype=="D")?"checked='checked'":"")." />".$this->_mp->txt_driving.(($this->_mp->txt_driving!='')?"&nbsp;":"");
 			if ($this->_mp->txt_avhighways!=''||$this->_mp->dirtype=="1")
 				$code.="<input ".(($this->_mp->txt_avhighways=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='h' ".(($this->_mp->avoidhighways=='1')?"checked='checked'":"")." />".$this->_mp->txt_avhighways.(($this->_mp->txt_avhighways!='')?"&nbsp;":"");
+			if ($this->_mp->txt_transit!=''||$this->_mp->dirtype=="R")
+				$code.="<input ".(($this->_mp->txt_transit=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='r' ".(($this->_mp->dirtype=="R")?"checked='checked'":"")." />".$this->_mp->txt_transit.(($this->_mp->txt_transit!='')?"&nbsp;":"");
+			if ($this->_mp->txt_bicycle!=''||$this->_mp->dirtype=="B")
+				$code.="<input ".(($this->_mp->txt_bicycle=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='b' ".(($this->_mp->dirtype=="B")?"checked='checked'":"")." />".$this->_mp->txt_bicycle.(($this->_mp->txt_bicycle!='')?"&nbsp;":"");
 			if ($this->_mp->txt_walking!=''||$this->_mp->dirtype=="W")
 				$code.="<input ".(($this->_mp->txt_walking=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='w' ".(($this->_mp->dirtype=="W")?"checked='checked'":"")." />".$this->_mp->txt_walking.(($this->_mp->txt_walking!='')?"&nbsp;":"");
 			$code.="<input value='".$this->_mp->txtgetdir."' class='button' type='submit' style='margin-top: 2px;'>";
@@ -762,6 +783,10 @@ class plgSystemPlugin_googlemap2_helper
 			$url .= "&amp;indexing=".(($this->googleindexing)?"true":"false");
 			
 			$this->_addscript($url);
+			if ($this->mapcss!='') {
+				$url = $this->base."/media/plugin_googlemap2/site/googlemaps/googlemaps.css.php";
+				$this->_addstylesheet($url);
+			}
 			$this->first_google=false;
 		}
 
@@ -770,7 +795,7 @@ class plgSystemPlugin_googlemap2_helper
 				if (substr($this->jversion,0,3)=='1.5')
 					JHTML::_('behavior.mootools');
 				else
-					JHTML::_('behavior.framework',false);				
+					JHtml::_('behavior.framework',false);				
 			} else {
 				if (substr($this->jversion,0,3)=='1.5')
 					$url = $this->base."/plugins/system/mtupgrade/mootools.js";
@@ -1504,6 +1529,7 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 			switch ($this->_mp->zoomtype) {
 				case "Large":
 					$code.="map".$this->_mp->mapnm.".addControl(new GLargeMapControl());";
+
 					break;
 				case "Small":
 					$code.="map".$this->_mp->mapnm.".addControl(new GSmallMapControl());";
@@ -1893,8 +1919,7 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 					$dirform.="<br />".$this->_mp->txtdiraddr."<input type='text' class='inputbox' size='20' name='saddr' id='saddr' value='' /><br />";
 	
 					if ($this->_mp->txt_driving!=''||$this->_mp->dirtype=="D")
-	
-						$dirform.="<input ".(($this->_mp->txt_driving=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='' ".(($this->_mp->dirtype=="D")?"checked='checked'":"")." />".$this->_mp->txt_driving.(($this->_mp->txt_driving!='')?"&nbsp;":"");
+							$dirform.="<input ".(($this->_mp->txt_driving=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='' ".(($this->_mp->dirtype=="D")?"checked='checked'":"")." />".$this->_mp->txt_driving.(($this->_mp->txt_driving!='')?"&nbsp;":"");
 					if ($this->_mp->txt_avhighways!=''||$this->_mp->dirtype=="1")
 						$dirform.="<input ".(($this->_mp->txt_avhighways=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='h' ".(($this->_mp->avoidhighways=='1')?"checked='checked'":"")." />".$this->_mp->txt_avhighways.(($this->_mp->txt_avhighways!='')?"&nbsp;":"");
 					if ($this->_mp->txt_walking!=''||$this->_mp->dirtype=="W")
@@ -1910,7 +1935,7 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 						$dirform.= "<input type='hidden' name='hl' value='".$this->_mp->lang."'/>";
 	
 					if (!empty($this->_mp->address))
-						$dirform.="<input type='hidden' name='daddr' value='".$this->_mp->address." (".(($this->_mp->latitude!='')?$this->_mp->latitude:$this->_mp->deflatitude).", ".(($this->_mp->longitude!='')?$this->_mp->longitude:$this->_mp->deflongitude).")'/></form>";
+						$dirform.="<input type='hidden' name='daddr' value='".$this->_mp->address."'/></form>";
 					else
 						$dirform.="<input type='hidden' name='daddr' value='".(($this->_mp->latitude!='')?$this->_mp->latitude:$this->_mp->deflatitude).", ".(($this->_mp->longitude!='')?$this->_mp->longitude:$this->_mp->deflongitude)."'/></form>";
 					
@@ -2346,24 +2371,30 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 	
 	function _processMapv3_scripts() {
 		// Only add the scripts and css once
-		//Load mootools first because it's necessary for googlemaps script instead of the extra functions
+		//Load mootools first because it's necessary for the extra functions like lightbox or effects
+		// For effects we need to load mootools-more/framework true too
 		if (($this->_mp->loadmootools=="1"&&$this->_mp->kmllightbox=="1"||$this->_mp->lightbox=="1"||$this->_mp->effect!="none"||$this->_mp->dir=="3"||$this->_mp->dir=="4"||strpos($this->_mp->description, "MOOdalBox"))&&$this->first_mootools) {
 			if ($this->event!='onAfterRender') {
 				if (substr($this->jversion,0,3)=='1.5')
 					JHTML::_('behavior.mootools');
 				else
-					JHTML::_('behavior.framework',false);				
+					JHtml::_('behavior.framework',(($this->_mp->effect!="none")?true:false));				
 			} else {
-				if (substr($this->jversion,0,3)=='1.5')
+				if (substr($this->jversion,0,3)=='1.5') {
 					$url = $this->base."/plugins/system/mtupgrade/mootools.js";
-				else {
+					$this->_addscript($url);
+				} else {
 					$mooconfig = JFactory::getConfig();
 		            $moodebug = $mooconfig->get('debug');
 			        $moouncompressed   = $moodebug ? '-uncompressed' : '';
 					$url = $this->base."/media/system/js/mootools-core".$moouncompressed.".js";
+					$this->_addscript($url);
+					if ($this->_mp->effect!="none") {
+						$url = $this->base."/media/system/js/mootools-more".$moouncompressed.".js";
+						$this->_addscript($url);
+					}
 					unset($mooconfig, $moodebug, $moouncompressed);
 				}
-				$this->_addscript($url);
 			}
 			$this->first_mootools = false;
 		}
@@ -2409,6 +2440,10 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 		if($this->first_googlemaps) {
 			$url = $this->base."/media/plugin_googlemap2/site/googlemaps/googlemapsv3.js";
 			$this->_addscript($url);
+			if ($this->mapcss!='') {
+				$url = $this->base."/media/plugin_googlemap2/site/googlemaps/googlemaps.css.php";
+				$this->_addstylesheet($url);
+			}
 			$this->first_googlemaps=false;
 		}		
 		
@@ -2578,6 +2613,10 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 
 		// Rename parameter so they can be used by geoxml
 		$this->_mp->geoxmloptions = new stdClass();
+		
+		// Set the style of the title of placemark to empty
+		$this->_mp->geoxmloptions->titlestyle = ' ';
+		
 		if ($this->_mp->kmlsidebar=="left"||$this->_mp->kmlsidebar=="right") {
 			$this->_mp->geoxmloptions->sidebarid = 'kmlsidebar'.$this->_mp->mapnm;
 		} else {
@@ -2699,10 +2738,10 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 			
 			if ($this->_mp->show==1) {
 				$code.="<a href='javascript:void(0)' onclick='javascript:MOOdalBox.open(\"".$lbname.$this->_mp->mapnm."\", \"".$this->_mp->lbxcaption."\", \"".$this->_lbxwidthorig." ".$this->_mp->lbxheight."\", googlemap".$this->_mp->mapnm.".map, {".implode(",",$lboptions)."});return false;' class='lightboxlink'>".html_entity_decode($this->_mp->txtlightbox)."</a>";
-				$code .= "<div id='lightbox".$this->_mp->mapnm."'>";
+				$code .= "<div id='lightbox".$this->_mp->mapnm."' class='maplightbox' ".(($this->_mp->align!='none')?"style='text-align:".$this->_mp->align."'":"").">";
 			} else {
 				$lbcode.="<a href='javascript:void(0)' onclick='javascript:MOOdalBox.open(\"".$lbname.$this->_mp->mapnm."\", \"".$this->_mp->lbxcaption."\", \"".$this->_lbxwidthorig." ".$this->_mp->lbxheight."\", googlemap".$this->_mp->mapnm.".map, {".implode(",",$lboptions)."});return false;' class='lightboxlink'>".html_entity_decode($this->_mp->txtlightbox)."</a>";
-				$code .= "<div id='lightbox".$this->_mp->mapnm."' style='display:none'>";
+				$code .= "<div id='lightbox".$this->_mp->mapnm."' class='maplightbox' style='display:none;".(($this->_mp->align!='none')?"text-align:".$this->_mp->align.";":"")."'>";
 			}
 		}
 		
@@ -2780,13 +2819,14 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 			$dirform.="<br />".$this->_mp->txtdiraddr."<input type='text' class='inputbox' size='20' name='saddr' id='saddr' value='' />";
 			
 			if (!empty($this->_mp->address))
-				$dirform.="<input type='hidden' name='daddr' value='".$this->_mp->address." (".(($this->_mp->latitude!='')?$this->_mp->latitude:$this->_mp->deflatitude).", ".(($this->_mp->longitude!='')?$this->_mp->longitude:$this->_mp->deflongitude).")'/>";
+				$dirform.="<input type='hidden' name='daddr' value='".$this->_mp->address."'/>";
 			else
 				$dirform.="<input type='hidden' name='daddr' value='".(($this->_mp->latitude!='')?$this->_mp->latitude:$this->_mp->deflatitude).", ".(($this->_mp->longitude!='')?$this->_mp->longitude:$this->_mp->deflongitude)."'/>";
 		}
 		
 		if ($type=='Form') {
 			$dirform.=(($this->_mp->txtfrom=='')?"":"<br />").$this->_mp->txtfrom."<input ".(($this->_mp->txtfrom=='')?"type='hidden' ":"type='text'")." class='inputbox' size='20' name='saddr' id='saddr' value='".(($this->_mp->formdir=='1')?$this->_mp->address:(($this->_mp->formdir=='2')?$this->_mp->toaddress:""))."' />";
+
 			$dirform.=(($this->_mp->txtto=='')?"":"<br />").$this->_mp->txtto."<input ".(($this->_mp->txtto=='')?"type='hidden' ":"type='text'")." class='inputbox' size='20' name='daddr' id='daddr' value='".(($this->_mp->formdir=='1')?$this->_mp->toaddress:(($this->_mp->formdir=='2')?$this->_mp->address:""))."' />";
 		}
 		
@@ -2797,6 +2837,10 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 			$dirform.="<input ".(($this->_mp->txt_driving=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='' ".(($this->_mp->dirtype=="D")?"checked='checked'":"")." />".$this->_mp->txt_driving.(($this->_mp->txt_driving!='')?"&nbsp;":"");
 		if ($this->_mp->txt_avhighways!=''||$this->_mp->dirtype=="1")
 			$dirform.="<input ".(($this->_mp->txt_avhighways=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='h' ".(($this->_mp->avoidhighways=='1')?"checked='checked'":"")." />".$this->_mp->txt_avhighways.(($this->_mp->txt_avhighways!='')?"&nbsp;":"");
+		if ($this->_mp->txt_transit!=''||$this->_mp->dirtype=="R")
+			$dirform.="<input ".(($this->_mp->txt_transit=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='r' ".(($this->_mp->dirtype=="R")?"checked='checked'":"")." />".$this->_mp->txt_transit.(($this->_mp->txt_transit!='')?"&nbsp;":"");
+		if ($this->_mp->txt_bicycle!=''||$this->_mp->dirtype=="B")
+			$dirform.="<input ".(($this->_mp->txt_bicycle=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='b' ".(($this->_mp->dirtype=="B")?"checked='checked'":"")." />".$this->_mp->txt_bicycle.(($this->_mp->txt_bicycle!='')?"&nbsp;":"");
 		if ($this->_mp->txt_walking!=''||$this->_mp->dirtype=="W")
 			$dirform.="<input ".(($this->_mp->txt_walking=='')?"type='hidden' ":"type='radio' ")."class='radio' name='dirflg' value='w' ".(($this->_mp->dirtype=="W")?"checked='checked'":"")." />".$this->_mp->txt_walking.(($this->_mp->txt_walking!='')?"&nbsp;":"");
 			
@@ -2817,35 +2861,33 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 	}
 	
 	function _getInitialParams() {
-		jimport( 'joomla.utilities.simplexml' );
-		$xml	= new JSimpleXML;
 		if (substr($this->jversion,0,3)=="1.5")
-			$filename = JPATH_SITE.DS."/plugins/system/plugin_googlemap2.xml";
+			$filename = JPATH_SITE."/plugins/system/plugin_googlemap2.xml";
 		else
-			$filename = JPATH_SITE.DS."/plugins/system/plugin_googlemap2/plugin_googlemap2.xml";
-		
-		if ($xml->loadFile($filename)) {
+			$filename = JPATH_SITE."/plugins/system/plugin_googlemap2/plugin_googlemap2.xml";
+
+		if ($xml = simplexml_load_file($filename)) {
 			if (substr($this->jversion,0,3)=="1.5")
-				$root =& $xml->document;
-			else if (isset($xml->document->config[0]->fields[0]))
-				$root = $xml->document->config[0]->fields[0];
+				$root =& $xml;
+			else if (isset($xml->config[0]->fields[0]))
+				$root = $xml->config[0]->fields[0];
 			else
-				$root =& $xml->document;
-			
+				$root =& $xml;
+		
 			foreach ($root->children() as $params) {
 				foreach($params->children() as $param) {
-					if ($param->attributes('export')=='1') {
-						$name = $param->attributes('name');
+					if ($param->attributes()->export=='1') {
+						$name = $param->attributes()->name;
 						if ($name=='lat') {
-							$this->initparams->deflatitude = $this->params->get($name, $param->attributes('default'));
+							$this->initparams->deflatitude = $this->params->get($name, $param->attributes()->default);
 						} elseif ($name=='lon') {
-							$this->initparams->deflongitude = $this->params->get($name, $param->attributes('default'));
+							$this->initparams->deflongitude = $this->params->get($name, $param->attributes()->default);
 						} elseif (substr($name,0,3)=='txt') {
 							$nm = strtolower($name);
 							$this->initparams->$nm = $this->params->get($name, '');
 						} else {
 							$nm = strtolower($name);
-							$this->initparams->$nm = $this->params->get($name, $param->attributes('default'));
+							$this->initparams->$nm = (string) $this->params->get($name, $param->attributes()->default);
 						}
 					}
 				}
@@ -3262,6 +3304,7 @@ overmap".$this->_mp->mapnm.".setCenter(map".$this->_mp->mapnm.".getCenter(), c);
 		if (strlen($string) > 5000) {
 			// Based on: http://mobile-website.mobi/php-utf8-vs-iso-8859-1-59
 			for ($i=0,$s=_is_utf8_split,$j=ceil(strlen($string)/_is_utf8_split);$i < $j;$i++,$s+=_is_utf8_split) {
+
 				if (is_utf8(substr($string,$s,_is_utf8_split)))
 					return true;
 			}

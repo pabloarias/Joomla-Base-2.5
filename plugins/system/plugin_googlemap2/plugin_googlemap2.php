@@ -48,10 +48,14 @@ class plgSystemPlugin_googlemap2 extends JPlugin
 		$this->config = $config;
 		// Version of Joomla
 		$this->jversion = JVERSION;
-		$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap2');
-		$this->params = new JParameter( $plugin->params);
-		// Check if params are defined and set otherwise try to get them from previous version
-		$this->_upgrade_plugin();
+		// In Joomla 1.5 get the parameters in Joomla 1.6 and higher the plugin already has them
+		if (substr($this->jversion,0,3)=="1.5") {
+			$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap2');
+			$this->params = new JParameter( $plugin->params);
+		}
+		// Load the language files for the plugin for Joomla 1.6 and higher
+		if (substr($this->jversion,0,3)!="1.5")
+			$this->loadLanguage();
 		// Check if the params are defined and set so the initial defaults can be removed.
 		$this->_restore_permanent_defaults();
 		// Set document and doctype to null. Can only be retrievedwhen events are triggered. otherwise the language of the site magically changes.
@@ -293,16 +297,16 @@ class plgSystemPlugin_googlemap2 extends JPlugin
 //		print_r($matches);
 		// Remove plugincode that are in head of the page
 		$matches = $this->_checkhead($text, $matches);
-		// Remove plugincode that are in the editor textarea
+		// Remove plugincode that are in the editor and textarea
 		$matches = $this->_checkeditorarea($text, $matches);
 		$cnt = count($matches[0]);
 //		print_r($matches);
 		if ($cnt>0) {
 			if ($this->helper==null) {
 				if (substr($this->jversion,0,3)=="1.5")
-					$filename = JPATH_SITE.DS."/plugins/system/plugin_googlemap2_helper.php";
+					$filename = JPATH_SITE."/plugins/system/plugin_googlemap2_helper.php";
 				else
-					$filename = JPATH_SITE.DS."/plugins/system/plugin_googlemap2/plugin_googlemap2_helper.php";
+					$filename = JPATH_SITE."/plugins/system/plugin_googlemap2/plugin_googlemap2_helper.php";
 				
 				include_once($filename);
 				$this->helper = new plgSystemPlugin_googlemap2_helper($this->jversion, $this->params, $this->regex, $this->document, $this->brackets);
@@ -337,19 +341,22 @@ class plgSystemPlugin_googlemap2 extends JPlugin
 	}
 	
 	function _checkeditorarea($text, $plgmatches) {
-		$edmatches = $this->_getEditorPositions($text);
+		$edmatches = array_merge($this->_getEditorPositions($text), $this->_getTextAreaPositions($text));
 		$result = array(array(),array(),array(),array());
 		if (count($edmatches)>0) {
 			$cnt = count($plgmatches[0]);
-			// check if match plugin is in match textarea
+			// check if match plugin is in match editor
 			for($counter = 0; $counter < $cnt; $counter++) {
+				$oke = true;
 				foreach ($edmatches as $ed) {
-					if (!($plgmatches[0][$counter][1] > $ed['start']&&$plgmatches[0][$counter][1]< $ed['end'])) {
-						$result[0][] = $plgmatches[0][$counter];
-						$result[1][] = $plgmatches[1][$counter];
-						$result[2][] = $plgmatches[2][$counter];
-						$result[3][] = $plgmatches[3][$counter];
-					}
+					if ($plgmatches[0][$counter][1] > $ed['start']&&$plgmatches[0][$counter][1]< $ed['end'])
+						$oke= false;
+				}
+				if ($oke) {
+					$result[0][] = $plgmatches[0][$counter];
+					$result[1][] = $plgmatches[1][$counter];
+					$result[2][] = $plgmatches[2][$counter];
+					$result[3][] = $plgmatches[3][$counter];
 				}
 			}
 		} else
@@ -383,34 +390,23 @@ class plgSystemPlugin_googlemap2 extends JPlugin
 		return $intEditorPositions;
 	}
 	
-	function _upgrade_plugin() {
-		$app = JFactory::getApplication();
-		if($app->isSite()) {
-			return;
+	function _getTextAreaPositions($strBody) {
+		preg_match_all("/<textarea\b[^>]*>(.*)<\/textarea>/Ums", $strBody, $strTextArea, PREG_PATTERN_ORDER);
+
+		$intOffset = 0;
+		$intIndex = 0;
+		$intTextAreaPositions = array();
+
+		foreach($strTextArea[0] as $strFullTextArea) {
+			$intTextAreaPositions[$intIndex] = array('start' => (strpos($strBody, $strFullTextArea, $intOffset)), 'end' => (strpos($strBody, $strFullTextArea, $intOffset) + strlen($strFullTextArea)));
+			$intOffset += strlen($strFullTextArea);
+			$intIndex++;
 		}
 		
-		if ($this->params->get( 'publ', '' )=='') {
-			if (substr($this->jversion,0,3)=="1.5") {
-				$database  =& JFactory::getDBO();
-				$query = "SELECT params FROM #__plugins AS b WHERE b.element='plugin_googlemap2' AND b.folder='content'";
-				$database->setQuery($query);
-				if (!$database->query())
-					JError::raiseWarning(1, 'plgSystemPlugin_googlemap2::install_params: '.JText::_('SQL Error')." ".$database->stderr(true));
-				
-				$params = $database->loadResult();
-				$savparams = $database->getEscaped($params);
-				if ($params!="") {
-					$query = "UPDATE #__plugins AS a SET a.params = '{$savparams}' WHERE a.element='plugin_googlemap2' AND a.folder='system'";
-					$database->setQuery($query);
-					if (!$database->query())
-						JError::raiseWarning(1, 'plgSystemPlugin_googlemap2::install_params: '.JText::_('SQL Error')." ".$database->stderr(true));
-					$this->params = new JParameter( $params );
-				}
-				
-				// Clean up variables
-				unset($database, $query, $params, $savparams, $plugin);
-			}
-		}		
+		// Clean up variables
+		unset($strTextArea, $intOffset, $strFullTextArea, $intIndex);
+		
+		return $intTextAreaPositions;
 	}
 	
 	function _restore_permanent_defaults() {
@@ -422,9 +418,9 @@ class plgSystemPlugin_googlemap2 extends JPlugin
 			jimport('joomla.filesystem.file');
 			
 			if (substr($this->jversion,0,3)=="1.5")
-				$dir = JPATH_SITE.DS."/plugins/system/";
+				$dir = JPATH_SITE."/plugins/system/";
 			else
-				$dir = JPATH_SITE.DS."/plugins/system/plugin_googlemap2/";
+				$dir = JPATH_SITE."/plugins/system/plugin_googlemap2/";
 			
 			if (file_exists($dir.'plugin_googlemap2.perm')) {
 				if (JFile::move ($dir.'plugin_googlemap2.xml', $dir.'plugin_googlemap2.init')) {
