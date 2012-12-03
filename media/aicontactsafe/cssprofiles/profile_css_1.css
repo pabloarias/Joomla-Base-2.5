@@ -7,7 +7,7 @@
 
 /* modify the width to fit all the labels */
 div#aiContactSafe_mainbody_1 div.aiContactSafe_contact_form_field_label_left {
-	width:80px;
+	width: 140px;
 }
 
 /* display into the center of the page */
@@ -56,19 +56,19 @@ add here any of the fields of aiContactSafe
 
 */
 div#aiContactSafe_mainbody_1 input#aics_name {
-	width:240px;
+	width: 300px;
 }
 div#aiContactSafe_mainbody_1 input#aics_email {
-	width:240px;
+	width: 300px;
 }
 div#aiContactSafe_mainbody_1 input#aics_phone {
-	width:240px;
+	width: 300px;
 }
 div#aiContactSafe_mainbody_1 input#aics_subject {
-	width:240px;
+	width: 300px;
 }
 div#aiContactSafe_mainbody_1 textarea#aics_message {
-	width:240px;
+	width: 300px;
 	height:80px;
 }
 
