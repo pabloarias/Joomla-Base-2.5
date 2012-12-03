@@ -6,10 +6,23 @@
         Purpose of the stylesheet follows.
 */
 
+/* General */
+body {
+    background-color: #FFF;
+}
+
+label {
+    display: inline;
+}
+
 /* Content */
 .title,
 .component-content h2 {
     padding-bottom: 5px;
+}
+
+.rt-error-content {
+    margin: 0;
 }
 
 /* Footer */
