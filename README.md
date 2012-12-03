@@ -3,7 +3,7 @@ Joomla-Base
 
 El pack Joomla-Base está compuesto por el gestor de contenidos Joomla, su traducción al en español junto con diversas extensiones y contenidos que ayudan a ahorrar tiempo a la hora de desplegar nuevos sitios web.
 Paquetes utilizados:
-- Joomla 2.5.7
+- Joomla 2.5.8
 - Idioma español 2.5.7v1
 - JCE 2.2.7.2 y traducción al español 2.2.7.2
 - Xmap 2.2.1
