@@ -13,6 +13,7 @@ Paquetes utilizados:
 - Google Maps plugin 2.18
 
 Contenidos:
+- Página de error
 - Nota legal
 - Política de privacidad
 
