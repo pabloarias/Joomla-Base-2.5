@@ -1,6 +1,6 @@
 <?php
 /**
- * @version        4.0.5 September 18, 2012
+ * @version        4.1.4 November 22, 2012
  * @author         RocketTheme http://www.rockettheme.com
  * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -16,10 +16,24 @@ jimport('joomla.plugin.plugin');
  */
 class plgSystemGantry extends JPlugin
 {
+	/**
+	 * @var bool
+	 */
 	protected static $prettyprint = false;
+	/**
+	 * @var array
+	 */
+	protected $bootstrapTriggers = array(
+		'data-toggle="tab"',
+		'data-toggle="pill"',
+		'data-dismiss="alert"'
+	);
 
+	/**
+	 * @var array
+	 */
 	protected $_cleanCacheAfterTasks = array(
-		'com_modules'      => array(
+		'com_modules'   => array(
 			'module.apply',
 			'module.save',
 			'module.save2copy',
@@ -28,12 +42,50 @@ class plgSystemGantry extends JPlugin
 			'modules.saveorder',
 			'modules.trash',
 			'modules.duplicate'
-		), 'com_templates' => array(
-			'publish', 'save', 'save_positions', 'default', 'apply', 'save_source', 'apply_source'
-		), 'com_config'    => array(
+		),
+		'com_templates' => array(
+			'publish',
+			'save',
+			'save_positions',
+			'default',
+			'apply',
+			'save_source',
+			'apply_source'
+		),
+		'com_config'    => array(
 			'save'
 		)
 	);
+
+
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+		$app = JFactory::getApplication();
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_system_gantry', JPATH_ADMINISTRATOR);
+		JLog::addLogger(array('text_file' => 'gantry.php'), $this->params->get('debugloglevel', 63), array('gantry'));
+	}
+
+	/**
+	 *
+	 */
+	public function onAfterInitialise()
+	{
+		$app = JFactory::getApplication();
+		if ($app->isSite()) {
+			if (!defined('GANTRY_OVERRIDES_PATH')) {
+				define('GANTRY_OVERRIDES_PATH', dirname(__FILE__) . '/overrides');
+				JLog::add(sprintf('Setting override path to %s', GANTRY_OVERRIDES_PATH), JLog::DEBUG, 'rokoverrides');
+			}
+			require_once dirname(__FILE__) . '/functions.php';
+		}
+	}
+
+	public function onGantryTemplateInit($filename)
+	{
+		JLog::add(JText::sprintf('GANTRY_INITIALIZED_FROM', $filename), JLog::DEBUG, 'gantry');
+	}
 
 	/**
 	 * Catch the routed functions for
@@ -41,20 +93,62 @@ class plgSystemGantry extends JPlugin
 	public function onAfterRoute()
 	{
 		$app = JFactory::getApplication();
-		if (!$app->isAdmin()) return;
+		if ($app->isSite()) {
+//			$template_info = $app->getTemplate(true);
+//			if ($this->isGantryTemplate($template_info->id)) {
+//				include(JPATH_LIBRARIES . '/gantry/gantry.php');
+//			}
+		} else {
+			if (array_key_exists('option', $_REQUEST) && array_key_exists('task', $_REQUEST)) {
+				$option = JRequest::getVar('option');
+				$task   = JRequest::getVar('task');
 
-		$option = JRequest::getVar('option', '');
-		$task   = JRequest::getVar('option', '');
+				// Redirect styles.duplicate to template.duplicate to handle gantry template styles
+				if ($option == 'com_templates' && $task == 'styles.duplicate') {
+					$this->setRequestOption('option', 'com_gantry');
+					$this->setRequestOption('task', 'template.duplicate');
+				}
+
+				// Redirect styles.delete to not let a gantry master template style be deleted
+				if ($option == 'com_templates' && $task == 'styles.delete') {
+					$this->setRequestOption('option', 'com_gantry');
+					$this->setRequestOption('task', 'template.delete');
+				}
+
+				// redirect styles.edit if the template style is a gantry one
+				if ($option == 'com_templates' && $task == 'style.edit') {
+					$id = JRequest::getInt('id', 0);
+					if ($id == 0) {
+						// Initialise variables.
+						$pks = JRequest::getVar('cid', array(), 'post', 'array');
+						if (is_array($pks) && array_key_exists(0, $pks)) {
+							$id = $pks[0];
+						}
+					}
+
+					//redirect to gantry admin
+					if ($this->isGantryTemplate($id)) {
+						$this->setRequestOption('option', 'com_gantry');
+						$this->setRequestOption('task', 'template.edit');
+						$this->setRequestOption('id', $id);
+					}
+				}
+			}
+		}
 
 	}
 
 	/* temporary solution to add Google Prettify stuff */
+	/**
+	 * @param     $context
+	 * @param     $article
+	 * @param     $params
+	 * @param int $page
+	 */
 	function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
 
-		if (!self::$prettyprint &&
-			strpos($article->text,'<code class="prettyprint') !== false ||
-			strpos($article->text,'<pre class="prettyprint') !== false) {
+		if (!self::$prettyprint && strpos($article->text, '<code class="prettyprint') !== false || strpos($article->text, '<pre class="prettyprint') !== false) {
 
 			$doc = JFactory::getDocument();
 			$app = JFactory::getApplication();
@@ -69,8 +163,20 @@ class plgSystemGantry extends JPlugin
 			$doc->addScriptDeclaration("\nwindow.addEvent('domready', function() { prettyPrint();});\n");
 			self::$prettyprint = true;
 		}
+
 	}
 
+	/**
+	 *
+	 */
+	public function onBeforeCompileHead()
+	{
+
+	}
+
+	/**
+	 *
+	 */
 	public function onAfterRender()
 	{
 		$app = JFactory::getApplication();
@@ -95,9 +201,9 @@ class plgSystemGantry extends JPlugin
 
 				foreach ($gantry_templates as $gantry) {
 					if (in_array($gantry['id'], $master_templates)) {
-						pq('td > input[value=' . $gantry['id'] . ']')->parent()->next()->append('<span style="margin:0 10px;background:#d63c1f;color:#fff;padding:2px 4px;font-family:Helvetica,Arial,sans-serif;border-radius:3px;">&#10029; Master</span>');
+						pq('td > input[value=' . $gantry['id'] . ']')->parent()->next()->append('<span style="white-space:nowrap;margin:0 10px;background:#d63c1f;color:#fff;padding:2px 4px;font-family:Helvetica,Arial,sans-serif;border-radius:3px;">&#10029; Master</span>');
 					} else {
-						pq('td > input[value=' . $gantry['id'] . ']')->parent()->next()->append('<span style="margin:0 10px;background:#999;color:#fff;padding:2px 4px;font-family:Helvetica,Arial,sans-serif;border-radius:3px;">Override</span>');
+						pq('td > input[value=' . $gantry['id'] . ']')->parent()->next()->append('<span style="white-space:nowrap;margin:0 10px;background:#999;color:#fff;padding:2px 4px;font-family:Helvetica,Arial,sans-serif;border-radius:3px;">Override</span>');
 					}
 
 					$link  = pq('td > input[value=' . $gantry['id'] . ']')->parent()->next()->find('a:not([title])');
@@ -135,59 +241,52 @@ class plgSystemGantry extends JPlugin
 		}
 	}
 
+	/**
+	 *
+	 */
 	public function onAfterDispatch()
 	{
+		$app = JFactory::getApplication();
+
+		if ($app->isAdmin()) return;
+
+		$document = JFactory::getDocument();
+		$doctype  = $document->getType();
+		$messages = JFactory::getSession()->get('application.queue');
+
+		if ($doctype == 'html') {
+			$buffer      = "";
+			$tmp_buffers = $document->getBuffer();
+			if (is_array($tmp_buffers)) {
+				foreach ($document->getBuffer() as $key => $value) {
+					$buffer .= $document->getBuffer($key);
+				}
+			}
+
+			if (empty($buffer) && !count($messages)) return;
+
+			// wether to load bootstrap jui or not
+			if (($this->_contains($buffer, $this->bootstrapTriggers) || count($messages)) && version_compare(JVERSION, '3.0.0') >= 0) {
+				JHtml::_('bootstrap.framework');
+			}
+		}
 
 	}
 
+	/**
+	 *
+	 */
 	public function onSearch()
 	{
 
 	}
 
-	public function onAfterInitialise()
-	{
-		$app = JFactory::getApplication();
-
-		if (!$app->isAdmin()) return;
-		if (array_key_exists('option', $_REQUEST) && array_key_exists('task', $_REQUEST)) {
-			$option = JRequest::getVar('option');
-			$task   = JRequest::getVar('task');
-
-			// Redirect styles.duplicate to template.duplicate to handle gantry template styles
-			if ($option == 'com_templates' && $task == 'styles.duplicate') {
-				$this->setRequestOption('option', 'com_gantry');
-				$this->setRequestOption('task', 'template.duplicate');
-			}
-
-			// Redirect styles.delete to not let a gantry master template style be deleted
-			if ($option == 'com_templates' && $task == 'styles.delete') {
-				$this->setRequestOption('option', 'com_gantry');
-				$this->setRequestOption('task', 'template.delete');
-			}
-
-			// redirect styles.edit if the template style is a gantry one
-			if ($option == 'com_templates' && $task == 'style.edit') {
-				$id = JRequest::getInt('id', 0);
-				if ($id == 0) {
-					// Initialise variables.
-					$pks = JRequest::getVar('cid', array(), 'post', 'array');
-					if (is_array($pks) && array_key_exists(0, $pks)) {
-						$id = $pks[0];
-					}
-				}
-
-				//redirect to gantry admin
-				if ($this->isGantryTemplate($id)) {
-					$this->setRequestOption('option', 'com_gantry');
-					$this->setRequestOption('task', 'template.edit');
-					$this->setRequestOption('id', $id);
-				}
-			}
-		}
-	}
 
 
+	/**
+	 * @param $key
+	 * @param $value
+	 */
 	private function setRequestOption($key, $value)
 	{
 		JRequest::set(array($key => $value), 'GET');
@@ -236,6 +335,9 @@ class plgSystemGantry extends JPlugin
 		return JTable::getInstance($type, $prefix, $config);
 	}
 
+	/**
+	 * @return mixed
+	 */
 	private function getTemplates()
 	{
 		$cache = JFactory::getCache('com_templates', '');
@@ -271,6 +373,9 @@ class plgSystemGantry extends JPlugin
 		return $templates;
 	}
 
+	/**
+	 * @return array
+	 */
 	private function getMasters()
 	{
 		$templates = $this->getTemplates();
@@ -283,16 +388,33 @@ class plgSystemGantry extends JPlugin
 		return $masters;
 	}
 
+	/**
+	 * @return array
+	 */
 	private function getGantryTemplates()
 	{
 		$templates = $this->getTemplates();
 		$gantry    = array();
 		foreach ($templates as $template) {
 			if ($template->params->get('master') != null) {
-				$gantry[] = array('id'=> $template->id, 'name'=> ucfirst($template->template));
+				$gantry[] = array('id' => $template->id, 'name' => ucfirst($template->template));
 			}
 		}
 
 		return $gantry;
 	}
+
+	/**
+	 * @param       $string
+	 * @param array $search
+	 * @param bool  $caseInsensitive
+	 *
+	 * @return bool
+	 */
+	private function _contains($string, array $search, $caseInsensitive = false)
+	{
+		$exp = '/' . implode('|', array_map('preg_quote', $search)) . ($caseInsensitive ? '/i' : '/');
+		return preg_match($exp, $string) ? true : false;
+	}
+
 }
