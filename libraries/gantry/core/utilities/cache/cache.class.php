@@ -8,7 +8,7 @@
  *
  *
  * Original Author and Licence
- * @author    Mateusz 'MatheW' W??jcik, <mat.wojcik@gmail.com>
+ * @author    Mateusz 'MatheW' Wójcik, <mat.wojcik@gmail.com>
  * @link      http://mwojcik.pl
  * @version   1.0
  * @license   GPL

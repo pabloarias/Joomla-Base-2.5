@@ -1,5 +1,5 @@
 /**
- * @version   4.0.5 September 18, 2012
+ * @version   4.1.4 November 22, 2012
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -28,6 +28,7 @@
   box-shadow:0 0 20px rgba(0,0,0,0.5);
   top:100px;
   left:200px;
+  font-size: 0.82em;
   visibility:hidden;
 }
 .moor-layout .arrow {
@@ -100,6 +101,7 @@
   -webkit-border-radius:3px;
   -moz-border-radius:3px;
   border-radius:3px;
+  height: 23px;
 }
 .moor-layout .moor-colorsbox div {
   width:32px;
@@ -119,7 +121,7 @@
 .moor-layout .moor-colorsbox div.moor-colorsbox-selected { cursor:pointer; }
 .moor-layout .moor-inputs {
   left:174px;
-  top:45px;
+  top:44px;
 }
 .moor-layout .moor-inputs .moor-inputs-block {
   margin:2px 0;
@@ -141,6 +143,8 @@
   -webkit-border-radius:2px;
   -moz-border-radius:2px;
   border-radius:2px;
+  font-size: 1em;
+  line-height: 1em;
 }
 .moor-layout .moor-inputs .moor-inputs-block.moor-inputs-hex { display:block; }
 .moor-layout .moor-inputs .moor-inputs-block.moor-inputs-hex input {

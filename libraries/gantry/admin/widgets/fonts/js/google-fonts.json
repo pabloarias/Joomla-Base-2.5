@@ -3,6 +3,17 @@
  "items": [
   {
    "kind": "webfonts#webfont",
+   "family": "ABeeZee",
+   "variants": [
+    "regular",
+    "italic"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Abel",
    "variants": [
     "regular"
@@ -18,8 +29,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -75,9 +86,9 @@
     "700"
    ],
    "subsets": [
-    "latin",
     "greek",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -87,8 +98,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Akronim",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -98,8 +120,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -124,8 +146,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -140,8 +162,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -151,8 +173,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -203,8 +225,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -234,8 +256,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -248,8 +270,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -269,8 +291,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -309,13 +331,24 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Anaheim",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Andada",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -325,10 +358,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -361,12 +394,12 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -406,8 +439,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -428,8 +461,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Arbutus Slab",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -439,6 +483,31 @@
     "regular"
    ],
    "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Archivo Black",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Archivo Narrow",
+   "variants": [
+    "regular",
+    "italic",
+    "700",
+    "700italic"
+   ],
+   "subsets": [
+    "latin-ext",
     "latin"
    ]
   },
@@ -462,8 +531,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -473,8 +542,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -510,8 +579,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -573,8 +642,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Autour One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -584,8 +664,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Average Sans",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -595,8 +686,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -651,8 +742,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic"
+    "cyrillic",
+    "latin"
    ]
   },
   {
@@ -682,8 +773,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -734,8 +825,21 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "BenchNine",
+   "variants": [
+    "300",
+    "regular",
+    "700"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -755,8 +859,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -786,8 +890,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -797,8 +901,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -810,8 +914,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -821,8 +925,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -872,8 +976,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -893,8 +997,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -904,8 +1008,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -915,8 +1019,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -937,8 +1041,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -948,8 +1052,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -959,8 +1063,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1074,8 +1178,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1085,8 +1189,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1096,8 +1200,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1109,15 +1213,35 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "greek-ext"
    ]
   },
   {
    "kind": "webfonts#webfont",
    "family": "Carme",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Carrois Gothic",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Carrois Gothic SC",
    "variants": [
     "regular"
    ],
@@ -1145,10 +1269,10 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "greek-ext"
    ]
   },
   {
@@ -1189,8 +1313,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1201,8 +1325,19 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Chela One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1212,8 +1347,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1238,6 +1373,18 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Cherry Swash",
+   "variants": [
+    "regular",
+    "700"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Chewy",
    "variants": [
     "regular"
@@ -1253,8 +1400,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1265,6 +1412,30 @@
     "italic",
     "900",
     "900italic"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Cinzel",
+   "variants": [
+    "regular",
+    "700",
+    "900"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Cinzel Decorative",
+   "variants": [
+    "regular",
+    "700",
+    "900"
    ],
    "subsets": [
     "latin"
@@ -1299,8 +1470,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Combo",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1312,11 +1494,11 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -1336,8 +1518,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1347,8 +1529,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1420,8 +1602,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1486,8 +1668,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1525,9 +1707,9 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1537,8 +1719,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Cutive Mono",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1640,8 +1833,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1651,12 +1844,12 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -1666,8 +1859,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1677,8 +1870,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1688,8 +1881,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1715,8 +1908,8 @@
     "800"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1726,8 +1919,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1771,8 +1964,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1782,8 +1975,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1793,11 +1986,11 @@
     "regular"
    ],
    "subsets": [
+    "cyrillic",
+    "latin-ext",
     "vietnamese",
     "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "latin-ext"
+    "cyrillic-ext"
    ]
   },
   {
@@ -1807,8 +2000,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1818,8 +2011,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1832,8 +2025,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1853,8 +2046,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1864,8 +2057,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1886,8 +2079,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1907,8 +2100,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1918,8 +2111,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1929,8 +2122,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -1957,8 +2150,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2011,6 +2204,16 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Faster One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Fasthand",
    "variants": [
     "regular"
@@ -2046,8 +2249,29 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Fenix",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Finger Paint",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
    ]
   },
   {
@@ -2089,8 +2313,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2110,10 +2334,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -2123,8 +2347,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2164,8 +2388,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2228,8 +2452,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2242,8 +2466,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2256,15 +2480,16 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
    "kind": "webfonts#webfont",
    "family": "Geo",
    "variants": [
-    "regular"
+    "regular",
+    "italic"
    ],
    "subsets": [
     "latin"
@@ -2317,8 +2542,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2328,8 +2553,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2410,8 +2635,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2421,8 +2646,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2432,8 +2657,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2445,8 +2670,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2456,8 +2681,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2467,8 +2692,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2499,8 +2724,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2510,8 +2735,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2531,8 +2756,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2562,6 +2787,7 @@
     "regular"
    ],
    "subsets": [
+    "latin-ext",
     "latin"
    ]
   },
@@ -2697,17 +2923,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
    "kind": "webfonts#webfont",
    "family": "Inconsolata",
    "variants": [
-    "regular"
+    "regular",
+    "700"
    ],
    "subsets": [
+    "latin-ext",
     "latin"
    ]
   },
@@ -2718,8 +2946,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2740,8 +2968,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2764,10 +2992,10 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -2787,8 +3015,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2818,8 +3046,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2829,8 +3057,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2840,8 +3068,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2906,6 +3134,17 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Julius Sans One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Junge",
    "variants": [
     "regular"
@@ -2924,12 +3163,12 @@
     "600"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -2973,6 +3212,7 @@
     "700italic"
    ],
    "subsets": [
+    "latin-ext",
     "latin"
    ]
   },
@@ -2983,8 +3223,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -2994,9 +3234,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3021,13 +3261,23 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Kite One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Knewave",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3037,8 +3287,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3090,8 +3340,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3160,9 +3410,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3194,8 +3444,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3205,8 +3455,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3216,8 +3466,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3238,10 +3488,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -3337,8 +3587,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3400,8 +3650,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3426,14 +3676,36 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Marcellus",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Marcellus SC",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Marck Script",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3453,9 +3725,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3512,8 +3784,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3533,8 +3805,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3564,8 +3836,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3608,8 +3880,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3619,8 +3891,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3680,8 +3952,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3691,8 +3963,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3702,8 +3974,19 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Molle",
+   "variants": [
+    "italic"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3733,8 +4016,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3761,7 +4044,30 @@
    "kind": "webfonts#webfont",
    "family": "Montserrat",
    "variants": [
-    "regular"
+    "regular",
+    "700"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Montserrat Alternates",
+   "variants": [
+    "regular",
+    "700"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Montserrat Subrayada",
+   "variants": [
+    "regular",
+    "700"
    ],
    "subsets": [
     "latin"
@@ -3805,8 +4111,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3816,8 +4122,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3827,8 +4133,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3838,8 +4144,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3849,8 +4155,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3873,8 +4179,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3884,8 +4190,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic"
+    "cyrillic",
+    "latin"
    ]
   },
   {
@@ -3900,8 +4206,8 @@
     "800"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3912,8 +4218,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3923,8 +4229,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3968,8 +4274,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -3979,8 +4285,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4003,9 +4309,9 @@
     "700italic"
    ],
    "subsets": [
+    "latin-ext",
     "vietnamese",
-    "latin",
-    "latin-ext"
+    "latin"
    ]
   },
   {
@@ -4035,8 +4341,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "greek"
+    "greek",
+    "latin"
    ]
   },
   {
@@ -4123,6 +4429,16 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Offside",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Old Standard TT",
    "variants": [
     "regular",
@@ -4140,8 +4456,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4152,8 +4468,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4172,13 +4488,13 @@
     "800italic"
    ],
    "subsets": [
+    "greek",
+    "cyrillic",
+    "latin-ext",
     "vietnamese",
     "latin",
-    "cyrillic-ext",
-    "cyrillic",
     "greek-ext",
-    "greek",
-    "latin-ext"
+    "cyrillic-ext"
    ]
   },
   {
@@ -4190,13 +4506,13 @@
     "700"
    ],
    "subsets": [
+    "greek",
+    "cyrillic",
+    "latin-ext",
     "vietnamese",
     "latin",
-    "cyrillic-ext",
-    "cyrillic",
     "greek-ext",
-    "greek",
-    "latin-ext"
+    "cyrillic-ext"
    ]
   },
   {
@@ -4206,10 +4522,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -4233,8 +4549,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4244,8 +4560,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4267,8 +4583,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4293,8 +4609,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4304,8 +4620,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4322,11 +4638,13 @@
    "kind": "webfonts#webfont",
    "family": "Oxygen",
    "variants": [
-    "regular"
+    "300",
+    "regular",
+    "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4336,8 +4654,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4347,10 +4665,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -4363,9 +4681,9 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4376,9 +4694,9 @@
     "700"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4389,9 +4707,9 @@
     "700"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4404,8 +4722,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic"
+    "cyrillic",
+    "latin"
    ]
   },
   {
@@ -4416,8 +4734,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic"
+    "cyrillic",
+    "latin"
    ]
   },
   {
@@ -4432,13 +4750,23 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Paprika",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Parisienne",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4448,8 +4776,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4461,8 +4789,8 @@
     "900"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4472,8 +4800,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4503,8 +4831,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4524,8 +4852,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4548,8 +4876,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic"
+    "cyrillic",
+    "latin"
    ]
   },
   {
@@ -4559,8 +4887,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4580,8 +4908,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4592,12 +4920,12 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -4607,8 +4935,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4616,11 +4944,33 @@
    "family": "Playfair Display",
    "variants": [
     "regular",
-    "italic"
+    "italic",
+    "700",
+    "700italic",
+    "900",
+    "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Playfair Display SC",
+   "variants": [
+    "regular",
+    "italic",
+    "700",
+    "700italic",
+    "900",
+    "900italic"
+   ],
+   "subsets": [
+    "cyrillic",
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4641,9 +4991,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4684,8 +5034,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4735,10 +5085,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4748,8 +5098,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4769,9 +5119,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4794,8 +5144,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4819,8 +5169,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4833,8 +5183,8 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4866,8 +5216,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4877,8 +5227,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4889,8 +5239,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4918,8 +5268,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4929,8 +5279,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4940,8 +5290,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -4991,8 +5341,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5002,8 +5352,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5013,8 +5363,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5024,8 +5374,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5066,8 +5416,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5078,8 +5428,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5103,8 +5453,8 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5126,8 +5476,8 @@
     "900"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5137,8 +5487,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5148,8 +5498,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5159,10 +5509,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -5172,9 +5522,9 @@
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5184,8 +5534,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5195,8 +5545,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5221,13 +5571,25 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Sanchez",
+   "variants": [
+    "regular",
+    "italic"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Sancreek",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5247,8 +5609,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5258,6 +5620,21 @@
     "regular"
    ],
    "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Scada",
+   "variants": [
+    "regular",
+    "italic",
+    "700",
+    "700italic"
+   ],
+   "subsets": [
+    "cyrillic",
+    "latin-ext",
     "latin"
    ]
   },
@@ -5278,8 +5655,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5289,8 +5666,20 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Seymour One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "cyrillic",
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5310,8 +5699,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5334,8 +5723,28 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Share Tech",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Share Tech Mono",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
    ]
   },
   {
@@ -5345,8 +5754,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5389,8 +5798,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5403,8 +5812,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5417,8 +5826,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5449,8 +5858,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5505,6 +5914,16 @@
   },
   {
    "kind": "webfonts#webfont",
+   "family": "Sofadi One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
    "family": "Sofia",
    "variants": [
     "regular"
@@ -5520,8 +5939,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5532,8 +5951,23 @@
     "italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Source Code Pro",
+   "variants": [
+    "200",
+    "300",
+    "regular",
+    "600",
+    "700",
+    "900"
+   ],
+   "subsets": [
+    "latin"
    ]
   },
   {
@@ -5554,8 +5988,8 @@
     "900italic"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5585,8 +6019,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5611,14 +6045,14 @@
   },
   {
    "kind": "webfonts#webfont",
-   "family": "Stalin One",
+   "family": "Stalinist One",
    "variants": [
     "regular"
    ],
    "subsets": [
-    "latin",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5639,8 +6073,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5650,8 +6084,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5662,8 +6096,18 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Strait",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin"
    ]
   },
   {
@@ -5765,10 +6209,10 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
     "cyrillic",
-    "latin-ext"
+    "latin-ext",
+    "latin",
+    "cyrillic-ext"
    ]
   },
   {
@@ -5813,8 +6257,29 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Titillium Web",
+   "variants": [
+    "200",
+    "200italic",
+    "300",
+    "300italic",
+    "regular",
+    "italic",
+    "600",
+    "600italic",
+    "700",
+    "700italic",
+    "900"
+   ],
+   "subsets": [
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5834,8 +6299,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5857,8 +6322,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -5885,12 +6350,12 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -5900,12 +6365,12 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -5918,12 +6383,12 @@
     "700italic"
    ],
    "subsets": [
-    "latin",
-    "cyrillic-ext",
-    "cyrillic",
-    "greek-ext",
     "greek",
-    "latin-ext"
+    "cyrillic",
+    "latin-ext",
+    "latin",
+    "greek-ext",
+    "cyrillic-ext"
    ]
   },
   {
@@ -5943,6 +6408,29 @@
     "regular"
    ],
    "subsets": [
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Underdog",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "cyrillic",
+    "latin-ext",
+    "latin"
+   ]
+  },
+  {
+   "kind": "webfonts#webfont",
+   "family": "Unica One",
+   "variants": [
+    "regular"
+   ],
+   "subsets": [
+    "latin-ext",
     "latin"
    ]
   },
@@ -6014,8 +6502,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6065,8 +6553,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6076,8 +6564,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6153,8 +6641,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6164,8 +6652,8 @@
     "regular"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6188,8 +6676,8 @@
     "700"
    ],
    "subsets": [
-    "latin",
-    "latin-ext"
+    "latin-ext",
+    "latin"
    ]
   },
   {
@@ -6209,6 +6697,8 @@
     "regular"
    ],
    "subsets": [
+    "cyrillic",
+    "latin-ext",
     "latin"
    ]
   },

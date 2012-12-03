@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantrylesscompiler.class.php 2592 2012-08-21 18:19:16Z btowles $
+ * @version   $Id: gantrylesscompiler.class.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -119,12 +119,15 @@ class GantryLessCompiler {
 		$this->addParsedFile($realPath);
 		$parser = $this->makeParser($realPath);
 		$contents = file_get_contents($realPath);
-		$custom_file = dirname($realPath).'/'.pathinfo($realPath,PATHINFO_FILENAME).'-custom.'.pathinfo($realPath,PATHINFO_EXTENSION);
-		if (is_file($custom_file) && is_readable($custom_file))
+
+		// see if there is a -custom file for any imports
+		$custom_file = pathinfo($realPath,PATHINFO_FILENAME).'-custom.'.pathinfo($realPath,PATHINFO_EXTENSION);
+		if ($custom_realpath = $this->findImport($custom_file))
 		{
-			$contents .= file_get_contents($custom_file);
-			$this->addParsedFile($custom_file);
+			$contents .= file_get_contents($custom_realpath);
+			$this->addParsedFile($custom_realpath);
 		}
+
 		$root = $parser->parse($contents);
 
 		// set the parents of all the block props
@@ -635,7 +638,7 @@ class GantryLessCompiler {
 		case 'mixin':
 			list(, $path, $args, $suffix) = $prop;
 
-			$args = array_map(array($this, "reduce"), (array)$args);
+			$args = @array_map(array($this, "reduce"), (array)$args);
 			$mixins = $this->findBlocks($block, $path, $args);
 
 			if ($mixins === null) {
@@ -1623,12 +1626,15 @@ class GantryLessCompiler {
 		$this->addParsedFile($fname);
 
 		$contents = file_get_contents($fname);
-		$custom_file = dirname($fname).'/'.pathinfo($fname,PATHINFO_FILENAME).'-custom.'.pathinfo($fname,PATHINFO_EXTENSION);
-		if (is_file($custom_file) && is_readable($custom_file))
+
+		// get a -custom file for the main less file
+		$custom_file = pathinfo($fname,PATHINFO_FILENAME).'-custom.'.pathinfo($fname,PATHINFO_EXTENSION);
+		if ($custom_realpath = $this->findImport($custom_file))
 		{
-			$contents .= file_get_contents($custom_file);
-			$this->addParsedFile($custom_file);
+			$contents .= file_get_contents($custom_realpath);
+			$this->addParsedFile($custom_realpath);
 		}
+
 		$out = $this->compile($contents, $fname);
 
 		$this->importDir = $oldImport;
@@ -3363,7 +3369,7 @@ class GantryLessCompiler_Formatter_Compressed extends GantryLessCompiler_Formatt
 	public $selectorSeparator = ",";
 	public $assignSeparator = ":";
 	public $break = "";
-	public $compressColors = true;
+	public $compressColors = false;
 
 	public function indentStr($n = 0) {
 		return "";

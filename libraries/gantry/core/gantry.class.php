@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantry.class.php 3759 2012-09-18 20:09:38Z btowles $
+ * @version   $Id: gantry.class.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -365,8 +365,8 @@ class Gantry
 		}
 
 		// Set the main class vars to match the call
-		JHTML::_('behavior.mootools');
-		$doc               = JFactory::getDocument();
+		JHTML::_('behavior.framework');
+		$doc = JFactory::getDocument();
 		//$doc->setMetaData('templateframework','Gantry Framework for Joomla!');
 		$this->document    =& $doc;
 		$this->language    = $doc->language;
@@ -1019,9 +1019,20 @@ class Gantry
 	public function addLess($lessfile, $cssfile = null, $priority = self::DEFAULT_STYLE_PRIORITY, array $options = array())
 	{
 
+		$less_search_paths = array();
 		// setup the less filename
 		if (dirname($lessfile) == '.') {
-			$lessfile = preg_replace('#[/\\\\]+#', '/', $this->templatePath . '/less/' . $lessfile);
+			//set up the check for template with plartform based dirs
+			$less_search_paths = $this->platform->getAvailablePlatformVersions($this->templatePath . '/less');
+			foreach ($less_search_paths as $less_path) {
+				if (is_dir($less_path)) {
+					$search_file = preg_replace('#[/\\\\]+#', '/', $less_path . '/' . $lessfile);
+					if (is_file($search_file)) {
+						$lessfile = $search_file;
+						break;
+					}
+				}
+			}
 		}
 		$less_file_md5  = md5($lessfile);
 		$less_file_path = $this->convertToPath($lessfile);
@@ -1115,6 +1126,9 @@ class Gantry
 			}
 
 			$less = new GantryLessCompiler();
+			$less->setImportDir($less_search_paths);
+			$less->addImportDir($this->gantryPath . '/assets');
+
 			if (!empty($options)) {
 				$less->setVariables($options);
 			}
@@ -1165,6 +1179,9 @@ class Gantry
 			$quick_expire_cache->clear($cssfile_md5 . '-compiling');
 		}
 		$this->addStyle($css_passed_path, $priority);
+		if (!empty($css_append) && !is_null($cssfile) && dirname($cssfile) == '.') {
+			$this->addStyle($cssfile, $priority);
+		}
 	}
 
 	/* ------ Stylesheet Funcitons  ----------- */
@@ -1180,19 +1197,6 @@ class Gantry
 			$this->addStyles($file, $priority);
 			return;
 		}
-		$type = 'css';
-
-
-		$template_path = $this->templatePath . '/css/';
-		$template_url  = $this->templateUrl . '/css/';
-		$compiled_path = $this->templatePath . '/css-compiled/';
-		$compiled_url  = $this->templateUrl . '/css-compiled/';
-		$gantry_path   = $this->gantryPath . '/css/';
-		$gantry_url    = $this->gantryUrl . '/css/';
-
-		$gantry_first_paths = array(
-			$gantry_url   => $gantry_path, $compiled_url => $compiled_path, $template_url => $template_path
-		);
 
 		/** @var $out_files GantryStyleLink[] */
 		$out_files     = array();
@@ -1202,11 +1206,8 @@ class Gantry
 		$override_file = $filename . "-override" . $ext;
 
 		// get browser checks and remove base files
-		$checks = $this->getBrowserBasedChecks(preg_replace('/-[0-9a-f]{32}\.css$/i', '.css', basename($file)));
-		unset($checks[array_search($base_file, $checks)]);
-
-		$override_checks = $this->getBrowserBasedChecks(basename($override_file));
-		unset($override_checks[array_search($override_file, $override_checks)]);
+		$template_check_paths = $this->getBrowserBasedChecks(preg_replace('/-[0-9a-f]{32}\.css$/i', '.css', basename($file)));
+		unset($template_check_paths[array_search($base_file, $template_check_paths)]);
 
 		// check to see if this is a full path file
 		$dir = dirname($file);
@@ -1229,7 +1230,7 @@ class Gantry
 				if (file_exists($base_path) && is_file($base_path) && is_readable($base_path)) {
 					$out_files[$base_path] = new GantryStyleLink('local', $base_path, $this->convertToUrl($file));
 				}
-				foreach ($checks as $check) {
+				foreach ($template_check_paths as $check) {
 					$check_path     = preg_replace("/\?(.*)/", '', $file_parent_path . '/' . $check);
 					$check_url_path = $url_path . "/" . $check;
 					if (file_exists($check_path) && is_readable($check_path)) {
@@ -1242,31 +1243,55 @@ class Gantry
 				$this->_styles[$priority][] = $link;
 			}
 		} else {
+
+			// get the checks for override files
+			$override_checks = $this->getBrowserBasedChecks(basename($override_file));
+			unset($override_checks[array_search($override_file, $override_checks)]);
+
+			//set up the check for template with plartform based dirs
+			$template_check_p          = $this->platform->getPlatformChecks($this->templatePath . '/css');
+			$template_check_u          = $this->platform->getPlatformChecks($this->templateUrl . '/css');
+			$template_css_search_paths = array();
+			for ($i = 0; $i < count($template_check_p); $i++) {
+				$template_css_search_paths[$template_check_u[$i]] = $template_check_p[$i];
+			}
+
+			// set up the full path checks
+			$css_search_paths = array(
+				$this->gantryUrl . '/css/'            => $this->gantryPath . '/css/',
+				$this->templateUrl . '/css-compiled/' => $this->templatePath . '/css-compiled/'
+			);
+
+			$css_search_paths = array_merge($css_search_paths, $template_css_search_paths);
+
+
 			$base_override   = false;
 			$checks_override = array();
 
-			// Look for an base override file in the template dir
-			$template_base_override_file = $template_path . $override_file;
-			if ($this->isStyleAvailable($template_base_override_file)) {
-				$out_files[$template_base_override_file] = new GantryStyleLink('local', $template_base_override_file, $template_url . $override_file);
-				$base_override                           = true;
-			}
+			foreach ($template_css_search_paths as $template_url => $template_path) {
+				// Look for an base override file in the template dir
+				$template_base_override_file = $template_path . $override_file;
+				if ($this->isStyleAvailable($template_base_override_file)) {
+					$out_files[$template_base_override_file] = new GantryStyleLink('local', $template_base_override_file, $template_url . $override_file);
+					$base_override                           = true;
+				}
 
-			// look for overrides for each of the browser checks
-			foreach ($override_checks as $check_index => $override_check) {
-				$template_check_override       = preg_replace("/\?(.*)/", '', $template_path . $override_check);
-				$checks_override[$check_index] = false;
-				if ($this->isStyleAvailable($template_check_override)) {
-					$checks_override[$check_index] = true;
-					if ($base_override) {
-						$out_files[$template_check_override] = new GantryStyleLink('local', $template_check_override, $template_url . $override_check);
+				// look for overrides for each of the browser checks
+				foreach ($override_checks as $check_index => $override_check) {
+					$template_check_override       = preg_replace("/\?(.*)/", '', $template_path . $override_check);
+					$checks_override[$check_index] = false;
+					if ($this->isStyleAvailable($template_check_override)) {
+						$checks_override[$check_index] = true;
+						if ($base_override) {
+							$out_files[$template_check_override] = new GantryStyleLink('local', $template_check_override, $template_url . $override_check);
+						}
 					}
 				}
 			}
 
 			if (!$base_override) {
 				// Add the base files if there is no  base -override
-				foreach ($gantry_first_paths as $base_url => $path) {
+				foreach ($css_search_paths as $base_url => $path) {
 					// Add the base file
 					$base_path = preg_replace("/\?(.*)/", '', $path . $base_file);
 					// load the base file
@@ -1276,7 +1301,7 @@ class Gantry
 					}
 
 					// Add the browser checked files or its override
-					foreach ($checks as $check_index => $check) {
+					foreach ($template_check_paths as $check_index => $check) {
 						// replace $check with the override if it exists
 						if ($checks_override[$check_index]) {
 							$check = $override_checks[$check_index];
@@ -1394,7 +1419,7 @@ class Gantry
 				if ($full_path !== false && file_exists($full_path)) {
 					$check_url_path = $url_path . '/' . basename($url_file);
 					if (!defined('GANTRY_FINALIZED')) {
-						$this->_scripts[$full_path] = $check_url_path.$query_string;
+						$this->_scripts[$full_path] = $check_url_path . $query_string;
 					} else {
 						$this->document->addScript($check_url_path . $query_string);
 					}
@@ -1406,20 +1431,31 @@ class Gantry
 
 		$out_files = array();
 
+		//set up the check for template with plartform based dirs
+		$template_check_p      = $this->platform->getPlatformChecks($this->templatePath . '/js');
+		$template_check_u      = $this->platform->getPlatformChecks($this->templateUrl . '/js');
+		$template_search_paths = array();
+		for ($i = 0; $i < count($template_check_p); $i++) {
+			$template_search_paths[$template_check_u[$i]] = $template_check_p[$i];
+		}
+
 		$paths = array(
-			$this->templateUrl => $this->templatePath . '/' . $type,
-			$this->gantryUrl   => $this->gantryPath . '/' . $type
+			$this->gantryUrl . '/' . $type   => $this->gantryPath . '/' . $type
 		);
+
+		$paths = array_merge($template_search_paths, $paths);
 
 		$checks = $this->platform->getJSChecks($file);
 		foreach ($paths as $baseurl => $path) {
+			$baseurl = rtrim($baseurl, '/');
+			$path    = rtrim($path, '/\\');
 			if (file_exists($path) && is_dir($path)) {
 				foreach ($checks as $check) {
 					$check_path     = preg_replace("/\?(.*)/", '', $path . '/' . $check);
-					$check_url_path = $baseurl . "/" . $type . "/" . $check;
+					$check_url_path = $baseurl . "/" . $check;
 					if (file_exists($check_path) && is_readable($check_path)) {
 						if (!defined('GANTRY_FINALIZED')) {
-							$this->_scripts[$check_path] = $check_url_path. $query_string;
+							$this->_scripts[$check_path] = $check_url_path . $query_string;
 						} else {
 							$this->document->addScript($check_url_path . $query_string);
 						}
@@ -1554,18 +1590,16 @@ class Gantry
 		$instance_filesystem_path    = $this->cleanPath(JPATH_ROOT);
 		$server_filesystem_root_path = $this->cleanPath($_SERVER['DOCUMENT_ROOT']);
 
-		$missing_ds  = (substr($parsed_url['path'], 0, 1) != '/')?'/':'';
+		$missing_ds = (substr($parsed_url['path'], 0, 1) != '/') ? '/' : '';
 		if (!empty($instance_url_path) && strpos($parsed_url['path'], $instance_url_path) === 0) {
 			$stripped_base = $this->cleanPath($parsed_url['path']);
-			if (strpos($stripped_base, $instance_url_path) == 0)
-			{
-				$stripped_base = substr_replace($stripped_base,'',0,strlen($instance_url_path));
+			if (strpos($stripped_base, $instance_url_path) == 0) {
+				$stripped_base = substr_replace($stripped_base, '', 0, strlen($instance_url_path));
 			}
 			$return_path = $instance_filesystem_path . $missing_ds . $this->cleanPath($stripped_base);
-		} elseif (empty($instance_url_path) && file_exists($instance_filesystem_path.$missing_ds.$parsed_url['path'])) {
-			$return_path = $instance_filesystem_path.$missing_ds.$parsed_url['path'];
-		}
-		else {
+		} elseif (empty($instance_url_path) && file_exists($instance_filesystem_path . $missing_ds . $parsed_url['path'])) {
+			$return_path = $instance_filesystem_path . $missing_ds . $parsed_url['path'];
+		} else {
 			$return_path = $server_filesystem_root_path . $missing_ds . $this->cleanPath($parsed_url['path']);
 		}
 		return $return_path;
@@ -1586,8 +1620,7 @@ class Gantry
 		if (preg_match('/^WIN/', PHP_OS)) {
 			$return_url_path = $path;
 		}
-		if (!@file_exists($return_url_path))
-		{
+		if (!@file_exists($return_url_path)) {
 			return $return_url_path;
 		}
 		$instance_url_path           = JURI::root(true);
@@ -1615,10 +1648,9 @@ class Gantry
 
 	public function cleanPath($path)
 	{
-		if (!preg_match('#^/$#', $path))
-		{
+		if (!preg_match('#^/$#', $path)) {
 			$path = preg_replace('#[/\\\\]+#', '/', $path);
-			$path = preg_replace('#/$#','',$path);
+			$path = preg_replace('#/$#', '', $path);
 		}
 		return $path;
 	}
@@ -2063,7 +2095,7 @@ class Gantry
 			$query->where('m.published = 1');
 
 			$date     = JFactory::getDate();
-			$now      = $date->toMySQL();
+			$now      = $date->toSql();
 			$nullDate = $db->getNullDate();
 			$query->where('(m.publish_up = ' . $db->Quote($nullDate) . ' OR m.publish_up <= ' . $db->Quote($now) . ')');
 			$query->where('(m.publish_down = ' . $db->Quote($nullDate) . ' OR m.publish_down >= ' . $db->Quote($now) . ')');
@@ -2141,7 +2173,8 @@ class Gantry
 		$gantry_path   = $this->gantryPath . '/' . $type . '/';
 
 		$gantry_first_paths = array(
-			$gantry_path, $template_path
+			$gantry_path,
+			$template_path
 		);
 
 		if (empty($this->_styles_available)) {
@@ -2172,7 +2205,8 @@ class Gantry
 	protected function loadFeatures()
 	{
 		$features_paths = array(
-			$this->templatePath . '/' . 'features', $this->gantryPath . '/' . 'features'
+			$this->templatePath . '/' . 'features',
+			$this->gantryPath . '/' . 'features'
 		);
 
 		$raw_features = array();
@@ -2215,7 +2249,8 @@ class Gantry
 	protected function loadAjaxModels()
 	{
 		$models_paths = array(
-			$this->templatePath . '/' . 'ajax-models', $this->gantryPath . '/' . 'ajax-models'
+			$this->templatePath . '/' . 'ajax-models',
+			$this->gantryPath . '/' . 'ajax-models'
 		);
 		$this->loadModels($models_paths, $this->_ajaxmodels);
 		return;
@@ -2289,7 +2324,8 @@ class Gantry
 
 		if (empty($this->_layouts)) {
 			$layout_paths = array(
-				$this->templatePath . '/' . 'html' . '/' . 'layouts', $this->gantryPath . '/' . 'html' . '/' . 'layouts'
+				$this->templatePath . '/' . 'html' . '/' . 'layouts',
+				$this->gantryPath . '/' . 'html' . '/' . 'layouts'
 			);
 
 			$raw_layouts = array();

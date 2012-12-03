@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: selectbox.php 2468 2012-08-17 06:16:57Z btowles $
+ * @version   $Id: selectbox.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -40,6 +40,7 @@ class GantryFormFieldSelectBox extends GantryFormField
 
 		$lis                     = $activeElement = "";
 		$this->translate_options = $this->getBool('translation', true);
+		$isisDropdowns 			 = !$gantry->get('isis-dropdowns',false) ? 'chzn-done':'';
 
 
 		$options       = $this->getOptions();
@@ -96,7 +97,7 @@ class GantryFormFieldSelectBox extends GantryFormField
 
 		// $html .= "	</div>";
 
-		$html .= "	<select id='" . $this->id . "' name='" . $this->name . "' class='selectbox-real " . $imapreset . "'>";
+		$html .= "	<select id='" . $this->id . "' name='" . $this->name . "' class='selectbox-real " . $isisDropdowns . $imapreset . "'>";
 		$html .= $optionsOutput;
 		$html .= "	</select>";
 		$html .= "</div>";

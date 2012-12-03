@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: body_mainbody.php 2649 2012-08-22 22:15:17Z rhuk $
+ * @version   $Id: body_mainbody.php 4247 2012-10-11 22:38:52Z kevin $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -33,10 +33,13 @@ class GantryLayoutBody_MainBody extends GantryLayout {
         $fparams = $this->_getParams($params);
 
         // logic to determine if the component should be displayed
-        $display_component = !($gantry->get("component-enabled",true) == false && JRequest::getVar('view') == 'featured');
+        $display_mainbody = !($gantry->get("mainbody-enabled",true)==false && JRequest::getVar('view') == 'featured');
+        $display_component = !($gantry->get("component-enabled",true)==false && (JRequest::getVar('option') == 'com_content' && JRequest::getVar('view') == 'featured'));
         ob_start();
 // XHTML LAYOUT
-?>          <div id="rt-main" class="<?php echo $fparams->classKey; ?>">
+?>
+<?php if ($display_mainbody) : ?>          
+<div id="rt-main" class="<?php echo $fparams->classKey; ?>">
                 <div class="rt-container">
                     <div class="rt-grid-<?php echo $fparams->schema['mb']; ?> <?php echo $fparams->pushPull[0]; ?>">
                         <?php if (isset($fparams->contentTop)) : ?>
@@ -63,6 +66,7 @@ class GantryLayoutBody_MainBody extends GantryLayout {
                     <div class="clear"></div>
                 </div>
             </div>
+<?php endif; ?>
 <?php
         return ob_get_clean();
     }

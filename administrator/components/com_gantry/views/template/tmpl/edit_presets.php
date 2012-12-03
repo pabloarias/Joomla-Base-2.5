@@ -2,7 +2,7 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.0.5 September 18, 2012
+ * @version   4.1.4 November 22, 2012
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -18,16 +18,16 @@
 	$fields = $this->gantryForm->getFullFieldset('toolbar-panel');
 	foreach($fields as $name => $field) {
 		//$gantry->addDomReadyScript("Gantry.ToolBar.add('".$field->type."');");
-		
+
 		$status = JRequest::getVar('gantry-'.$gantry->templateName.'-adminpresets', 'hide', 'COOKIE');
 		$style = ' style="display: none";';
-		
+
 		if ($status != 'hide'){
 			$status = 'hide';
 			$style = '';
 		}
-		
-		echo "<div id=\"contextual-".$field->type."-wrap\" class=\"hidden contextual-custom-wrap\"".$style.">\n";
+
+		echo "<div id=\"contextual-".$field->type."-wrap\" class=\"contextual-custom-wrap\"".$style.">\n";
 		echo "		<div class=\"metabox-prefs\">\n";
 
 		echo $field->input;
@@ -37,4 +37,4 @@
 	}
 	?>
 </div>
- 
+

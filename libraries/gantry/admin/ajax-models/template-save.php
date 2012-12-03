@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: template-save.php 2413 2012-08-16 04:31:03Z btowles $
+ * @version   $Id: template-save.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -31,8 +31,8 @@ function gantryAjaxSaveTemplate()
 	// Check for request forgeries
 	JRequest::checkToken() or jexit('Invalid Token');
 
-	JModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_gantry/models');
-	$model = JModel::getInstance("Template", 'GantryModel');
+	GantryLegacyJModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_gantry/models');
+	$model = GantryLegacyJModel::getInstance("Template", 'GantryModel');
 	$data  = JRequest::getVar('jform', array(), 'post', 'array');
 	if (!$model->save($data)) {
 		return 'error';

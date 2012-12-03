@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantryupdates.class.php 2325 2012-08-13 17:46:48Z btowles $
+ * @version   $Id: gantryupdates.class.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -103,12 +103,12 @@ class GantryUpdates
 
 		// convert manifest_cache to array
 		$registry = new JRegistry();
-		$registry->loadJSON($table->manifest_cache);
+		$registry->loadString($table->manifest_cache);
 		$table->manifest_cache = $registry->toArray();
 
 		// convert custom_data to array
 		$registry = new JRegistry();
-		$registry->loadJSON($table->custom_data);
+		$registry->loadString($table->custom_data);
 		$table->custom_data = $registry->toArray();
 
 		$this->extensionInfo = $table;

@@ -2,7 +2,7 @@
 /**
  * @package    gantry
  * @subpackage core
- * @version    4.0.5 September 18, 2012
+ * @version    4.1.4 November 22, 2012
  * @author     RocketTheme http://www.rockettheme.com
  * @copyright  Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -17,6 +17,27 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modeladmin');
 
 
+if (version_compare(JVERSION, '3.0', '<')) {
+	abstract class GantryModelTemplateIntermediate extends JModelAdmin
+	{
+		protected function prepareTable(&$table)
+		{
+			$this->gPrepareTable($table);
+		}
+		abstract protected function gPrepareTable($table);
+	}
+} else {
+	abstract class GantryModelTemplateIntermediate extends JModelAdmin
+	{
+		protected function prepareTable($table)
+		{
+			$this->gPrepareTable($table);
+		}
+
+		abstract protected function gPrepareTable($table);
+	}
+}
+
 /**
  * Template style model.
  *
@@ -24,7 +45,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage     com_templates
  * @since          1.6
  */
-class GantryModelTemplate extends JModelAdmin
+class GantryModelTemplate extends GantryModelTemplateIntermediate
 {
 	/**
 	 * @var        string    The help screen key for the module.
@@ -282,7 +303,7 @@ class GantryModelTemplate extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 */
-	protected function prepareTable(&$table)
+	protected function gPrepareTable($table)
 	{
 		$table;
 	}

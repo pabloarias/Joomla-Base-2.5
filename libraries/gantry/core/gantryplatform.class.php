@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantryplatform.class.php 3003 2012-09-01 17:12:52Z btowles $
+ * @version   $Id: gantryplatform.class.php 5027 2012-11-02 00:56:43Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -35,6 +35,17 @@ class GantryPlatform
 	/**
 	 * @var string
 	 */
+	public $shortVersion;
+
+	/**
+	 * @var string;
+	 */
+	public $longVersion;
+
+
+	/**
+	 * @var string
+	 */
 	public $jslib;
 
 	/**
@@ -50,7 +61,9 @@ class GantryPlatform
 	/**
 	 * @var array
 	 */
-	public $_js_file_checks = array();
+	public $js_file_checks = array();
+
+	public $platform_checks = array();
 
 	/**
 	 *
@@ -113,13 +126,14 @@ class GantryPlatform
 		}
 
 		// Create the JS checks for Joomla 1.5
-		$this->_js_file_checks = array(
-			'-' . $this->jslib . $this->jslib_version, '-' . $this->jslib_shortname . $this->jslib_version
+		$this->js_file_checks = array(
+			'-' . $this->jslib . $this->jslib_version,
+			'-' . $this->jslib_shortname . $this->jslib_version
 		);
 		if (JPluginHelper::isEnabled('system', 'mtupgrade')) {
-			$this->_js_file_checks[] = '-upgrade';
+			$this->js_file_checks[] = '-upgrade';
 		}
-		$this->_js_file_checks[] = '';
+		$this->js_file_checks[] = '';
 	}
 
 	// Get info for Joomla 1.6 versions
@@ -128,11 +142,21 @@ class GantryPlatform
 	 */
 	protected function getJoomla16Info()
 	{
+		$jversion              = new JVersion;
 		$this->jslib           = 'mootools';
 		$this->jslib_shortname = 'mt';
 		$this->jslib_version   = '1.2';
-		$this->_js_file_checks = array(
-			'-' . $this->jslib . $this->jslib_version, '-' . $this->jslib_shortname . $this->jslib_version, ''
+		$this->js_file_checks  = array(
+			'-' . $this->jslib . $this->jslib_version,
+			'-' . $this->jslib_shortname . $this->jslib_version,
+			''
+		);
+		$this->shortVersion    = $jversion->RELEASE;
+		$this->longVersion     = $jversion->getShortVersion();
+		$this->platform_checks = array(
+			'/' . $this->platform . '/' . $this->longVersion,
+			'/' . $this->platform . '/' . $this->shortVersion,
+			''
 		);
 	}
 
@@ -142,11 +166,21 @@ class GantryPlatform
 	 */
 	protected function getJoomla17Info()
 	{
+		$jversion              = new JVersion;
 		$this->jslib           = 'mootools';
 		$this->jslib_shortname = 'mt';
 		$this->jslib_version   = '1.2';
-		$this->_js_file_checks = array(
-			'-' . $this->jslib . $this->jslib_version, '-' . $this->jslib_shortname . $this->jslib_version, ''
+		$this->js_file_checks  = array(
+			'-' . $this->jslib . $this->jslib_version,
+			'-' . $this->jslib_shortname . $this->jslib_version,
+			''
+		);
+		$this->shortVersion    = $jversion->RELEASE;
+		$this->longVersion     = $jversion->getShortVersion();
+		$this->platform_checks = array(
+			'/' . $this->platform . '/' . $this->longVersion,
+			'/' . $this->platform . '/' . $this->shortVersion,
+			''
 		);
 	}
 
@@ -162,12 +196,55 @@ class GantryPlatform
 		$ext        = substr($file, strrpos($file, '.'));
 		$path       = ($keep_path) ? dirname($file) . '/' : '';
 		$filename   = basename($file, $ext);
-		foreach ($this->_js_file_checks as $suffix) {
+		foreach ($this->js_file_checks as $suffix) {
 			$checkfiles[] = $path . $filename . $suffix . $ext;
 		}
 		return $checkfiles;
 	}
 
+	/**
+	 * @param      $dir
+	 *
+	 * @return array
+	 */
+	public function getPlatformChecks($dir)
+	{
+
+		$dir = rtrim($dir,'/\\');
+		$checkfiles = array();
+		foreach ($this->platform_checks as $plaformdir) {
+			$checkfiles[] = $dir . $plaformdir.'/';
+		}
+		return $checkfiles;
+	}
+
+	public function getAvailablePlatformVersions($dir)
+	{
+		$dir = rtrim($dir,'/\\');
+		// find all entries in the dir
+		$entries = array();
+		$platform_dir = $dir.'/'.$this->platform;
+		if ($handle = @opendir($platform_dir)) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry != "." && $entry != ".." && !preg_match('/^\./',$entry) && is_dir($platform_dir . '/' . $entry)) {
+					$key             = (preg_match('/^\d+\.\d+$/', $entry)) ? $entry . '.0' : $entry;
+					$entries[$platform_dir.'/'.$entry] = $key;
+				}
+			}
+			closedir($handle);
+		}
+		$entries = array_filter($entries, array('GantryPlatform','joomlaVersionFilter'));
+		uksort($entries, 'version_compare');
+		$returned_array = array_reverse(array_keys($entries));
+		$returned_array[] = $dir;
+		return $returned_array;
+	}
+
+	public static function joomlaVersionFilter($version)
+	{
+		$jversion        = new JVersion();
+		return version_compare($version, $jversion->getShortVersion(), '<=');
+	}
 	/**
 	 * @return string
 	 */
@@ -223,5 +300,22 @@ class GantryPlatform
 	{
 		return $this->platform_version;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getShortVersion()
+	{
+		return $this->shortVersion;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLongVersion()
+	{
+		return $this->longVersion;
+	}
+
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: imagepicker.php 2468 2012-08-17 06:16:57Z btowles $
+ * @version   $Id: imagepicker.php 5145 2012-11-12 20:49:51Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -21,17 +21,18 @@ class GantryFormFieldImagePicker extends GantryFormField
 	protected $type = 'imagepicker';
 	protected $basetype = 'imagepicker';
 
+	protected static $rokgallery_loaded;
+
 	function getInput()
 	{
 		JHTML::_('behavior.modal');
 		/** @var $gantry Gantry */
 		global $gantry;
 
-		$com_rokgallery = JComponentHelper::getComponent('com_rokgallery');
 		$layout         = $link = $dropdown = "";
 		$options        = $choices = array();
 		$nomargin       = false;
-		$rokgallery     = !isset($com_rokgallery->option) ? false : ($com_rokgallery->option !== null) ? true : false;
+		$rokgallery     = self::checkForRokGallery();
 		//$rokgallery = false; // debug
 
 		$value = str_replace("'", '"', $this->value);
@@ -175,6 +176,30 @@ class GantryFormFieldImagePicker extends GantryFormField
 		return $layout;
 	}
 
+	protected static function checkForRokGallery()
+	{
+		if (!isset(self::$rokgallery_loaded)) {
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('extension_id AS id, element AS "option", params, enabled');
+			$query->from('#__extensions');
+			$query->where($query->qn('type') . ' = ' . $db->quote('component'));
+			$query->where($query->qn('element') . ' = ' . $db->quote('com_rokgallery'));
+			$db->setQuery($query);
+			try {
+				$component = $db->loadObject();
+				if (!is_null($component) && isset($component->option) && $component->option !== null) {
+					self::$rokgallery_loaded = true;
+				}
+				else{
+					self::$rokgallery_loaded = false;
+				}
+			} catch (RuntimeException $e) {
+				self::$rokgallery_loaded = false;
+			}
+		}
+		return self::$rokgallery_loaded;
+	}
 }
 
 ?>

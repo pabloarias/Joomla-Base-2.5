@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: jstools.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: jstools.php 4060 2012-10-02 18:03:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -61,6 +61,8 @@ class GantryFeatureJSTools extends GantryFeature
 			$gantry->addScript('gantry-inputs.js');
 			$gantry->addInlineScript("InputsExclusion.push($exclusions)");
 		}
+		// mootools browser engine
+		$gantry->addScript('browser-engines.js');
 	}
 
 	function _dateLanguage()

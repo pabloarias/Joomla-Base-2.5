@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: date.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: date.php 4246 2012-10-11 22:06:13Z kevin $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -12,6 +12,7 @@
 defined('JPATH_BASE') or die();
 
 gantry_import('core.gantryfeature');
+gantry_import('core.utilities.gantrydate');
 /**
  * @package     gantry
  * @subpackage  features
@@ -25,14 +26,12 @@ class GantryFeatureDate extends GantryFeature
 		/** @var $gantry Gantry */
 		global $gantry;
 		ob_start();
-
-		$now    = JFactory::getDate();
+		$now    = new GantryDate();
 		$format = $this->get('formats');
-
 		?>
-	<div class="date-block">
-		<span class="date"><?php echo $now->toFormat($format); ?></span>
-	</div>
+    <div class="date-block">
+        <span class="date"><?php echo $now->toFormat($format); ?></span>
+    </div>
 	<?php
 		return ob_get_clean();
 	}

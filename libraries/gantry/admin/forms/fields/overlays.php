@@ -255,7 +255,7 @@ class GantryFormFieldOverlays extends GantryFormField
 				window.sliders['" . $id . "'].preview.setStyle('background-image', 'url('+data['path']+')');
 
 				window.sliders['" . $id . "'].preview.addEvent('click', function() {
-					if (!\$chk(this.indexColor)) this.indexColor = 0;
+					if (this.indexColor == null) this.indexColor = 0;
 					else {
 						this.indexColor += 1;
 						if (this.indexColor > tmpColors.length - 1) this.indexColor = 0;
