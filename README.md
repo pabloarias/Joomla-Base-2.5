@@ -5,11 +5,12 @@ El pack Joomla-Base está compuesto por el gestor de contenidos Joomla, su tradu
 
 Paquetes utilizados:
 - Joomla 2.5.8
-- Idioma español 2.5.7v1
-- JCE 2.2.7.2 y traducción al español 2.2.7.2
-- Xmap 2.2.1
-- Framework Gantry 4.0.5
+- Idioma español 2.5.8.1
+- JCE 2.2.9.1 y traducción al español 2.2.7.2
+- Xmap 2.3.2
+- Framework Gantry 4.1.4
 - aiContactSafe 2.0.19
+- Google Maps plugin 2.18
 
 Contenidos:
 - Nota legal
