@@ -2,7 +2,7 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.0.5 September 18, 2012
+ * @version   4.1.4 November 22, 2012
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -22,6 +22,10 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_templates')) {
 // Include dependancies
 jimport('joomla.application.component.controller');
 
-$controller	= JController::getInstance('Gantry');
+require_once(dirname(__FILE__).'/compatability.php');
+
+$controller	= GantryLegacyJController::getInstance('Gantry');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
+
+

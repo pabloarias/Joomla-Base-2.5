@@ -1,6 +1,6 @@
 <?php
 /**
- * @version	$Id: edit.php 3119 2012-09-03 18:58:03Z djamil $
+ * @version	$Id: edit.php 4060 2012-10-02 18:03:24Z btowles $
  * @package Gantry
  * @copyright Copyright (C) 2009 RocketTheme. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -175,7 +175,7 @@ $this->gantryForm->initialize();
 		<h1>Templates Manager <small>/ Edit Style</small></h1>
 		<?php echo gantry_admin_render_menu($this, $this->item); ?>
 	</div>
-	<form action="<?php echo JRoute::_('index.php?option=com_gantry&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="template-form" class="form-validate">
+	<form action="<?php echo JRoute::_('index.php?option=com_gantry&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 		<?php echo $this->form->getInput('client_id'); ?>
 		<div id="g4-hidden">
 			<?php if ($this->item->id) : ?>
@@ -306,7 +306,7 @@ $this->gantryForm->initialize();
 								if ($panel == 'assignment' && (!$user->authorise('core.edit', 'com_menu') || !$canDo->get('core.edit.state'))) continue;
 								$width = '';
 								if ((@count($positions['left'][$panels[$i]['name']]) && !@count($positions['right'][$panels[$i]['name']])) || (!@count($positions['left'][$panels[$i]['name']]) && @count($positions['right'][$panels[$i]['name']]))) {
-									$width = 'width-auto';
+									$width = 'width-100pc';
 								}
 
 								$activePanel = "";
