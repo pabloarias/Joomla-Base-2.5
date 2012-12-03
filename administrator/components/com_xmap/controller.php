@@ -16,7 +16,7 @@ jimport('joomla.application.component.controller');
  * @package	     Xmap
  * @subpackage  com_xmap
  */
-class XmapController extends JController
+class XmapController extends JControllerLegacy
 {
 
     function __construct()
@@ -31,7 +31,7 @@ class XmapController extends JController
      */
     public function display($cachable = false, $urlparams = false)
     {
-        require_once JPATH_COMPONENT . DS . 'helpers' . DS . 'xmap.php';
+        require_once JPATH_COMPONENT . '/helpers/xmap.php';
 
         // Get the document object.
         $document = JFactory::getDocument();
@@ -55,8 +55,6 @@ class XmapController extends JController
 
             $view->display();
 
-            // Load the submenu.
-            XmapHelper::addSubmenu($vName);
         }
     }
 
@@ -70,8 +68,7 @@ class XmapController extends JController
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         if (!$id) {
-            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
-            $id = $db->loadResult();
+            $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
@@ -103,8 +100,7 @@ class XmapController extends JController
         $link = urldecode(JRequest::getVar('link', ''));
         $name = JRequest::getCmd('e_name', '');
         if (!$id) {
-            $db->setQuery('SELECT id from `#__xmap_sitemap` where is_default=1');
-            $id = $db->loadResult();
+            $id = $this->getDefaultSitemapId();
         }
 
         if (!$id) {
@@ -123,6 +119,17 @@ class XmapController extends JController
         $view->assignRef('document', $document);
 
         $view->navigatorLinks();
+    }
+
+    private function getDefaultSitemapId()
+    {
+        $db = JFactory::getDBO();
+        $query  = $db->getQuery(true);
+        $query->select('id');
+        $query->from($db->quoteName('#__xmap_sitemap'));
+        $query->where('is_default=1');
+        $db->setQuery($query);
+        return $db->loadResult();
     }
 
 }

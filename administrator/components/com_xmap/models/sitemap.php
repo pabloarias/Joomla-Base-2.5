@@ -33,7 +33,7 @@ class XmapModelSitemap extends JModelAdmin
         $this->_item = 'sitemap';
         $this->_option = 'com_xmap';
     }
-    
+
     /**
      * Method to auto-populate the model state.
      */
@@ -102,7 +102,7 @@ class XmapModelSitemap extends JModelAdmin
 
         // Convert the params field to an array.
         $registry = new JRegistry;
-        $registry->loadJSON($table->attribs);
+        $registry->loadString($table->attribs);
         $value->attribs = $registry->toArray();
 
         return $value;
@@ -139,7 +139,10 @@ class XmapModelSitemap extends JModelAdmin
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState('com_xmap.edit.sitemap.data', array());
 
-        
+        if (empty($data)) {
+            $data = $this->getItem();
+        }
+
         return $data;
     }
 
@@ -182,9 +185,7 @@ class XmapModelSitemap extends JModelAdmin
 
         if (!$table->is_default) {
             // Check if there is no default sitemap. Then, set it as default if not
-            $query = 'SELECT COUNT(id) FROM `#__xmap_sitemap` where is_default=1'.($table->id? ' AND id<>'.$table->id:'');
-            $this->_db->setQuery($query);
-            $result = $this->_db->loadResult();
+            $result = $this->getDefaultSitemapId();
             if (!$result) {
                 $table->is_default=1;
             }
@@ -197,7 +198,11 @@ class XmapModelSitemap extends JModelAdmin
         }
 
         if ($table->is_default) {
-            $query = 'UPDATE `#__xmap_sitemap` set is_default=0 where id <> '.$table->id;
+            $query =  $this->_db->getQuery(true)
+                            ->update($this->_db->quoteName('#__xmap_sitemap'))
+                            ->set($this->_db->quoteName('is_default').' = 0')
+                            ->where($this->_db->quoteName('id').' <> '.$table->id);
+
             $this->_db->setQuery($query);
             if (!$this->_db->query()) {
                 $this->setError($table->_db->getErrorMsg());
@@ -222,7 +227,7 @@ class XmapModelSitemap extends JModelAdmin
         // TODO.
     }
 
-    
+
     function _orderConditions($table = null)
     {
         $condition = array();
@@ -233,7 +238,10 @@ class XmapModelSitemap extends JModelAdmin
     {
         $table        = $this->getTable();
         if ($table->load($id)) {
-            $query = 'UPDATE `#__xmap_sitemap` set is_default=0 where id <> '.$table->id;
+            $query =  $db->getQuery(true)
+                ->update($db->quoteName('#__xmap_sitemap'))
+                ->set($db->quoteName('is_default').' = 0')
+                ->where($db->quoteName('id').' <> '.$table->id);
             $this->_db->setQuery($query);
             if (!$this->_db->query()) {
                 $this->setError($table->_db->getErrorMsg());
@@ -241,14 +249,14 @@ class XmapModelSitemap extends JModelAdmin
             }
             $table->is_default = 1;
             $table->store();
-            
+
             // Clean the cache.
             $cache = JFactory::getCache('com_xmap');
             $cache->clean();
             return true;
         }
     }
-    
+
     /**
      * Override to avoid warnings
      *
@@ -256,5 +264,16 @@ class XmapModelSitemap extends JModelAdmin
     public function checkout($pk = null)
     {
         return true;
+    }
+
+    private function getDefaultSitemapId()
+    {
+        $db = JFactory::getDBO();
+        $query  = $db->getQuery(true);
+        $query->select('id');
+        $query->from($db->quoteName('#__xmap_sitemap'));
+        $query->where('is_default=1');
+        $db->setQuery($query);
+        return $db->loadResult();
     }
 }

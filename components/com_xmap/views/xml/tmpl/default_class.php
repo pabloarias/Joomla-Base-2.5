@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-require_once(JPATH_COMPONENT . DS . 'displayer.php');
+require_once(JPATH_COMPONENT . '/displayer.php');
 
 class XmapXmlDisplayer extends XmapDisplayer
 {
@@ -26,6 +26,9 @@ class XmapXmlDisplayer extends XmapDisplayer
      */
     var $view = 'xml';
 
+    protected $showTitle = false;
+    protected $showExcluded = false;
+
     /**
      *
      * @var int Indicates if this is a google news sitemap or not
@@ -36,13 +39,17 @@ class XmapXmlDisplayer extends XmapDisplayer
     {
         parent::__construct($config, $sitemap);
         $this->uids = array();
-        
+
         $this->defaultLanguage = strtolower(JFactory::getLanguage()->getTag());
         if (preg_match('/^([a-z]+)-.*/',$this->defaultLanguage,$matches) && !in_array($this->defaultLanguage, array(' zh-cn',' zh-tw')) ) {
             $this->defaultLanguage = $matches[1];
         }
-        
+
         $this->showTitle = JRequest::getBool('filter_showtitle', 0);
+        $this->showExcluded = JRequest::getBool('filter_showexcluded', 0);
+
+        $db = JFactory::getDbo();
+        $this->nullDate = $db->getNullDate();
     }
 
     /**
@@ -52,8 +59,12 @@ class XmapXmlDisplayer extends XmapDisplayer
      */
     function printNode($node)
     {
+        $node->isExcluded = false;
         if ($this->isExcluded($node->id,$node->uid)) {
-            return FALSE;
+            if (!$this->showExcluded || !$this->canEdit) {
+                return false;
+            }
+            $node->isExcluded = true;
         }
 
         if ($this->isNews && (!isset($node->newsItem) || !$node->newsItem)) {
@@ -61,7 +72,7 @@ class XmapXmlDisplayer extends XmapDisplayer
         }
 
         // Get the item's URL
-        $link = JRoute::_($node->link, true, (@$node->secure? 1: -1));
+        $link = JRoute::_($node->link, true, @$node->secure==0? -1: $node->secure);
 
         if (!isset($node->browserNav))
             $node->browserNav = 0;
@@ -87,12 +98,19 @@ class XmapXmlDisplayer extends XmapDisplayer
                 if ($this->showTitle) {
                     echo '<title><![CDATA['.$node->name.']]></title>' . "\n";
                 }
+                if ($this->showExcluded) {
+                    echo '<rowclass>',($node->isExcluded? 'excluded':''),'</rowclass>';
+                }
                 echo '<uid>', $node->uid, '</uid>' . "\n";
                 echo '<itemid>', $node->id, '</itemid>' . "\n";
             }
-            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != -1) ? $node->modified : NULL;
+            $modified = (isset($node->modified) && $node->modified != FALSE && $node->modified != $this->nullDate && $node->modified != -1) ? $node->modified : NULL;
             if (!$modified && $this->isNews) {
                 $modified = time();
+            }
+            if ($modified && !is_numeric($modified)){
+                $date =  new JDate($modified);
+                $modified = $date->toUnix();
             }
             if ($modified) {
                 $modified = gmdate('Y-m-d\TH:i:s\Z', $modified);
@@ -111,7 +129,7 @@ class XmapXmlDisplayer extends XmapDisplayer
                 } else {
                     $keywords = '';
                 }
-                
+
                 if (!isset($node->language) || $node->language == '*') {
                     $node->language = $this->defaultLanguage;
                 }

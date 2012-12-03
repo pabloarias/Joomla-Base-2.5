@@ -10,10 +10,16 @@ defined('_JEXEC') or die;
 
 // Include dependencies
 jimport('joomla.application.component.controller');
-//require_once JPATH_COMPONENT.DS.'router.php';
 
-require_once(JPATH_COMPONENT.DS.'displayer.php');
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JControllerLegacy')){
+	class JControllerLegacy extends JController {
 
-$controller = JController::getInstance('Xmap');
+	}
+}
+
+require_once(JPATH_COMPONENT.'/displayer.php');
+
+$controller = JControllerLegacy::getInstance('Xmap');
 $controller->execute(JRequest::getVar('task'));
 $controller->redirect();

@@ -9,15 +9,24 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JTable::addIncludePath( JPATH_COMPONENT.DS.'tables' );
+JTable::addIncludePath( JPATH_COMPONENT.'/tables' );
 
 jimport('joomla.form.form');
-JForm::addFieldPath( JPATH_COMPONENT.DS.'models'.DS.'fields' );
-//JForm::addFieldPath( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_menus'.DS.'models'.DS.'fields' );
+JForm::addFieldPath( JPATH_COMPONENT.'/models/fields' );
+
+// Register helper class
+JLoader::register('XmapHelper', dirname(__FILE__) . '/helpers/xmap.php');
 
 // Include dependancies
 jimport('joomla.application.component.controller');
 
-$controller = JController::getInstance('Xmap');
-$controller->execute(JRequest::getVar('task'));
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JControllerLegacy')){
+	class JControllerLegacy extends JController {
+
+	}
+}
+
+$controller = JControllerLegacy::getInstance('Xmap');
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

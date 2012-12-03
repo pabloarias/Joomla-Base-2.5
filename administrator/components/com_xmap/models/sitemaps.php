@@ -70,9 +70,33 @@ class XmapModelSitemaps extends JModelList
 
         $published = $this->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '');
         $this->setState('filter.published', $published);
-        
+
+        $search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+        $this->setState('filter.search', $search);
+
         // List state information.
         parent::populateState('a.title', 'asc');
+    }
+
+    /**
+     * Method to get a store id based on model configuration state.
+     *
+     * This is necessary because the model is used by the component and
+     * different modules that might need different sets of data or different
+     * ordering requirements.
+     *
+     * @param   string      $id A prefix for the store id.
+     *
+     * @return  string      A store id.
+     */
+    protected function getStoreId($id = '')
+    {
+        // Compile the store id.
+        $id .= ':'.$this->getState('filter.search');
+        $id .= ':'.$this->getState('filter.access');
+        $id .= ':'.$this->getState('filter.published');
+
+        return parent::getStoreId($id);
     }
 
     /**
@@ -82,7 +106,7 @@ class XmapModelSitemaps extends JModelList
      */
     protected function getListQuery($resolveFKs = true)
     {
-        $db = JFactory::getDBO();
+        $db     = $this->getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
 
@@ -111,17 +135,34 @@ class XmapModelSitemaps extends JModelList
             $query->where('(a.state = 0 OR a.state = 1)');
         }
 
-        // Add the list ordering clause.
-        $query->order($this->_db->getEscaped($this->getState('list.ordering', 'a.title')) . ' ' . $this->_db->getEscaped($this->getState('list.direction', 'ASC')));
+        // Filter by search in title.
+        $search = $this->getState('filter.search');
+        if (!empty($search)) {
+            if (stripos($search, 'id:') === 0) {
+                $query->where('a.id = '.(int) substr($search, 3));
+            }
+            else {
+                $search = $db->Quote('%'.$db->escape($search, true).'%');
+                $query->where('(a.title LIKE '.$search.' OR a.alias LIKE '.$search.')');
+            }
+        }
 
+        // Add the list ordering clause.
+        $query->order($db->escape($this->state->get('list.ordering', 'a.title')) . ' ' . $db->escape($this->state->get('list.direction', 'ASC')));
         //echo nl2br(str_replace('#__','jos_',$query));
         return $query;
     }
 
     public function getExtensionsMessage()
     {
-        $db = JFactory::getDbo();
-        $db->setQuery('SELECT e.* from `#__extensions` e INNER JOIN `#__extensions` p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\' where e.type=\'component\' and e.enabled=1');
+        $db     = $this->getDbo();
+        $query  = $db->getQuery(true);
+        $query->select('e.*');
+        $query->from($db->quoteName('#__extensions'). 'AS e');
+        $query->join('INNER', '#__extensions AS p ON e.element=p.element and p.enabled=0 and p.type=\'plugin\' and p.folder=\'xmap\'');
+        $query->where('e.type=\'component\' and e.enabled=1');
+
+        $db->setQuery($query);
         $extensions = $db->loadObjectList();
         if ( count($extensions) ) {
             $sep = $extensionsNameList = '';

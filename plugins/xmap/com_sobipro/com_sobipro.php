@@ -47,6 +47,11 @@ class xmap_com_sobipro {
         $link_query = parse_url( $parent->link );
         parse_str( html_entity_decode($link_query['query']), $link_vars);
         $sid =JArrayHelper::getValue($link_vars,'sid',1);
+        $task =JArrayHelper::getValue($link_vars,'task', null);
+
+        if (in_array($task, array('search', 'entry.add'))) {
+            return;
+        }
 
         $db = JFactory::getDbo();
         $db->setQuery('SELECT * FROM `#__sobipro_object` where id='.(int)$sid);
@@ -158,15 +163,15 @@ class xmap_com_sobipro {
 
         if ( $params['include_entries'] ) {
             $query  =
-             "SELECT a.id, c.baseData as name,UNIX_TIMESTAMP(a.updatedTime) as modified,UNIX_TIMESTAMP(b.validSince) as publish_up, b.pid as catid  "
+             "SELECT a.id, c.baseData as name,a.updatedTime as modified,b.validSince as publish_up, b.pid as catid  "
             ."\n FROM #__sobipro_object AS a, #__sobipro_relations AS b, #__sobipro_field_data c"
             ."\n WHERE a.state=1 "
             ."\n AND a.id=b.id "
             ."\n AND b.oType = 'entry'"
             ."\n AND b.pid = $sid"
             ."\n AND a.approved=1 "
-            ."\n AND b.validUntil<='{$params['now']}' "
-            ."\n AND (b.validSince>='{$params['now']}' or b.validUntil='0000-00-00 00:00:00' ) "
+            ."\n AND (a.validUntil>='{$params['now']}' or a.validUntil='0000-00-00 00:00:00' ) "
+            ."\n AND (a.validSince<='{$params['now']}' or a.validSince='0000-00-00 00:00:00' ) "
             ."\n AND a.id=c.sid AND c.fid=".self::$sectionConfig['name_field']->sValue
             ."\n AND c.section=".self::$sectionConfig['name_field']->section
             . $params['days']
@@ -176,7 +181,6 @@ class xmap_com_sobipro {
 
             $database->setQuery( $query );
             $rows = $database->loadObjectList();
-#            echo str_replace('#__','jos_',$database->getQuery( ));
             foreach($rows as $row) {
                 $node = new stdclass;
                 $node->id = $parent->id;
@@ -220,13 +224,13 @@ class xmap_com_sobipro {
         define( 'SOBI_DEFLANG', JFactory::getLanguage()->getDefault() );
         define( 'SOBI_ACL', 'front' );
         define( 'SOBI_ROOT', JPATH_ROOT );
-        define( 'SOBI_MEDIA', implode( DS, array( JPATH_ROOT, 'media', 'sobipro' ) ) );
+        define( 'SOBI_MEDIA', implode( '/', array( JPATH_ROOT, 'media', 'sobipro' ) ) );
         define( 'SOBI_MEDIA_LIVE', JURI::root().'/media/sobipro' );
-        define( 'SOBI_PATH', SOBI_ROOT.DS.'components'.DS.'com_sobipro' );
-        if (!file_exists(SOBI_PATH.DS.'lib'.DS.'base'.DS.'fs'.DS.'loader.php')) {
+        define( 'SOBI_PATH', SOBI_ROOT.'/components/com_sobipro' );
+        if (!file_exists(SOBI_PATH.'/lib/base/fs/loader.php')) {
            return false;
         }
-        require_once SOBI_PATH.DS.'lib'.DS.'base'.DS.'fs'.DS.'loader.php';
+        require_once SOBI_PATH.'/lib/base/fs/loader.php';
         SPLoader::loadClass( 'sobi' );
         SPLoader::loadClass( 'base.request' );
         SPLoader::loadClass( 'base.object' );

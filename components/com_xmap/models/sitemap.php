@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelitem');
 jimport('joomla.database.query');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'xmap.php');
+require_once(JPATH_COMPONENT . '/helpers/xmap.php');
 
 /**
  * Xmap Component Sitemap Model
@@ -69,7 +69,7 @@ class XmapModelSitemap extends JModelItem
         // Initialize variables.
         $db = $this->getDbo();
         $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
-        
+
         // If not sitemap specified, select the default one
         if (!$pk) {
             $query = $db->getQuery(true);
@@ -100,7 +100,7 @@ class XmapModelSitemap extends JModelItem
                 // Filter by access level.
                 if ($access = $this->getState('filter.access')) {
                     $user = JFactory::getUser();
-                    $groups = implode(',', $user->authorisedLevels());
+                    $groups = implode(',', $user->getAuthorisedViewLevels());
                     $query->where('a.access IN (' . $groups . ')');
                 }
 
@@ -123,13 +123,13 @@ class XmapModelSitemap extends JModelItem
 
                 // Convert parameter fields to objects.
                 $registry = new JRegistry('_default');
-                $registry->loadJSON($data->attribs);
+                $registry->loadString($data->attribs);
                 $data->params = clone $this->getState('params');
                 $data->params->merge($registry);
 
                 // Convert the selections field to an array.
                 $registry = new JRegistry('_default');
-                $registry->loadJSON($data->selections);
+                $registry->loadString($data->selections);
                 $data->selections = $registry->toArray();
 
                 // Compute access permissions.
@@ -167,22 +167,7 @@ class XmapModelSitemap extends JModelItem
     {
         return XmapHelper::getExtensions();
     }
-/*
-    private function prepareMenuItem222(&$item)
-    {
-        $extensions = $this->getExtensions();
-        if (preg_match('#^/?index.php.*option=(com_[^&]+)#', $item->link, $matches)) {
-            $option = $matches[1];
-            if (!empty($extensions[$option])) {
-                $className = 'xmap_' . $option;
-                $obj = new $className;
-                if (method_exists($obj, 'prepareMenuItem')) {
-                    $obj->prepareMenuItem($item);
-                }
-            }
-        }
-    }
-*/
+
     /**
      * Increment the hit counter for the sitemap.
      *
@@ -249,7 +234,7 @@ class XmapModelSitemap extends JModelItem
         $items = $this->getSitemapItems($view);
         $db = JFactory::getDBO();
         $pk = (int) $this->getState('sitemap.id');
-        
+
         $isNew = false;
         if (empty($items[$view][$itemid][$uid])) {
             $items[$view][$itemid][$uid] = array();
@@ -262,9 +247,9 @@ class XmapModelSitemap extends JModelItem
             $sep = ';';
         }
         if (!$isNew) {
-            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->getEscaped($properties) . "' where uid='" . $db->getEscaped($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
+            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->escape($properties) . "' where uid='" . $db->escape($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
         } else {
-            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->getEscaped($uid) . "',$itemid,'$view',$pk,'" . $db->getEscaped($properties) . "')";
+            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->escape($uid) . "',$itemid,'$view',$pk,'" . $db->escape($properties) . "')";
         }
         $db->setQuery($query);
         //echo $db->getQuery();exit;
@@ -302,15 +287,9 @@ class XmapModelSitemap extends JModelItem
         $registry = new JRegistry('_default');
         $registry->loadArray($excludedItems);
         $str = $registry->toString();
-        /*
-          $sep = $str = '';
-          foreach ($excludedItems as $itemid => $items) {
-          $str .= $sep."$itemid:".implode(',',$items);
-          $sep = ';';
-          }
-         */
+
         $db = &JFactory::getDBO();
-        $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->getEscaped($str) . "' where id=" . $sitemap->id;
+        $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
         $db->setQuery($query);
         $db->query();
         return $state;

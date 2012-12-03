@@ -1,7 +1,7 @@
 <?php
 /**
  * @version             $Id$
- * @copyright			Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
  * @license             GNU General Public License version 2 or later; see LICENSE.txt
  * @author              Guillermo Vargas (guille@vargas.co.cr)
  */
@@ -12,10 +12,14 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$function = JRequest::getVar('function', 'jSelectSitemap');
 $n = count($this->items);
+
+$baseUrl = JUri::root();
+
+$version = new JVersion;
+
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_xmap&view=sitemaps');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">
 		<div class="left">
 			<label for="search">
@@ -46,6 +50,9 @@ $n = count($this->items);
 	<table class="adminlist">
 		<thead>
 			<tr>
+				<th width="20">
+					<input type="checkbox" name="toggle" value="" onclick="checkAll(this)" />
+				</th>
 				<th class="title">
 					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Sitemap', 'a.title', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
@@ -53,18 +60,18 @@ $n = count($this->items);
 					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_Published', 'a.state', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort',  'JGrid_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+					<?php echo JHtml::_('grid.sort',  'Xmap_Heading_Access', 'access_level', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
-				<th width="10%" nowrap="nowrap">
+				<th width="10%" class="nowrap">
 					<?php echo JText::_('Xmap_Heading_Html_Stats'); ?><br />
 					(<?php echo JText::_('Xmap_Heading_Num_Links') . ' / '. JText::_('Xmap_Heading_Num_Hits') . ' / ' . JText::_('Xmap_Heading_Last_Visit'); ?>)
 				</th>
-				<th width="10%" nowrap="nowrap">
+				<th width="10%" class="nowrap">
 					<?php echo JText::_('Xmap_Heading_Xml_Stats'); ?><br />
 					<?php echo JText::_('Xmap_Heading_Num_Links') . '/'. JText::_('Xmap_Heading_Num_Hits') . '/' . JText::_('Xmap_Heading_Last_Visit'); ?>
 				</th>
-				<th width="1%" nowrap="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGrid_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
+				<th width="1%" class="nowrap">
+					<?php echo JHtml::_('grid.sort', 'Xmap_Heading_ID', 'a.id', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
 			</tr>
 		</thead>
@@ -78,7 +85,7 @@ $n = count($this->items);
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 
-                        $now = JFactory::getDate()->toUnix();
+			$now = JFactory::getDate()->toUnix();
 			if ( !$item->lastvisit_html ) {
 				$htmlDate = JText::_('Date_Never');
 			}elseif ( $item->lastvisit_html > ($now-3600)) { // Less than one hour
@@ -91,7 +98,7 @@ $n = count($this->items);
 				$htmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_html)/3600));
 			} else {
 				$date = new JDate($item->lastvisit_html);
-				$htmlDate = $date->toFormat('%Y-%m-%d %H:%M');
+				$htmlDate = $date->format('Y-m-d H:i');
 			}
 
 			if ( !$item->lastvisit_xml ) {
@@ -106,19 +113,35 @@ $n = count($this->items);
 				$xmlDate = JText::sprintf('Date_Days_Hours_Ago',$days,intval(($now-($days*86400)-$item->lastvisit_xml)/3600));
 			} else {
 				$date = new JDate($item->lastvisit_xml);
-				$xmlDate = $date->toFormat('%Y-%m-%d %H:%M');
+				$xmlDate = $date->format('Y-m-d H:i');
 			}
 
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
-				<td>
-					<a style="cursor: pointer;" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $item->id; ?>', '<?php echo $this->escape($item->title); ?>');">
-						<?php echo $this->escape($item->title); ?></a>
+				<td class="center">
+					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
-				<td align="center">
+				<td>
+					<a href="<?php echo JRoute::_('index.php?option=com_xmap&task=sitemap.edit&id='.$item->id);?>">
+						<?php echo $this->escape($item->title); ?></a>
+						<?php if ($item->is_default == 1) : ?>
+							<?php if (version_compare($version->getShortVersion(), '3.0.0', '>=')): ?>
+								<span class="icon-featured"></span>
+							<?php else: ?>
+								<img src="templates/bluestork/images/menu/icon-16-default.png" alt="<?php echo JText::_('Default'); ?>" />
+							<?php endif; ?>
+						<?php endif; ?>
+                            <?php if ($item->state): ?>
+                                <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_XML_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_XML_LINK'); ?></a>]</small>
+                                <small>[<a href="<?php echo $baseUrl. 'index.php?option=com_xmap&amp;view=xml&tmpl=component&news=1&id='.$item->id; ?>" target="_blank" title="<?php echo JText::_('XMAP_NEWS_LINK_TOOLTIP',true); ?>"><?php echo JText::_('XMAP_NEWS_LINK'); ?></a>]</small>
+                            <?php endif; ?>
+					<br /><small>
+						(<?php echo $this->escape($item->alias); ?>)</small>
+				</td>
+				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'sitemaps.'); ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
 				<td class="center">
@@ -127,14 +150,14 @@ $n = count($this->items);
 				<td class="center">
 					<?php echo $item->count_xml .' / '.$item->views_xml. ' / ' . $xmlDate; ?>
 				</td>
-				<td align="center">
+				<td class="center">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>
 		</tbody>
 	</table>
-	<input type="hidden" name="tmpl" value="component" />
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->state->get('list.ordering'); ?>" />

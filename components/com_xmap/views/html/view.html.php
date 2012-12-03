@@ -11,6 +11,13 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
+# For compatibility with older versions of Joola 2.5
+if (!class_exists('JViewLegacy')){
+    class JViewLegacy extends JView {
+
+    }
+}
+
 /**
  * HTML Site map View class for the Xmap component
  *
@@ -18,7 +25,7 @@ jimport('joomla.application.component.view');
  * @subpackage      com_xmap
  * @since           2.0
  */
-class XmapViewHtml extends JView
+class XmapViewHtml extends JViewLegacy
 {
 
     protected $state;
@@ -29,6 +36,7 @@ class XmapViewHtml extends JView
         // Initialise variables.
         $this->app = JFactory::getApplication();
         $this->user = JFactory::getUser();
+        $doc = JFactory::getDocument();
 
         // Get view related request variables.
         $this->print = JRequest::getBool('print');
@@ -37,7 +45,8 @@ class XmapViewHtml extends JView
         $this->state = $this->get('State');
         $this->item = $this->get('Item');
         $this->items = $this->get('Items');
-        
+
+
         $this->canEdit = JFactory::getUser()->authorise('core.admin', 'com_xmap');
 
         // Check for errors.
@@ -55,6 +64,9 @@ class XmapViewHtml extends JView
         // Create a shortcut to the paramemters.
         $params = &$this->state->params;
         $offset = $this->state->get('page.offset');
+        if ($params->get('include_css', 0)){
+            $doc->addStyleSheet(JURI::root().'components/com_xmap/assets/css/xmap.css');
+        }
 
         // If a guest user, they may be able to log in to view the full article
         // TODO: Does this satisfy the show not auth setting?
@@ -109,7 +121,7 @@ class XmapViewHtml extends JView
         if ($menu = $menus->getActive()) {
             if (isset($menu->query['view']) && isset($menu->query['id'])) {
                 if ($menu->query['view'] == 'html' && $menu->query['id'] == $this->item->id) {
-                    $menuParams = new JParameter($menu->params);
+                    $menuParams = new JRegistry($menu->params);
                     $title = $menuParams->get('page_title');
 
                     $this->document->setDescription($menuParams->get('menu-meta_description'));
