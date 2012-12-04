@@ -24,3 +24,4 @@ Notas:
 Archivos a eliminar antes del despliegue:
 - README.md
 - joomlabase.sql
+- .gitignore
