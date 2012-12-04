@@ -56,3 +56,8 @@ div#rt-footer ul.menu li .item:before,
 div#rt-footer ul.menu li .separator:before {
     content: "";
 }
+
+/* Browser update warning */
+#BrowserUpdateWarningContent .yourBrowser a {
+    vertical-align: middle;
+}
