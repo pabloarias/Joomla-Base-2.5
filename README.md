@@ -11,6 +11,7 @@ Paquetes utilizados:
 - Framework Gantry 4.1.4
 - aiContactSafe 2.0.19
 - Google Maps plugin 2.18
+- Browser Update Warning 1.4
 
 Contenidos:
 - Página de error
