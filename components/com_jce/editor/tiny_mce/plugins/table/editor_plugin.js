@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -84,7 +84,8 @@ setSpanVal(cell,'colSpan',cell.colSpan+1);lastCell=cell;}});};function deleteCol
 setSpanVal(cell,'colSpan',colSpan-1);else
 dom.remove(cell);});cols.push(x);}});});cleanup();};function deleteRows(){var rows;function deleteRow(tr){var nextTr,pos,lastCell;nextTr=dom.getNext(tr,'tr');each(tr.cells,function(cell){var rowSpan=getSpanVal(cell,'rowSpan');if(rowSpan>1){setSpanVal(cell,'rowSpan',rowSpan-1);pos=getPos(cell);fillLeftDown(pos.x,pos.y,1,1);}});pos=getPos(tr.cells[0]);each(grid[pos.y],function(cell){var rowSpan;cell=cell.elm;if(cell!=lastCell){rowSpan=getSpanVal(cell,'rowSpan');if(rowSpan<=1)
 dom.remove(cell);else
-setSpanVal(cell,'rowSpan',rowSpan-1);lastCell=cell;}});};rows=getSelectedRows();each(rows.reverse(),function(tr){deleteRow(tr);});cleanup();};function cutRows(){var rows=getSelectedRows();dom.remove(rows);cleanup();return rows;};function copyRows(){var rows=getSelectedRows();each(rows,function(row,i){rows[i]=cloneNode(row,true);});return rows;};function pasteRows(rows,before){var selectedRows=getSelectedRows(),targetRow=selectedRows[before?0:selectedRows.length-1],targetCellCount=targetRow.cells.length;each(grid,function(row){var match;targetCellCount=0;each(row,function(cell,x){if(cell.real)
+setSpanVal(cell,'rowSpan',rowSpan-1);lastCell=cell;}});};rows=getSelectedRows();each(rows.reverse(),function(tr){deleteRow(tr);});cleanup();};function cutRows(){var rows=getSelectedRows();dom.remove(rows);cleanup();return rows;};function copyRows(){var rows=getSelectedRows();each(rows,function(row,i){rows[i]=cloneNode(row,true);});return rows;};function pasteRows(rows,before){if(!rows)
+return;var selectedRows=getSelectedRows(),targetRow=selectedRows[before?0:selectedRows.length-1],targetCellCount=targetRow.cells.length;each(grid,function(row){var match;targetCellCount=0;each(row,function(cell,x){if(cell.real)
 targetCellCount+=cell.colspan;if(cell.elm.parentNode==targetRow)
 match=1;});if(match)
 return false;});if(!before)

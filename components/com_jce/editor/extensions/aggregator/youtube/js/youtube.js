@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,7 +17,7 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-WFAggregator.add('youtube',{params:{width:425,height:350},props:{rel:1,autohide:2,autoplay:0,controls:1,enablejsapi:0,loop:0,playlist:'',start:'',privacy:0},setup:function(){$('#youtube_privacy').click(function(){if($(this).is(':checked')){$('#youtube_embed').attr('checked',true).attr('disabled',true);}else{$('#youtube_embed').attr('disabled',false);}});$('#youtube_embed').click(function(){if(!$(this).is(':checked')){$('#youtube_privacy').attr('checked',false);}});},getTitle:function(){return this.title||this.name;},getType:function(){return $('#youtube_embed').is(':checked')?'flash':'iframe';},isSupported:function(v){if(typeof v=='object'){v=v.src||v.data||'';}
+WFAggregator.add('youtube',{params:{width:425,height:350,embed:true},props:{rel:1,autohide:2,autoplay:0,controls:1,enablejsapi:0,loop:0,playlist:'',start:'',privacy:0},setup:function(){$('#youtube_embed').toggle(this.params.embed);$('#youtube_privacy').click(function(){if($(this).is(':checked')){$('#youtube_embed').attr('checked',true).attr('disabled',true);}else{$('#youtube_embed').attr('disabled',false);}});$('#youtube_embed').click(function(){if(!$(this).is(':checked')){$('#youtube_privacy').attr('checked',false);}});},getTitle:function(){return this.title||this.name;},getType:function(){return $('#youtube_embed:visible').is(':checked')?'flash':'iframe';},isSupported:function(v){if(typeof v=='object'){v=v.src||v.data||'';}
 if(/youtu(\.)?be(.+)?\/(.+)/.test(v)){return'youtube';}
 return false;},getValues:function(src){var self=this,data={},args={},type=this.getType();$.extend(args,$.String.query(src));if($('#youtube_https').is(':checked')){src=src.replace(/^http:\/\//,'https://');}else{src=src.replace(/^https:\/\//,'http://');}
 $(':input','#youtube_options').not('#youtube_embed, #youtube_https').each(function(){var k=$(this).attr('id'),v=$(this).val();k=k.substr(k.indexOf('_')+1);if($(this).is(':checkbox')){v=$(this).is(':checked')?1:0;}

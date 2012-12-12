@@ -11,10 +11,9 @@
  */
 defined('_JEXEC') or die('RESTRICTED');
 
-wfimport('editor.libraries.classes.extensions.browser');
 wfimport('editor.libraries.classes.extensions.filesystem');
 
-class WFFileBrowser extends WFBrowserExtension {
+class WFFileBrowser extends JObject {
     /*
      *  @var array
      */
@@ -71,8 +70,8 @@ class WFFileBrowser extends WFBrowserExtension {
 
         $config = array_merge($default, $config);
 
-        // Call parent
-        parent::__construct($config);
+
+        $this->setProperties($config);
 
         // Setup XHR callback funtions
         $this->setRequest(array($this, 'getItems'));
@@ -88,33 +87,47 @@ class WFFileBrowser extends WFBrowserExtension {
     }
 
     /**
+     * Returns a reference to a editor object
+     *
+     * This method must be invoked as:
+     * 		<pre>  $browser =JContentEditor::getInstance();</pre>
+     *
+     * @access	public
+     * @return	JCE  The editor object.
+     */
+    public function getInstance($config = array()) {
+        static $instance;
+
+        if (!is_object($instance)) {
+            $instance = new WFFileBrowser($config);
+        }
+        return $instance;
+    }
+
+    /**
      * Display the browser
      * @access public
      */
     public function display() {
-        parent::display();
-
+        //parent::display();
         // Get the Document instance
         $document = WFDocument::getInstance();
 
         $document->addScript(array(
             'tree',
-            'upload'
+            'upload',
+            'browser',
+            'sort',
+            'filter',
+            'manager'
                 ), 'libraries');
 
         $document->addScript(array(
             'plupload.full',
                 ), 'jce.libraries.plupload');
 
-        $document->addScript(array(
-            'file',
-            'sort',
-            'filter',
-            'manager'
-                ), 'extensions.browser.js');
-
         //$document->addStyleSheet(array('files', 'tree', 'upload'), 'libraries');
-        $document->addStyleSheet(array('manager'), 'extensions.browser.css');
+        $document->addStyleSheet(array('manager'), 'libraries');
         // custom stylesheet
         //$document->addStyleSheet(array('custom'), 'libraries.css');
         // file browser options
@@ -127,8 +140,12 @@ class WFFileBrowser extends WFBrowserExtension {
      */
     public function render() {
         $session = JFactory::getSession();
-        // create file view
-        $view = $this->getView('file');
+
+        $view = new WFView(array(
+                    'name' => 'browser',
+                    'layout' => 'file'
+                ));
+
         // assign session data
         $view->assignRef('session', $session);
         // assign form action
@@ -222,10 +239,10 @@ class WFFileBrowser extends WFBrowserExtension {
 
         switch ($format) {
             case 'list':
-                return $this->listFileTypes($list);
+                return strtolower($this->listFileTypes($list));
                 break;
             case 'array':
-                return explode(',', $this->listFileTypes($list));
+                return explode(',', strtolower($this->listFileTypes($list)));
                 break;
             default:
             case 'map':
@@ -812,16 +829,52 @@ class WFFileBrowser extends WFBrowserExtension {
     }
 
     private function validateUploadedFile($file) {
+        // check the POST data array
+        if (empty($file)) {
+            @unlink($file['tmp_name']);
+
+            throw new InvalidArgumentException('INVALID UPLOAD DATA');
+        }
+
+        // check for tmp_name and is valid uploaded file
+        if (!isset($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            @unlink($file['tmp_name']);
+
+            throw new InvalidArgumentException('INVALID UPLOAD DATA');
+        }
+
         // Null byte check
         if (strstr($file['name'], "\u0000")) {
             @unlink($file['tmp_name']);
 
-            JError::raiseError(403, 'INVALID UPLOAD DATA');
+            throw new InvalidArgumentException('INVALID UPLOAD DATA');
         }
 
         // check for invalid extension in file name
         if (preg_match('#\.(php|php(3|4|5)|phtml|pl|py|jsp|asp|htm|html|shtml|sh|cgi)\b#i', $file['name'])) {
-            JError::raiseError(403, 'INVALID FILE NAME');
+            @unlink($file['tmp_name']);
+
+            throw new InvalidArgumentException('INVALID FILE NAME');
+        }
+
+        clearstatcache();
+
+        // check the file sizes match
+        if ((int) @filesize($file['tmp_name']) !== (int) $file['size']) {
+            @unlink($file['tmp_name']);
+
+            throw new InvalidArgumentException('INVALID FILE SIZE');
+        }
+
+        // get extension
+        $ext = WFUtility::getExtension($file['name']);
+
+        // check extension is allowed
+        $allowed = $this->getFileTypes('array');
+
+        if (is_array($allowed) && !empty($allowed) && in_array(strtolower($ext), $allowed) === false) {
+            @unlink($file['tmp_name']);
+            throw new InvalidArgumentException(WFText::_('WF_MANAGER_UPLOAD_INVALID_EXT_ERROR'));
         }
 
         // validate image
@@ -829,7 +882,7 @@ class WFFileBrowser extends WFBrowserExtension {
             if (@getimagesize($file['tmp_name']) === false) {
                 @unlink($file['tmp_name']);
 
-                JError::raiseError(403, 'INVALID IMAGE FILE');
+                throw new InvalidArgumentException('INVALID IMAGE FILE');
             }
         }
 
@@ -839,44 +892,45 @@ class WFFileBrowser extends WFBrowserExtension {
         if ($upload['validate_mimetype']) {
             wfimport('editor.libraries.classes.mime');
 
-            if (WFMimeType::check($file['name'], $file['tmp_name'], $file['type']) === false) {
+            if (WFMimeType::check($file['name'], $file['tmp_name']) === false) {
                 @unlink($file['tmp_name']);
 
-                JError::raiseError(403, 'INVALID MIME TYPE');
+                throw new InvalidArgumentException('INVALID MIME TYPE');
             }
         }
 
         // xss check
-        $xss_check = JFile::read($file['tmp_name'], false, 1024);
+        $xss_check = JFile::read($file['tmp_name'], false, 256);
 
         // check for hidden php tags
-        if (strstr($xss_check, '<?php')) {
+        if (stripos($xss_check, '<?php') !== false) {
             @unlink($file['tmp_name']);
 
-            JError::raiseError(403, 'INVALID CODE IN FILE');
+            throw new InvalidArgumentException('INVALID CODE IN FILE');
         }
 
         // check for hidden short php tags
         if (preg_match('#\.(inc|phps|class|php|php(3|4)|txt|dat|tpl|tmpl)$#i', $file['name'])) {
 
-            if (strstr($xss_check, '<?')) {
+            if (stripos($xss_check, '<?') !== false) {
                 @unlink($file['tmp_name']);
 
-                JError::raiseError(403, 'INVALID CODE IN FILE');
+                throw new InvalidArgumentException('INVALID CODE IN FILE');
             }
         }
 
-        // check for html tags (skip some files)
-        if (!preg_match('#\.(txt|htm|html|xml|kml)$#i', $file['name'])) {
+        // check for html tags in some files (IE XSS bug)
+        if (!preg_match('#\.(txt|htm|html)$#i', $file['name'])) {
 
-            $tags = array('abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big', 'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'comment', 'custom', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'fn', 'font', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'hr', 'html', 'iframe', 'ilayer', 'img', 'input', 'ins', 'isindex', 'keygen', 'kbd', 'label', 'layer', 'legend', 'li', 'limittext', 'link', 'listing', 'map', 'marquee', 'menu', 'meta', 'multicol', 'nobr', 'noembed', 'noframes', 'noscript', 'nosmartquotes', 'object', 'ol', 'optgroup', 'option', 'param', 'plaintext', 'pre', 'rt', 'ruby', 's', 'samp', 'script', 'select', 'server', 'shadow', 'sidebar', 'small', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE', '!--');
+            $tags = 'a,abbr,acronym,address,area,b,base,bdo,big,blockquote,body,br,button,caption,cite,code,col,colgroup,dd,del,dfn,div,dl,dt,em,fieldset,form,h1,h2,h3,h4,h5,h6,head,hr,html,i,img,input,ins,kbd,label,legend,li,link,map,meta,noscript,object,ol,optgroup,option,p,param,pre,q,samp,script,select,small,span,strong,style,sub,sup,table,tbody,td,textarea,tfoot,th,thead,title,tr,tt,ul,var';
 
-            // check for tags
-            if (preg_match('#<(' . implode('|', $tags) . ')(\s|>)#i', $xss_check)) {
-            //if (preg_match('#<(\w+)(\s|>)#i', $xss_check)) {
-                @unlink($file['tmp_name']);  
-                
-                JError::raiseError(403, 'INVALID TAG IN FILE');
+            foreach (explode(',', $tags) as $tag) {
+                // check for tag eg: <body> or <body
+                if (stripos($xss_check, '<' . $tag . '>') !== false || stripos($xss_check, '<' . $tag . ' ') !== false) {
+                    @unlink($file['tmp_name']);
+
+                    throw new InvalidArgumentException('INVALID TAG IN FILE');
+                }
             }
         }
     }
@@ -899,10 +953,6 @@ class WFFileBrowser extends WFBrowserExtension {
 
         // get uploaded file
         $file = JRequest::getVar('file', '', 'files', 'array');
-
-        if (empty($file)) {
-            JError::raiseError(403, 'INVALID UPLOAD DATA');
-        }
 
         // validate file data
         $this->validateUploadedFile($file);
@@ -933,19 +983,11 @@ class WFFileBrowser extends WFBrowserExtension {
 
         // check for invalid extensions
         if (preg_match('#\.(php|phtml|pl|py|jsp|asp|shtml|sh|cgi)$#i', $name)) {
-            JError::raiseError(403, 'INVALID FILE NAME');
+            throw new InvalidArgumentException('INVALID FILE NAME');
         }
 
         // get extension
         $ext = WFUtility::getExtension($name);
-
-        // check extension is allowed
-        $allowed = $this->getFileTypes('array');
-
-        if (is_array($allowed) && !empty($allowed) && in_array(strtolower($ext), $allowed) === false) {
-            JError::raiseError(403, WFText::_('WF_MANAGER_UPLOAD_INVALID_EXT_ERROR'));
-            @unlink($file['tmp_name']);
-        }
 
         // strip extension
         $name = WFUtility::stripExtension($name);
@@ -954,12 +996,12 @@ class WFFileBrowser extends WFBrowserExtension {
 
         // empty name
         if ($name == '') {
-            JError::raiseError(403, 'INVALID FILE NAME');
+            throw new InvalidArgumentException('INVALID FILE NAME');
         }
 
         // check for extension in file name
         if (preg_match('#\.(php|php(3|4|5)|phtml|pl|py|jsp|asp|htm|html|shtml|sh|cgi)\b#i', $name)) {
-            JError::raiseError(403, 'INVALID FILE NAME');
+            throw new InvalidArgumentException('INVALID FILE NAME');
         }
 
         $upload = $this->get('upload');
@@ -981,18 +1023,16 @@ class WFFileBrowser extends WFBrowserExtension {
 
         // Only multipart uploading is supported for now
         if ($contentType && strpos($contentType, "multipart") !== false) {
-            if (isset($file['tmp_name']) && is_uploaded_file($file['tmp_name'])) {
-                $result = $filesystem->upload('multipart', trim($file['tmp_name']), $dir, $name);
+            $result = $filesystem->upload('multipart', trim($file['tmp_name']), $dir, $name);
 
-                if (!$result->state) {
-                    $result->message = WFText::_('WF_MANAGER_UPLOAD_ERROR');
-                    $result->code = 103;
-                }
-
-                @unlink($file['tmp_name']);
-
-                $complete = true;
+            if (!$result->state) {
+                $result->message = WFText::_('WF_MANAGER_UPLOAD_ERROR');
+                $result->code = 103;
             }
+
+            @unlink($file['tmp_name']);
+
+            $complete = true;
         } else {
             $result->state = false;
             $result->code = 103;

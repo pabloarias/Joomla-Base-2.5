@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -28,7 +28,7 @@ t._done();});if(ed.settings.content_css!==false)
 ed.contentCSS.push(url+'/css/content.css');ed.onClick.add(t._showMenu,t);ed.onContextMenu.add(t._showMenu,t);ed.onBeforeGetContent.add(function(){if(t.active)
 t._removeWords();});ed.onNodeChange.add(function(ed,cm){cm.setActive('spellchecker',t.active);});ed.onSetContent.add(function(){t._done();});ed.onBeforeGetContent.add(function(){t._done();});ed.onBeforeExecCommand.add(function(ed,cmd){if(cmd=='mceFullScreen')
 t._done();});t.languages={};each(ed.getParam('spellchecker_languages','+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv','hash'),function(v,k){if(k.indexOf('+')===0){k=k.substring(1);t.selectedLang=v;}
-t.languages[k]=v;});},createControl:function(n,cm){var t=this,c,ed=t.editor;if(n=='spellchecker'){if(t.native_spellchecker){if(t.hasSupport)
+t.languages[k]=v;});ed.onInit.add(function(){if(t.native_spellchecker&&ed.getParam('spellchecker_browser_state',0)){ed.execCommand('mceSpellCheck',false);}});},createControl:function(n,cm){var t=this,c,ed=t.editor;if(n=='spellchecker'){if(t.native_spellchecker){if(t.hasSupport)
 c=cm.createButton(n,{title:'spellchecker.desc',cmd:'mceSpellCheck',scope:t});return c;}
 c=cm.createSplitButton(n,{title:'spellchecker.desc',cmd:'mceSpellCheck',scope:t});c.onRenderMenu.add(function(c,m){m.add({title:'spellchecker.langs','class':'mceMenuItemTitle'}).setDisabled(1);each(t.languages,function(v,k){var o={icon:1},mi;o.onclick=function(){if(v==t.selectedLang){return;}
 mi.setSelected(1);t.selectedItem.setSelected(0);t.selectedItem=mi;t.selectedLang=v;};o.title=k;mi=m.add(o);mi.setSelected(v==t.selectedLang);if(v==t.selectedLang){t.selectedItem=mi;}});});return c;}},_walk:function(n,f){var d=this.editor.getDoc(),w;if(d.createTreeWalker){w=d.createTreeWalker(n,NodeFilter.SHOW_TEXT,null,false);while((n=w.nextNode())!=null)

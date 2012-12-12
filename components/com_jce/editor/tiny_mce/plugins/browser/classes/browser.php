@@ -18,7 +18,7 @@ final class WFFileBrowserPlugin extends WFMediaManager
 	/* 
 	* @var string
 	*/
-	protected $_filetypes = 'xml=xml;html=htm,html;word=doc,docx;powerpoint=ppt;excel=xls;text=txt,rtf;image=gif,jpeg,jpg,png;acrobat=pdf;archive=zip,tar,gz;flash=swf;winrar=rar;quicktime=mov,mp4,qt;windowsmedia=wmv,asx,asf,avi;audio=wav,mp3,aiff;openoffice=odt,odg,odp,ods,odf';	
+	protected $_filetypes = 'word=doc,docx;powerpoint=ppt;excel=xls;image=gif,jpeg,jpg,png;acrobat=pdf;archive=zip,tar,gz;flash=swf;winrar=rar;quicktime=mov,mp4,qt;windowsmedia=wmv,asx,asf,avi;audio=wav,mp3,aiff;openoffice=odt,odg,odp,ods,odf';	
 	
 	/**
 	* @access	protected
@@ -74,11 +74,11 @@ final class WFFileBrowserPlugin extends WFMediaManager
 			$document->addScript(array('browser'), 'component');
 			
 			// load the language file
-			if (is_file(WF_EDITOR . '/tiny_mce/langs/' . $this->getLanguage() . '_dlg.js')) {
+			/*if (is_file(WF_EDITOR . '/tiny_mce/langs/' . $this->getLanguage() . '_dlg.js')) {
 				$document->addScript(array('langs/' . $this->getLanguage() . '_dlg.js'), 'tiny_mce');
 			} else {
 				$document->addScript(array('langs/en_dlg.js'), 'tiny_mce');
-			}
+			}*/
 			
 			$element = JRequest::getCmd('element', '');
 			

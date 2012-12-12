@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -92,7 +92,7 @@ tb.add(c);});},_addToolbars:function(c,o){var t=this,i,tb,ed=t.editor,s=t.settin
 v+=','+s['theme_advanced_buttons'+i+'_add'];if(s['theme_advanced_buttons'+i+'_add_before'])
 v=s['theme_advanced_buttons'+i+'_add_before']+','+v;t._addControls(v,tb);toolbarGroup.add(tb);o.deltaHeight-=s.theme_advanced_row_height;}
 if(!toolbarsExist){o.deltaHeight-=s.theme_advanced_row_height;}
-h.push(toolbarGroup.renderHTML());h.push(DOM.createHTML('a',{href:'#',accesskey:'z',title:ed.getLang("advanced.toolbar_focus"),onfocus:'tinyMCE.getInstanceById(\''+ed.id+'\').focus();'},'<!-- IE -->'));DOM.setHTML(n,h.join(''));},_addStatusBar:function(tb,o){var n,t=this,ed=t.editor,s=t.settings,r,mf,me,td;n=DOM.add(tb,'tr');n=td=DOM.add(n,'td',{'class':'mceStatusbar'});n=DOM.add(n,'div',{id:ed.id+'_path_row','role':'group','aria-labelledby':ed.id+'_path_voice','class':'mcePathRow'});if(s.theme_advanced_path){DOM.add(n,'span',{id:ed.id+'_path_voice','class':'mcePathLabel'},ed.translate('advanced.path')+': ');}else{DOM.add(n,'span',{},'&#160;');}
+var html=toolbarGroup.renderHTML();html=html.replace(/href="javascript:;"/gi,'href="#"');h.push(html);h.push(DOM.createHTML('a',{href:'#',accesskey:'z',title:ed.getLang("advanced.toolbar_focus"),onfocus:'tinyMCE.getInstanceById(\''+ed.id+'\').focus();'},'<!-- IE -->'));DOM.setHTML(n,h.join(''));},_addStatusBar:function(tb,o){var n,t=this,ed=t.editor,s=t.settings,r,mf,me,td;n=DOM.add(tb,'tr');n=td=DOM.add(n,'td',{'class':'mceStatusbar'});n=DOM.add(n,'div',{id:ed.id+'_path_row','role':'group','aria-labelledby':ed.id+'_path_voice','class':'mcePathRow'});if(s.theme_advanced_path){DOM.add(n,'span',{id:ed.id+'_path_voice','class':'mcePathLabel'},ed.translate('advanced.path')+': ');}else{DOM.add(n,'span',{},'&#160;');}
 if(s.theme_advanced_resizing){DOM.add(td,'a',{id:ed.id+'_resize',href:'javascript:;',onclick:"return false;",'class':'mceResize',tabIndex:"-1"});if(s.theme_advanced_resizing_use_cookie){ed.onPostRender.add(function(){var o=Cookie.getHash("TinyMCE_"+ed.id+"_size"),c=DOM.get(ed.id+'_tbl');if(!o)
 return;t.resizeTo(o.cw,o.ch);});}
 ed.onPostRender.add(function(){Event.add(ed.id+'_resize','click',function(e){e.preventDefault();});Event.add(ed.id+'_resize','mousedown',function(e){var mouseMoveHandler1,mouseMoveHandler2,mouseUpHandler1,mouseUpHandler2,startX,startY,startWidth,startHeight,width,height,ifrElm;function resizeOnMove(e){e.preventDefault();width=startWidth+(e.screenX-startX);height=startHeight+(e.screenY-startY);t.resizeTo(width,height);};function endResize(e){Event.remove(DOM.doc,'mousemove',mouseMoveHandler1);Event.remove(ed.getDoc(),'mousemove',mouseMoveHandler2);Event.remove(DOM.doc,'mouseup',mouseUpHandler1);Event.remove(ed.getDoc(),'mouseup',mouseUpHandler2);width=startWidth+(e.screenX-startX);height=startHeight+(e.screenY-startY);t.resizeTo(width,height,true);ed.nodeChanged();};e.preventDefault();startX=e.screenX;startY=e.screenY;ifrElm=DOM.get(t.editor.id+'_ifr');startWidth=width=ifrElm.clientWidth;startHeight=height=ifrElm.clientHeight;mouseMoveHandler1=Event.add(DOM.doc,'mousemove',resizeOnMove);mouseMoveHandler2=Event.add(ed.getDoc(),'mousemove',resizeOnMove);mouseUpHandler1=Event.add(DOM.doc,'mouseup',endResize);mouseUpHandler2=Event.add(ed.getDoc(),'mouseup',endResize);});});}

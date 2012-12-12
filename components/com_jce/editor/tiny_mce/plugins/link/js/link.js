@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -34,4 +34,4 @@ return this.checkPrefix($('#href'));},insertAndClose:function(){tinyMCEPopup.res
 if(k=='class'){v=$('#classlist').val()||$('#classes').val()||'';}
 args[k]=v;});var selector='a[href="#mce_temp_url#"]';if(se.isCollapsed()){ed.execCommand('mceInsertContent',false,'<a href="#mce_temp_url#">'+$('#text').val()+'</a>',{skip_undo:1});tinymce.each(ed.dom.select(selector),function(link){ed.dom.setAttribs(link,args);el=link;});}else{ed.execCommand('mceInsertLink',false,'#mce_temp_url#',{skip_undo:1});tinymce.each(ed.dom.select(selector),function(link){ed.dom.setAttribs(link,args);el=link;});if(!$('#text').is(':disabled')&&el){ed.dom.setHTML(el,$('#text').val());}}
 WFPopups.createPopup(el);tinyMCEPopup.close();},setClasses:function(v){$.Plugin.setClasses(v);},setTargetList:function(v){$('#target').val(v);},setClassList:function(v){$('#classlist').val(v);},insertLink:function(v){$('#href').val(tinyMCEPopup.editor.documentBaseURI.toRelative(v));},createEmail:function(){var ed=tinyMCEPopup.editor;var fields='<div class="formElm"><label for="email_to">'+ed.getLang('link_dlg.to','To')+'</label>'+'<textarea id="email_mailto" class="email"></textarea>'+'</div>'+'<div class="formElm"><label for="email_cc">'+ed.getLang('link_dlg.cc','CC')+'</label>'+'<textarea id="email_cc" class="email"></textarea>'+'</div>'+'<div class="formElm"><label for="email_bcc">'+ed.getLang('link_dlg.bcc','BCC')+'</label>'+'<textarea id="email_bcc" class="email"></textarea>'+'</div>'+'<div class="formElm"><label for="email_subject">'+ed.getLang('link_dlg.subject','Subject')+'</label>'+'<textarea id="email_subject" class="email"></textarea>'+'</div>';$.Dialog.dialog(ed.getLang('link_dlg.email','Create E-Mail Address'),fields,{width:300,height:250,buttons:[{text:ed.getLang('dlg.ok','Ok'),click:function(){var args=[],errors=0;$.each(['mailto','cc','bcc','subject'],function(i,s){var v=$('#email_'+s).val();if(v){v=v.replace(/\n\r/g,'');$.each(v.split(','),function(i,o){if(s!=='subject'){if(!Validator.isEmail(o)){$.Dialog.alert(s+ed.getLang('link_dlg.invalid_email',' is not a valid e-mail address!'));errors++;}}});args.push((s=='mailto')?v:s+'='+v);}});if(errors==0){if(args.length){$('#href').val('mailto:'+args.join('&').replace(/&/,'?'));}}
-$(this).dialog('close');}},{text:ed.getLang('dlg.cancel','Cancel'),click:function(){$(this).dialog('close');}}]});},openHelp:function(){$.Plugin.help('link');}};LinkDialog.preInit();tinyMCEPopup.onInit.add(LinkDialog.init,LinkDialog);
+$(this).modal('hide');}},{text:ed.getLang('dlg.cancel','Cancel'),click:function(){$(this).modal('hide');}}]});},openHelp:function(){$.Plugin.help('link');}};LinkDialog.preInit();tinyMCEPopup.onInit.add(LinkDialog.init,LinkDialog);

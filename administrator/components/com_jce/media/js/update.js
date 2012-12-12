@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,7 +17,7 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-(function($){$.jce.Update={updates:{},options:{language:{'check':'Check for Updates','install':'Install Updates','installed':'Installed','no_updates':'No Updates Available','high':'High','medium':'Medium','low':'Low','full':'Full Install','patch':'Patch','auth_failed':'Authorisation Failed','install_failed':'Install Failed','update_info':'Update Information','install_info':'Install Information','check_updates':'Checking for Updates...'}},init:function(options){var t=this;$.extend(this.options,options);$('button#update-button').button({icons:{primary:'icon-update'}}).click(function(){t.execute(this);});this.check($('button#update-button'));},execute:function(el){if($(el).hasClass('check')){this.check(el);}
+(function($){$.jce.Update={updates:{},options:{language:{'check':'Check for Updates','install':'Install Updates','installed':'Installed','no_updates':'No Updates Available','high':'High','medium':'Medium','low':'Low','full':'Full Install','patch':'Patch','auth_failed':'Authorisation Failed','install_failed':'Install Failed','update_info':'Update Information','install_info':'Install Information','check_updates':'Checking for Updates...'}},init:function(options){var self=this;$.extend(this.options,options);$('button#update-button').button({icons:{primary:'icon-update'}}).click(function(){self.execute(this);}).click();},execute:function(el){if($(el).hasClass('check')){this.check(el);}
 if($(el).hasClass('install')){this.download(el);}},check:function(btn){var t=this;$('button.download').remove();$('button.install').remove();var list=$('table#updates-list tbody');var info=$('div#updates-info');$(list).html('<tr><td colspan="5" style="text-align:center;">'+this.options.language['check_updates']+'</td></tr>');$(info).empty();$(btn).addClass('loading').button('disable');var priority={1:'<span class="priority high">'+this.options.language['high']+'</span>',2:'<span class="priority medium">'+this.options.language['medium']+'</span>',3:'<span class="priority low">'+this.options.language['low']+'</span>'};$.post("index.php?option=com_jce&view=updates&task=update&step=check",{},function(r){$(btn).removeClass('loading');$(btn).button('enable');$(list).empty();if(r&&r.length){$(btn).clone().button({icons:{primary:'icon-install'},disabled:true,label:t.options.language.install}).click(function(){t.execute(this);}).insertAfter(btn).attr({'id':'install-button','disabled':'disabled'}).removeClass('check').addClass('install');$.each(r,function(n,s){$(list).append('<tr style="cursor:pointer;"><td><span class="checkbox" data-uid="'+s.id+'"></span></td><td>'+s.title+'</td><td align="center">'+t.options.language[s.type]+'</td><td align="center">'+s.version+'</td><td align="center">'+priority[s.priority]+'</td></tr>');var el=$('span[data-uid='+s.id+']');if(s.auth){if(parseInt(s.forced)==1||s.priority==1){$(el).addClass('checked').addClass('disabled');$('button#install-button').button('enable');if(s.negates){$('span[data-uid='+s.negates+']').removeClass('checked').addClass('disabled');}}
 if(parseInt(s.forced)==1){$(el).addClass('disabled');}
 if(s.required){$('span[data-uid='+s.required+']').addClass('checked');}

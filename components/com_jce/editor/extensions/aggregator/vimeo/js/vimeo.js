@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -17,10 +17,11 @@
  *
  * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
  */
-WFAggregator.add('vimeo',{params:{width:400,height:225},props:{color:'',autoplay:0,loop:0,portrait:1,title:1,byline:1,fullscreen:1},setup:function(){},getTitle:function(){return this.title||this.name;},getType:function(){return $('#vimeo_embed').is(':checked')?'flash':'iframe';},isSupported:function(v){if(typeof v=='object'){v=v.src||v.data||'';}
-if(/vimeo(.+)?\/(.+)/.test(v)){return'vimeo';}
-return false;},getValues:function(src){var self=this,data={},args={},type=this.getType(),id='';$.extend(args,$.String.query(src));$(':input','#vimeo_options').not('#vimeo_embed').each(function(){var k=$(this).attr('id'),v=$(this).val();k=k.substr(k.indexOf('_')+1);if($(this).is(':checkbox')){v=$(this).is(':checked')?1:0;}
-if(self.props[k]==v||v==''){return;}
+WFAggregator.add('vimeo',{params:{width:400,height:225,embed:true},props:{color:'',autoplay:0,loop:0,portrait:1,title:1,byline:1,fullscreen:1},setup:function(){$('#vimeo_embed').toggle(this.params.embed);},getTitle:function(){return this.title||this.name;},getType:function(){return $('#vimeo_embed').is(':checked')?'flash':'iframe';},isSupported:function(v){if(typeof v=='object'){v=v.src||v.data||'';}
+if(/vimeo(.+)?\/(.+)/.test(v)){if(/\/external\//.test(v)){return false;}
+return'vimeo';}
+return false;},getValues:function(src){var self=this,data={},args={},type=this.getType(),id='';$.extend(args,$.String.query(src));$('input, select','#vimeo_options').not('#vimeo_embed').each(function(){var k=$(this).attr('id'),v=$(this).val();k=k.substr(k.indexOf('_')+1);if($(this).is(':checkbox')){v=$(this).is(':checked')?1:0;}
+if(self.props[k]===v||v===''){return;}
 switch(k){case'color':if(v.charAt(0)=='#'){v=v.substr(1);}
 break;case'portrait':case'title':case'byline':if(type=='flash'){k='show_'+k;}
 break;}

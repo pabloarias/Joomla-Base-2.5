@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -49,7 +49,7 @@ if(!self.pasteHtml&&self.pasteText){ed.addButton('paste',{title:'paste.paste_tex
 if(ed.getParam('clipboard_cut',1)){ed.addButton('cut',{title:'advanced.cut_desc',cmd:'Cut',icon:'cut'});}
 if(ed.getParam('clipboard_copy',1)){ed.addButton('copy',{title:'advanced.copy_desc',cmd:'Copy',icon:'copy'});}},createControl:function(n,cm){var self=this,ed=self.editor;switch(n){case'paste':if(self.pasteHtml&&self.pasteText){var c=cm.createSplitButton('paste',{title:'paste.paste_desc',onclick:function(e){ed.execCommand('mcePaste');}});c.onRenderMenu.add(function(c,m){m.add({title:'paste.paste_desc',icon:'paste',onclick:function(e){ed.execCommand('mcePaste');}});m.add({title:'paste.paste_text_desc',icon:'pastetext',onclick:function(e){ed.execCommand('mcePasteText');}});});return c;}
 break;}
-return null;},getInfo:function(){return{longname:'Paste text/word',author:'Moxiecode Systems AB / Ryan demmer',authorurl:'http://tinymce.moxiecode.com',infourl:'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/paste',version:'2.2.9.1'};},_openWin:function(cmd){var ed=this.editor;ed.windowManager.open({file:ed.getParam('site_url')+'index.php?option=com_jce&view=editor&layout=plugin&plugin=clipboard',width:parseInt(ed.getParam("clipboard_paste_dialog_width","450")),height:parseInt(ed.getParam("clipboard_paste_dialog_height","400")),inline:1,popup_css:false},{cmd:cmd});},_preProcess:function(pl,o){var ed=pl.editor,h=o.content,rb;if(ed.settings.paste_enable_default_filters==false){return;}
+return null;},getInfo:function(){return{longname:'Paste text/word',author:'Moxiecode Systems AB / Ryan demmer',authorurl:'http://tinymce.moxiecode.com',infourl:'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/paste',version:'2.3.1'};},_openWin:function(cmd){var ed=this.editor;ed.windowManager.open({file:ed.getParam('site_url')+'index.php?option=com_jce&view=editor&layout=plugin&plugin=clipboard',width:parseInt(ed.getParam("clipboard_paste_dialog_width","450")),height:parseInt(ed.getParam("clipboard_paste_dialog_height","400")),inline:1,popup_css:false},{cmd:cmd});},_preProcess:function(pl,o){var ed=pl.editor,h=o.content,rb;if(ed.settings.paste_enable_default_filters==false){return;}
 if(tinymce.isIE&&document.documentMode>=9&&/<(h[1-6r]|p|div|address|pre|form|table|tbody|thead|tfoot|th|tr|td|li|ol|ul|caption|blockquote|center|dl|dt|dd|dir|fieldset)/.test(o.content)){h=h.replace(/(?:<br>&nbsp;[\s\r\n]+|<br>)*(<\/?(h[1-6r]|p|div|address|pre|form|table|tbody|thead|tfoot|th|tr|td|li|ol|ul|caption|blockquote|center|dl|dt|dd|dir|fieldset)[^>]*>)(?:<br>&nbsp;[\s\r\n]+|<br>)*/g,'$1');h=h.replace(/<br><br>/g,'<BR><BR>');h=h.replace(/<br>/g,' ');h=h.replace(/<BR><BR>/g,'<br>');}
 h=h.replace(/^\s*(&nbsp;)+/g,'');h=h.replace(/(&nbsp;|<br[^>]*>)+\s*$/g,'');if(this.plainText){return h;}
 var ooRe=/(Version:[\d\.]+)\s*?((Start|End)(HTML|Fragment):[\d]+\s*?){4}/;if(/(content=\"OpenOffice.org[^\"]+\")/i.test(h)||ooRe.test(h)){o.wordContent=true;h=h.replace(ooRe,'','g');h=h.replace(/[\s\S]+?<meta[^>]*>/,'');h=h.replace(/<!--[\s\S]+?-->/gi,'');h=h.replace(/<style[^>]*>[\s\S]+?<\/style>/gi,'');}

@@ -141,10 +141,8 @@ class plgEditorJCE extends JPlugin {
 
         $return = '';
         $results[] = $this->update($args);
-        
-        if (!defined('JUI')) {
-            define('JUI', is_dir(JPATH_SITE . '/media/jui'));
-        }
+
+        $jui = is_dir(JPATH_SITE . '/media/jui');
 
         foreach ($results as $result) {
             if (is_string($result) && trim($result)) {
@@ -158,47 +156,47 @@ class plgEditorJCE extends JPlugin {
             /*
              * This will allow plugins to attach buttons or change the behavior on the fly using AJAX
              */
-            $return .= "\n<div id=\"editor-xtd-buttons\" class=\"btn-toolbar pull-left\">\n";
-            $return .= "\n<div class=\"btn-toolbar\">\n";
+            $return .= "\n<div id=\"editor-xtd-buttons\"";
+
+            if ($jui) {
+                $return .= " class=\"btn-toolbar pull-left\">\n\n<div class=\"btn-toolbar\"";
+            }
+
+            $return .= ">\n";
 
             foreach ($results as $button) {
                 /*
                  * Results should be an object
                  */
                 if ($button->get('name')) {
-                    $modal      = ($button->get('modal')) ? ' class="modal-button btn"' : null;
-                    $href       = ($button->get('link')) ? 'href="' . JURI::base() . $button->get('link') . '"' : null;
-                    $onclick    = ($button->get('onclick')) ? 'onclick="' . $button->get('onclick') . '"' : 'onclick="IeCursorFix(); return false;"';
-                    $title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
-                    
-                    if (!JUI) {
+                    $modal = ($button->get('modal')) ? ' class="modal-button btn"' : '';
+                    $href = ($button->get('link')) ? ' class="btn" href="' . JURI::base() . $button->get('link') . '"' : '';
+                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"' : ' onclick="IeCursorFix(); return false;"';
+                    $title = ($button->get('title')) ? $button->get('title') : $button->get('text');
+
+                    if (!$jui) {
                         $return .= '<div class="button2-left"><div class="' . $button->get('name') . '">';
                     }
+
+                    $return .= '<a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">';
                     
-                    $return    .= '<a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '"><i class="icon-' . $button->get('name') . '"></i> ' . $button->get('text') . '</a>';
-                
-                    if (!JUI) {
+                    // add icon class
+                    if ($jui) {
+                        $return .= '<i class="icon-' . $button->get('name') . '"></i> ';
+                    }
+                    
+                    $return .= $button->get('text') . '</a>';
+
+                    if (!$jui) {
                         $return .= '</div></div>';
-                    }                   
+                    }
                 }
             }
-
-            $return .= "</div>\n";
+            if ($jui) {
+                $return .= "</div>\n";
+            }
             $return .= "</div>\n";
         }
-
-        return $return;
-    }
-
-    /**
-     *
-     * @return  string
-     */
-    private function _toogleButton($name) {
-        $return = '';
-        $return .= "\n<div class=\"toggle-editor\">\n";
-        $return .= "<div class=\"button2-left\"><div class=\"blank\"><a href=\"#\" onclick=\"tinyMCE.execCommand('mceToggleEditor', false, '" . $name . "');return false;\" title=\"" . JText::_('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">' . JText::_('PLG_TINY_BUTTON_TOGGLE_EDITOR') . "</a></div></div>";
-        $return .= "</div>\n";
 
         return $return;
     }

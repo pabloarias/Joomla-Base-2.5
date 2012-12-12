@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -31,7 +31,7 @@ if(r.endOffset==1)
 end=2;else
 end=r.endOffset-1-end_offset;}
 start=end;do
-{r.setStart(endContainer,end-2);r.setEnd(endContainer,end-1);end-=1;}while(r.toString()!=' '&&r.toString()!=''&&r.toString().charCodeAt(0)!=160&&(end-2)>=0&&r.toString()!=delimiter);if(r.toString()==delimiter||r.toString().charCodeAt(0)==160){r.setStart(endContainer,end);r.setEnd(endContainer,start);end+=1;}else if(r.startOffset==0){r.setStart(endContainer,0);r.setEnd(endContainer,start);}
+{r.setStart(endContainer,end>=2?end-2:0);r.setEnd(endContainer,end>=1?end-1:0);end-=1;}while(r.toString()!=' '&&r.toString()!=''&&r.toString().charCodeAt(0)!=160&&(end-2)>=0&&r.toString()!=delimiter);if(r.toString()==delimiter||r.toString().charCodeAt(0)==160){r.setStart(endContainer,end);r.setEnd(endContainer,start);end+=1;}else if(r.startOffset==0){r.setStart(endContainer,0);r.setEnd(endContainer,start);}
 else{r.setStart(endContainer,end);r.setEnd(endContainer,start);}
 var text=r.toString();if(text.charAt(text.length-1)=='.'){r.setEnd(endContainer,start-1);}
 text=r.toString();matches=text.match(/^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+-]+@)(.+)$/i);if(matches){if(matches[1]=='www.'){matches[1]='http://www.';if(!ed.getParam('autolink_url',true)){return;}}else if(/@$/.test(matches[1])&&!/^mailto:/.test(matches[1])){matches[1]='mailto:'+matches[1];if(!ed.getParam('autolink_email',true)){return;}}else{if(!ed.getParam('autolink_url',true)){return;}}

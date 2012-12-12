@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -47,4 +47,4 @@ return;each(n.attributes,function(at){if(at.name.indexOf('data-mce-')!==-1||at.n
 return;p[at.name]=at.value;});var span=new Node('span',1);span.attr('class','mceItem'+this._ucfirst(n.name));span.attr('data-mce-json',JSON.serialize(p));span.attr('data-mce-type',n.attr('data-mce-type')||p.type);v=n.firstChild?n.firstChild.value:'';if(v.length){var text=new Node('#comment',8);text.value=this._clean(v);span.append(text);}
 span.append(new tinymce.html.Node('#text',3)).value='\u00a0';n.replace(span);},_serializeNoScript:function(n){var self=this,ed=this.editor,dom=ed.dom,v,k,p={};if(!n.parent)
 return;each(n.attributes,function(at){if(at.name=='type')
-return;p[at.name]=at.value;});var div=new Node('div',1);div.attr('data-mce-json',JSON.serialize(p));div.attr('data-mce-type',n.name);n.wrap(div);n.unwrap();},_ucfirst:function(s){return s.charAt(0).toUpperCase()+s.substring(1);},_clean:function(s){s=s.replace(/(\/\/\s+<!\[CDATA\[)/gi,'\n');s=s.replace(/(<!--\[CDATA\[|\]\]-->)/gi,'\n');s=s.replace(/^[\r\n]*|[\r\n]*$/g,'');s=s.replace(/^\s*(\/\/\s*<!--|\/\/\s*<!\[CDATA\[|<!--|<!\[CDATA\[)[\r\n]*/gi,'');s=s.replace(/\s*(\/\/\s*\]\]>|\/\/\s*-->|\]\]>|-->|\]\]-->)\s*$/g,'');return s;},getInfo:function(){return{longname:'Code',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};}});tinymce.PluginManager.add('code',tinymce.plugins.CodePlugin);})();
+return;p[at.name]=at.value;});var div=new Node('div',1);div.attr('data-mce-json',JSON.serialize(p));div.attr('data-mce-type',n.name);n.wrap(div);n.unwrap();},_ucfirst:function(s){return s.charAt(0).toUpperCase()+s.substring(1);},_clean:function(s){s=s.replace(/(\/\/\s+<!\[CDATA\[)/gi,'\n');s=s.replace(/(<!--\[CDATA\[|\]\]-->)/gi,'\n');s=s.replace(/^[\r\n]*|[\r\n]*$/g,'');s=s.replace(/^\s*(\/\/\s*<!--|\/\/\s*<!\[CDATA\[|<!--|<!\[CDATA\[)[\r\n]*/gi,'');s=s.replace(/\s*(\/\/\s*\]\]>|\/\/\s*-->|\]\]>|-->|\]\]-->)\s*$/g,'');return s;},getInfo:function(){return{longname:'Code',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.1'};}});tinymce.PluginManager.add('code',tinymce.plugins.CodePlugin);})();

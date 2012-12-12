@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -29,4 +29,4 @@ break;}});t.onClearBlocks=new tinymce.util.Dispatcher(t);tinymce.isChrome=tinymc
 if(sibling&&(sibling.name==='dl'||sibling.name==='dl')){sibling.append(node);return;}
 sibling=node.next;if(sibling&&(sibling.name==='dl'||sibling.name==='dl')){sibling.insert(node,sibling.firstChild,true);return;}
 node.wrap(ed.parser.filterNode(new tinymce.html.Node('dl',1)));}
-ed.parser.addNodeFilter('dt,dd',function(nodes){for(var i=0,len=nodes.length;i<len;i++){wrapList(nodes[i]);}});ed.serializer.addNodeFilter('dt,dd',function(nodes){for(var i=0,len=nodes.length;i<len;i++){wrapList(nodes[i]);}});});},_select:function(el){var ed=this.editor,s=ed.selection,pos,br,r,fn;if(tinymce.isIE){s.select(el.firstChild);s.collapse(0);r=s.getRng();fn=s.getNode().firstChild;br=fn.nodeName=='BR'&&fn.getAttribute('mce_bogus');pos=br?-1:-2;r.move('character',pos);r.select();if(br){ed.dom.remove(fn);}}else{r=ed.getDoc().createRange();r.setStart(el,0);r.setEnd(el,0);s.setRng(r);}},_clearBlocks:function(ed,e){var ed=this.editor,dom=ed.dom,s,p,a=[],b,bm,n;var tag=ed.getParam('forced_root_block')||'br';n=ed.selection.getNode();p=dom.getParent(n,function(s){a.push(s);},ed.getBody());var el=dom.create(tag);var h=(tag=='br')?'':'<br data-mce-bogus="1" />';dom.setHTML(el,h);dom.insertAfter(el,a[a.length-1]);this._select(el);},getInfo:function(){return{longname:'Format',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};}});tinymce.PluginManager.add('format',tinymce.plugins.FormatPlugin);})();
+ed.parser.addNodeFilter('dt,dd',function(nodes){for(var i=0,len=nodes.length;i<len;i++){wrapList(nodes[i]);}});ed.serializer.addNodeFilter('dt,dd',function(nodes){for(var i=0,len=nodes.length;i<len;i++){wrapList(nodes[i]);}});});},_select:function(el){var ed=this.editor,s=ed.selection,pos,br,r,fn;if(tinymce.isIE){s.select(el.firstChild);s.collapse(0);r=s.getRng();fn=s.getNode().firstChild;br=fn.nodeName=='BR'&&fn.getAttribute('mce_bogus');pos=br?-1:-2;r.move('character',pos);r.select();if(br){ed.dom.remove(fn);}}else{r=ed.getDoc().createRange();r.setStart(el,0);r.setEnd(el,0);s.setRng(r);}},_clearBlocks:function(ed,e){var ed=this.editor,dom=ed.dom,s,p,a=[],b,bm,n;var tag=ed.getParam('forced_root_block')||'br';n=ed.selection.getNode();p=dom.getParent(n,function(s){a.push(s);},ed.getBody());var el=dom.create(tag);var h=(tag=='br')?'':'<br data-mce-bogus="1" />';dom.setHTML(el,h);dom.insertAfter(el,a[a.length-1]);this._select(el);},getInfo:function(){return{longname:'Format',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.1'};}});tinymce.PluginManager.add('format',tinymce.plugins.FormatPlugin);})();

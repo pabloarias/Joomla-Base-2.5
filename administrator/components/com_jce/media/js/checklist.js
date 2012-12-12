@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -19,9 +19,7 @@
  */
 (function($){$.fn.checkList=function(options){this.each(function(){return $.CheckList.init(this,options);});};$.CheckList={options:{valueAsClassName:false,onCheck:$.noop},init:function(el,options){var self=this;$.extend(this.options,options);var ul=document.createElement('ul');var elms=[];if(el.nodeName=='SELECT'){$.each($('option',el),function(){elms.push({name:$(this).html(),value:$(this).val(),selected:$(this).prop('selected'),disabled:$(this).prop('disabled')});});}else{$.each(el.value.split(','),function(){elms.push({name:this,value:this});});}
 $(el).hide();$(ul).addClass('widget-checklist').insertBefore(el);if($(el).hasClass('buttonlist')){$(ul).wrap('<div class="defaultSkin buttonlist" />');}
-$.each(elms,function(){self.createElement(el,ul,this);});if($(el).hasClass('sortable')){$(ul).addClass('sortable').sortable({axis:'y',tolerance:'intersect',update:function(event,ui){self.setValue(el,$(ui.item).parent());},placeholder:"ui-state-highlight"}).disableSelection();}},createElement:function(el,ul,n){var self=this,d=document,li=d.createElement('li'),check=d.createElement('span'),plugin;$(li).attr({title:n.value}).addClass('ui-widget-content ui-corner-all').appendTo(ul);if($(el).hasClass('buttonlist')){var name=el.name,s=name.split(/[^\w]+/);if(s&&s.length>1){plugin=s[1];}}
-var $toolbar=$('span.profileLayoutContainerToolbar ul','#profileLayoutTable');if(plugin){var $parent=$('span[data-name="'+plugin+'"]',$toolbar);}
-$(check).addClass('checkbox').addClass(function(){return n.selected?'checked':'';}).click(function(){if($(this).hasClass('disabled')){return;}
-$(this).toggleClass('checked').trigger('checkbox:check',$(this).hasClass('checked'));}).appendTo(li).on('checkbox:check',function(e,state){self.setValue(el,ul);if(plugin){$('span.mce_'+n.value,$parent).parent().toggle(state);}
-self.options.onCheck.call(self,[this,n]);});$(check).trigger('checkbox:check',$(check).hasClass('checked'));if(n.disabled){$(check).addClass('disabled');}
-$(li).append('<span class="widget-checklist-'+n.value+'" title="'+n.name+'">'+n.name+'</span>');if($(el).hasClass('buttonlist')){$('span.widget-checklist-'+n.value,li).prepend('<span class="mceButton mceSplitButton"><span class="mceIcon mce_'+n.value+'"></span></span>');}},setValue:function(el,ul){var $list=$('li',ul);var x=$.map($('span.checked',$list),function(n){return $(n).parent('li').attr('title');});if(el.nodeName=='SELECT'){$(el).empty();$.each($list,function(i,item){var v=$(item).attr('title');var o=document.createElement('option');$(o).attr({'value':v}).prop('selected',!($.inArray(v,x)==-1)).appendTo(el);});}else{el.value=x.join(',');}}};})(jQuery);
+$.each(elms,function(){self.createElement(el,ul,this);});if($(el).hasClass('sortable')){$(ul).addClass('sortable').sortable({axis:'y',tolerance:'intersect',update:function(event,ui){self.setValue(el,$(ui.item).parent());},placeholder:"ui-state-highlight"}).disableSelection();}},createElement:function(el,ul,n){var self=this,d=document,li=d.createElement('li'),plugin,button,toolbar;$(li).attr({title:n.value}).addClass('ui-widget-content ui-corner-all').appendTo(ul);if($(el).hasClass('buttonlist')){var name=el.name,s=name.split(/[^\w]+/);if(s&&s.length>1){plugin=s[1];}}
+if(plugin){toolbar=$('span.profileLayoutContainerToolbar ul','#profileLayoutTable');button=$('span[data-button="'+n.value+'"]',toolbar);}
+$('<input type="checkbox" />').addClass('checkbox inline').prop('checked',n.selected).prop('disabled',n.disabled).click(function(){$(this).trigger('checklist:check',this.checked);}).appendTo(li).on('checklist:check',function(e,state){self.setValue(el,ul);if(button){$(button).toggle(state);}
+self.options.onCheck.call(self,[this,n]);});$(li).append('<label class="checkbox inline widget-checklist-'+n.value+'" title="'+n.name+'">'+n.name+'</label>');if(button&&$(el).hasClass('buttonlist')){$('label',li).before($(button).clone());}},setValue:function(el,ul){var x=$.map($('input[type="checkbox"]:checked',$('li',ul)),function(n){return $(n).parents('li:first').attr('title');});if(el.nodeName=='SELECT'){$('option',el).each(function(){$(this).prop('selected',$.inArray(this.value,x)!=-1);})}else{el.value=x.join(',');}}};})(jQuery);

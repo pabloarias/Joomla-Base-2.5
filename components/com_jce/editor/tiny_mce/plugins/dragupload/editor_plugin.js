@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -37,4 +37,4 @@ var n=ed.dom.get('__mce_tmp');ed.dom.setAttrib(n,'id','');ed.dom.setStyles(n,{'w
 xhr.onreadystatechange=function(){var httpStatus;if(xhr.readyState==4&&self.state!==state.STOPPED){try{httpStatus=xhr.status;}catch(ex){httpStatus=0;}
 if(httpStatus>=400){self.UploadError.dispatch({code:state.HTTP_ERROR,message:ed.getLang('upload.http_error','HTTP Error'),file:file,status:httpStatus});}else{file.loaded=file.size;self.UploadProgress.dispatch(file);bin=formData=null;file.status=state.DONE;self.FileUploaded.dispatch(file,{response:xhr.responseText,status:httpStatus});}}};extend(args,{'name':file.target_name||file.name});xhr.open("post",url,true);each(self.settings.headers,function(value,name){xhr.setRequestHeader(name,value);});each(extend(args,self.settings.multipart_params),function(value,name){formData.append(name,value);});formData.append(self.settings.file_data_name,bin);xhr.send(formData);return;}
 if(file.status==state.DONE||file.status==state.FAILED||self.state==state.STOPPED){return;}
-extend(args,{name:file.target_name||file.name});sendFile(file);},getInfo:function(){return{longname:'Drag & Drop Upload',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};}});tinymce.PluginManager.add('dragupload',tinymce.plugins.DragUpload);})();
+extend(args,{name:file.target_name||file.name});sendFile(file);},getInfo:function(){return{longname:'Drag & Drop Upload',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.1'};}});tinymce.PluginManager.add('dragupload',tinymce.plugins.DragUpload);})();

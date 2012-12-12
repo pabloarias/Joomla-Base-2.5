@@ -1,10 +1,10 @@
 /*  
- * JCE Editor                 2.2.9.1
+ * JCE Editor                 2.3.1
  * @package                 JCE
  * @url                     http://www.joomlacontenteditor.net
  * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
  * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 November 2012
+ * @date                    10 December 2012
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -35,7 +35,7 @@ ed.execCommand("mceEndUndoLevel");ed.nodeChanged();return true;},_restoreAnchor:
 return;at={name:n.attr('data-mce-name'),id:n.attr('id')};node=new Node('a',1);node.attr(at);n.replace(node);},_createAnchorSpan:function(n){var self=this,ed=this.editor,dom=ed.dom,at={};if(!n.parent)
 return;at={'data-mce-name':n.attr('name'),id:n.attr('id')};var classes=[];if(n.attr('class')){classes=n.attr('class').split(' ');}
 if(classes.indexOf('mceItemAnchor')==-1){classes.push('mceItemAnchor');}
-var span=new Node('span',1);span.attr(tinymce.extend(at,{'class':classes.join(' ')}));var text=new Node('#text',3);text.value='\uFEFF';span.append(text);n.replace(span);},createControl:function(n,cm){var self=this,ed=this.editor;switch(n){case'anchor':var content=DOM.create('div');var fieldset=DOM.add(content,'fieldset',{},'<legend>'+ed.getLang('anchor.desc','Insert / Edit Anchor')+'</legend>');DOM.add(fieldset,'label',{'for':ed.id+'_anchor'},ed.getLang('anchor.name','Name'));var input=DOM.add(fieldset,'input',{type:'text',id:ed.id+'_anchor'});var c=new tinymce.ui.ButtonDialog(cm.prefix+'anchor',{title:ed.getLang('anchor.desc','Inserts an Anchor'),'class':'mce_anchor','content':content,'width':210,'buttons':[{title:ed.getLang('insert','Insert'),id:'insert',click:function(e){c.restoreSelection();return self._insertAnchor(input.value);},scope:self},{title:ed.getLang('anchor.remove','Remove'),id:'remove',click:function(e){c.restoreSelection();if(!DOM.hasClass(e.target,'disabled')){self._removeAnchor();}
+var span=new Node('span',1);span.attr(tinymce.extend(at,{'class':classes.join(' ')}));var text=new Node('#text',3);text.value='\uFEFF';span.append(text);n.replace(span);},createControl:function(n,cm){var self=this,ed=this.editor;switch(n){case'anchor':var content=DOM.create('div');var fieldset=DOM.add(content,'fieldset',{},'<legend>'+ed.getLang('anchor.desc','Insert / Edit Anchor')+'</legend>');DOM.add(fieldset,'label',{'for':ed.id+'_anchor'},ed.getLang('anchor.name','Name'));var input=DOM.add(fieldset,'input',{type:'text',id:ed.id+'_anchor'});var c=new tinymce.ui.ButtonDialog(cm.prefix+'anchor',{title:ed.getLang('anchor.desc','Inserts an Anchor'),'class':'mce_anchor','content':content,'width':250,'buttons':[{title:ed.getLang('insert','Insert'),id:'insert',click:function(e){c.restoreSelection();return self._insertAnchor(input.value);},scope:self},{title:ed.getLang('anchor.remove','Remove'),id:'remove',click:function(e){c.restoreSelection();if(!DOM.hasClass(e.target,'disabled')){self._removeAnchor();}
 return true;},scope:self}]},ed);c.onShowDialog.add(function(){input.value='';var label=ed.getLang('insert','Insert');var v=self._getAnchor();if(v){input.value=v;label=ed.getLang('update','Update');}
 c.setActive(!!v);c.setButtonDisabled('remove',!v);c.setButtonLabel('insert',label);input.focus();});c.onHideDialog.add(function(){input.value='';});ed.onRemove.add(function(){c.destroy();});return cm.add(c);break;}
-return null;},getInfo:function(){return{longname:'Anchor',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.2.9.1'};}});tinymce.PluginManager.add('anchor',tinymce.plugins.AnchorPlugin);})();
+return null;},getInfo:function(){return{longname:'Anchor',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.1'};}});tinymce.PluginManager.add('anchor',tinymce.plugins.AnchorPlugin);})();
