@@ -9,7 +9,7 @@ Paquetes utilizados:
 - Akeeba Backup 3.6.10
 - JCE 2.3.1 y traducción al español 2.2.7.2
 - Xmap 2.3.2
-- Framework Gantry 4.1.4
+- Framework Gantry 4.1.4 (incluye template y RokNavMenu 2.0)
 - aiContactSafe 2.0.19
 - Google Maps plugin 2.18
 - Browser Update Warning 1.4
