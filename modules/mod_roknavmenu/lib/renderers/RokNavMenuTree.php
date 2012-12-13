@@ -1,16 +1,15 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokNavMenuTree.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.base.tree');
-//require_once (dirname(__FILE__).DS.'RokNavMenuNode.php');
+//require_once (dirname(__FILE__).'/RokNavMenuNode.php');
 
 
 /**
@@ -166,7 +165,7 @@ jimport('joomla.base.tree');
 	}
 	
 	function isAccessable(){
-		$user = JFactory::getUser();
+		$user =JFactory::getUser();
         $view_levels = $user->getAuthorisedViewLevels();
 		if (null == $this->access ) {
 			return null;
@@ -249,8 +248,8 @@ class RokNavMenuTree extends RokMenuTreeBase
 		// Menu Link is a special type that is a link to another item
 		if ($item->type == 'menulink')
 		{
-			$app = JFactory::getApplication();
-			$menu = $app->getMenu();
+            $site = new JSite();
+            $menu = $site->getMenu();
 			if ($newItem = $menu->getItem($item->query['Itemid'])) {
     			$tmp = clone($newItem);
 				$tmp->name	 = addslashes(htmlspecialchars($item->name, ENT_QUOTES, 'UTF-8'));

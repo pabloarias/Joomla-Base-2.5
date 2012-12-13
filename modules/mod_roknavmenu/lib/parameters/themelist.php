@@ -1,11 +1,10 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: themelist.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
@@ -44,7 +43,7 @@ class JElementThemelist extends JElement
 
 
         foreach(RokNavMenu::$themes as $theme_name => $theme_info){
-            $options[] = JHTML::_('select.option', $theme_name, $theme_info['fullname']);
+            $options[] = JHtml::_('select.option', $theme_name, $theme_info['fullname']);
         }
 			
 		// path to directory
@@ -65,12 +64,12 @@ class JElementThemelist extends JElement
 
 		if (!$node->attributes('hide_none'))
 		{
-			$options[] = JHTML::_('select.option', '-1', '- '.JText::_('Do not use').' -');
+			$options[] = JHtml::_('select.option', '-1', '- '.JText::_('Do not use').' -');
 		}
 	
 		if (!$node->attributes('hide_default'))
 		{
-			$options[] = JHTML::_('select.option', '', '- '.JText::_('Use default').' -');
+			$options[] = JHtml::_('select.option', '', '- '.JText::_('Use default').' -');
 		}
 		
 		 /** Get the Template Themes **/
@@ -88,7 +87,7 @@ class JElementThemelist extends JElement
 							continue;
 						}
 					}
-					$options[] = JHTML::_('select.option', $template_themes_path.DS.$folder, $template_theme_text." - ".$folder);
+					$options[] = JHtml::_('select.option', $template_themes_path.'/'.$folder, $template_theme_text." - ".$folder);
 				}
 			}
 		}
@@ -107,22 +106,22 @@ class JElementThemelist extends JElement
 							continue;
 						}
 					}
-					$options[] = JHTML::_('select.option', $module_themes_path.DS.$folder, $module_theme_text. " - ". $folder);
+					$options[] = JHtml::_('select.option', $module_themes_path.'/'.$folder, $module_theme_text. " - ". $folder);
 				}
 			}
 		}
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, "param$name");
+		return JHtml::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, "param$name");
 
 	}
 	
 	function _getFrontSideTemplate() {
 		if (empty($this->_front_side_template)) { 
-			$db = JFactory::getDBO();
+			$db =JFactory::getDBO();
 			// Get the current default template
-			$query = ' SELECT template '
-					.' FROM #__templates_menu '
-					.' WHERE client_id = 0 '
-					.' AND menuid = 0 ';
+            $query = ' SELECT template '
+                    .' FROM #__template_styles '
+                    .' WHERE client_id = 0 '
+                    .' AND home = 1 ';
 			$db->setQuery($query);
 			$defaultemplate = $db->loadResult();
 			$this->_front_side_template = $defaultemplate;

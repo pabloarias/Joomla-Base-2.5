@@ -1,11 +1,10 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokMenuProviderJoomla16.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 require_once(dirname(__FILE__) . '/JoomlaRokMenuNode.php');
 
 if (!class_exists('RokMenuProviderJoomla16')) {
@@ -238,7 +237,7 @@ if (!class_exists('RokMenuProviderJoomla16')) {
 			if (null == $this->menu) {
 				//Cache this basd on access level
 				$conf = JFactory::getConfig();
-				if ($conf->getValue('config.caching') && isset($this->args["module_cache"]) && $this->args["module_cache"]) {
+				if ($conf->get('caching',0) && isset($this->args["module_cache"]) && $this->args["module_cache"]) {
 					$user  = JFactory::getUser();
 					$cache = JFactory::getCache('mod_roknavmenu');
 					$cache->setCaching(true);

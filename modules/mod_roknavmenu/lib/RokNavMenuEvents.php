@@ -1,14 +1,15 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokNavMenuEvents.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
+jimport('joomla.filesystem.file');
+jimport('joomla.filesystem.folder');
 
 /**
  */
@@ -22,9 +23,11 @@ class RokNavMenuEvents extends JPlugin
         $app = JFactory::getApplication();
         if (!$app->isAdmin()) return;
 
-        $option = JRequest::getWord('option');
-        $layout = JRequest::getWord('layout');
-        $task = JRequest::getWord('task');
+        $option = JFactory::getApplication()->input->get('option');
+        $layout = JFactory::getApplication()->input->get('layout');
+        $task = JFactory::getApplication()->input->get('task');
+        $id = JFactory::getApplication()->input->getInt('id');
+
 
         $module = $this->getModuleType($data);
 
@@ -56,13 +59,13 @@ class RokNavMenuEvents extends JPlugin
 
                 $language_path = $theme_info['path'] . "/language";
                 if (JFolder::exists($language_path)){
-                    $language = JFactory::getLanguage();
+                    $language =JFactory::getLanguage();
                     $language->load($theme_name ,$theme_info['path'], $language->getTag(), true);
                 }
 
             }
 
-            $subfieldform = RokSubfieldForm::getInstance($form);
+            $subfieldform = RokSubfieldForm::getInstanceFromForm($form);
 
             if (!empty($data) && isset($data->params)) $subfieldform->setOriginalParams($data->params);
 
@@ -124,7 +127,7 @@ class RokNavMenuEvents extends JPlugin
                             }
                         }
 
-                        $theme_full_path = $template_themes_full_path.DS.$folder;
+                        $theme_full_path = $template_themes_full_path.'/'.$folder;
 
                         $fullname = 'Template theme - '.$folder;
                         $class = 'RokNavMenuFormatterTemplate'.str_replace('-', '', $folder);
@@ -149,7 +152,7 @@ class RokNavMenuEvents extends JPlugin
                             }
                         }
 
-                        $theme_full_path = $module_themes_full_path.DS.$folder;
+                        $theme_full_path = $module_themes_full_path.'/'.$folder;
 
                         $fullname = 'Template theme - '.$folder;
                         $class = 'RokNavMenuFormatterTemplate'.str_replace('-', '', $folder);

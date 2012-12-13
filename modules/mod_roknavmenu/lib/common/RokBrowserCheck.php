@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokBrowserCheck.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -184,7 +184,7 @@ if (!class_exists('RokBrowserCheck')) {
         function getChecks($file, $keep_path = false) {
             $checkfiles = array();
             $ext = substr($file, strrpos($file, '.'));
-            $path = ($keep_path) ? dirname($file) . DS : '';
+            $path = ($keep_path) ? dirname($file) . '/' : '';
             $filename = basename($file, $ext);
             $checkfiles[] = $path . $filename . $ext;
             foreach ($this->_checks as $suffix) {

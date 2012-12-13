@@ -1,15 +1,14 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: BaseRokNavMenuFormatter.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//require_once (dirname(__FILE__).DS.'RokNavMenuTree.php');
+//require_once (dirname(__FILE__).'/RokNavMenuTree.php');
 
 /*
  * Created on Jan 16, 2009
@@ -55,7 +54,7 @@ class BaseRokNavMenuFormatter {
 		
 		//See if the the roknavmenudisplay plugins want to play
 		JPluginHelper::importPlugin('roknavmenu');
-		$dispatcher	   = JDispatcher::getInstance();
+		$dispatcher	   =JDispatcher::getInstance();
 		$dispatcher->trigger('onRokNavMenuModifyLink', array (&$node, &$menu_params)); 
 	}
 }

@@ -1,11 +1,10 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokNavMenu.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 require_once(dirname(__FILE__) . "/librokmenu/includes.php");
 require_once(dirname(__FILE__) . "/helper.php");
 
@@ -82,19 +81,22 @@ if (!class_exists('RokNavMenu'))
 
         protected static function getTemplates()
         {
-            $Itemid = JRequest::getInt('Itemid');
-        	        	
-        	// Load specific style if one is assigned
+            $Itemid = JFactory::getApplication()->input->getInt('Itemid');
+            $templates = null;
             $db = JFactory::getDbo();
-            $query = $db->getQuery(true);
-            $query->select('ts.template');
-            $query->from('#__template_styles AS ts');
-            $query->join('INNER','#__menu AS m ON ts.id=m.template_style_id');
-            $query->where('m.id = '.$Itemid);
-			$query->where('m.template_style_id != 0');
-            
-			$db->setQuery($query);
-            $templates = $db->loadResultArray();
+
+            if(!is_null($Itemid)){
+                // Load specific style if one is assigned
+                $query = $db->getQuery(true);
+                $query->select('ts.template');
+                $query->from('#__template_styles AS ts');
+                $query->join('INNER','#__menu AS m ON ts.id=m.template_style_id');
+                $query->where('m.id = '.$Itemid);
+                $query->where('m.template_style_id != 0');
+
+                $db->setQuery($query);
+                $templates = $db->loadColumn();
+            }
         	
 	        if ($templates){
 	        	return $templates;
@@ -108,7 +110,7 @@ if (!class_exists('RokNavMenu'))
             $query->where('client_id = 0');
 
             $db->setQuery($query);
-            $templates = $db->loadResultArray();
+            $templates = $db->loadColumn();
             return $templates;
         }
 
@@ -125,7 +127,7 @@ if (!class_exists('RokNavMenu'))
                 return $clean;
             }
 
-            $Itemid 	= JRequest::getInt('Itemid');
+            $Itemid 	= JFactory::getApplication()->input->getInt('Itemid');
             $app		= JFactory::getApplication();
             $user		= JFactory::getUser();
             $groups		= implode(',', $user->getAuthorisedViewLevels());
@@ -145,7 +147,7 @@ if (!class_exists('RokNavMenu'))
                 $query->where('m.published = 1');
 
                 $date = JFactory::getDate();
-                $now = $date->toMySQL();
+                $now = $date->toSql();
                 $nullDate = $db->getNullDate();
                 $query->where('(m.publish_up = '.$db->Quote($nullDate).' OR m.publish_up <= '.$db->Quote($now).')');
                 $query->where('(m.publish_down = '.$db->Quote($nullDate).' OR m.publish_down >= '.$db->Quote($now).')');

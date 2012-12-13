@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokSubfieldForm.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -12,7 +12,7 @@ class RokSubfieldForm extends JForm
 
     protected $original_params;
 
-    public static function getInstance(JForm $form)
+    public static function getInstanceFromForm(JForm $form)
     {
         if (!array_key_exists($form->getName(), self::$instances))
         {
@@ -34,7 +34,7 @@ class RokSubfieldForm extends JForm
     public function makeSubfieldsVisable(){
         $subs = $this->xml->xpath('//subfields/fieldset/field');
         foreach($subs as $sub){
-            $field = $this->xml->config[0]->fields->fieldset[0]->addChild('field');
+            $field =& $this->xml->config[0]->fields->fieldset[0]->addChild('field');
             foreach($sub->attributes() as $aname=>$aval){
                 $field->addAttribute($aname,$aval);
             }
@@ -56,10 +56,13 @@ class RokSubfieldForm extends JForm
 		// Initialise variables.
 		$false = false;
 
-		// Make sure there is a valid JForm XML document.
-		if (!($this->xml instanceof JXMLElement)) {
-			return $false;
-		}
+        // Make sure there is a valid JForm XML document.
+        $version = new JVersion();
+		if (!($this->xml instanceof SimpleXMLElement) && (version_compare($version->getShortVersion(), '3.0', '>='))) {
+            return false;
+		} elseif (!($this->xml instanceof JXMLElement) && (version_compare($version->getShortVersion(), '3.0', '<'))) {
+            return false;
+        }
 
 		/*
 		 * Get an array of <field /> elements that are underneath a <fieldset /> element
@@ -138,10 +141,13 @@ class RokSubfieldForm extends JForm
 		$fieldsets = array();
 		$sets = array();
 
-		// Make sure there is a valid JForm XML document.
-		if (!($this->xml instanceof JXMLElement)) {
-			return $fieldsets;
-		}
+        // Make sure there is a valid JForm XML document.
+        $version = new JVersion();
+		if (!($this->xml instanceof SimpleXMLElement) && (version_compare($version->getShortVersion(), '3.0', '>='))) {
+            return $fieldsets;
+		} elseif (!($this->xml instanceof JXMLElement) && (version_compare($version->getShortVersion(), '3.0', '<'))) {
+            return $fieldsets;
+        }
 
         // Get an array of <fieldset /> elements and fieldset attributes.
         $sets = $this->xml->xpath('//subfields[@name="'.$subfield_type.'"]/fieldset');

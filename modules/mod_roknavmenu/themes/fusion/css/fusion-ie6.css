@@ -1,3 +1,9 @@
+/*!
+ * @version   $Id: fusion-ie6.css 4586 2012-10-27 01:50:24Z btowles $
+ * @author    RocketTheme http://www.rockettheme.com
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
 .menutop,.menutop *{margin:0;padding:0;}
 .menutop li a.item, .menutop li span.item {text-decoration:none;color:#333;}
 .menutop{float:left;position:relative;}

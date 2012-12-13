@@ -1,6 +1,6 @@
 <?php
 /**
- * @version        1.1 August 13, 2012
+ * @version        2.0.0 October 31, 2012
  * @author        RocketTheme http://www.rockettheme.com
  * @copyright     Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only

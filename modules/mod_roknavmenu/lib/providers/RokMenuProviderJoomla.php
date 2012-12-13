@@ -1,21 +1,20 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: RokMenuProviderJoomla.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 require_once(dirname(__FILE__) . '/JoomlaRokMenuNode.php');
 if (!class_exists('RokMenuProviderJoomla')) {
     class RokMenuProviderJoomla extends AbstractRokMenuProvider {
 
         protected function getMenuItems() {
             //Cache this basd on access level
-            $conf = JFactory::getConfig();
-            if ($conf->getValue('config.caching') && $this->args["module_cache"]) {
-                $user = JFactory::getUser();
-                $cache = JFactory::getCache('mod_roknavmenu');
+            $conf =JFactory::getConfig();
+            if ($conf->get('config.caching') && $this->args["module_cache"]) {
+                $user =JFactory::getUser();
+                $cache =JFactory::getCache('mod_roknavmenu');
                 $cache->setCaching(true);
                 $args = array($this->args);
                 $checksum = md5(implode(',',$this->args));
@@ -25,7 +24,8 @@ if (!class_exists('RokMenuProviderJoomla')) {
                 $menuitems = $this->getFullMenuItems($this->args);
             }
 
-            $jmenu = JSite::getMenu();
+            $site = new JSite();
+            $jmenu = $site->getMenu();
             $active = $jmenu->getActive();
 
 
@@ -41,7 +41,8 @@ if (!class_exists('RokMenuProviderJoomla')) {
         }
 
         public function getFullMenuItems($args){
-            $menu = JSite::getMenu();
+            $site = new JSite();
+            $menu = $site->getMenu();
             // Get Menu Items
             $rows = $menu->getItems('menutype', $args['menutype']);
 
@@ -143,7 +144,7 @@ if (!class_exists('RokMenuProviderJoomla')) {
                     $node->setAccess($item->access);
                     $node->addSpanClass($node->getType());
 
-                    $user = JFactory::getUser();
+                    $user =JFactory::getUser();
 
 
                     if (($node->getAccess() <=  $user->get('aid', 0))||((isset($args['check_access_level'][0]) && $args['check_access_level'][0]==1))){

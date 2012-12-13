@@ -1,11 +1,10 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: themeparameters.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
@@ -29,7 +28,7 @@ class JElementThemeParameters extends JElement
 	{
 		jimport( 'joomla.filesystem.folder' );
 		jimport( 'joomla.filesystem.file' );
-		$doc = JFactory::getDocument();
+		$doc =JFactory::getDocument();
 		$lang = JFactory::getLanguage();
 
 		$parameter_sets = array();
@@ -51,7 +50,7 @@ class JElementThemeParameters extends JElement
 
             $parms_file_path = JPath::clean($theme_info['path'].'/parameters.xml');
             if (JFile::exists($parms_file_path)) {
-		        $parameters = new JParameter( $this->_parent->_raw, JPath::clean($parms_file_path));
+		        $parameters = new JForm( $this->_parent->_raw, JPath::clean($parms_file_path));
 			    $parameter_sets[$theme_name] = $parameters->getParams();
 			}
         }
@@ -87,17 +86,17 @@ class JElementThemeParameters extends JElement
 							continue;
 						}
 					}
-					$theme_path = $template_themes_path.DS.$folder;
+					$theme_path = $template_themes_path.'/'.$folder;
 					
-					$langfile = JPath::clean(JPATH_ROOT.$theme_path.DS.'language'.DS.$lang->_lang.'.ini');
+					$langfile = JPath::clean(JPATH_ROOT.$theme_path.'/language/'.$lang->_lang.'.ini');
 					if (JFile::exists($langfile)) {
 						$lang->_load($langfile,'roknavmenu_theme_template_'.$folder);
 					}
 					
-					$param_file_path =  $theme_path.DS.'parameters.xml';
+					$param_file_path =  $theme_path.'/parameters.xml';
 					if (JFile::exists(JPath::clean(JPATH_ROOT.$param_file_path))) { 
 						
-						$parameters = new JParameter( $this->_parent->_raw, JPath::clean(JPATH_ROOT.$param_file_path));
+						$parameters = new JForm( $this->_parent->_raw, JPath::clean(JPATH_ROOT.$param_file_path));
 						$parameter_sets[$theme_path] = $parameters->getParams();
 					}
 				}
@@ -119,18 +118,18 @@ class JElementThemeParameters extends JElement
 						}
 					}
 
-					$theme_path = $module_themes_path.DS.$folder;
+					$theme_path = $module_themes_path.'/'.$folder;
 
-					$langfile = JPath::clean(JPATH_ROOT.$theme_path.DS.'language'.DS.$lang->_lang.'.ini');
+					$langfile = JPath::clean(JPATH_ROOT.$theme_path.'/language/'.$lang->_lang.'.ini');
 					if (JFile::exists($langfile)) {
 						$lang->_load($langfile,'roknavmenu_theme_module_'.$folder);
 					}
 					
-					$param_file_path =  $theme_path.DS.'parameters.xml';
+					$param_file_path =  $theme_path.'/parameters.xml';
 					
 					$parameter_sets[$theme_path]  = array();
 					if (JFile::exists(JPath::clean(JPATH_ROOT.$param_file_path))) { 	
-						$parameters = new JParameter( $this->_parent->_raw, JPath::clean(JPATH_ROOT.$param_file_path));
+						$parameters = new JForm( $this->_parent->_raw, JPath::clean(JPATH_ROOT.$param_file_path));
 						$parameter_sets[$theme_path] = $parameters->getParams();
 					}
 				}
@@ -168,12 +167,12 @@ class JElementThemeParameters extends JElement
 	
 	function _getFrontSideTemplate() {
 		if (empty($this->_front_side_template)) { 
-			$db = JFactory::getDBO();
+			$db =JFactory::getDBO();
 			// Get the current default template
-			$query = ' SELECT template '
-					.' FROM #__templates_menu '
-					.' WHERE client_id = 0 '
-					.' AND menuid = 0 ';
+            $query = ' SELECT template '
+                    .' FROM #__template_styles '
+                    .' WHERE client_id = 0 '
+                    .' AND home = 1 ';
 			$db->setQuery($query);
 			$defaultemplate = $db->loadResult();
 			$this->_front_side_template = $defaultemplate;

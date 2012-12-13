@@ -1,13 +1,12 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: templateinclude.php 4585 2012-10-27 01:44:54Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
-
 defined('_JEXEC') or die();
-require_once (dirname(__FILE__).DS.'..'.DS.'BaseRokNavMenuTemplateParams.php');
+require_once (dirname(__FILE__).'/../BaseRokNavMenuTemplateParams.php');
 
 class JElementTemplateInclude extends JElement
 {
@@ -20,7 +19,7 @@ class JElementTemplateInclude extends JElement
 		// get the current from side tem
 
 		//Run the template formatter if its there if not run the default formatter
-		$tPath = JPATH_ROOT.DS.'templates'.DS.$this->_getFrontSideTemplate().DS.'html'.DS.'mod_roknavmenu'.DS.'parameters.php';   
+		$tPath = JPATH_ROOT.'/templates/'.$this->_getFrontSideTemplate().'/html/mod_roknavmenu/parameters.php';
 		if (file_exists($tPath)) {
 			
 			// get all the params for the module
@@ -37,12 +36,12 @@ class JElementTemplateInclude extends JElement
 	}
 	
 	function _getFrontSideTemplate() {
-		$db = JFactory::getDBO();
+		$db =JFactory::getDBO();
 		// Get the current default template
-		$query = ' SELECT template '
-				.' FROM #__templates_menu '
-				.' WHERE client_id = 0 '
-				.' AND menuid = 0 ';
+        $query = ' SELECT template '
+                .' FROM #__template_styles '
+                .' WHERE client_id = 0 '
+                .' AND home = 1 ';
 		$db->setQuery($query);
 		$defaultemplate = $db->loadResult();
 		return $defaultemplate;
