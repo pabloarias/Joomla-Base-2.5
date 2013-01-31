@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: template-save.php 4060 2012-10-02 18:03:24Z btowles $
+ * @version   $Id: template-save.php 6328 2013-01-07 17:00:21Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die();
 /** @var $gantry Gantry */
 		global $gantry;
 
-$action = JRequest::getString('action');
+$action = JFactory::getApplication()->input->getString('action');
 gantry_import('core.gantryjson');
 
 
@@ -29,11 +29,11 @@ switch ($action) {
 function gantryAjaxSaveTemplate()
 {
 	// Check for request forgeries
-	JRequest::checkToken() or jexit('Invalid Token');
+	gantry_checktoken() or jexit('Invalid Token');
 
 	GantryLegacyJModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_gantry/models');
 	$model = GantryLegacyJModel::getInstance("Template", 'GantryModel');
-	$data  = JRequest::getVar('jform', array(), 'post', 'array');
+	$data  = JFactory::getApplication()->input->post->get('jform', array(), 'array');
 	if (!$model->save($data)) {
 		return 'error';
 	}
@@ -42,7 +42,7 @@ function gantryAjaxSaveTemplate()
 	$cache = GantryCache::getInstance(false);
 	$cache->clearGroupCache();
 
-	$task = JRequest::getCmd('task');
+	$task = JFactory::getApplication()->input->getCmd('task');
 	if ($task == 'apply') {
 		return JText::_('Template settings have been successfully applied.');
 	} else {

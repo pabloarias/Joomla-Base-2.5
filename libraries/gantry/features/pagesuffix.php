@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: pagesuffix.php 2473 2012-08-17 17:16:49Z btowles $
+ * @version   $Id: pagesuffix.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -32,7 +32,7 @@ class GantryFeaturePageSuffix extends GantryFeature
 		/** @var $gantry Gantry */
 		global $gantry;
 
-		$gantry->addBodyClass('option-' . str_replace("_", "-", JRequest::getString('option')));
+		$gantry->addBodyClass('option-' . str_replace("_", "-", JFactory::getApplication()->input->getString('option')));
 
 		$app = JFactory::getApplication();
 		$menus = $app->getMenu();

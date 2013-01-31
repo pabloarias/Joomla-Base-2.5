@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantryorderedmainbodyrenderer.class.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: gantryorderedmainbodyrenderer.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -15,10 +15,22 @@ defined('GANTRY_VERSION') or die();
  */
 class GantryOrderedMainBodyRenderer
 {
-	// wrapper for mainbody display
-	public static function display($bodyLayout = 'mainbody', $sidebarLayout = 'sidebar', $sidebarChrome = 'standard', $contentTopLayout = 'standard', $contentTopChrome = 'standard', $contentBottomLayout = 'standard', $contentBottomChrome = 'standard', $grid = null)
+	/**
+	 * @param string $bodyLayout
+	 * @param string $sidebarLayout
+	 * @param string $sidebarChrome
+	 * @param string $contentTopLayout
+	 * @param string $contentTopChrome
+	 * @param string $contentBottomLayout
+	 * @param string $contentBottomChrome
+	 * @param null   $grid
+	 * @param string $component_content
+	 *
+	 * @return string
+	 */
+	public static function display($bodyLayout = 'mainbody', $sidebarLayout = 'sidebar', $sidebarChrome = 'standard', $contentTopLayout = 'standard', $contentTopChrome = 'standard', $contentBottomLayout = 'standard', $contentBottomChrome = 'standard', $grid = null, $component_content = '')
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		if ($grid == null) {
@@ -26,7 +38,7 @@ class GantryOrderedMainBodyRenderer
 		}
 
 
-		$editmode         = JRequest::getCmd('task') == 'edit' ? true : false;
+		$editmode         = JFactory::getApplication()->input->getCmd('task') == 'edit' ? true : false;
 		$position_renders = array();
 
 		if (!$editmode) {

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: overrides.php 2764 2012-08-27 20:13:24Z btowles $
+ * @version   $Id: overrides.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  */
@@ -13,7 +13,7 @@ gantry_import('core.config.gantryformnaminghelper');
 /** @var $gantry Gantry */
 		global $gantry;
 
-$action = JRequest::getWord('action');
+$action = JFactory::getApplication()->input->getWord('action');
 //if (!current_user_can('edit_theme_options')) die('-1');
 
 /** @var $namehelper GantryFormNamingHelper */

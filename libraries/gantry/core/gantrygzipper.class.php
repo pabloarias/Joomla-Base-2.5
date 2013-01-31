@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantrygzipper.class.php 2996 2012-09-01 15:14:54Z btowles $
+ * @version   $Id: gantrygzipper.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -23,7 +23,7 @@ class GantryGZipper
 
 	public static function processCSSFiles()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		$cache_time   = $gantry->get("gzipper-time");
@@ -130,7 +130,7 @@ class GantryGZipper
 
 	public static function processJsFiles()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		$path         = $gantry->basePath;
@@ -184,7 +184,6 @@ class GantryGZipper
 						}
 						$jsfile = self::cleanEndLines($jsfile);
 						$outfile .= "\n\n/*** " . $filename . " ***/\n\n" . $jsfile;
-
 					}
 				}
 				JFile::write($cache_fullpath, $outfile);

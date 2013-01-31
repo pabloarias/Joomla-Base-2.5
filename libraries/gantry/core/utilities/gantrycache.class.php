@@ -2,7 +2,7 @@
 /**
  * @version   $Id: gantrycache.class.php 2325 2012-08-13 17:46:48Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -126,7 +126,7 @@ class GantryCache
 			$this->cache->addDriver('frontend', new JoomlaCacheDriver($this->group, $this->lifetime));
 		} elseif ($admin) {
 			// TODO get lifetime for backend cache
-			$this->group = self::ADMIN_GROUP_NAME . '-4.1.4';
+			$this->group = self::ADMIN_GROUP_NAME . '-4.1.5';
 			$this->cache->addDriver('admin', new JoomlaCacheDriver($this->group, self::ADMIN_LIFETIME));
 		}
 	}

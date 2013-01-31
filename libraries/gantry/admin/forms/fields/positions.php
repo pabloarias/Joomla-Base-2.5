@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: positions.php 2947 2012-08-31 19:44:17Z djamil $
+ * @version   $Id: positions.php 6554 2013-01-16 04:37:28Z steph $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 defined('GANTRY_VERSION') or die();
@@ -338,8 +338,14 @@ class GantryFormFieldPositions extends GantryFormField
 		}
 
 		if (preg_match("/{/", $this->value)) {
+            //clean up magic quotes
+            if(@ini_get('magic_quotes_gpc'=='1')){
+                $this->value = $this->_smartstripslashes($this->value);
+            }
 			$value = unserialize($this->value);
-			if (isset($value[$this->maxGrid])) $value = $value[$this->maxGrid]; else
+			if (isset($value[$this->maxGrid]))
+                $value = $value[$this->maxGrid];
+            else
 				$value = $defaultValue;
 		} else {
 			$value = $defaultValue;
@@ -402,6 +408,21 @@ class GantryFormFieldPositions extends GantryFormField
 		$name2 = str_replace("-", "_", $name);
 		return "GantryPositionsTools.showMax('" . $name . "', '" . $name2 . "');";
 	}
+
+    protected function _smartstripslashes($str)
+   	{
+   		$cd1 = substr_count($str, "\"");
+   		$cd2 = substr_count($str, "\\\"");
+   		$cs1 = substr_count($str, "'");
+   		$cs2 = substr_count($str, "\\'");
+   		$tmp = strtr($str, array("\\\"" => "", "\\'" => ""));
+   		$cb1 = substr_count($tmp, "\\");
+   		$cb2 = substr_count($tmp, "\\\\");
+   		if ($cd1 == $cd2 && $cs1 == $cs2 && $cb1 == 2 * $cb2) {
+   			return stripslashes(strtr($str, array("\\\"" => "\"", "\\'" => "'", "\\\\" => "\\")));
+   		}
+   		return stripslashes($str);
+   	}
 }
 
 ?>

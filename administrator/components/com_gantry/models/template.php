@@ -2,9 +2,9 @@
 /**
  * @package    gantry
  * @subpackage core
- * @version    4.1.4 November 22, 2012
+ * @version    4.1.5 January 18, 2013
  * @author     RocketTheme http://www.rockettheme.com
- * @copyright  Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright  Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -78,7 +78,7 @@ class GantryModelTemplate extends GantryModelTemplateIntermediate
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$pk = (int)JRequest::getInt('id');
+		$pk = (int)$app->input->getInt('id');
 		$this->setState('template.id', $pk);
 
 		// Load the parameters.
@@ -161,17 +161,24 @@ class GantryModelTemplate extends GantryModelTemplateIntermediate
 
 	public function checkForGantryUpdate()
 	{
-		gantry_import('core.gantryupdates');
-		$gantry_updates = GantryUpdates::getInstance();
+		try {
+			gantry_import('core.gantryupdates');
+			$gantry_updates = GantryUpdates::getInstance();
 
-		$last_updated = $gantry_updates->getLastUpdated();
-		$diff         = time() - $last_updated;
-		if ($diff > (60 * 60 * 24)) {
-			jimport('joomla.updater.updater');
-			// check for update
-			$updater = JUpdater::getInstance();
-			$results = @$updater->findUpdates($gantry_updates->getGantryExtensionId());
-			$gantry_updates->setLastChecked(time());
+			$last_updated = $gantry_updates->getLastUpdated();
+			$diff         = time() - $last_updated;
+			if ($diff > (60 * 60 * 24)) {
+				jimport('joomla.updater.updater');
+				// check for update
+				$updater = JUpdater::getInstance();
+				$results = @$updater->findUpdates($gantry_updates->getGantryExtensionId());
+				$gantry_updates->setLastChecked(time());
+			}
+		} catch (Exception $e) {
+			if (!($e->getCode() == 0 && $e->getMessage() == 'No HTTP response received.'))
+			{
+				throw $e;
+			}
 		}
 	}
 
@@ -238,6 +245,10 @@ class GantryModelTemplate extends GantryModelTemplateIntermediate
 				}
 				$item_params   = $this->array_join($master_params, $item_params);
 			}
+            if(@ini_get('magic_quotes_gpc')=='1'){
+                $item_params = self::_stripSlashesRecursive($item_params);
+            }
+
 			$this->_cache[$pk]->params = $item_params;
 		}
 
@@ -401,6 +412,10 @@ class GantryModelTemplate extends GantryModelTemplateIntermediate
 			$master_params  = $this->getItem($data['params']['master'])->params;
 			$data['params'] = $this->array_diff($data['params'], $master_params);
 		}
+
+        if(@ini_get('magic_quotes_gpc')=='1'){
+            $data['params'] = self::_stripSlashesRecursive($data['params']);
+        }
 
 		// Bind the data.
 		if (!$table->bind($data)) {
@@ -738,5 +753,17 @@ class GantryModelTemplate extends GantryModelTemplateIntermediate
 		$template = $table->template;
 		return file_exists(JPATH_SITE . '/' . 'templates' . '/' . $template . '/' . 'lib' . '/' . 'gantry' . '/' . 'gantry.php');
 	}
+
+    /**
+   	 *
+   	 * @param $value
+   	 *
+   	 * @return array|string
+   	 */
+   	protected static function _stripSlashesRecursive($value)
+   	{
+           $value = is_array($value) ? array_map(array( 'GantryModelTemplate', '_stripSlashesRecursive'), $value) : stripslashes($value);
+           return $value;
+   	}
 
 }

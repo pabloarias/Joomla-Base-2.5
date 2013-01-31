@@ -1,5 +1,11 @@
 <?php
 /**
+ * @version   $Id: install.script.php 4585 2012-10-27 01:44:54Z btowles $
+ * @author    RocketTheme http://www.rockettheme.com
+ * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+/**
  * Document Description
  *
  * Document Long Description
@@ -13,7 +19,7 @@
  * @author    Toowoomba Regional Council Information Management Branch
  * @license   GNU/GPL http://www.gnu.org/licenses/gpl.html
  * @copyright 2008 Toowoomba Regional Council/Developer Name
- * @version   SVN: $Id: alpha.scriptfile.php 16235 2010-04-20 04:13:25Z pasamio $
+ * @version   SVN: $Id: install.script.php 4585 2012-10-27 01:44:54Z btowles $
  * @see       http://joomlacode.org/gf/project/    JoomlaCode Project:
  */
 

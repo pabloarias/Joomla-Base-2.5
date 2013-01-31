@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantryformfieldhelper.class.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: gantryformfieldhelper.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -10,7 +10,7 @@ class GantryFormFieldHelper
 {
 	function get_field_id($fieldId, $group = null)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 
@@ -47,7 +47,7 @@ class GantryFormFieldHelper
 
 	function get_field_name($fieldName, $group = null)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		$name = '';

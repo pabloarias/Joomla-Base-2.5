@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: gantryform.class.php 2355 2012-08-14 01:04:50Z btowles $
+ * @version        $Id: gantryform.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author         RocketTheme http://www.rockettheme.com
- * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * derived from Joomla with original copyright and license
@@ -729,7 +729,7 @@ class GantryForm
 		}
 
 		// Get the fields elements for a given group.
-		$elements = & $this->findGroup($group);
+		$elements = $this->findGroup($group);
 		foreach ($elements as & $element) {
 			$dom = dom_import_simplexml($element);
 			$dom->parentNode->removeChild($dom);

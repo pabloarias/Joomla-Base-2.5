@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantrycookieparamoverride.class.php 2909 2012-08-30 22:45:37Z btowles $
+ * @version   $Id: gantrycookieparamoverride.class.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -21,7 +21,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 
 	public static function store()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		if (array_key_exists('cookie_time', $gantry->_working_params)) {
 			$cookie_time = time() + (int)$gantry->_working_params['cookie_time']['value'];
@@ -42,7 +42,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 
 	public static function clean()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		if (array_key_exists('cookie_time', $gantry->_working_params)) {
 			$cookie_time = time() + (int)$gantry->_working_params['cookie_time']['value'];
@@ -57,7 +57,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 
 	protected static function _flushOldCookies()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		if (array_key_exists('cookie_time', $gantry->_working_params)) {
 			$cookie_time = time() + (int)$gantry->_working_params['cookie_time']['value'];
@@ -71,7 +71,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 
 	public static function populate()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		// get any cookie param overrides and set to that
@@ -80,7 +80,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 			$cookie_param_name = $gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param_name;
 			if (in_array($param_name, $gantry->_setbycookie) && array_key_exists($cookie_param_name, $_COOKIE)) {
 				$param                =& $gantry->_working_params[$param_name];
-				$cookie_value         = htmlentities(JRequest::getVar($gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param['name'], '', 'COOKIE', 'STRING'));
+				$cookie_value         = htmlentities(JFactory::getApplication()->input->cookie->getString($gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param['name'], ''));
 				$cookie_preset_params = $gantry->getPresetParams($param['name'], $cookie_value);
 				foreach ($cookie_preset_params as $cookie_preset_param_name => $cookie_preset_param_value) {
 					if (!empty($cookie_preset_param_value)) {
@@ -95,7 +95,7 @@ class GantryCookieParamOverride extends GantryParamOverride
 			$cookie_param_name = $gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param_name;
 			if (in_array($param_name, $gantry->_setbycookie) && array_key_exists($cookie_param_name, $_COOKIE)) {
 				$param        =& $gantry->_working_params[$param_name];
-				$cookie_value = htmlentities(JRequest::getVar($gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param['name'], '', 'COOKIE', 'STRING'));
+				$cookie_value = htmlentities(JFactory::getApplication()->input->cookie->getString($gantry->template_prefix . $gantry->_base_params_checksum . "-" . $param['name'], ''));
 				if (!is_null($cookie_value)) {
 					$gantry->_working_params[$param['name']]['value'] = $cookie_value;
 					$gantry->_working_params[$param['name']]['setby'] = 'cookie';

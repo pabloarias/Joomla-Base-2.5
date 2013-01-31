@@ -2,9 +2,9 @@
 /**
  * @package    gantry
  * @subpackage core
- * @version    4.1.4 November 22, 2012
+ * @version    4.1.5 January 18, 2013
  * @author     RocketTheme http://www.rockettheme.com
- * @copyright  Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright  Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license    http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -18,7 +18,7 @@ jimport('joomla.application.component.view');
 
 class GantryViewTemplate extends GantryLegacyJView
 {
-	protected $_version = '4.1.4';
+	protected $_version = '4.1.5';
 
 	protected $item;
 	protected $form;
@@ -117,7 +117,8 @@ class GantryViewTemplate extends GantryLegacyJView
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+
+		JFactory::getApplication()->input->set('hidemainmenu', true);
 
 		$user  = JFactory::getUser();
 		$isNew = ($this->item->id == 0);

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantryjformfieldaccessor.class.php 2325 2012-08-13 17:46:48Z btowles $
+ * @version   $Id: gantryjformfieldaccessor.class.php 6615 2013-01-18 22:32:08Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -34,7 +34,7 @@ class GantryJFormFieldAccessor extends JFormField
 		if ($class) {
 			$this->element['class'] = $class . ' ' . $new_class;
 		} else {
-			$this->element->addAttribute('class', $new_class);
+			@$this->element->addAttribute('class', $new_class);
 		}
 	}
 

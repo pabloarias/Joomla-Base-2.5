@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantry.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: gantry.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 defined('GANTRY_VERSION') or die();
@@ -20,7 +20,7 @@ class GantryFormFieldGANTRY extends GantryFormField
 
 	public function getInput()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		$gantry->addInlineScript("var GantryTemplate = '" . $gantry->templateName . "', GantryParamsPrefix = 'jform_params_', GantryAjaxURL = '" . $gantry->getAjaxUrl() . "'; GantryURL = '" . $gantry->gantryUrl . "';");
 		$gantry->addInlineScript($this->_gantryLang());

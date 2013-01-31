@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: compatability.php 4060 2012-10-02 18:03:24Z btowles $
+ * @version   $Id: compatability.php 6307 2013-01-05 06:00:18Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 defined('_JEXEC') or die('Restricted access');
@@ -37,5 +37,21 @@ if (!class_exists('GantryLegacyJView', false)) {
 		class GantryLegacyJModel extends JModel
 		{
 		}
+	}
+}
+
+if (method_exists('JSession','checkToken')) {
+	function gantry_checktoken($method = 'post')
+	{
+		if ($method == 'default')
+		{
+			$method = 'request';
+		}
+		return JSession::checkToken($method);
+	}
+} else {
+	function gantry_checktoken($method = 'post')
+	{
+		return JRequest::checkToken($method);
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   2.0.0 October 31, 2012
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -41,8 +41,43 @@ class JFormFieldThemeList extends JFormFieldList
      */
     protected function getOptions()
     {
-        jimport('joomla.filesystem.folder');
-        jimport('joomla.filesystem.file');
+        $doc =JFactory::getDocument();
+        $version = new JVersion();
+
+        if (version_compare($version->getShortVersion(), '3.0', '<')){
+
+            $js = "window.addEvent('load', function() {
+                $('" . $this->id . "').addEvent('change', function(){
+                    var sel = this.getSelected().get('value');
+                    $$('.themeset').setStyle('display','none');
+                    $$('#themeset-'+sel).setStyle('display','block');
+                }).fireEvent('change');
+            });";
+
+        } else {
+            $js = "
+            window.addEvent('load', function() {
+            var chzn = $('" . $this->id . "_chzn');
+                if(chzn!=null){
+                    $$('.themeset').setStyle('display','none');
+                    $$('#themeset-" . $this->value . "').setStyle('display','block');
+                    $('" . $this->id . "_chzn').addEvent('click', function(){
+                        $$('.themeset').setStyle('display','none');
+                        var text = $('" . $this->id . "_chzn').getElement('span').get('text');
+                        var options = $('" . $this->id . "').getElements('option');
+                        options.each(function(option) {
+                        var optText = String(option.get('text'));
+                        var optValue = String(option.get('value'));
+                            if(text == optText){
+                                var sel = '#themeset-'+optValue;
+                            }
+                            $$(sel).setStyle('display','block');
+                        });
+                    }).fireEvent('click');
+                }
+            });";
+        }
+        $doc->addScriptDeclaration($js);
 
         $options = array();
 
@@ -53,7 +88,7 @@ class JFormFieldThemeList extends JFormFieldList
 
         foreach (RokNavMenu::$themes as $theme_name => $theme_info)
         {
-            $options[] = JHTML::_('select.option', $theme_name, $theme_info['fullname']);
+            $options[] = JHtml::_('select.option', $theme_name, $theme_info['fullname']);
         }
 
         return $options;

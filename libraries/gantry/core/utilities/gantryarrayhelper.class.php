@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: gantryarrayhelper.class.php 2325 2012-08-13 17:46:48Z btowles $
+ * @version        $Id: gantryarrayhelper.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author         RocketTheme http://www.rockettheme.com
- * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * derived from Joomla with original copyright and license
@@ -267,7 +267,8 @@ class GantryArrayHelper
 	public function sortObjects(&$a, $k, $direction = 1)
 	{
 		$GLOBALS['JAH_so'] = array(
-			'key'        => (array)$k, 'direction'    => (array)$direction
+			'key'       => (array)$k,
+			'direction' => (array)$direction
 		);
 		usort($a, array('GantryArrayHelper', '_sortObjects'));
 		unset($GLOBALS['JAH_so']);

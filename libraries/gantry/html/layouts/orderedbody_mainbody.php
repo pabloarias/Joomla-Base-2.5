@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: orderedbody_mainbody.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: orderedbody_mainbody.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -34,7 +34,7 @@ class GantryLayoutOrderedBody_MainBody extends GantryLayout {
         $fparams = $this-> _getParams($params);
 
         // logic to determine if the component should be displayed
-        $display_component = !($gantry->get("component-enabled",true)==false && JRequest::getVar('view') == 'featured');
+        $display_component = !($gantry->get("component-enabled",true)==false && JFactory::getApplication()->input->getString('view') == 'featured');
         ob_start();
 
 		$mbClasses = trim("rt-grid-" . trim($fparams->schema['mb'] . " " . $fparams->pushPull[0] . " " . $fparams->extraClass));

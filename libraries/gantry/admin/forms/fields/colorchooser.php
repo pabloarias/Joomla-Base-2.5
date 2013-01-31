@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: colorchooser.php 2855 2012-08-29 19:01:20Z rhuk $
+ * @version   $Id: colorchooser.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -23,7 +23,7 @@ class GantryFormFieldColorChooser extends GantryFormField
 
 	public function getInput()
 	{
-		/** @var $gantry Gantry */
+		/** @global Gantry $gantry */
 		global $gantry;
 		$output = '';
 

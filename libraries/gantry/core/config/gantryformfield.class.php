@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: gantryformfield.class.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version        $Id: gantryformfield.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author         RocketTheme http://www.rockettheme.com
- * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * derived from Joomla with original copyright and license
@@ -69,7 +69,7 @@ abstract class GantryFormField extends GantryFormItem
 	 */
 	public function setup(& $element, $value, $group = null)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		// Make sure there is a valid JFormField XML element.

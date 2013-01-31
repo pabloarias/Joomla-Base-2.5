@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: navmenulist.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: navmenulist.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -32,7 +32,7 @@ class GantryFormFieldNavMenuList extends GantryFormFieldList
 	 */
 	protected function getOptions()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		$options = array();
 		$options = parent::getOptions();

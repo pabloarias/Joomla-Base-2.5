@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: set.php 2325 2012-08-13 17:46:48Z btowles $
+ * @version   $Id: set.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -17,7 +17,8 @@ class GantryFormGroupSet extends GantryFormGroup
     protected $baseetype = 'group';
     protected $hidden = true;
 
-    public function getInput(){
+	public function getInput()
+	{
         return '';
     }
 }

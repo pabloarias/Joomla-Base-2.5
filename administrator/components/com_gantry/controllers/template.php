@@ -2,9 +2,9 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.1.4 November 22, 2012
+ * @version   4.1.5 January 18, 2013
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -71,7 +71,7 @@ class GantryControllerTemplate extends JControllerForm
      */
     public function cancel($key = null)
     {
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+	    gantry_checktoken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Initialise variables.
         $app = JFactory::getApplication();
@@ -84,7 +84,7 @@ class GantryControllerTemplate extends JControllerForm
             $key = $table->getKeyName();
         }
 
-        $recordId = JRequest::getInt($key);
+        $recordId = $app->input->get($key,'','int');
 
         // Attempt to check-in the current record.
         if ($recordId) {
@@ -123,14 +123,14 @@ class GantryControllerTemplate extends JControllerForm
         $language = JFactory::getLanguage();
         $language->load('com_templates');
         // Check for request forgeries.
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+	    gantry_checktoken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Initialise variables.
         $app = JFactory::getApplication();
         $lang = JFactory::getLanguage();
         $model = $this->getModel();
         $table = $model->getTable();
-        $data = JRequest::getVar('jform', array(), 'post', 'array');
+	    $data = $app->input->post->get('jform', array(), 'array');
         // clean up data buy adding home
 
 
@@ -143,7 +143,7 @@ class GantryControllerTemplate extends JControllerForm
             $key = $table->getKeyName();
         }
 
-        $recordId = JRequest::getInt($key);
+        $recordId = $app->input->getInt($key);
 
         $session = JFactory::getSession();
         $registry = $session->get('registry');
@@ -272,7 +272,7 @@ class GantryControllerTemplate extends JControllerForm
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$pk = (int) JRequest::getInt('id');
+		$pk = (int) $app->input->getInt('id');
 		$this->setState('template.id', $pk);
 
 		// Load the parameters.
@@ -288,11 +288,10 @@ class GantryControllerTemplate extends JControllerForm
         $language = JFactory::getLanguage();
         $language->load('com_templates');
 		// Check for request forgeries
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		gantry_checktoken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$pks = JRequest::getVar('cid', array(), 'post', 'array');
-
+		$pks = JFactory::getApplication()->input->post->get('cid', array(), 'array');
 		try
 		{
 			if (empty($pks)) {
@@ -322,10 +321,10 @@ class GantryControllerTemplate extends JControllerForm
         $language->load('com_gantry');
 
 		// Check for request forgeries
-		JRequest::checkToken() or die(JText::_('JINVALID_TOKEN'));
+		gantry_checktoken() or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid	= JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		if (!is_array($cid) || count($cid) < 1) {
 			JError::raiseWarning(500, JText::_($this->text_prefix.'_NO_ITEM_SELECTED'));

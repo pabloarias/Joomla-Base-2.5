@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: imagepicker.php 5145 2012-11-12 20:49:51Z btowles $
+ * @version   $Id: imagepicker.php 5627 2012-12-03 01:55:15Z djamil $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -50,7 +50,6 @@ class GantryFormFieldImagePicker extends GantryFormField
 			$preview_height = "";
 		}
 
-
 		if (!defined('ELEMENT_RTIMAGEPICKER')) {
 			$gantry->addStyle($gantry->gantryUrl . '/admin/widgets/imagepicker/css/imagepicker.css');
 
@@ -85,43 +84,46 @@ class GantryFormFieldImagePicker extends GantryFormField
 				};
 
 				var empty_background_img = '" . $gantry->gantryUrl . "/admin/widgets/imagepicker/images/no-image.png';
-				window.addEvent('domready', function(){
-					document.id('" . $this->id . "').addEvent('keyup', function(value){
-						document.id('" . $this->id . "-infos').innerHTML = '';
-						if (!value || !value.length) document.id('" . $this->id . "-img').set('src', empty_background_img);
-						else {
-							var data = JSON.decode(value);
-							document.id('" . $this->id . "-img').set('src', (data.preview ? data.preview : '" . JURI::root(true) . "/' + data.path));
-							if (!data.preview){
-								document.id('" . $this->id . "-img').removeProperty('height');
-							} else {
-								document.id('" . $this->id . "-img').set('height', '50');
-								if (data.width && data.height) document.id('" . $this->id . "-infos').innerHTML = data.width + ' x ' + data.height;
-							}
-						}
 
-						this.setProperty('value', value);
-					});
-
-					document.id('" . $this->id . "-clear').addEvent('click', function(e){
-						e.stop();
-						console.log('i clicked');
-						document.id('" . $this->id . "').set('value', '').fireEvent('set', '');
-						document.id('" . $this->id . "-img').src = empty_background_img;
-						document.id('" . $this->id . "-infos').innerHTML = '';
-					});
-
-					var dropdown = document.id('" . $this->id . "mediatype');
-					if (dropdown){
-						dropdown.addEvent('change', function(){
-							document.id('" . $this->id . "-link').set('href', this.value);
-						});
-					}
-				});
 			");
 
 			define('ELEMENT_RTIMAGEPICKER', true);
 		}
+
+		gantry_addInlineScript("
+			window.addEvent('domready', function(){
+				document.id('" . $this->id . "').addEvent('keyup', function(value){
+					document.id('" . $this->id . "-infos').innerHTML = '';
+					if (!value || !value.length) document.id('" . $this->id . "-img').set('src', empty_background_img);
+					else {
+						var data = JSON.decode(value);
+						document.id('" . $this->id . "-img').set('src', (data.preview ? data.preview : '" . JURI::root(true) . "/' + data.path));
+						if (!data.preview){
+							document.id('" . $this->id . "-img').removeProperty('height');
+						} else {
+							document.id('" . $this->id . "-img').set('height', '50');
+							if (data.width && data.height) document.id('" . $this->id . "-infos').innerHTML = data.width + ' x ' + data.height;
+						}
+					}
+
+					this.setProperty('value', value);
+				});
+
+				document.id('" . $this->id . "-clear').addEvent('click', function(e){
+					e.stop();
+					document.id('" . $this->id . "').set('value', '').fireEvent('set', '');
+					document.id('" . $this->id . "-img').src = empty_background_img;
+					document.id('" . $this->id . "-infos').innerHTML = '';
+				});
+
+				var dropdown = document.id('" . $this->id . "mediatype');
+				if (dropdown){
+					dropdown.addEvent('change', function(){
+						document.id('" . $this->id . "-link').set('href', this.value);
+					});
+				}
+			});
+		");
 
 		if ($rokgallery) $link = 'index.php?option=com_rokgallery&view=gallerypicker&tmpl=component&show_menuitems=0&inputfield=' . $this->id; else $link = "index.php?option=com_media&view=images&layout=default&tmpl=component&e_name=" . $this->id;
 

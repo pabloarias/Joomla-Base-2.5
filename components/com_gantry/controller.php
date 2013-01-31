@@ -2,9 +2,9 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.1.4 November 22, 2012
+ * @version   4.1.5 January 18, 2013
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -25,14 +25,6 @@ class GantryController extends GantryLegacyJController
         /** @var $gantry Gantry */
 		global $gantry;
 
-        // comment out the following 2 lines for debugging
-        //$request = @$_SERVER['HTTP_X_REQUESTED_WITH'];
-        $modelname = JRequest::getString('model');
-
-
-        // get current template
-        $template = &JFactory::getApplication()->getTemplate();
-
         // load and inititialize gantry class
         $gantry_path = JPATH_SITE . '/libraries/gantry/gantry.php';
         if (file_exists($gantry_path))
@@ -45,7 +37,7 @@ class GantryController extends GantryLegacyJController
             die;
         }
 
-        $model = $gantry->getAjaxModel(JRequest::getString('model'),false);
+        $model = $gantry->getAjaxModel(JFactory::getApplication()->input->getString('model'),false);
         if ($model === false) die();
         include_once($model);
 

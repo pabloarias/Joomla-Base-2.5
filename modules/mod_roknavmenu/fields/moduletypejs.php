@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: moduletypejs.php 4806 2012-10-31 01:03:01Z steph $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -35,7 +35,13 @@ class JFormFieldModuleTypeJS extends JFormField
 	 */
 	protected function getInput()
 	{
-        $doc = JFactory::getDocument();
+        $lang = JFactory::getLanguage();
+        $lang->load('mod_roknavmenu', JPATH_SITE, null, true, false)
+        || $lang->load('mod_roknavmenu', JPATH_SITE.'/modules/mod_roknavmenu', null, true, false)
+        || $lang->load('mod_roknavmenu', JPATH_SITE, $lang->getDefault(), true, false)
+        || $lang->load('mod_roknavmenu', JPATH_SITE.'/modules/mod_roknavmenu', $lang->getDefault(), true, false);
+
+        $doc =JFactory::getDocument();
         $doc->addScript(JURI::Root(true)."/modules/mod_roknavmenu/fields/childtype.js");
         return '';
 	}

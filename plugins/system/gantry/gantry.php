@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        4.1.4 November 22, 2012
+ * @version        4.1.5 January 18, 2013
  * @author         RocketTheme http://www.rockettheme.com
- * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -100,8 +100,8 @@ class plgSystemGantry extends JPlugin
 //			}
 		} else {
 			if (array_key_exists('option', $_REQUEST) && array_key_exists('task', $_REQUEST)) {
-				$option = JRequest::getVar('option');
-				$task   = JRequest::getVar('task');
+				$option = JFactory::getApplication()->input->getCmd('option');
+				$task   = JFactory::getApplication()->input->getCmd('task');
 
 				// Redirect styles.duplicate to template.duplicate to handle gantry template styles
 				if ($option == 'com_templates' && $task == 'styles.duplicate') {
@@ -117,10 +117,10 @@ class plgSystemGantry extends JPlugin
 
 				// redirect styles.edit if the template style is a gantry one
 				if ($option == 'com_templates' && $task == 'style.edit') {
-					$id = JRequest::getInt('id', 0);
+					$id = JFactory::getApplication()->input->getInt('id', 0);
 					if ($id == 0) {
 						// Initialise variables.
-						$pks = JRequest::getVar('cid', array(), 'post', 'array');
+						$pks = JFactory::getApplication()->input->post->get('cid', array(), 'array');
 						if (is_array($pks) && array_key_exists(0, $pks)) {
 							$id = $pks[0];
 						}
@@ -183,9 +183,9 @@ class plgSystemGantry extends JPlugin
 
 		if (!$app->isAdmin()) return;
 
-		$option = JRequest::getString('option', '');
-		$view   = JRequest::getString('view', '');
-		$task   = JRequest::getString('task', '');
+		$option = $app->input->getString('option', '');
+		$view   = $app->input->getString('view', '');
+		$task   = $app->input->getString('task', '');
 
 		if ($option == 'com_templates' && (($view == 'styles') || (empty($view) && empty($task)))) {
 			$master_templates = $this->getMasters();
@@ -289,8 +289,10 @@ class plgSystemGantry extends JPlugin
 	 */
 	private function setRequestOption($key, $value)
 	{
-		JRequest::set(array($key => $value), 'GET');
-		JRequest::set(array($key => $value), 'POST');
+		if (class_exists('JRequest')){
+			JRequest::set(array($key => $value), 'GET');
+			JRequest::set(array($key => $value), 'POST');
+		}
 	}
 
 	/**

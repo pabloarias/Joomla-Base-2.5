@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantrymenuitemparamoverride.class.php 2494 2012-08-17 23:45:06Z btowles $
+ * @version   $Id: gantrymenuitemparamoverride.class.php 6534 2013-01-15 16:53:38Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -59,7 +59,16 @@ class GantryMenuItemParamOverride extends GantryParamOverride
 		}
 
 
-		$menu_params = GantryTemplate::getTemplateParams((int)$current_menu_item->template_style_id);
+		if (($current_style_id = (int)$current_menu_item->template_style_id) == 0)
+		{
+			$current_style_id = $app->getTemplate(true)->params->get('current_id');
+			if ($current_style_id == 'true')
+			{
+				$current_style_id = $app->getTemplate(true)->id;
+			}
+		}
+
+		$menu_params = GantryTemplate::getTemplateParams($current_style_id);
 		$array       = $menu_params->toArray();
 		$menu_params = new GantryRegistry();
 		$menu_params->loadArray(gantry_flattenParams($array));

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: body_mainbody.php 4247 2012-10-11 22:38:52Z kevin $
+ * @version   $Id: body_mainbody.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -30,11 +30,12 @@ class GantryLayoutBody_MainBody extends GantryLayout {
         /** @var $gantry Gantry */
 		global $gantry;
 
+	    $app = JFactory::getApplication();
         $fparams = $this->_getParams($params);
 
         // logic to determine if the component should be displayed
-        $display_mainbody = !($gantry->get("mainbody-enabled",true)==false && JRequest::getVar('view') == 'featured');
-        $display_component = !($gantry->get("component-enabled",true)==false && (JRequest::getVar('option') == 'com_content' && JRequest::getVar('view') == 'featured'));
+        $display_mainbody = !($gantry->get("mainbody-enabled",true)==false && $app->input->getString('view') == 'featured');
+        $display_component = !($gantry->get("component-enabled",true)==false && ($app->input->getString('option') == 'com_content' && $app->input->getString('view') == 'featured'));
         ob_start();
 // XHTML LAYOUT
 ?>

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantrytemplate.class.php 2948 2012-08-31 19:46:24Z btowles $
+ * @version   $Id: gantrytemplate.class.php 6534 2013-01-15 16:53:38Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  *
@@ -394,16 +394,16 @@ class GantryTemplate
 	protected function loadParamsContent(Gantry &$gantry)
 	{
 		if ($gantry->isAdmin()) {
-			$styleId = JRequest::getInt('id', 0);
+			$styleId = JFactory::getApplication()->input->getInt('id', 0);
 			if ($styleId == 0) {
 				$template = self::getMasterTemplateStyleByName($gantry->templateName);
-				$styleId  = $template->id;
+				$styleId = $template->id;
 			}
 		} else {
 			// TODO:  get style ID from front end
 			$site     = JFactory::getApplication();
 			$template = $site->getTemplate(true);
-			$styleId  = $template->id;
+			$styleId = $template->id;
 		}
 
 		$return = false;
@@ -591,7 +591,6 @@ class GantryTemplate
 		if ($this->xml->description) $this->setDescription((string)$this->xml->description);
 		if ($this->xml->legacycss) $this->setLegacycss((string)$this->xml->legacycss);
 		if ($this->xml->gridcss) $this->setGridcss((string)$this->xml->gridcss);
-		if ($this->xml->gridmode) $this->setGridMode((string)$this->xml->gridmode);
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantry.class.php 4060 2012-10-02 18:03:24Z btowles $
+ * @version   $Id: gantry.class.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -768,7 +768,7 @@ class Gantry
 	 *
 	 * @return int
 	 */
-	public function countSubPositionModules($position, $pattern = null)
+	public function countSubPositionModules($position)
 	{
 		if (defined('GANTRY_FINALIZED')) return 0;
 
@@ -972,8 +972,6 @@ class Gantry
 		if (defined('GANTRY_FINALIZED')) return '';
 		$tag_classes = array();
 
-		$output = "";
-
 		if (array_key_exists($tag, $this->_classesbytag)) {
 			foreach ($this->_classesbytag[$tag] as $param) {
 				$param_value = $this->get($param);
@@ -982,11 +980,7 @@ class Gantry
 				} else {
 					$tag_classes[] = $param;
 				}
-
-
 			}
-			$output = 'class="' . implode(" ", $tag_classes) . '"';
-
 		}
 		return $this->renderLayout('doc_tag', array('classes'=> implode(" ", $tag_classes)));
 	}
@@ -1155,7 +1149,7 @@ class Gantry
 					if (!empty($options)) {
 						$header .= sprintf("\n * Variables :\n %s", $options_string);
 					}
-					if (count($new_cache['files'] > 1)) {
+					if (count($new_cache['files']) > 1) {
 						$included_files = array_keys($new_cache['files']);
 						unset($included_files[0]);
 						array_walk($included_files, create_function('&$v,$k', 'global $gantry;$v=" * ".$gantry->convertToUrl($v);'));
@@ -1376,7 +1370,7 @@ class Gantry
 	/**
 	 * @param string $css
 	 *
-	 * @return JDocument|null
+	 * @return null
 	 */
 	public function addInlineStyle($css = '')
 	{
@@ -1386,6 +1380,8 @@ class Gantry
 
 	/**
 	 * @param string $file
+	 *
+	 * @return void
 	 */
 	public function addScript($file = '')
 	{
@@ -2275,7 +2271,6 @@ class Gantry
 	 */
 	protected function loadModels($paths, &$results)
 	{
-		$raw_models = array();
 		foreach ($paths as $model_path) {
 			if (file_exists($model_path) && is_dir($model_path)) {
 				$d = dir($model_path);

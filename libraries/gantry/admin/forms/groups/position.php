@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: position.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: position.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -16,8 +16,9 @@ class GantryFormGroupPosition extends GantryFormGroup
     protected $type = 'position';
     protected $baseetype = 'group';
 
-    public function getInput(){
-        /** @var $gantry Gantry */
+    public function getInput()
+	{
+		/** @global $gantry Gantry */
 		global $gantry;
         $clean_name=(string)$this->element['name'];
         $position_info =  $gantry->getPositionInfo($clean_name);

@@ -2,9 +2,9 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.1.4 November 22, 2012
+ * @version   4.1.5 January 18, 2013
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -19,7 +19,7 @@
 	foreach($fields as $name => $field) {
 		//$gantry->addDomReadyScript("Gantry.ToolBar.add('".$field->type."');");
 
-		$status = JRequest::getVar('gantry-'.$gantry->templateName.'-adminpresets', 'hide', 'COOKIE');
+		$status = JFactory::getApplication()->input->cookie->getString('gantry-'.$gantry->templateName.'-adminpresets','hide');
 		$style = ' style="display: none";';
 
 		if ($status != 'hide'){

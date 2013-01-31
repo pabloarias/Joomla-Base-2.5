@@ -1,8 +1,8 @@
 <?php
 /**
- * @version        $Id: gantryregistry.class.php 2494 2012-08-17 23:45:06Z btowles $
+ * @version        $Id: gantryregistry.class.php 6306 2013-01-05 05:39:57Z btowles $
  * @author         RocketTheme http://www.rockettheme.com
- * @copyright      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * derived from Joomla with original copyright and license
@@ -232,25 +232,25 @@ class GantryRegistry
 //	}
 
 	/**
-	 * Load a string into the registry
-	 *
-	 * @param    string    string to load into the registry
-	 * @param    string    format of the string
-	 * @param    mixed     Options used by the formatter
-	 *
-	 * @return    boolean    True on success
-	 * @since    1.5
-	 */
-	public function loadString($data, $format = 'JSON', $options = array())
-	{
-		// Load a string into the given namespace [or default namespace if not given]
-		$handler = JRegistryFormat::getInstance($format);
+		 * Load a string into the registry
+		 *
+		 * @param    string    string to load into the registry
+		 * @param    string    format of the string
+		 * @param    mixed     Options used by the formatter
+		 *
+		 * @return    boolean    True on success
+		 * @since    1.5
+		 */
+		public function loadString($data, $format = 'JSON', $options = array())
+		{
+			// Load a string into the given namespace [or default namespace if not given]
+			$handler = GantryRegistryFormat::getInstance($format);
 
-		$obj = $handler->stringToObject($data, $options);
-		$this->loadObject($obj);
+			$obj = $handler->stringToObject($data, $options);
+			$this->loadObject($obj);
 
-		return true;
-	}
+			return true;
+		}
 
 	/**
 	 * Merge a GantryRegistry object into this one

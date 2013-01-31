@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantry.php 5317 2012-11-20 23:03:43Z btowles $
+ * @version   $Id: gantry.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -13,13 +13,13 @@ defined('JPATH_BASE') or die();
 
 /** @var $gantry Gantry */
 global $gantry;
-
+$app = JFactory::getApplication();
 
 if (!defined('GANTRY_VERSION')) {
 	/**
 	 * @name GANTRY_VERSION
 	 */
-	define('GANTRY_VERSION', '4.1.4');
+	define('GANTRY_VERSION', '4.1.5');
 
 	if (!defined('DS')) {
 		define('DS', DIRECTORY_SEPARATOR);
@@ -58,7 +58,7 @@ if (!defined('GANTRY_VERSION')) {
 		foreach ($url_file_checks as $url_file) {
 			$full_path = realpath($url_file);
 			if ($full_path !== false && file_exists($full_path)) {
-				$document->addScript($relative_path . '/' . basename($full_path) . '?ver=4.1.4');
+				$document->addScript($relative_path . '/' . basename($full_path) . '?ver=4.1.5');
 				break;
 			}
 		}
@@ -98,7 +98,7 @@ if (!defined('GANTRY_VERSION')) {
 		foreach ($url_file_checks as $url_file) {
 			$full_path = realpath($url_file);
 			if ($full_path !== false && file_exists($full_path)) {
-				$document->addStyleSheet($relative_path . '/' . basename($full_path) . '?ver=4.1.4');
+				$document->addStyleSheet($relative_path . '/' . basename($full_path) . '?ver=4.1.5');
 			}
 		}
 	}
@@ -184,12 +184,12 @@ if (!defined('GANTRY_VERSION')) {
 	 */
 	function gantry_getTemplate()
 	{
+		$app = JFactory::getApplication();
 		// if its an ajax call then return the requested template master
-		if (JRequest::getWord('option') == 'com_gantry' && JRequest::getWord('task') == 'ajax') {
-			$template_name = JRequest::getString('template');
+		if ($app->input->getWord('option') == 'com_gantry' && $app->input->getWord('task') == 'ajax') {
+			$template_name = $app->input->getString('template');
 			$template      = gantry_getMasterTemplateStyleByName($template_name);
 		} else {
-			$app      = JFactory::getApplication();
 			$template = $app->getTemplate(true);
 		}
 		return $template;
@@ -323,8 +323,8 @@ if (!defined('GANTRY_VERSION')) {
 		$app = JFactory::getApplication();
 		if (!$app->isAdmin()) {
 			// get from ajax passed in
-			if (JRequest::getString('option') == 'com_gantry' && JRequest::getString('task') == 'ajax') {
-				$template = JRequest::getString('template');
+			if ($app->input->getString('option') == 'com_gantry' && $app->input->getString('task') == 'ajax') {
+				$template = $app->input->getString('template');
 			} else {
 				$template = $app->getTemplate(true);
 			}
@@ -347,11 +347,11 @@ if (!defined('GANTRY_VERSION')) {
 			$session_registry = $session->get('registry');
 
 
-			if (JRequest::getint('id', 0) > 0 && JRequest::getString('option') == 'com_gantry' && JRequest::getString('layout') == 'edit'
+			if ($app->input->getInt('id', 0) > 0 && $app->input->getString('option') == 'com_gantry' && $app->input->getString('layout') == 'edit'
 			) {
-				$id = JRequest::getInt('id', 0);
-			} else if (JRequest::getString('option') == 'com_gantry' && JRequest::getString('task') == 'ajax') {
-				$name = JRequest::getString('template');
+				$id = $app->input->getInt('id', 0);
+			} else if ($app->input->getString('option') == 'com_gantry' &&$app->input->getString('task') == 'ajax') {
+				$name = $app->input->getString('template');
 				$id   = gantry_getMasterTemplateStyleByName($name)->id;
 			} else if ($session_registry->exists('com_gantry.edit.template.id')) {
 				$session_ids = $session_registry->get('com_gantry.edit.template.id');
@@ -395,7 +395,7 @@ if (!defined('GANTRY_VERSION')) {
 			if (file_exists($template_path) && is_dir($template_path)) {
 				foreach ($checks as $check) {
 					$check_path = preg_replace("/\?(.*)/", '', $template_path . '/' . $check);
-					if (file_exists($check_path) && is_readable($check_path) && $enabled && JRequest::getVar($view, false, 'COOKIE', 'STRING') != '0') {
+					if (file_exists($check_path) && is_readable($check_path) && $enabled && JFactory::getApplication()->input->cookie->get($view, false, 'string') != '0') {
 						// include the wanted index page
 						ob_start();
 						include_once($check_path);

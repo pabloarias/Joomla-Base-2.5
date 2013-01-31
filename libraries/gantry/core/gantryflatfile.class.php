@@ -1,8 +1,8 @@
 <?php
 /**
- * @version                                        $Id: gantryflatfile.class.php 2355 2012-08-14 01:04:50Z btowles $
+ * @version                                        $Id: gantryflatfile.class.php 6533 2013-01-15 16:03:26Z btowles $
  * @author                                         RocketTheme http://www.rockettheme.com
- * @copyright                                      Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright                                      Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license                                        http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Original Copyright Below
@@ -157,8 +157,10 @@ if (!defined('GANTRY_FLATFILE')) {
 	if (!defined('DESCENDING')) define('DESCENDING', -1);
 
 	$comparison_type_for_col_type = array(
-		INT_COL    => INTEGER_COMPARISON, DATE_COL => INTEGER_COMPARISON, // assume Unix timestamps
-		STRING_COL => STRING_COMPARISON, FLOAT_COL => NUMERIC_COMPARISON
+		INT_COL    => INTEGER_COMPARISON,
+		DATE_COL   => INTEGER_COMPARISON, // assume Unix timestamps
+		STRING_COL => STRING_COMPARISON,
+		FLOAT_COL  => NUMERIC_COMPARISON
 	);
 
 	function get_comparison_type_for_col_type($coltype)

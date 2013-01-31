@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantrysessionparamoverride.class.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: gantrysessionparamoverride.class.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -21,7 +21,7 @@ class GantrySessionParamOverride extends GantryParamOverride
 {
 	public static function store()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		foreach ($gantry->_setinsession as $session_var) {
 			if ($gantry->_working_params[$session_var]['setby'] != 'menuitem') {
@@ -36,7 +36,7 @@ class GantrySessionParamOverride extends GantryParamOverride
 
 	public static function clean()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		foreach ($gantry->_setinsession as $session_var) {
 			$gantry->session->set($gantry->template_prefix . $gantry->_base_params_checksum . "-" . $session_var, null);
@@ -45,7 +45,7 @@ class GantrySessionParamOverride extends GantryParamOverride
 
 	public static function populate()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		// get any session param overrides and set to that

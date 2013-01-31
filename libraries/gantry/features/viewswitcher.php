@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: viewswitcher.php 2381 2012-08-15 04:14:26Z btowles $
+ * @version   $Id: viewswitcher.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -39,7 +39,7 @@ class GantryFeatureViewSwitcher extends GantryFeature
 		$prefix       = 'viewswitcher-' . $gantry->get('template_prefix');
 		$cookiename   = $prefix . $this->_platform . '-switcher';
 		$tempkey_name = $gantry->get('template_prefix') . $this->_platform . '-switcher';
-		$cookie       = JRequest::getVar($cookiename, false, 'COOKIE', 'STRING');
+		$cookie       = JFactory::getApplication()->input->cookie->getString($cookiename, false);
 
 		if (!strlen($cookie) || $cookie === false) {
 			setcookie($cookiename, "1", 0, $gantry->getCookiePath());
@@ -67,7 +67,7 @@ class GantryFeatureViewSwitcher extends GantryFeature
 
 		$prefix       = 'viewswitcher-' . $gantry->get('template_prefix');
 		$cookiename   = $prefix . $gantry->browser->platform . '-switcher';
-		$cookie       = JRequest::getVar($cookiename, false, 'COOKIE', 'STRING');
+		$cookie       = JFactory::getApplication()->input->cookie->getString($cookiename, false);
 		$tempkey_name = $gantry->get('template_prefix') . $this->_platform . '-switcher';
 		$cls          = (!$gantry->retrieveTemp('platform', $cookiename)) ? 'off' : 'on';
 

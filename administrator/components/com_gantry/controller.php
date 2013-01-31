@@ -2,9 +2,9 @@
 /**
  * @package   gantry
  * @subpackage core
- * @version   4.1.4 November 22, 2012
+ * @version   4.1.5 January 18, 2013
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -36,7 +36,6 @@ class GantryController extends GantryLegacyJController
 
         // comment out the following 2 lines for debugging
         //$request = @$_SERVER['HTTP_X_REQUESTED_WITH'];
-        $modelname = JRequest::getString('model');
         //if ((!isset($request) || strtolower($request) != 'xmlhttprequest') && (isset($modelname) && $modelname != "diagnostics")) die("Direct access not allowed.");
 
         // load and inititialize gantry class
@@ -51,7 +50,7 @@ class GantryController extends GantryLegacyJController
             die;
         }
 
-        $model = $gantry->getAjaxModel(JRequest::getString('model'), true);
+        $model = $gantry->getAjaxModel(JFactory::getApplication()->input->get('model','','string'), true);
         if ($model === false) die();
         include_once($model);
 

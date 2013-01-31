@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantryplatform.class.php 5027 2012-11-02 00:56:43Z btowles $
+ * @version   $Id: gantryplatform.class.php 6306 2013-01-05 05:39:57Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -90,6 +90,21 @@ class GantryPlatform
 				$this->getJoomla16Info();
 			} else {
 				$this->unsuportedInfo();
+			}
+		} else if (defined('ABSPATH') && function_exists('do_action')) {
+			global $wp_version;
+			$this->platform = 'wordpress';
+			require_once(ABSPATH . WPINC . '/version.php');
+			if (version_compare($wp_version, '2.8', ">=")) {
+				$this->platform_version = $wp_version;
+				$this->jslib            = 'mootools';
+				$this->jslib_shortname  = 'mt';
+				$this->jslib_version    = '1.2';
+				$this->js_file_checks  = array(
+					'-' . $this->jslib . $this->jslib_version,
+					'-' . $this->jslib_shortname . $this->jslib_version,
+					''
+				);
 			}
 		} else {
 			$this->unsuportedInfo();

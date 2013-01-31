@@ -1,6 +1,6 @@
 <?php
 /**
- * @version	$Id: edit.php 4060 2012-10-02 18:03:24Z btowles $
+ * @version	$Id: edit.php 6306 2013-01-05 05:39:57Z btowles $
  * @package Gantry
  * @copyright Copyright (C) 2009 RocketTheme. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -9,7 +9,8 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JRequest::setVar( 'hidemainmenu', 1 );
+
+JFactory::getApplication()->input->set('hidemainmenu', 1);
 
 /** @var $gantry Gantry */
 		global $gantry;
@@ -184,7 +185,7 @@ $this->gantryForm->initialize();
 		</div>
 
 		<?php
-			$status = JRequest::getVar('gantry-'.$gantry->templateName.'-adminpresets', 'hide', 'COOKIE');
+			$status = JFactory::getApplication()->input->cookie->getString('gantry-'.$gantry->templateName.'-adminpresets','hide');
 			$presetsShowing = ($status == 'hide') ? "" : ' class="presets-showing"';
 
 			if ($this->override) {

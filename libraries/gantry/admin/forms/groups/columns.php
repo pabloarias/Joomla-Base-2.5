@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: columns.php 2325 2012-08-13 17:46:48Z btowles $
+ * @version   $Id: columns.php 6564 2013-01-16 17:13:36Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 defined('GANTRY_VERSION') or die;
@@ -15,7 +15,8 @@ class GantryFormGroupColumns extends GantryFormGroup
     protected $type = 'columns';
     protected $baseetype = 'group';
 
-    public function getInput(){
+	public function getInput()
+	{
         $buffer = '';
 		
 		$class = $this->element['class'];

@@ -26,7 +26,7 @@ class GantryFormFieldOverlays extends GantryFormField
 
 	public function getInput()
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 		$output = '';
 
@@ -119,7 +119,7 @@ class GantryFormFieldOverlays extends GantryFormField
 
 	function _loadOverlays($elementName, $path)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		$overlays = $gantry->retrieveTemp('overlays', 'overlays', array());
@@ -174,7 +174,7 @@ class GantryFormFieldOverlays extends GantryFormField
 
 	function sliderInit($name)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		$name = $name;

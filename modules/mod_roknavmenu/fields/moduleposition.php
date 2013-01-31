@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   1.16 September 14, 2012
+ * @version   $Id: moduleposition.php 4795 2012-10-30 23:22:49Z steph $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -36,8 +36,11 @@ class JFormFieldModulePosition extends JFormFieldText
 	 */
 	protected function getInput()
 	{
-        $language = JFactory::getLanguage();
-        $language->load('mod_roknavmenu',JPATH_SITE);
+        $lang = JFactory::getLanguage();
+        $lang->load('mod_roknavmenu', JPATH_BASE, null, false, false)
+        || $lang->load('mod_roknavmenu', JPATH_SITE.'/modules/mod_roknavmenu', null, false, false)
+        || $lang->load('mod_roknavmenu', JPATH_BASE, $lang->getDefault(), false, false)
+        || $lang->load('mod_roknavmenu', JPATH_SITE.'/modules/mod_roknavmenu', $lang->getDefault(), false, false);
 
 		// Get the client id.
 		$clientId = $this->element['client_id'];

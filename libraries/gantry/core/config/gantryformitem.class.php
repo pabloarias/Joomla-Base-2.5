@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: gantryformitem.class.php 2768 2012-08-27 21:57:38Z btowles $
+ * @version   $Id: gantryformitem.class.php 6491 2013-01-15 02:25:56Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -406,7 +406,7 @@ abstract class GantryFormItem
 	 */
 	public function setup(& $element, $value, $group = null)
 	{
-		/** @var $gantry Gantry */
+		/** @global $gantry Gantry */
 		global $gantry;
 
 		// Make sure there is a valid JFormField XML element.
