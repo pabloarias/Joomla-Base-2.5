@@ -3,7 +3,7 @@
  * The modular PHP5 site backup software solution
  * This file contains the jQuery-based client-side user interface logic
  * @package akeebaui
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version
  * @version $Id$
  **/
@@ -213,8 +213,16 @@ function doAjax(data, successCallback, errorCallback, useCaching, timeout)
 		doIframeCall(data, successCallback, errorCallback)
 		return;
 	}
-
+	
 	if(useCaching == null) useCaching = true;
+	
+	if(!useCaching) {
+		var now = new Date().getTime() / 1000;
+		var s = parseInt(now, 10);
+		var microtime = Math.round((now - s) * 1000) / 1000;
+		data._utterUselessCrapRequiredByStupidBrowsersToStopCachingXHR = microtime;
+	}
+	
 	if(timeout == null) timeout = 600000;
 	(function($) {
 		var structure =
@@ -994,6 +1002,12 @@ function backup_start()
 
 function backup_step(data)
 {
+	try {
+		console.debug('Running backup step');
+		console.log(data);
+	} catch(e) {
+	}
+	
 	// Update visual step progress from active domain data
 	reset_timeout_bar();
 	render_backup_steps(data.Domain);

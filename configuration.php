@@ -14,8 +14,8 @@ class JConfig {
 	public $dbtype = 'mysqli';
 	public $host = 'localhost';
 	public $user = 'root';
-	public $password = '';
-	public $db = 'joomlabase';
+	public $password = 'bleras';
+	public $db = 'joomla-base';
 	public $dbprefix = 'oel6t_';
 	public $live_site = '';
 	public $secret = '7VWux2gePz6iuXVy';
@@ -30,7 +30,7 @@ class JConfig {
 	public $ftp_enable = '0';
 	public $offset = 'Europe/Madrid';
 	public $mailer = 'mail';
-	public $mailfrom = 'tar@adagal.es';
+	public $mailfrom = 'correo@pabloarias.eu';
 	public $fromname = 'Joomla-base';
 	public $sendmail = '/usr/sbin/sendmail';
 	public $smtpauth = '0';
@@ -58,7 +58,7 @@ class JConfig {
 	public $lifetime = '480';
 	public $session_handler = 'database';
 	public $MetaRights = '';
-	public $sitename_pagetitles = '1';
+	public $sitename_pagetitles = '0';
 	public $force_ssl = '0';
 	public $feed_email = 'author';
 	public $cookie_domain = '';

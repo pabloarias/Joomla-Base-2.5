@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  *
  * @since 1.3
@@ -115,6 +115,14 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	</label>
 	</br>
 	<div class="postsetup-desc"><?php echo JText::_('AKEEBA_POSTSETUP_DESC_ACCEPTSUPPORT');?></div>
+	<br/>
+	
+	<label for="acceptbackuptest" class="postsetup-main">
+		<input type="checkbox" id="acceptsupport" name="acceptbackuptest" <?php if($this->acceptbackuptest): ?>checked="checked"<?php endif; ?> />
+		<?php echo JText::_('AKEEBA_POSTSETUP_LBL_ACCEPTBACKUPTEST')?>
+	</label>
+	</br>
+	<div class="postsetup-desc"><?php echo JText::_('AKEEBA_POSTSETUP_DESC_ACCEPTBACKUPTEST');?></div>
 	<br/>
 	
 	<button id="akeeba-postsetup-apply" class="btn-primary btn-large" onclick="return false;"><?php echo JText::_('AKEEBA_POSTSETUP_LBL_APPLY');?></button>

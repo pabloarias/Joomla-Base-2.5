@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="component" method="upgrade">
 	<name>Akeeba</name>
-	<creationDate>2012-12-02</creationDate>
+	<creationDate>2013-01-04</creationDate>
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
 	<copyright>Copyright (c)2006-2012 Nicholas K. Dionysopoulos</copyright>
 	<license>GNU GPL v3 or later</license>
-	<version>3.6.10</version>
+	<version>3.6.12</version>
 	<description>Akeeba Backup Core - Full Joomla! site backup solution, Core Edition.</description>
 
 	<!-- Public front end files -->
@@ -102,12 +102,6 @@
 
 	<!-- Installation / uninstallation script file -->
 	<scriptfile>script.akeeba.php</scriptfile>
-
-	<!-- See you again when you grow up, Joomla! extensions updater
-	<updateservers>
-		<server type="extension" priority="1" name="Akeeba Backup Core Updates"><![CDATA[http://nocdn.akeebabackup.com/updates/abcore.xml]]></server>
-	</updateservers>
-	-->
 
 	<restorepoint>
 		<customdirs>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  *
  * @since 3.0
@@ -615,7 +615,9 @@ class AkeebaModelJsons extends FOFModel
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/statistics.php';
 
 		$model = new AkeebaModelStatistics();
-		return $model->getStatisticsListWithMeta(true);
+		$model->setState('limitstart', $from);
+		$model->setState('limit', $limit);
+		return $model->getStatisticsListWithMeta(false);
 	}
 
 	private function _apiGetBackupInfo($config)

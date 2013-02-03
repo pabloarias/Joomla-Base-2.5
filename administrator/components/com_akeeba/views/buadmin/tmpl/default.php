@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  *
  * @since 1.3
@@ -39,25 +39,98 @@ foreach($scripting['scripts'] as $key => $data)
 
 ?>
 
+<?php if(version_compare(JVERSION, '3.0', 'ge')):?>
+<script type="text/javascript">
+	Joomla.orderTable = function() {
+		table = document.getElementById("sortTable");
+		direction = document.getElementById("directionTable");
+		order = table.options[table.selectedIndex].value;
+		if (order != '<?php echo $this->escape($this->lists->order); ?>') {
+			dirn = 'asc';
+		} else {
+			dirn = direction.options[direction.selectedIndex].value;
+		}
+		Joomla.tableOrdering(order, dirn, '');
+	}
+</script>
+<?php endif?>
+
 <div class="alert alert-info">
 	<button class="close" data-dismiss="alert">×</button>
 	<h4 class="alert-heading"><?php echo JText::_('BUADMIN_LABEL_HOWDOIRESTORE_LEGEND')?></h4>
 	<p><?php echo JText::sprintf('BUADMIN_LABEL_HOWDOIRESTORE_TEXT','https://www.akeebabackup.com/documentation/quick-start-guide/restoring-backups.html','https://www.akeebabackup.com/documentation/video-tutorials/item/1024-ab04.html') ?></p>
 </div>
+<div id="j-main-container">
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<input type="hidden" name="option" id="option" value="com_akeeba" />
-	<input type="hidden" name="view" id="view" value="buadmin" />
+	<input type="hidden" name="view" id="view" value="buadmins" />
 	<input type="hidden" name="boxchecked" id="boxchecked" value="0" />
 	<input type="hidden" name="task" id="task" value="default" />
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />	
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken()?>" value="1" />
-<table class="table table-striped">
+	
+<?php if(version_compare(JVERSION, '3.0', 'ge')):
+
+// Construct the array of sorting fields
+$sortFields = array(
+	'id'			=> JText::_('STATS_LABEL_ID'),
+	'description'	=> JText::_('STATS_LABEL_DESCRIPTION'),
+	'backupstart'	=> JText::_('STATS_LABEL_START'),
+	'origin'		=> JText::_('STATS_LABEL_ORIGIN'),
+	'type'			=> JText::_('STATS_LABEL_TYPE'),
+	'profile_id'	=> JText::_('STATS_LABEL_PROFILEID'),
+);
+JHtml::_('formbehavior.chosen', 'select');
+
+?>
+	<div id="filter-bar" class="btn-toolbar">
+		<div class="filter-search btn-group pull-left">
+			<input type="text" name="description" placeholder="<?php echo JText::_('STATS_LABEL_DESCRIPTION'); ?>" id="filter_description" value="<?php echo $this->escape($this->getModel()->getState('description','')); ?>" title="<?php echo JText::_('STATS_LABEL_DESCRIPTION'); ?>" />
+		</div>
+		<div class="btn-group pull-left hidden-phone">
+			<button class="btn tip hasTooltip" type="submit" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+			<button class="btn tip hasTooltip" type="button" onclick="document.id('filter_title').value='';this.form.submit();" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
+		</div>
+		
+		<div class="filter-search btn-group pull-left hidden-phone">
+				<?php echo JHTML::_('calendar', $this->lists->fltFrom, 'from', 'from', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		</div>
+		<div class="filter-search btn-group pull-left hidden-phone">
+				<?php echo JHTML::_('calendar', $this->lists->fltTo, 'to', 'to', '%Y-%m-%d', array('class' => 'input-small')); ?>
+		</div>
+		<div class="btn-group pull-left hidden-phone">
+			<button class="btn tip hasTooltip" type="buttin" onclick="this.form.submit(); return false;" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+		</div>
+		
+		<div class="btn-group pull-right">
+			<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+		</div>
+		<div class="btn-group pull-right hidden-phone">
+			<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+			<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
+				<option value="asc" <?php if ($this->lists->order_Dir == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+				<option value="desc" <?php if ($this->lists->order_Dir == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');  ?></option>
+			</select>
+		</div>
+		<div class="btn-group pull-right">
+			<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
+			<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+				<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
+				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $this->lists->order); ?>
+			</select>
+		</div>
+	</div>
+<?php endif; ?>
+	
+<table class="table table-striped" id="itemsList">
 	<thead>
 		<tr>
 			<th width="20"><input type="checkbox" name="toggle" value=""
 				onclick="Joomla.checkAll(this);" /></th>
-			<th width="20">
+			<th width="20" class="hidden-phone">
 				<?php echo JHTML::_('grid.sort', 'STATS_LABEL_ID', 'id', $this->lists->order_Dir, $this->lists->order, 'default'); ?>
 			</th>
 			<th width="240">
@@ -66,26 +139,29 @@ foreach($scripting['scripts'] as $key => $data)
 			<th width="80">
 				<?php echo JHTML::_('grid.sort', 'STATS_LABEL_START', 'backupstart', $this->lists->order_Dir, $this->lists->order, 'default'); ?>
 			</th>
-			<th width="80">
+			<th width="80" class="hidden-phone">
 				<?php echo JText::_('STATS_LABEL_DURATION'); ?>
 			</th>
 			<th width="80">
 				<?php echo JText::_('STATS_LABEL_STATUS'); ?>
 			</th>
-			<th width="80">
+			<th width="80" class="hidden-phone">
 				<?php echo JHTML::_('grid.sort', 'STATS_LABEL_ORIGIN', 'origin', $this->lists->order_Dir, $this->lists->order, 'default'); ?>
 			</th>
-			<th width="80">
+			<th width="80" class="hidden-phone">
 				<?php echo JHTML::_('grid.sort', 'STATS_LABEL_TYPE', 'type', $this->lists->order_Dir, $this->lists->order, 'default'); ?>
 			</th>
-			<th width="20">
+			<th width="20" class="hidden-phone">
 				<?php echo JHTML::_('grid.sort', 'STATS_LABEL_PROFILEID', 'profile_id', $this->lists->order_Dir, $this->lists->order, 'default'); ?>
 			</th>
-			<th width="80">
+			<th width="80" class="hidden-phone">
 				<?php echo JText::_('STATS_LABEL_SIZE'); ?>
 			</th>
-			<th><?php echo JText::_('STATS_LABEL_MANAGEANDDL'); ?></th>
+			<th class="hidden-phone">
+				<?php echo JText::_('STATS_LABEL_MANAGEANDDL'); ?>
+			</th>
 		</tr>
+<?php if(version_compare(JVERSION, '3.0', 'lt')):?>
 		<tr>
 			<td></td>
 			<td></td>
@@ -93,13 +169,13 @@ foreach($scripting['scripts'] as $key => $data)
 				<input type="text" name="description" id="description"
 					value="<?php echo $this->escape($this->lists->fltDescription) ?>"
 					class="text_area input-medium" onchange="document.adminForm.submit();" />
-				<button class="btn btn-mini" onclick="this.form.submit(); return false;"><?php echo JText::_('Go'); ?></button>
-				<button class="btn btn-mini" onclick="document.adminForm.description.value='';this.form.submit(); return;"><?php echo JText::_('Reset'); ?></button>
+				<button class="btn btn-mini" onclick="this.form.submit(); return false;"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button class="btn btn-mini" onclick="document.adminForm.description.value='';this.form.submit(); return;"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 			</td>
 			<td colspan="2">
 				<?php echo JHTML::_('calendar', $this->lists->fltFrom, 'from', 'from', '%Y-%m-%d', array('class' => 'input-mini')); ?> &mdash;
 				<?php echo JHTML::_('calendar', $this->lists->fltTo, 'to', 'to', '%Y-%m-%d', array('class' => 'input-mini')); ?>
-				<button class="btn btn-mini " onclick="this.form.submit(); return false;"><?php echo JText::_('Go'); ?></button>
+				<button class="btn btn-mini " onclick="this.form.submit(); return false;"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 			</td>
 			<td></td>
 			<td></td>
@@ -107,6 +183,7 @@ foreach($scripting['scripts'] as $key => $data)
 			<td></td>
 			<td colspan="2"></td>
 		</tr>
+<?php endif; ?>
 	</thead>
 	<tfoot>
 		<tr>
@@ -255,7 +332,7 @@ ENDHTML;
 	?>
 		<tr class="row<?php echo $id; ?>">
 			<td><?php echo $check; ?></td>
-			<td>
+			<td class="hidden-phone">
 				<?php echo $record['id']; ?>
 			</td>
 			<td>
@@ -265,20 +342,23 @@ ENDHTML;
 			<td>
 				<?php echo $startTime->format(JText::_('DATE_FORMAT_LC4'), true); ?>
 			</td>
-			<td><?php echo $duration; ?></td>
+			<td class="hidden-phone">
+				<?php echo $duration; ?>
+			</td>
 			<td>
 				<span class="label <?php echo $statusClass; ?>">
 					<?php echo $status ?>
 				</span>
 			</td>
-			<td><?php echo $origin ?></td>
-			<td><?php echo $type ?></td>
-			<td><?php echo $record['profile_id'] ?></td>
-			<td><?php echo ($record['meta'] == 'ok') ? format_filesize($record['size']) : ($record['total_size'] > 0 ? "(<i>".format_filesize($record['total_size'])."</i>)" : '&mdash;') ?></td>
-			<td><?php echo $filename_col; ?></td>
+			<td class="hidden-phone"><?php echo $origin ?></td>
+			<td class="hidden-phone"><?php echo $type ?></td>
+			<td class="hidden-phone"><?php echo $record['profile_id'] ?></td>
+			<td class="hidden-phone"><?php echo ($record['meta'] == 'ok') ? format_filesize($record['size']) : ($record['total_size'] > 0 ? "(<i>".format_filesize($record['total_size'])."</i>)" : '&mdash;') ?></td>
+			<td class="hidden-phone"><?php echo $filename_col; ?></td>
 		</tr>
 		<?php endforeach; ?>
 		<?php endif; ?>
 	</tbody>
 </table>
 </form>
+</div>

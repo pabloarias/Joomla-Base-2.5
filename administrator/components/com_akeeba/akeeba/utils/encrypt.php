@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  *
  * @since 3.0
@@ -11,7 +11,7 @@
 defined('AKEEBAENGINE') or die();
 
 /**
- * AES implementation in PHP (c) Chris Veness 2005-2011.
+ * AES implementation in PHP (c) Chris Veness 2005-2013.
  * Right to use and adapt is granted for under a simple creative commons attribution
  * licence. No warranty of any form is offered.
  *

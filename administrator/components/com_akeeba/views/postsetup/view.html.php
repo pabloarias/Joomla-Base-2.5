@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  * @since 3.3.b1
  */
@@ -106,11 +106,13 @@ class AkeebaViewPostsetup extends FOFViewHtml
 		$minStability = $params->get( 'minstability', 'stable' );
 		$acceptlicense = $params->get( 'acceptlicense', '0' );
 		$acceptsupport = $params->get( 'acceptsupport', '0' );
+		$acceptbackuptest = $params->get( 'acceptbackuptest', '0' );
 		
 		$this->assign('enableconfwiz', $enableconfwiz);
 		$this->assign('minstability', $minStability);
 		$this->assign('acceptlicense', $acceptlicense);
 		$this->assign('acceptsupport', $acceptsupport);
+		$this->assign('acceptbackuptest', $acceptbackuptest);
 		return $enableconfwiz;
 	}
 	

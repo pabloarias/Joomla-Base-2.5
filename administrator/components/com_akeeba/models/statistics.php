@@ -4,7 +4,7 @@
  *
  * @license GNU General Public License, version 2 or later
  * @author Nicholas K. Dionysopoulos
- * @copyright Copyright 2006-2009 Nicholas K. Dionysopoulos
+ * @copyright Copyright 2006-2013 Nicholas K. Dionysopoulos
  * @since 1.3
  */
 defined('_JEXEC') or die();

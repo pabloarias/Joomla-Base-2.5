@@ -1,7 +1,7 @@
 <?php
 /**
  *  @package FrameworkOnFramework
- *  @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
+ *  @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
  *  @license GNU General Public License version 3, or later
  */
 
@@ -523,8 +523,10 @@ class FOFToolbar
 		if(!$using_meta)
 		{
 			$cpanel = array_search('cpanels', $views);
-			unset($views[$cpanel]);
-			array_unshift($views, 'cpanels');
+			if ($cpanel !== false) {
+				unset($views[$cpanel]);
+				array_unshift($views, 'cpanels');
+			}
 		}
 
 		return $views;

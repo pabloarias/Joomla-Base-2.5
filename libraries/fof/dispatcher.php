@@ -1,7 +1,7 @@
 <?php
 /**
  *  @package FrameworkOnFramework
- *  @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
+ *  @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
  *  @license GNU General Public License version 3, or later
  */
 
@@ -43,6 +43,7 @@ class FOFDispatcher extends JObject
 		'QueryString_TOTP', // Encrypted information protected with a TOTP passed in the _fofauthentication query string parameter
 		'HTTPBasicAuth_Plaintext', // HTTP Basic Authentication using a username and password pair in plain text
 		'QueryString_Plaintext', // Plaintext, JSON-encoded username and password pair passed in the _fofauthentication query string parameter
+		'SplitQueryString_Plaintext', // Plaintext username and password in the _fofauthentication_username and _fofauthentication_username query string parameters
 	);
 	
 	/** @var bool Did we successfully and transparently logged in a user? */
@@ -412,6 +413,19 @@ class FOFDispatcher extends JObject
 					} elseif(!array_key_exists('username', $authInfo) || !array_key_exists('password', $authInfo)) {
 						$authInfo = null;
 					}
+					break;
+				
+				case 'SplitQueryString_Plaintext':
+					$authInfo = array(
+						'username'	=> FOFInput::getVar('_fofauthentication_username', '', $this->input),
+						'password'	=> FOFInput::getVar('_fofauthentication_password', '', $this->input),
+					);
+					
+					if (empty($authInfo['username']))
+					{
+						$authInfo = null;
+					}
+					
 					break;
 				
 				default:

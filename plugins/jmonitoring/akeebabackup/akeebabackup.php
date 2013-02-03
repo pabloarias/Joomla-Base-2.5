@@ -1,7 +1,7 @@
 <?php
 /*
  *  Akeeba Backup JMonitoring integration
- *  Copyright (C) 2012  Nicholas K. Dionysopoulos / AkeebaBackup.com
+ *  Copyright (C) 2012-2013  Nicholas K. Dionysopoulos / AkeebaBackup.com
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

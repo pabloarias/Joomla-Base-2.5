@@ -1,4 +1,18 @@
 <?php die();?>
+Akeeba Backup 3.6.11
+================================================================================
+# [LOW] Backup doesn't run on IE because it lacks console.debug support (ugh!)
+
+Akeeba Backup 3.6.11
+================================================================================
++ Allow you to specify only one Super Administrator to receive emails for Akeeba Backup updates
++ The users have to acknowledge a warning against untested backups before using the component
+# [HIGH] Restoring backups with multiple databases doesn't allow you to modify the super administrator password
+# [LOW] Backup wouldn't work on some brain-dead browsers like Mobile Safari due to XHR caching issues
+# [LOW] ABI would warn against using PHP 5.3 with E_STRICT and display_errors enabled. This was a leftover from the Joomla! 1.5 days and had to be removed.
+# [LOW] Working around Gantry bugs which make it incompatible with the SRP plugin (Pro version)
+# [LOW] JSON API doesn't respect the from and limit parameters in the listBackups method
+
 Akeeba Backup 3.6.10
 ================================================================================
 ~ Add more part size checks in the Configuration Wizard

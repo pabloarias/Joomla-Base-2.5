@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaBackup
- * @copyright Copyright (c)2009-2012 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2013 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  * @since 3.3.b1
  */
@@ -38,6 +38,7 @@ class AkeebaControllerPostsetup extends FOFController
 		$minStability = FOFInput::getCmd('minstability', 'stable', $this->input);
 		$acceptlicense = FOFInput::getBool('acceptlicense', 0, $this->input);
 		$acceptsupport = FOFInput::getBool('acceptsupport', 0, $this->input);
+		$acceptbackuptest = FOFInput::getBool('acceptbackuptest', 0, $this->input);
 		
 		if(!in_array($minStability, array('alpha','beta','rc','stable'))) {
 			$minStability = 'stable';
@@ -129,11 +130,13 @@ class AkeebaControllerPostsetup extends FOFController
 			$params->set('minstability', $minStability);
 			$params->set('acceptlicense', $acceptlicense);
 			$params->set('acceptsupport', $acceptsupport);
+			$params->set('acceptbackuptest', $acceptbackuptest);
 		} else {
 			$params->setValue('lastversion', $version);
 			$params->setValue('minstability', $minStability);
 			$params->setValue('acceptlicense', $acceptlicense);
 			$params->setValue('acceptsupport', $acceptsupport);
+			$params->setValue('acceptbackuptest', $acceptbackuptest);
 		}
 
 		$data = $params->toString('JSON');
@@ -171,6 +174,10 @@ class AkeebaControllerPostsetup extends FOFController
 		}
 		if(!$acceptsupport) {
 			JFactory::getApplication()->enqueueMessage(JText::_('AKEEBA_POSTSETUP_ERR_ACCEPTSUPPORT'), 'error');
+			$url = 'index.php?option=com_akeeba&view=postsetup';
+		}
+		if(!$acceptbackuptest) {
+			JFactory::getApplication()->enqueueMessage(JText::_('AKEEBA_POSTSETUP_ERR_ACCEPTBACKUPTEST'), 'error');
 			$url = 'index.php?option=com_akeeba&view=postsetup';
 		}
 		
