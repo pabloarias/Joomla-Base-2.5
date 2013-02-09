@@ -44,8 +44,8 @@ RewriteRule .* index.php [F]
 # If you need to redirect some pages, or set a canonical non-www to
 # www redirect (or vice versa), place that code here. Ensure those
 # redirects use the correct RewriteRule syntax and the [R=301,L] flags.
-#RewriteCond %{HTTP_HOST} ^domain.eu [NC]
-#RewriteRule ^(.*)$ http://www.domain.com/$1 [L,R=301]
+#RewriteCond %{HTTP_HOST} !^www\.domain\.com$ [NC]
+#RewriteRule ^(.*)$ http://www.domain.com/$1 [R=301,L]
 ## End - Custom redirects
 
 ##
