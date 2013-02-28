@@ -10,8 +10,9 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-JHTML::_('behavior.framework');
-JHTML::_('behavior.calendar');
+JHtml::_('behavior.framework');
+JHtml::_('behavior.calendar');
+JHtml::_('behavior.modal');
 
 // Filesize formatting function by eregon at msn dot com
 // Published at: http://www.php.net/manual/en/function.number-format.php

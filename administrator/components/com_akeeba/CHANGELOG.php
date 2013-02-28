@@ -1,5 +1,27 @@
 <?php die();?>
-Akeeba Backup 3.6.11
+Akeeba Backup 3.7.1
+================================================================================
+! Performance issue (too much RAM required) the first time Akeeba Backup would run
+
+Akeeba Backup 3.7.0
+================================================================================
+~ UX improvement: When the Discover & Import archives finishes redirect to Manage Backups instead of Control Panel
+~ Automatically detect and fix missing database tables
+# [HIGH] The directory browser for off-site folders didn't work properly
+# [MEDIUM] Wrong End of Central Directory record in multi-part ZIP archives didn't allow anything except Kickstart to extract them
+# [MEDIUM] Import S3 would fail on multipart archives
+# [MEDIUM] Using "Discover and Import Archives" with multipart archives would end up not showing the last part in the Manage Backups page
+# [MEDIUM] The .htaccess in the backups directory would cause the server to return an error page instead of just limit access
+# [MEDIUM] The "Manage remotely stored files" didn't appear in a popup as it is supposed to on Joomla! 3.0.
+# [LOW] Specifying Super Administrator email for update notifications wasn't working
+# [LOW] Very rare issue killing the database backup with a message like "fwrite(): XYZ is not a valid stream resource"
+# [LOW] Very rare performance issue when your PHP memory limit is expressed in Kilobytes, e.g. 131072K instead of 128M
+# [LOW] Giving akeeba.backup ACL privilege without also giving the global Edit Content privilege would prevent you from backing up
+# [LOW] Backups downloaded from S3 would not be imported to the Manage Backups page, but only downloaded on the server
+# [LOW] MySQL 5.6 compatibility
+# [LOW] Help tooltips wouldn't display correctly on Joomla! 3.0.3
+
+Akeeba Backup 3.6.12
 ================================================================================
 # [LOW] Backup doesn't run on IE because it lacks console.debug support (ugh!)
 

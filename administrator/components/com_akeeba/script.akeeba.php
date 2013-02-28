@@ -133,6 +133,32 @@ class Com_AkeebaInstallerScript
 			'media/com_akeeba/js/akeebajqui.js',
 			'media/com_akeeba/theme/jquery-ui.css',
 			'media/com_akeeba/theme/browser.css',
+			
+			// FOF 1.x files
+			'libraries/fof/controller.php',
+			'libraries/fof/dispatcher.php',
+			'libraries/fof/inflector.php',
+			'libraries/fof/input.php',
+			'libraries/fof/model.php',
+			'libraries/fof/query.abstract.php',
+			'libraries/fof/query.element.php',
+			'libraries/fof/query.mysql.php',
+			'libraries/fof/query.mysqli.php',
+			'libraries/fof/query.sqlazure.php',
+			'libraries/fof/query.sqlsrv.php',
+			'libraries/fof/render.abstract.php',
+			'libraries/fof/render.joomla.php',
+			'libraries/fof/render.joomla3.php',
+			'libraries/fof/render.strapper.php',
+			'libraries/fof/string.utils.php',
+			'libraries/fof/table.php',
+			'libraries/fof/template.utils.php',
+			'libraries/fof/toolbar.php',
+			'libraries/fof/view.csv.php',
+			'libraries/fof/view.html.php',
+			'libraries/fof/view.json.php',
+			'libraries/fof/view.php',
+			
 		),
 		'folders' => array(
 			'administrator/components/com_akeeba/akeeba/platform/joomla15',
@@ -172,8 +198,23 @@ class Com_AkeebaInstallerScript
 			$this->_bugfixCantBuildAdminMenus();
 		}
 		
-		// Only allow to install on Joomla! 2.5.0 or later
-		return version_compare(JVERSION, '2.5.0', 'ge');
+		// Only allow to install on Joomla! 2.5.0 or later with PHP 5.3.0 or later
+		if(defined('PHP_VERSION')) {
+			$version = PHP_VERSION;
+		} elseif(function_exists('phpversion')) {
+			$version = phpversion();
+		} else {
+			$version = '5.0.0'; // all bets are off!
+		}
+		if(!version_compare(JVERSION, '2.5.0', 'ge')) {
+			echo "<p>You need Joomla! 2.5 or later to install this component</p>";
+			return false;
+		}
+		if(!version_compare($version, '5.3.0', 'ge')) {
+			echo "<p>You need PHP 5.3 or later to install this component</p>";
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -185,6 +226,12 @@ class Com_AkeebaInstallerScript
 	{
 		// Install subextensions
 		$status = $this->_installSubextensions($parent);
+		
+		// Install FOF
+		$fofStatus = $this->_installFOF($parent);
+		
+		// Install Akeeba Straper
+		$straperStatus = $this->_installStraper($parent);
 		
 		// Remove obsolete files and folders
 		$isAkeebaPro = is_dir($parent->getParent()->getPath('source').'/plugins/system/srp');
@@ -213,12 +260,6 @@ class Com_AkeebaInstallerScript
 				JFolder::create(JPATH_ADMINISTRATOR.'/components/com_akeeba/akeeba/plugins');	
 			}
 		}
-		
-		// Install FOF
-		$fofStatus = $this->_installFOF($parent);
-		
-		// Install Akeeba Straper
-		$straperStatus = $this->_installStraper($parent);
 		
 		// Show the post-installation page
 		$this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);

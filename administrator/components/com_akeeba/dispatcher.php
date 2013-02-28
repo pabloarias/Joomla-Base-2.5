@@ -30,6 +30,11 @@ class AkeebaDispatcher extends FOFDispatcher
 	}
 	
 	public function dispatch() {
+		if(!class_exists('AkeebaControllerDefault'))
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_akeeba/controllers/default.php';
+		}
+		
 		// Merge the language overrides
 		$paths = array(JPATH_ROOT, JPATH_ADMINISTRATOR);
 		$jlang = JFactory::getLanguage();
