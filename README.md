@@ -5,8 +5,8 @@ El pack Joomla-Base está compuesto por el gestor de contenidos Joomla, su tradu
 
 Paquetes utilizados:
 - Joomla 2.5.9
-- Idioma español 2.5.8.1
-- Akeeba Backup 3.6.10
+- Idioma español 2.5.9.1
+- Akeeba Backup 3.6.12
 - JCE 2.3.1 y traducción al español 2.2.7.2
 - Xmap 2.3.2
 - Framework Gantry 4.1.7 (incluye template y RokNavMenu 2.0)
