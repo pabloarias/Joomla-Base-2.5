@@ -50,7 +50,17 @@ class AEDumpNativeMysql extends AEAbstractDump
 		$db->query();
 		// Try to enforce SQL_BIG_SELECTS option
 		try {
-			$db->setQuery('SET OPTION SQL_BIG_SELECTS=1');
+			$dbVersion = $db->getVersion();
+			if(version_compare($dbVersion, '5.6', 'lt'))
+			{
+				// Pre-5.6 MySQL
+				$db->setQuery('SET OPTION SQL_BIG_SELECTS=1');
+			}
+			else
+			{
+				// MySQL 5.6 or later
+				$db->setQuery('SET SQL_BIG_SELECTS=1');
+			}
 			$db->query();
 		} catch(Exception $e) {
 			// Do nothing; some versions of MySQL don't allow you to use the BIG_SELECTS option.

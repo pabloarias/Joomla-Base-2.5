@@ -564,7 +564,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 	 * @return boolean TRUE is saving to the file succeeded
 	 */
 	protected function writeline(&$fileData) {
-		if(!$this->fp)
+		if(!is_resource($this->fp))
 		{
 			$this->fp = @fopen($this->tempFile, 'a');
 			if($this->fp === false)
@@ -606,7 +606,11 @@ abstract class AEAbstractDump extends AEAbstractPart
 	public function closeFile()
 	{
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "Closing SQL dump file.");
-		if(is_resource($this->fp)) @fclose($this->fp);
+		if (is_resource($this->fp)) 
+		{
+			@fclose($this->fp);
+			$this->fp = null;
+		}
 	}
 
 	/**

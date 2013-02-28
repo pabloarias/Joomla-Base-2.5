@@ -158,10 +158,14 @@ ENDHTML;
 	{
 		$abversion = AKEEBA_VERSION;
 		$host = AEPlatform::getInstance()->get_host();
+		$backupdate = gmdate('Y-m-d H:i:s');
+		$phpversion=PHP_VERSION;
 		$ret = <<<ENDINI
 ; Akeeba Backup $abversion - Extra information used during restoration
 host=$host
-
+backup_date=$backupdate
+akeeba_version=$abversion
+php_version=$phpversion
 ENDINI;
 		return $ret;
 	}
