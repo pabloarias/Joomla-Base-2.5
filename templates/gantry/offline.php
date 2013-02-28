@@ -2,7 +2,7 @@
 /**
 * @version   $Id: offline.php 2907 2012-08-30 22:29:16Z btowles $
 * @author    RocketTheme http://www.rockettheme.com
-* @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+* @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -15,6 +15,7 @@ require_once(dirname(__FILE__) . '/lib/gantry/gantry.php');
 $gantry->init();
 
 $doc = JFactory::getDocument();
+$app = JFactory::getApplication();
 
 $gantry->addStyle('grid-responsive.css', 5);
 $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));

@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: index.php 5057 2012-11-06 04:48:10Z rhuk $
+* @version   $Id: index.php 6263 2013-01-01 22:00:40Z kevin $
  * @author RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  *
  * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -36,6 +36,9 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
         $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 
         if ($gantry->browser->name == 'ie'){
+        	if ($gantry->browser->shortversion == 9){
+        		$gantry->addInlineScript("if (typeof RokMediaQueries !== 'undefined') window.addEvent('domready', function(){ RokMediaQueries._fireEvent(RokMediaQueries.getQuery()); });");
+        	}
 			if ($gantry->browser->shortversion == 8){
 				$gantry->addScript('html5shim.js');
 			}

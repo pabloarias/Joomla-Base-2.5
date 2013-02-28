@@ -2,13 +2,13 @@
 <extension method="upgrade" type="template" version="2.5">
     <name>gantry</name>
     <author>RocketTheme, LLC</author>
-    <creationDate>November 22, 2012</creationDate>
-    <copyright>(C) 2005 - 2012 RocketTheme, LLC. All rights reserved.</copyright>
+    <creationDate>February 6, 2013</creationDate>
+    <copyright>(C) 2005 - 2013 RocketTheme, LLC. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@rockettheme.com</authorEmail>
     <authorUrl>http://www.rockettheme.com</authorUrl>
-    <version>4.1.4</version>
-    <description>Gantry Starting Template for Joomla! v4.1.4</description>
+    <version>4.1.7</version>
+    <description>Gantry Starting Template for Joomla! v4.1.7</description>
     <legacycss>false</legacycss>
     <gridcss>false</gridcss>
     <files>
