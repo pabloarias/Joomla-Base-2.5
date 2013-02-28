@@ -2,18 +2,18 @@
 <extension type="package" version="2.5">
 <name>Spanish Language Pack</name>
 <packagename>es-ES</packagename>
-<version>2.5.8.1</version>
-<creationDate>8 de noviembre del 2012</creationDate>
+<version>2.5.9.1</version>
+<creationDate>4 de febrero del 2013</creationDate>
 <author>Spanish Translation Team: comunidadjoomla.org</author>
 <authorEmail>info@comunidadjoomla.org</authorEmail>
 <authorUrl>www.comunidadjoomla.org</authorUrl>
-<copyright>Copyright (C) 2005 - 2012 comunidadjoomla.org and Open Source Matters. All rights reserved.</copyright>
+<copyright>Copyright (C) 2005 - 2013 comunidadjoomla.org and Open Source Matters. All rights reserved.</copyright>
 <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 <url></url>
 <packager>Spanish Translation Team</packager>
 <packagerurl>www.comunidadjoomla.org</packagerurl>
 <description><![CDATA[
-		<h2>Successfully installed the spanish language pack for Joomla! 2.5.8 with the TinyMCE 3.5.2 language files included.</h2>
+		<h2>Successfully installed the spanish language pack for Joomla! 2.5.9 with the TinyMCE 3.5.2 language files included.</h2>
 		If you use other languages than English and spanish, please make sure that you also installed all other language packs for TinyMCE before you enabling "Automatic Language Selection" through the following steps:<br/>
 		<ol>
 		<li>Extensions</li>
@@ -27,7 +27,7 @@
 		<p>Please report any bugs or issues at the Comunidad Joomla! <a href="http://foro.comunidadjoomla.org/traduccion-ext/" target="_blank">Translation forum</a></p>
 		<p></p>
 		<p>Translated by: <a href="http://www.comunidadjoomla.org" target="_blank" title="">The spanish translation team of Comunidad Joomla!</a></p>
-		<h2>El paquete en español para Joomla! 2.5.8, incluyendo los archivos del editor TinyMCE 3.5.2, se ha instalado correctamente</h2>
+		<h2>El paquete en español para Joomla! 2.5.9, incluyendo los archivos del editor TinyMCE 3.5.2, se ha instalado correctamente</h2>
 		Referente al idioma del editor TinyMCE, si usted usa otros idiomas además del inglés y el español, por favor, asegúrese de que también instala los demás idiomas para el TinyMCE antes de habilitar la opción "Selección automática del idioma" por medio de los siguientes pasos:<br/>
 		<ol>
 		<li>Extensiones</li>
@@ -49,8 +49,7 @@
 </files>
 
 <updateservers>
-	<server type="collection" priority="1" name="Accredited Joomla! Translations">http://update.joomla.org/language/translationlist.xml</server>
-        <server type="collection" priority="2" name="Accredited Joomla! Translations (es-ES)">http://updates.comunidadjoomla.org/es-ES_joomla_lang_packs_list.xml</server>   
+	<server type="collection" priority="1" name="Accredited Joomla! Translations">http://update.joomla.org/language/translationlist.xml</server>  
 </updateservers>
 
 </extension>
