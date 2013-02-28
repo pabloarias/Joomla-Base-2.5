@@ -2,7 +2,7 @@
 /**
 * @version   $Id: theme.php 1639 2012-07-13 00:22:06Z kevin $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -25,7 +25,8 @@ class GantryDropdownTheme extends AbstractRokMenuTheme {
         'tweak-subsequent-y' => 1,
         'tweak-width' => 0,
         'tweak-height' => 0,
-        'enable_current_id' => 0
+        'enable_current_id' => 0,
+        'responsive-menu' => 'panel'
     );
 
     public function getFormatter($args){

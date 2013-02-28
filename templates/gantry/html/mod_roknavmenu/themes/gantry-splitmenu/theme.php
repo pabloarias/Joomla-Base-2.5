@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: theme.php 4532 2012-10-26 16:42:16Z btowles $
+* @version   $Id: theme.php 7234 2013-02-06 05:09:14Z steph $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 
@@ -10,7 +10,8 @@ class GantrySplitmenuTheme extends AbstractRokMenuTheme {
 
     protected $defaults = array(
         'roknavmenu_splitmenu_enable_current_id' => 0,
-        'class_sfx' => ''
+        'class_sfx' => '',
+        'responsive-menu' => 'panel'
     );
 
     public function getFormatter($args){

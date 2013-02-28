@@ -1,8 +1,8 @@
 <?php
 /**
-* @version   $Id: layout.php 4419 2012-10-22 15:38:25Z james $
+* @version   $Id: layout.php 7234 2013-02-06 05:09:14Z steph $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
 *
 * Gantry uses the Joomla Framework (http://www.joomla.org), a GNU/GPLv2 content management system
@@ -30,6 +30,7 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
         $this->args['theme_path'] = $this->theme_path;
         $this->args['theme_rel_path'] = $gantry->templateUrl. $theme_rel_path;
         $this->args['theme_url'] = $this->args['theme_rel_path'];
+	    $this->args['responsive-menu'] = $args['responsive-menu'];
     }
 
     public function stageHeader()
@@ -169,11 +170,11 @@ class GantrySplitmenuLayout extends AbstractRokMenuLayout
     public function renderMenu(&$menu) {
 
         ob_start();
-        $menuname = $this->args['style'] == 'mainmenu' ? 'gf-menu gf-splitmenu' : 'menu';
+        $menuname = (isset($this->args['style']) && $this->args['style'] == 'mainmenu') ? 'gf-menu gf-splitmenu' : 'menu';
 ?>
 
 <?php if ($menu->getChildren()) : ?>
-<?php if ($this->args['style'] == 'mainmenu'): ?>
+<?php if (isset($this->args['style']) && $this->args['style'] == 'mainmenu'): ?>
 <div class="gf-menu-device-container"></div>
 <?php endif; ?>
 <ul class="<?php echo $menuname; ?> l1 <?php echo $this->args['class_sfx']; ?>" <?php if(array_key_exists('tag_id',$this->args)):?>id="<?php echo $this->args['tag_id'];?>"<?php endif;?>>

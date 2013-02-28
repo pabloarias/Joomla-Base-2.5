@@ -1,7 +1,7 @@
 /**
 * @version   $Id$
 * @author    RocketTheme http://www.rockettheme.com
-* @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+* @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
 * @license   http://www.rockettheme.com/legal/license.php RocketTheme Proprietary Use License
 */
 
@@ -13,10 +13,15 @@
 	.hidden-large {
 		display: none !important;
 	}
+	.visible-desktop {
+		display: inherit !important;
+	}
+	.hidden-desktop {
+		display: none !important;
+	}
 }
 
 // Desktop Modes
-
 @media only screen and (min-width: 960px) and (max-width: 1199px) {
 	.visible-large {
 		display: none !important;
@@ -29,7 +34,7 @@
 	}
 	.hidden-desktop {
 		display: none !important;
-	}	
+	} 
 	.promo {
 		h1 {
 			font-size: 3.7em;
