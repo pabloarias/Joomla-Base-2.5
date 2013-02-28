@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantryurlparamoverride.class.php 6306 2013-01-05 05:39:57Z btowles $
+ * @version   $Id: gantryurlparamoverride.class.php 7297 2013-02-06 17:32:03Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -41,7 +41,7 @@ class GantryUrlParamOverride extends GantryParamOverride
 		foreach ($gantry->_param_names as $param_name) {
 			if (in_array($param_name, $gantry->_setbyurl) && array_key_exists($param_name, $_GET)) {
 				$param     =& $gantry->_working_params[$param_name];
-				$url_value = htmlentities(JFactory::getApplication()->input->get->get($param['name'], ''));
+				$url_value = htmlentities(JFactory::getApplication()->input->get->getString($param['name'], ''));
 				if (!empty($url_value)) {
 					$gantry->_working_params[$param['name']]['value'] = $url_value;
 					$gantry->_working_params[$param['name']]['setby'] = 'url';

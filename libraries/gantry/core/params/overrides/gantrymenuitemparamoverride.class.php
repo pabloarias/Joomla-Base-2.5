@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantrymenuitemparamoverride.class.php 6534 2013-01-15 16:53:38Z btowles $
+ * @version   $Id: gantrymenuitemparamoverride.class.php 7001 2013-01-31 07:27:48Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -58,17 +58,20 @@ class GantryMenuItemParamOverride extends GantryParamOverride
 			$current_menu_item = $menus->getDefault();
 		}
 
+		$menu_item_style_id = (int)$current_menu_item->template_style_id;
 
-		if (($current_style_id = (int)$current_menu_item->template_style_id) == 0)
-		{
-			$current_style_id = $app->getTemplate(true)->params->get('current_id');
-			if ($current_style_id == 'true')
-			{
-				$current_style_id = $app->getTemplate(true)->id;
-			}
+		// if the assigned menu item is the "default" or it doesn't exists in the template styles
+		// fallback to the assigned default template style
+		if ($menu_item_style_id == 0 || !array_key_exists($menu_item_style_id,  GantryTemplate::getAllTemplates())){
+			$menu_item_style_id = $app->getTemplate(true)->id;
 		}
 
-		$menu_params = GantryTemplate::getTemplateParams($current_style_id);
+		$menu_params = GantryTemplate::getTemplateParams($menu_item_style_id);
+		// if its the master no need ot apply per menu items
+		if ($menu_params->get('master') == 'true'){
+			return;
+		}
+
 		$array       = $menu_params->toArray();
 		$menu_params = new GantryRegistry();
 		$menu_params->loadArray(gantry_flattenParams($array));

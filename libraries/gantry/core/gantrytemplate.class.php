@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantrytemplate.class.php 6534 2013-01-15 16:53:38Z btowles $
+ * @version   $Id: gantrytemplate.class.php 7050 2013-01-31 21:56:01Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -310,7 +310,7 @@ class GantryTemplate
 	public function getPositionInfo($position_name)
 	{
 		$shortposition = preg_replace("/(\-[a-f])$/i", "", $position_name);
-		if (array_key_exists($shortposition, $this->positionInfo)){
+		if (array_key_exists($shortposition, $this->positionInfo)) {
 			return $this->positionInfo[$shortposition];
 		}
 		return false;
@@ -397,22 +397,12 @@ class GantryTemplate
 			$styleId = JFactory::getApplication()->input->getInt('id', 0);
 			if ($styleId == 0) {
 				$template = self::getMasterTemplateStyleByName($gantry->templateName);
-				$styleId = $template->id;
+				$styleId  = $template->id;
 			}
-		} else {
-			// TODO:  get style ID from front end
-			$site     = JFactory::getApplication();
-			$template = $site->getTemplate(true);
-			$styleId = $template->id;
-		}
-
-		$return = false;
-		if ($gantry->isAdmin()) {
 			JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_templates/tables');
 			$table = JTable::getInstance('Style', 'TemplatesTable', array());
 			// Attempt to load the row.
 			$return   = $table->load($styleId);
-			$site     = JFactory::getApplication();
 			$registry = new GantryRegistry;
 			$registry->loadString($table->params);
 			if ($registry->get('master') != 'true') {
@@ -427,22 +417,17 @@ class GantryTemplate
 			}
 			$this->_params_content = $table->params;
 		} else {
-			$site     = JFactory::getApplication();
-			$template = self::getTemplateById($site->getTemplate(true)->id);
-			$master   = $template->params->get('master', 'true');
-			if ($master !== 'true') {
-				$master_params      = self::getTemplateParams((int)$master);
-				$registry           = &$master_params;
-				$this->masterParams = $master_params->toString();
-				$master_params->merge($template->params);
-				$this->_params_content = $master_params->toString();
+			$template = self::getTemplateById(JFactory::getApplication()->getTemplate(true)->id);
+			if (($style_id = $template->params->get('master', 'true')) !== 'true') {
+				$master_id = $style_id;
 			} else {
-				$registry              = &$template->params;
-				$this->_params_content = $template->params->toString();
-				$this->masterParams    = $this->_params_content;
+				$master_id = $template->id;
 			}
-		}
+			$registry              = self::getTemplateParams((int)$master_id);
 
+			$this->masterParams    = $registry->toString();
+			$this->_params_content = $this->masterParams;
+		}
 		$this->_params_reg = $registry;
 
 		return true;
@@ -505,7 +490,7 @@ class GantryTemplate
 			'isbodyclass'   => (array_key_exists('isbodyclass', $attributes)) ? ($attributes['isbodyclass'] == 'true') ? true : false : false,
 			'setclassbytag' => (array_key_exists('setclassbytag', $attributes)) ? $attributes['setclassbytag'] : false,
 			'setby'         => 'default',
-			'attributes'    => &$attributes
+			'attributes'    => $attributes
 		);
 
 		if ($data[$full_param_name]['setbyurl']) $gantry->_setbyurl[] = $full_param_name;
@@ -617,7 +602,16 @@ class GantryTemplate
 	public static function getTemplateById($id = 0)
 	{
 		$templates = self::getAllTemplates();
-		$template  = $templates[$id];
+		if ($id == 0) {
+			foreach ($templates as $lookingtemp) {
+				if ($lookingtemp->home == 1) {
+					$template = $lookingtemp;
+					break;
+				}
+			}
+		} else {
+			$template = $templates[$id];
+		}
 		return $template;
 	}
 

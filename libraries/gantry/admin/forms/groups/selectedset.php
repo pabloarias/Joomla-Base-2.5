@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: selectedset.php 6564 2013-01-16 17:13:36Z btowles $
+ * @version   $Id: selectedset.php 6960 2013-01-30 21:19:03Z djamil $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -94,15 +94,15 @@ class GantryFormGroupSelectedSet extends GantryFormGroup
     {
 
         $buffer = parent::render($callback);
-		$cls = ' selectedset-hidden-field';
+		$cls = '';// ' selectedset-hidden-field';
         foreach ($this->sets as $set)
         {
 			if (isset($this->activeSet['selectbox'])){
 				if ($this->activeSet['selectbox'] == (string) $set->element['name']) $cls = '';
-				else $cls = ' selectedset-hidden-field';
+				else $cls = ''; //' selectedset-hidden-field';
 				
 				if (isset($this->activeSet['toggle']) && $this->activeSet['toggle'] == '0'){
-					$cls = ' selectedset-hidden-field';
+					$cls = '';//' selectedset-hidden-field';
 				}
 			}
 			
