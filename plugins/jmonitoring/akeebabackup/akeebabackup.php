@@ -46,7 +46,7 @@ if (!JComponentHelper::isEnabled('com_akeeba', true))
 }
 
 // Load FOF
-if(!defined('FOF_INCLUDED')) {
+if(!defined('FOF_INCLUDED') || !class_exists('FOFLess', true)) {
 	include_once JPATH_SITE.'/libraries/fof/include.php';
 }
 
