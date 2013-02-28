@@ -14,8 +14,19 @@ defined('_JEXEC') or die();
  * MVC controller class for Database Table filters
  *
  */
-class AkeebaControllerDbef extends AkeebaControllerDefault
+class AkeebaControllerDbef extends FOFController
 {
+	public function  __construct($config = array()) {
+		parent::__construct($config);
+		// Access check, Joomla! 1.6 style.
+		$user = JFactory::getUser();
+		if (!$user->authorise('akeeba.configure', 'com_akeeba')) {
+			$this->setRedirect('index.php?option=com_akeeba');
+			return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->redirect();
+		}
+	}
+
 	public function execute($task)
 	{
 		if($task != 'ajax') {

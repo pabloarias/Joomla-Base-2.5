@@ -14,8 +14,19 @@ defined('_JEXEC') or die();
  * Log view controller class
  *
  */
-class AkeebaControllerLog extends AkeebaControllerDefault
+class AkeebaControllerLog extends FOFController
 {
+	public function  __construct($config = array()) {
+		parent::__construct($config);
+		// Access check, Joomla! 1.6 style.
+		$user = JFactory::getUser();
+		if (!$user->authorise('akeeba.download', 'com_akeeba')) {
+			$this->setRedirect('index.php?option=com_akeeba');
+			return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->redirect();
+		}
+	}
+
 	public function execute($task)
 	{
 		if(!in_array($task, array('iframe','download'))) {

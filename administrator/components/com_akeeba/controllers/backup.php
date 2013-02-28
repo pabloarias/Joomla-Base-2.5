@@ -14,8 +14,19 @@ defined('_JEXEC') or die();
  * The Backup controller class
  *
  */
-class AkeebaControllerBackup extends AkeebaControllerDefault
+class AkeebaControllerBackup extends FOFController
 {
+	public function  __construct($config = array()) {
+		parent::__construct($config);
+		// Access check, Joomla! 1.6 style.
+		$user = JFactory::getUser();
+		if (!$user->authorise('akeeba.backup', 'com_akeeba')) {
+			$this->setRedirect('index.php?option=com_akeeba');
+			return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->redirect();
+		}
+	}
+	
 	public function execute($task) {
 		if($task != 'ajax') {
 			$task = 'add';

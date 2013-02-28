@@ -46,8 +46,6 @@ class AkeebaControllerCpanel extends FOFController
 			$model->checkSettingsEncryption();
 			// Update the magic component parameters
 			$model->updateMagicParameters();
-			// Run the automatic database check
-			$model->checkAndFixDatabase();
 
 			// Check the last installed version
 			$versionLast = null;

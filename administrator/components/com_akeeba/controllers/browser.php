@@ -14,8 +14,18 @@ defined('_JEXEC') or die();
  * Folder bowser controller
  *
  */
-class AkeebaControllerBrowser extends AkeebaControllerDefault
+class AkeebaControllerBrowser extends FOFController
 {
+	public function  __construct($config = array()) {
+		parent::__construct($config);
+		// Access check, Joomla! 1.6 style.
+		if (!JFactory::getUser()->authorise('akeeba.configure', 'com_akeeba')) {
+			$this->setRedirect('index.php?option=com_akeeba');
+			return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->redirect();
+		}
+	}
+
 	public function display($cachable = false, $urlparams = false)
 	{
 		$folder = FOFInput::getString('folder', '', $this->input);
