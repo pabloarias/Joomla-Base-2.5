@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantry.class.php 6306 2013-01-05 05:39:57Z btowles $
+ * @version   $Id: gantry.class.php 8005 2013-03-01 05:24:45Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -2109,7 +2109,7 @@ class Gantry
 
 			// Set the query
 			$db->setQuery($query);
-			if (!($modules = $db->loadObjectList())) {
+			if (!($modules = $db->loadObjectList()) && $db->getError() != null) {
 				JError::raiseWarning(500, JText::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
 				return false;
 			}
