@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: gantry.class.php 8005 2013-03-01 05:24:45Z btowles $
+ * @version   $Id: gantry.class.php 8465 2013-03-18 21:50:23Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -1014,10 +1014,10 @@ class Gantry
 	{
 
 		$less_search_paths = array();
+		//set up the check for template with plartform based dirs
+		$less_search_paths = $this->platform->getAvailablePlatformVersions($this->templatePath . '/less');
 		// setup the less filename
 		if (dirname($lessfile) == '.') {
-			//set up the check for template with plartform based dirs
-			$less_search_paths = $this->platform->getAvailablePlatformVersions($this->templatePath . '/less');
 			foreach ($less_search_paths as $less_path) {
 				if (is_dir($less_path)) {
 					$search_file = preg_replace('#[/\\\\]+#', '/', $less_path . '/' . $lessfile);
@@ -1120,7 +1120,9 @@ class Gantry
 			}
 
 			$less = new GantryLessCompiler();
-			$less->setImportDir($less_search_paths);
+			if (!$this->isAdmin()){
+				$less->setImportDir($less_search_paths);
+			}
 			$less->addImportDir($this->gantryPath . '/assets');
 
 			if (!empty($options)) {

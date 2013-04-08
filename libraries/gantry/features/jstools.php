@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: jstools.php 4060 2012-10-02 18:03:24Z btowles $
+ * @version   $Id: jstools.php 8117 2013-03-07 19:02:49Z djamil $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -50,7 +50,7 @@ class GantryFeatureJSTools extends GantryFeature
 		// build spans
 		if ($gantry->get('buildspans-enabled')) {
 			$modules = "['rt-block']";
-			$headers = "['h3','h2','h1']";
+			$headers = "['h3','h2:not(.itemTitle)','h1']";
 
 			$gantry->addScript('gantry-buildspans.js');
 			$gantry->addInlineScript($this->_buildSpans($modules, $headers));

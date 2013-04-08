@@ -30,7 +30,8 @@ class GantryFormFieldOverlays extends GantryFormField
 		global $gantry;
 		$output = '';
 
-		$this->template = end(explode('/', $gantry->templatePath));
+		$split_template_path = explode('/', $gantry->templatePath);
+		$this->template = end($split_template_path);
 
 		$class        = $this->element['class'] ? $this->element['class'] : '';
 		$preview      = $this->element['preview'] ? $this->element['preview'] : "false";

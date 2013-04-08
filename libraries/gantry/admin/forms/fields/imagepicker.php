@@ -1,6 +1,6 @@
 <?php
 /**
- * @version   $Id: imagepicker.php 5627 2012-12-03 01:55:15Z djamil $
+ * @version   $Id: imagepicker.php 8140 2013-03-08 17:02:46Z james $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -157,7 +157,7 @@ class GantryFormFieldImagePicker extends GantryFormField
 				<div id="' . $this->id . '-wrapper" class="backgroundpicker">' . "\n" . '
 					<img id="' . $this->id . '-img" class="backgroundpicker-img" ' . $preview_width . ' ' . $preview_height . ' alt="" src="' . $preview . '" />
 
-					<div id="' . $this->id . '-infos" class="backgroundpicker-infos" ' . ($rokgallery && !$nomargin ? 'style="display:block;"' : 'style="display:none;"') . ' >' . ((isset($data->width) && (isset($data->height))) ? $data->width . ' x ' . $data->height : '') . '</div>
+					<div id="' . $this->id . '-infos" class="backgroundpicker-infos" ' . ($rokgallery && !$nomargin ? 'style="display:inline-block;"' : 'style="display:none;"') . ' >' . ((isset($data->width) && (isset($data->height))) ? $data->width . ' x ' . $data->height : '') . '</div>
 
 
 					<a id="' . $this->id . '-link" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 675, y: 450}}" class="rok-button modal">' . "\n" . '
