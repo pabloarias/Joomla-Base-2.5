@@ -30,5 +30,5 @@ Para desplegar el proyecto es necesario descargar todos los archivos, importar l
 
 Archivos a eliminar antes del despliegue:
 - README.md
-- joomlabase.sql
+- joomla-base.sql
 - .gitignore
