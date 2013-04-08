@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -41,17 +41,8 @@ class WFControllerEditor extends WFControllerBase {
                     }
 
                     break;
-                case 'theme':
-                    $theme = JRequest::getWord('theme');
 
-                    if ($theme && is_dir(WF_EDITOR_THEMES . '/' . $theme)) {
-                        require_once(WF_EDITOR_THEMES . '/' . $theme . '/theme.php');
-                    } else {
-                        throw new InvalidArgumentException('Theme not found!');
-                    }
-
-                    break;
-                case 'plugin':
+                case 'plugin':                    
                     $file = basename(JRequest::getCmd('file', $plugin));
                     $path = WF_EDITOR_PLUGINS . '/' . $plugin;
 

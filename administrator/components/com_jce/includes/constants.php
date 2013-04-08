@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -15,9 +16,9 @@ defined('_JEXEC') or die('RESTRICTED');
 define('WF_JOOMLA15', version_compare(JVERSION, '1.6', '<'));
 
 // define JQuery version
-define('WF_JQUERY', '1.8.2');
+define('WF_JQUERY', '1.9.0');
 // define JQuery UI version
-define('WF_JQUERYUI', '1.9.1');
+define('WF_JQUERYUI', '1.10.0');
 
 // Some shortcuts to make life easier
 
@@ -43,9 +44,6 @@ define('WF_EDITOR_LIBRARIES',  WF_EDITOR . '/libraries');
 define('WF_EDITOR_CLASSES',    WF_EDITOR_LIBRARIES . '/classes');
 // JCE Editor Extensions
 define('WF_EDITOR_EXTENSIONS', WF_EDITOR . '/extensions');
-
-// define use of INI lang
-define('WF_INI_LANG', 1);
 
 // required for some plugins
 if (!defined('DS')) {

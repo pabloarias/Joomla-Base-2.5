@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -33,13 +33,6 @@ class WFJoomlaFileSystem extends WFFileSystem {
         } else {
             $safe_mode = true;
         }
-        
-        /*$chunking = true;
-
-        // no chunking in safe_mode or FTP mode or if base dir not writable
-        if ($safe_mode || $this->isFTP() || !is_writable($this->getBaseDir())) {
-            $chunking = false;
-        }*/
 
         $this->setProperties(array(
             'local' => true,
@@ -84,7 +77,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
 
             // Restricted Joomla! folders
             $restricted = explode(',', $wf->getParam('editor.filesystem.joomla.restrict_dir', 'administrator,cache,components,includes,language,libraries,logs,media,modules,plugins,templates,xmlrpc'));
-            $allowroot  = $wf->getParam('editor.filesystem.joomla.allow_root', 0);
+            $allowroot = $wf->getParam('editor.filesystem.joomla.allow_root', 0);
 
             // Revert to default if empty
             if (empty($root) && !$allowroot) {
@@ -96,7 +89,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
             if (in_array(strtolower($parts[0]), $restricted) && !$allowroot) {
                 $root = 'images';
             }
-            
+
             if (!empty($root)) {
                 // Create the folder
                 $full = WFUtility::makePath(JPATH_SITE, $root);
@@ -112,14 +105,12 @@ class WFJoomlaFileSystem extends WFFileSystem {
 
         return $root;
     }
-    
-    function toAbsolute($path)
-    {
+
+    function toAbsolute($path) {
         return WFUtility::makePath($this->getBaseDir(), $path);
     }
-    
-    function toRelative($path, $isabsolute = true)
-    {
+
+    function toRelative($path, $isabsolute = true) {
         // path is relative to Joomla! root, eg: images/folder
         if ($isabsolute === false) {
             return rtrim($path, $this->getRootDir());
@@ -184,6 +175,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
 
     function getFolders($relative) {
         $path = WFUtility::makePath($this->getBaseDir(), $relative);
+        $path = WFUtility::fixPath($path);
 
         if (!JFolder::exists($path)) {
             $relative = '/';
@@ -201,7 +193,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
                 $item = WFUtility::isUTF8($item) ? $item : utf8_encode($item);
 
                 $data = array(
-                    'id' => WFUtility::makePath($relative, $item),
+                    'id' => WFUtility::makePath($relative, $item, '/'),
                     'name' => $item,
                     'writable' => is_writable(WFUtility::makePath($path, $item)) || $this->isFtp(),
                     'type' => 'folders'
@@ -216,6 +208,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
 
     function getFiles($relative, $filter = '') {
         $path = WFUtility::makePath($this->getBaseDir(), $relative);
+        $path = WFUtility::fixPath($path);
 
         if (!JFolder::exists($path)) {
             $relative = '/';
@@ -234,9 +227,18 @@ class WFJoomlaFileSystem extends WFFileSystem {
             foreach ($list as $item) {
                 $item = WFUtility::isUTF8($item) ? $item : utf8_encode($item);
 
+                // create relative file
+                $id = WFUtility::makePath($relative, $item, '/');
+
+                // create url
+                $url = WFUtility::makePath($this->getRootDir(), $id, '/');
+
+                // remove leading slash
+                $url = ltrim($url, '/');
+
                 $data = array(
-                    'id' => WFUtility::makePath($relative, $item),
-                    'url' => WFUtility::makePath($this->getRootDir(), WFUtility::makePath($relative, $item)),
+                    'id' => $id,
+                    'url' => $url,
                     'name' => $item,
                     'writable' => is_writable(WFUtility::makePath($path, $item)) || $this->isFtp(),
                     'type' => 'files'
@@ -279,8 +281,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
         }
 
         // remove leading / trailing slash
-        $path = trim($path, '/');
-
+        //$path = trim($path, '/');
         // directory path relative to base dir
         if (is_dir(WFUtility::makePath($this->getBaseDir(), $path))) {
             return $path;
@@ -302,7 +303,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * Return constituent parts of a file path eg: base directory, file name
      * @param $path Relative or absolute path
      */
-    function pathinfo($path) {
+    public function pathinfo($path) {
         return pathinfo($path);
     }
 
@@ -312,7 +313,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @return array Array of properties
      * @param string $file File relative path
      */
-    function getFileDetails($file, $count = 1) {
+    public function getFileDetails($file, $count = 1) {
         clearstatcache();
 
         $path = WFUtility::makePath($this->getBaseDir(), rawurldecode($file));
@@ -345,7 +346,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
             $image = array(
                 'width' => $width,
                 'height' => $height,
-                'preview' => $url
+                'preview' => WFUtility::cleanPath($url, '/')
             );
 
             return array_merge_recursive($data, $image);
@@ -359,7 +360,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param $files the relative path to the file name or comma seperated list of multiple paths.
      * @return string $error on failure.
      */
-    function delete($src) {
+    public function delete($src) {
         $path = WFUtility::makePath($this->getBaseDir(), $src);
 
         // get error class
@@ -389,7 +390,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param string $dest The name of the new file
      * @return string $error
      */
-    function rename($src, $dest) {
+    public function rename($src, $dest) {
 
         $src = WFUtility::makePath($this->getBaseDir(), rawurldecode($src));
         $dir = dirname($src);
@@ -401,11 +402,19 @@ class WFJoomlaFileSystem extends WFFileSystem {
             $file = $dest . '.' . $ext;
             $path = WFUtility::makePath($dir, $file);
 
+            if (is_file($path)) {
+                return $result;
+            }
+
             $result->type = 'files';
             $result->state = JFile::move($src, $path);
             $result->path = $path;
         } else if (is_dir($src)) {
             $path = WFUtility::makePath($dir, $dest);
+            
+            if (is_folder($path)) {
+                return $result;
+            }
 
             $result->type = 'folders';
             $result->state = JFolder::move($src, $path);
@@ -421,7 +430,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param string $dest The relative path of the destination dir
      * @return string $error on failure
      */
-    function copy($file, $destination) {
+    public function copy($file, $destination) {
         $result = new WFFileSystemResult();
 
         $src = WFUtility::makePath($this->getBaseDir(), $file);
@@ -452,7 +461,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param string $dest The relative path of the destination dir
      * @return string $error on failure
      */
-    function move($file, $destination) {
+    public function move($file, $destination) {
         $result = new WFFileSystemResult();
 
         $src = WFUtility::makePath($this->getBaseDir(), $file);
@@ -478,7 +487,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param string $folder The folder to create
      * @return boolean true on success
      */
-    function folderCreate($folder) {
+    public function folderCreate($folder) {
         if (@JFolder::create($folder)) {
             $buffer = '<html><body bgcolor="#FFFFFF"></body></html>';
             JFile::write($folder . '/index.html', $buffer);
@@ -494,7 +503,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
      * @param string $new_dir The folder to be created
      * @return string $error on failure
      */
-    function createFolder($dir, $new) {
+    public function createFolder($dir, $new) {
         $dir = WFUtility::makePath(rawurldecode($dir), $new);
         $path = WFUtility::makePath($this->getBaseDir(), $dir);
         $result = new WFFileSystemResult();
@@ -504,7 +513,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
         return $result;
     }
 
-    function getDimensions($file) {
+    public function getDimensions($file) {
         $path = WFUtility::makePath($this->getBaseDir(), utf8_decode(rawurldecode($file)));
         $data = array(
             'width' => '',
@@ -520,7 +529,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
         return $data;
     }
 
-    function upload($method, $src, $dir, $name, $chunks = 1, $chunk = 0) {
+    public function upload($method = 'multipart', $src, $dir, $name, $chunks = 1, $chunk = 0) {
         jimport('joomla.filesystem.file');
 
         $path = WFUtility::makePath($this->getBaseDir(), rawurldecode($dir));
@@ -560,7 +569,7 @@ class WFJoomlaFileSystem extends WFFileSystem {
                     $result->state = true;
                     $result->path = $dest;
                 }
-                
+
                 break;
             case 'multipart-chunking' :
                 if ($safe_mode || !is_writable(dirname($dest))) {
@@ -641,22 +650,34 @@ class WFJoomlaFileSystem extends WFFileSystem {
         return $result;
     }
 
-    function exists($path) {
+    public function exists($path) {
         $path = JPath::clean(WFUtility::makePath($this->getBaseDir(), rawurldecode($path)));
 
         return is_dir($path) || is_file($path);
     }
 
-    function read($file) {
+    public function read($file) {
         $path = WFUtility::makePath($this->getBaseDir(), rawurldecode($file));
 
         return JFile::read($path);
     }
 
-    function write($file, $content) {
+    public function write($file, $content) {
         $path = WFUtility::makePath($this->getBaseDir(), rawurldecode($file));
 
         return JFile::write($path, $content);
+    }
+
+    public function is_file($path) {
+        $path = WFUtility::makePath($this->getBaseDir(), $path);
+
+        return is_file($path);
+    }
+
+    public function is_dir($path) {
+        $path = WFUtility::makePath($this->getBaseDir(), $path);
+
+        return is_dir($path);
     }
 
 }

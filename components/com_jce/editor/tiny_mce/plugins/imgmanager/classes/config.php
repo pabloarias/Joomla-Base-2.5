@@ -1,10 +1,9 @@
 <?php
+
 /**
- * @version		$Id: config.php 226 2011-06-13 09:59:05Z happy_noodle_boy $
- * @package      JCE
- * @copyright    Copyright (C) 2005 - 2009 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license      GNU/GPL
+ * @package   	JCE
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -16,7 +15,8 @@ class WFImgmanagerPluginConfig
 	{
 		$wf = WFEditor::getInstance();
 
-		$settings['imgmanager_dragdrop_upload'] = $wf->getParam('imgmanager.dragdrop_upload', 1, 0, 'boolean');
+		$settings['imgmanager_dragdrop_upload']     = $wf->getParam('imgmanager.dragdrop_upload', 1, 0, 'boolean');
+                //$settings['imgmanager_hide_xtd_buttons']    = $wf->getParam('imgmanager.hide_xtd_buttons', 1, 0, 'boolean');
 	}
 }
 ?>

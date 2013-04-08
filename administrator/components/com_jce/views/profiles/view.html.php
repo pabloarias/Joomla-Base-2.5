@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -144,7 +144,7 @@ class WFViewProfiles extends WFView {
                     )
                 );
 
-                $this->addScript(JURI::root(true) . '/administrator/components/com_jce/media/js/uploads.js?version=' . $model->getVersion());
+                $this->addScript(JURI::root(true) . '/administrator/components/com_jce/media/js/uploads.js');
                 $this->addScriptDeclaration('jQuery(document).ready(function($){$(\'input[type="file"]\').upload(' . json_encode($options) . ')});');
                 
                 // load styles
@@ -166,11 +166,11 @@ class WFViewProfiles extends WFView {
                 );
                 // Load scripts
                 foreach ($scripts as $script) {
-                    $this->addScript(JURI::root(true) . '/administrator/components/com_jce/media/js/' . $script . '?version=' . $model->getVersion());
+                    $this->addScript(JURI::root(true) . '/administrator/components/com_jce/media/js/' . $script);
                 }
                 
-                $this->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/colorpicker.js?version=' . $model->getVersion());
-                $this->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/select.js?version=' . $model->getVersion());
+                $this->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/colorpicker.js');
+                $this->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/select.js');
                 
                 // load styles
                 $this->addStyleSheet(JURI::root(true) . '/administrator/components/com_jce/media/css/profiles.css');
@@ -292,6 +292,7 @@ class WFViewProfiles extends WFView {
                     'com_languages',
                     'com_jce',
                     'com_login',
+                    'com_mailto',
                     'com_menus',
                     'com_media',
                     'com_messages',
@@ -309,13 +310,13 @@ class WFViewProfiles extends WFView {
                 $query = $db->getQuery(true);
 
                 if (is_object($query)) {
-                    $query->select('element AS value, name AS text')->from('#__extensions')->where(array('type = ' . $db->Quote('component'), 'client_id = 1', 'enabled = 1'))->order('name');
+                    $query->select('element AS value, name AS text')->from('#__extensions')->where(array('type = ' . $db->Quote('component'), 'enabled = 1'))->order('name');
                 } else {
                     $query = "SELECT `option` AS value, name AS text"
-                            . " FROM #__components"
-                            . " WHERE parent = 0"
-                            . " AND enabled = 1"
-                            . " ORDER BY name";
+                    . " FROM #__components"
+                    . " WHERE parent = 0"
+                    . " AND enabled = 1"
+                    . " ORDER BY name";
                 }
 
                 $db->setQuery($query);
@@ -530,8 +531,10 @@ class WFViewProfiles extends WFView {
                 $this->assignRef('plugins', $plugins);
 
                 $options = WFToolsHelper::getOptions($params);
+                
+                // set suhosin flag
+                $options['suhosin'] = ini_get('suhosin.post.max_vars') && (int) ini_get('suhosin.post.max_vars') < 1000;
 
-                //$this->document->addScriptDeclaration('jQuery(document).ready(function($){$.jce.Profiles.init(' . json_encode($options) . ')});');
                 $this->addScriptDeclaration('jQuery(document).ready(function($){$.jce.Profiles.init(' . json_encode($options) . ')});');
 
                 // set toolbar

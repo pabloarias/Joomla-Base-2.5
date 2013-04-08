@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -13,6 +13,7 @@ defined('_JEXEC') or die('RESTRICTED');
 
 wfimport('editor.libraries.classes.editor');
 
+wfimport('editor.libraries.classes.language');
 wfimport('editor.libraries.classes.utility');
 wfimport('editor.libraries.classes.token');
 wfimport('editor.libraries.classes.document');
@@ -25,7 +26,7 @@ wfimport('editor.libraries.classes.request');
  *
  * @package	JCE Site
  */
-class WFEditorPlugin extends WFEditor {
+class WFEditorPlugin extends JObject {
 
     private $_alerts = array();
 
@@ -38,43 +39,51 @@ class WFEditorPlugin extends WFEditor {
         // Call parent
         parent::__construct();
 
-        $db = JFactory::getDBO();
-
         // get plugin name
         $plugin = JRequest::getCmd('plugin');
 
-        // check plugin
-        if ($this->checkPlugin($plugin)) {
-            $this->set('name', $plugin);
+        // check plugin is valid
+        //$this->checkPlugin($plugin) or die('RESTRICTED');
+        
+        // set plugin name
+        $this->set('name', $plugin);
 
-            if (!array_key_exists('type', $config)) {
-                $config['type'] = 'standard';
-            }
-
-            if (!array_key_exists('base_path', $config)) {
-                $config['base_path'] = WF_EDITOR_PLUGINS . '/' . $plugin;
-            }
-
-            if (!defined('WF_EDITOR_PLUGIN')) {
-                define('WF_EDITOR_PLUGIN', $config['base_path']);
-            }
-
-            if (!array_key_exists('view_path', $config)) {
-                $config['view_path'] = WF_EDITOR_PLUGINS . '/' . $plugin;
-            }
-
-            if (!array_key_exists('layout', $config)) {
-                $config['layout'] = 'default';
-            }
-
-            if (!array_key_exists('template_path', $config)) {
-                $config['template_path'] = WF_EDITOR_PLUGIN . '/tmpl';
-            }
-
-            $this->setProperties($config);
-        } else {
-            die(JError::raiseError(403, 'RESTRICTED ACCESS'));
+        // set config
+        if (!array_key_exists('type', $config)) {
+            $config['type'] = 'standard';
         }
+
+        if (!array_key_exists('base_path', $config)) {
+            $config['base_path'] = WF_EDITOR_PLUGINS . '/' . $plugin;
+        }
+
+        if (!defined('WF_EDITOR_PLUGIN')) {
+            define('WF_EDITOR_PLUGIN', $config['base_path']);
+        }
+
+        if (!array_key_exists('view_path', $config)) {
+            $config['view_path'] = WF_EDITOR_PLUGINS . '/' . $plugin;
+        }
+
+        if (!array_key_exists('layout', $config)) {
+            $config['layout'] = 'default';
+        }
+
+        if (!array_key_exists('template_path', $config)) {
+            $config['template_path'] = WF_EDITOR_PLUGIN . '/tmpl';
+        }
+
+        // backwards compatability
+        if (!array_key_exists('colorpicker', $config)) {
+            $config['colorpicker'] = in_array($plugin, array('imgmanager_ext', 'caption', 'mediamanager'));
+        }
+        
+        // backwards compatability
+        if (!array_key_exists('mediaplayer', $config)) {
+            $config['mediaplayer'] = false;
+        }
+
+        $this->setProperties($config);
     }
 
     /**
@@ -87,7 +96,7 @@ class WFEditorPlugin extends WFEditor {
      * @return	JCE  The editor object.
      * @since	1.5
      */
-    public function & getInstance($config = array()) {
+    public function getInstance($config = array()) {
         static $instance;
 
         if (!is_object($instance)) {
@@ -102,7 +111,7 @@ class WFEditorPlugin extends WFEditor {
      * @access public
      * @return WFView
      */
-    public function & getView() {
+    public function getView() {
         static $view;
 
         if (!is_object($view)) {
@@ -113,11 +122,17 @@ class WFEditorPlugin extends WFEditor {
                         'name' => $this->get('name'),
                         'layout' => $this->get('layout')
                     ));
-
-            $view->assign('plugin', $this);
         }
 
+        $view->assign('plugin', $this);
+
         return $view;
+    }
+
+    protected function getVersion() {
+        $wf = WFEditor::getInstance();
+
+        return $wf->getVersion();
     }
 
     private function isRequest() {
@@ -125,51 +140,72 @@ class WFEditorPlugin extends WFEditor {
         return ($format == 'json' || $format == 'raw') && (JRequest::getVar('json') || JRequest::getWord('action'));
     }
 
+    protected function getProfile($plugin = null) {
+        $wf = WFEditor::getInstance();
+
+        return $wf->getProfile($plugin);
+    }
+
     public function execute() {
-        WFToken::checkToken() or die('RESTRICTED ACCESS');
+        WFToken::checkToken() or die('Access to this resource is restricted');
 
         // JSON request or upload action
         if ($this->isRequest()) {
             $request = WFRequest::getInstance();
             $request->process();
         } else {
-            $version    = $this->getVersion();
-            $name       = $this->getName();
+            $wf = WFEditor::getInstance();
+
+            $version = $this->getVersion();
+            $name = $this->getName();
 
             // process javascript languages
             if (JRequest::getWord('task') == 'loadlanguages') {
                 wfimport('admin.classes.language');
 
                 $parser = new WFLanguageParser(array(
-                    'plugins'   => array($name),
-                    'sections'  => array('dlg', $name . '_dlg'),
-                    'mode'      => 'plugin'
-                ));
+                            'plugins' => array($name),
+                            'sections' => array('dlg', $name . '_dlg', 'colorpicker'),
+                            'mode' => 'plugin'
+                        ));
 
                 $data = $parser->load();
                 $parser->output($data);
             }
 
-            $this->loadLanguage('com_jce', JPATH_ADMINISTRATOR);
+            // load core language
+            WFLanguage::load('com_jce', JPATH_ADMINISTRATOR);
             // Load Plugin language
-            $this->loadPluginLanguage();
+            WFLanguage::load('com_jce_' . trim($this->getName()));
+            
+            // set default plugin version
+            $plugin_version = '';
+            
+            $manifest = WF_EDITOR_PLUGIN . '/' . $name . '.xml';
+            
+            if (is_file($manifest)) {
+                $xml = WFXMLHelper::parseInstallManifest($manifest);
+                
+                if ($xml && isset($xml['version'])) {
+                    $plugin_version = $xml['version'];
+                }
+            }
 
-            $xml = WFXMLHelper::parseInstallManifest(WF_EDITOR_PLUGIN . '/' . $name . '.xml');
-
-            if (isset($xml['version'])) {
-                $version = $xml['version'];
+            // add plugin version
+            if ($plugin_version) {
+                $version .= '-' . preg_replace('#[^a-z0-9]+#i', '', $plugin_version);
             }
 
             // create the document
             $document = WFDocument::getInstance(array(
-                        'version' => $version,
-                        'title' => WFText::_('WF_' . strtoupper($this->getName() . '_TITLE')),
-                        'name' => $name,
-                        'language' => $this->getLanguageTag(),
-                        'direction' => $this->getLanguageDir(),
-                        'compress_javascript' => $this->getParam('editor.compress_javascript', 0),
-                        'compress_css' => $this->getParam('editor.compress_css', 0)
-                    ));
+                'version'   => $version,
+                'title'     => WFText::_('WF_' . strtoupper($this->getName() . '_TITLE')),
+                'name'      => $name,
+                'language'  => WFLanguage::getTag(),
+                'direction' => WFLanguage::getDir(),
+                'compress_javascript' => $this->getParam('editor.compress_javascript', 0),
+                'compress_css' => $this->getParam('editor.compress_css', 0)
+            ));
 
             // set standalone mode
             $document->set('standalone', JRequest::getInt('standalone', 0));
@@ -177,10 +213,8 @@ class WFEditorPlugin extends WFEditor {
             // create display
             $this->display();
 
-            if (WF_INI_LANG) {
-                // ini language
-                $document->addScript(array('index.php?option=com_jce&view=editor&' . $document->getQueryString(array('task' => 'loadlanguages'))), 'joomla');
-            }
+            // ini language
+            $document->addScript(array('index.php?option=com_jce&view=editor&' . $document->getQueryString(array('task' => 'loadlanguages', 'lang' => WFLanguage::getCode()))), 'joomla');
 
             // pack assets if required
             $document->pack(true, $this->getParam('editor.compress_gzip', 0));
@@ -211,17 +245,24 @@ class WFEditorPlugin extends WFEditor {
 
         $document->addScript(array('jquery-' . WF_JQUERY . '.min', 'jquery-ui-' . WF_JQUERYUI . '.custom.min', 'jquery.ui.touch-punch.min'), 'jquery');
 
+        // add colorpicker
+        if ($this->get('colorpicker')) {
+            wfimport('admin.helpers.tools');
+
+            $document->addScript(array('colorpicker'), 'libraries');
+            $document->addScriptDeclaration('ColorPicker.settings=' . json_encode(array('template_colors' => WFToolsHelper::getTemplateColors(), 'custom_colors' => $this->getParam('editor.custom_colors', ''))) . ';');
+        }
+
         $document->addScript(array(
             'html5',
             'select',
             'tips',
-            'colorpicker',
             'plugin'
-                ), 'libraries');
+        ), 'libraries');
 
         // load plugin dialog language file if necessary
         if ($this->getParam('editor.compress_javascript', 0)) {
-            $file = "/langs/" . $this->getLanguage() . "_dlg.js";
+            $file = "/langs/" . WFLanguage::getCode() . "_dlg.js";
 
             if (!JFile::exists(WF_EDITOR_PLUGIN . $file)) {
                 $file = "/langs/en_dlg.js";
@@ -232,9 +273,14 @@ class WFEditorPlugin extends WFEditor {
             }
         }
 
-        $document->addStyleSheet(array(
-            'plugin'
-                ), 'libraries');
+        $document->addStyleSheet(array('plugin'), 'libraries');
+        
+        // MediaElement in the future perhaps?
+        
+        /*if ($this->get('mediaplayer')) {
+            $document->addScript(array('mediaelement-and-player.min'), 'mediaelement');
+            $document->addStyleSheet(array('mediaelementplayer.min'), 'mediaelement');
+        }*/
 
         // add custom plugin.css if exists
         if (is_file(JPATH_SITE . '/media/jce/css/plugin.css')) {
@@ -260,13 +306,21 @@ class WFEditorPlugin extends WFEditor {
      */
     public function getDefaults($defaults = array()) {
         $name = $this->getName();
+        
+        // get manifest path
+        $manifest = WF_EDITOR_PLUGIN . '/' . $name . '.xml';
+        
+        // get parameter defaults
+        if (is_file($manifest)) {
+            $params = $this->getParams(array(
+                'key'   => $name,
+                'path'  => $manifest
+            ));
+            
+            return array_merge($defaults, (array) $params->getAll('defaults'));
+        }
 
-        $params = $this->getParams(array(
-            'key' => $name,
-            'path' => WF_EDITOR_PLUGIN . '/' . $name . '.xml'
-                ));
-
-        return array_merge($defaults, (array) $params->getAll('defaults'));
+        return $defaults;
     }
 
     /**
@@ -279,23 +333,15 @@ class WFEditorPlugin extends WFEditor {
     public function checkPlugin($plugin = null) {
         if ($plugin) {
             // check existence of plugin directory
-            if (is_dir(WF_EDITOR_PLUGINS . '/' . $plugin) || is_dir(JPATH_PLUGINS . '/jce/' . $plugin)) {
-                // check profile	
+            if (is_dir(WF_EDITOR_PLUGINS . '/' . $plugin)) {
+                // get profile	
                 $profile = $this->getProfile($plugin);
-                //return is_object($profile) && isset($profile->id) && $profile->published = 1 && in_array($plugin, explode(',', $profile->plugins));
-                return is_object($profile) && $profile->id;
+                // check for valid object and profile id
+                return is_object($profile) && isset($profile->id);
             }
         }
 
         return false;
-    }
-
-    /**
-     * Load current plugin language file
-     * @access private
-     */
-    private function loadPluginLanguage() {
-        $this->loadLanguage('com_jce_' . trim($this->getName()));
     }
 
     /**
@@ -381,6 +427,12 @@ class WFEditorPlugin extends WFEditor {
         return $settings;
     }
 
+    public function getParams($options = array()) {
+        $wf = WFEditor::getInstance();
+
+        return $wf->getParams($options);
+    }
+
     /**
      * Get a parameter by key
      * 
@@ -398,38 +450,17 @@ class WFEditorPlugin extends WFEditor {
         // get all keys
         $keys = explode('.', $key);
 
+        $wf = WFEditor::getInstance();
+
         // root key set
-        if ($keys[0] === 'editor' || $keys[0] === $name) {
-            return parent::getParam($key, $fallback, $default, $type, $allowempty);
+        if ($keys[0] == 'editor' || $keys[0] == $name) {
+            return $wf->getParam($key, $fallback, $default, $type, $allowempty);
             // no root key set, treat as shared param
         } else {
-            // get all params
-            $params = parent::getParams();
-
-            // check plugin param and fallback to editor param
-            $param = $params->get($name . '.' . $key, $params->get('editor.' . $key, $fallback, $allowempty), $allowempty);
-
-            if (is_string($param) && $type === 'string') {
-                $param = self::cleanParam($param);
-            }
-
-            if (is_numeric($default) && $type === 'integer') {
-                $default = (float) $default;
-            }
-
-            if (is_numeric($param) && $type === 'integer') {
-                $param = (float) $param;
-            }
-
-            if ($param === $default) {
-                return '';
-            }
-
-            if ($type == 'boolean') {
-                $param = (bool) $param;
-            }
-
-            return $param;
+            // get fallback
+            $fallback = $wf->getParam('editor.' . $key, $fallback, $allowempty);
+            // get param for plugin
+            return $wf->getParam($name . '.' . $key, $fallback, $default, $type, $allowempty);
         }
     }
 
@@ -442,7 +473,7 @@ class WFEditorPlugin extends WFEditor {
      * @return 			Boolean
      */
     public function checkAccess($option, $default = 0) {
-        return (bool) self::getParam($option, $default);
+        return (bool) $this->getParam($option, $default);
     }
 
 }

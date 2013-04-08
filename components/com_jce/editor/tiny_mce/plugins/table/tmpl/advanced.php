@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -10,7 +11,6 @@
  */
 defined('_JEXEC') or die('RESTRICTED');
 
-$plugin = WFTablesPlugin::getInstance();
 ?>
 <h4><?php echo WFText::_('WF_TABLE_ADVANCED_PROPS'); ?></h4>
 <table border="0" cellpadding="0" cellspacing="4">
@@ -71,7 +71,7 @@ $plugin = WFTablesPlugin::getInstance();
                 </tr>
             </table></td>
     </tr>
-    <?php if ($plugin->getContext() == 'table') :
+    <?php if ($this->plugin->getContext() == 'table') :
         ?>
         <tr>
             <td class="column1"><label for="tframe">

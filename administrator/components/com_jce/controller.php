@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -57,7 +57,7 @@ class WFController extends WFControllerBase {
      * and includes addition of the JDocument Object with required scripts and styles
      * @return object
      */
-    public function getView($name = '', $type = '', $prefix = '', $config = array()) {
+    public function getView($name = '', $type = '', $prefix = '', $config = array()) {        
         $language = JFactory::getLanguage();
         $language->load('com_jce', JPATH_ADMINISTRATOR);
 
@@ -84,34 +84,36 @@ class WFController extends WFControllerBase {
         
         $bootstrap  = class_exists('JHtmlBootstrap');
         $jquery     = class_exists('JHtmlJquery'); 
-        
-        $view->addStyleSheet(JURI::root(true) . '/administrator/components/com_jce/media/css/global.css?version=' . $model->getVersion());
-        
+
         // using JUI...
         if (!$bootstrap || !$jquery) {
             // set device-width meta
             $document->setMetaData('meta', 'width=device-width, initial-scale=1.0');
-            
-            $view->addStyleSheet(JURI::root(true) . '/administrator/components/com_jce/media/css/styles-ui.css?version=' . $model->getVersion());
 
             // JQuery UI
-            $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery-' . WF_JQUERY . '.min.js?version=' . $model->getVersion());
+            $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery-' . WF_JQUERY . '.min.js');
             // jQuery noConflict
             $view->addScriptDeclaration('jQuery.noConflict();');
         }
-        
+
         // JQuery UI
-        $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery-ui-' . WF_JQUERYUI . '.custom.min.js?version=' . $model->getVersion());
+        $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery-ui-' . WF_JQUERYUI . '.custom.min.js');
         // JQuery Touch Punch
-        $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery.ui.touch-punch.min.js?version=' . $model->getVersion());
+        $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/jquery/js/jquery.ui.touch-punch.min.js');
 
         $scripts = array();
 
         switch ($name) {
             case 'help':
-                $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/help.js?version=' . $model->getVersion());
+                $view->addScript(JURI::root(true) . '/components/com_jce/editor/libraries/js/help.js');                
                 break;
             default:
+                $view->addStyleSheet(JURI::root(true) . '/administrator/components/com_jce/media/css/global.css');
+                
+                if (!$bootstrap || !$jquery) {
+                    $view->addStyleSheet(JURI::root(true) . '/administrator/components/com_jce/media/css/styles-ui.css');
+                }
+
                 // load Joomla! core javascript
                 if (method_exists('JHtml', 'core')) {
                     JHtml::core();
@@ -317,7 +319,21 @@ class WFController extends WFControllerBase {
 
         return false;
     }
+    
+    public function cleanInput($input, $method = 'string') {
+        $filter = JFilterInput::getInstance();
+        $input  = (array) $input;
 
+        foreach($input as $k => $v) {
+            if (is_array($v)) {
+                $input[$k] = $this->cleanInput($v, $method);
+            } else {
+                $input[$k] = $filter->clean($v, $method);
+            }
+        }
+        
+        return $input;
+    }
 }
 
 ?>

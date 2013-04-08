@@ -1,22 +1,4 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 (function(){var DOM=tinymce.DOM,Event=tinymce.dom.Event;tinymce.create('tinymce.plugins.FullScreenPlugin',{init:function(ed,url){var t=this,s={},vp,posCss;t.editor=ed;ed.onFullScreen=new tinymce.util.Dispatcher();ed.addCommand('mceFullScreen',function(){var win,de=DOM.doc.documentElement;if(ed.getParam('fullscreen_is_enabled')){DOM.win.setTimeout(function(){Event.remove(DOM.win,'resize',t.resizeFunc);tinyMCE.get(ed.getParam('fullscreen_editor_id')).setContent(ed.getContent());tinyMCE.remove(ed);DOM.remove('mce_fullscreen_container');de.style.overflow=ed.getParam('fullscreen_html_overflow');DOM.setStyle(DOM.doc.body,'overflow',ed.getParam('fullscreen_overflow'));DOM.win.scrollTo(ed.getParam('fullscreen_scrollx'),ed.getParam('fullscreen_scrolly'));tinyMCE.get(ed.getParam('fullscreen_editor_id')).onFullScreen.dispatch(false,ed.settings);},10);return;}
 s.fullscreen_overflow=DOM.getStyle(DOM.doc.body,'overflow',1)||'auto';s.fullscreen_html_overflow=DOM.getStyle(de,'overflow',1);vp=DOM.getViewPort();s.fullscreen_scrollx=vp.x;s.fullscreen_scrolly=vp.y;if(tinymce.isOpera&&s.fullscreen_overflow=='visible')
 s.fullscreen_overflow='auto';if(tinymce.isIE&&s.fullscreen_overflow=='scroll')

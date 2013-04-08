@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -153,11 +153,9 @@ class WFInstallerPlugin extends JObject {
         if ($install) {
             // Make sure it hasn't already been copied (this would be an error in the xml install file)
             if (!file_exists($this->parent->getPath('extension_root') . '/' . $install)) {
-                $path['src'] = $this->parent->getPath('source') . '/' . $install;
-                $path['dest'] = $this->parent->getPath('extension_root') . '/' . $install;
-                if (!$this->parent->copyFiles(array(
-                            $path
-                        ))) {
+                $path['src']    = $this->parent->getPath('source') . '/' . $install;
+                $path['dest']   = $this->parent->getPath('extension_root') . '/' . $install;
+                if (!$this->parent->copyFiles(array($path))) {
                     // Install failed, rollback changes
                     $this->parent->abort(WFText::_('WF_INSTALLER_PLUGIN_INSTALL') . ' : ' . WFText::_('WF_INSTALLER_PHP_INSTALL_FILE_ERROR'));
                     return false;

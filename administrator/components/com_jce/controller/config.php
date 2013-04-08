@@ -1,14 +1,14 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-
 defined('_JEXEC') or die('RESTRICTED');
 
 /**
@@ -18,62 +18,61 @@ defined('_JEXEC') or die('RESTRICTED');
  * @subpackage	Plugins
  * @since 1.5
  */
-class WFControllerConfig extends WFController
-{
-	/**
-	 * Custom Constructor
-	 */
-	function __construct( $default = array())
-	{		
-		parent::__construct();
-                
-                $this->registerTask('apply', 'save');
-	}
+class WFControllerConfig extends WFController {
 
-	public function save()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or die('RESTRICTED');
+    /**
+     * Custom Constructor
+     */
+    function __construct($default = array()) {
+        parent::__construct();
 
-		$db 	= JFactory::getDBO();
+        $this->registerTask('apply', 'save');
+    }
 
-		$task 	= $this->getTask();
+    public function save() {
+        // Check for request forgeries
+        JRequest::checkToken() or die('RESTRICTED');
 
-		$client = JRequest::getWord( 'client', 'site' );
-		
-		// get params
-		$component 	= WFExtensionHelper::getComponent();
-		// create params object from json string
-		$params 	= json_decode($component->params);
+        $db     = JFactory::getDBO();
+        $task   = $this->getTask();
 
-		$registry = new JRegistry();
-		$registry->loadArray(JRequest::getVar('params', '', 'POST', 'ARRAY'));
-		// set preference object
-		$params->editor = $registry->toObject();
-		// set params as JSON string
-		$component->params = json_encode($params);
+        // get params
+        $component = WFExtensionHelper::getComponent();
+        // create params array from json string
+        $params = json_decode($component->params, true);
+        // get params data
+        $data   = JRequest::getVar('params', '', 'POST', 'ARRAY');
+        // clean input data
+        $data   = $this->cleanInput($data);
+        
+        // set editor params
+        $params['editor'] = $data;
+        
+        // set params as JSON string
+        $component->params = json_encode($params);
 
-		if (!$component->check()) {
-			JError::raiseError(500, $component->getError() );
-		}
-		if (!$component->store()) {
-			JError::raiseError(500, $component->getError() );
-		}
-		$component->checkin();
-	
-		$msg = JText::sprintf('WF_CONFIG_SAVED');		
-	
-		switch ( $task )
-		{
-			case 'apply':
-				$this->setRedirect( 'index.php?option=com_jce&view=config', $msg );
-				break;
+        if (!$component->check()) {
+            JError::raiseError(500, $component->getError());
+        }
+        if (!$component->store()) {
+            JError::raiseError(500, $component->getError());
+        }
+        $component->checkin();
 
-			case 'save':
-			default:
-				$this->setRedirect( 'index.php?option=com_jce&view=cpanel', $msg );
-				break;
-		}
-	}
+        $msg = JText::sprintf('WF_CONFIG_SAVED');
+
+        switch ($task) {
+            case 'apply':
+                $this->setRedirect('index.php?option=com_jce&view=config', $msg);
+                break;
+
+            case 'save':
+            default:
+                $this->setRedirect('index.php?option=com_jce&view=cpanel', $msg);
+                break;
+        }
+    }
+
 }
+
 ?>

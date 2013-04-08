@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @package     JCE
- * @copyright   @@opcyright@@
- * @author      Ryan Demmer
- * @license     GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
+ * @package   	JCE
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -22,9 +21,7 @@ class WFFormatPluginConfig {
             $settings['plugins'][] = 'format';
         }
 
-        // Encoding
-        $settings['entity_encoding'] = $wf->getParam('editor.entity_encoding', 'raw', 'named');
-        $settings['inline_styles'] = $wf->getParam('editor.inline_styles', 1, 1, 'boolean');
+        $settings['inline_styles'] = $wf->getParam('editor.inline_styles', 1, 1);
 
         // Paragraph handling
         $settings['forced_root_block'] = $wf->getParam('editor.forced_root_block', 'p');
@@ -77,16 +74,17 @@ class WFFormatPluginConfig {
             'aside' => 'advanced.aside',
             'figure' => 'advanced.figure',
             'dt' => 'advanced.dt',
-            'dd' => 'advanced.dd'
+            'dd' => 'advanced.dd',
+            'div_container' => 'advanced.div_container'
         );
 
-        $html5 = array('section', 'article', 'hgroup', 'aside', 'figure');
-        $schema = $wf->getParam('editor.schema', 'html4');
-        $verify = (bool) $wf->getParam('editor.verify_html', 0);
+        $html5      = array('section', 'article', 'hgroup', 'aside', 'figure');
+        $schema     = $wf->getParam('editor.schema', 'html4');
+        $verify     = (bool) $wf->getParam('editor.verify_html', 0);
 
-        $tmpblocks = $wf->getParam('editor.theme_advanced_blockformats', 'p,div,address,pre,h1,h2,h3,h4,h5,h6,code,samp,span,section,article,hgroup,aside,figure,dt,dd', 'p,address,pre,h1,h2,h3,h4,h5,h6');
-        $list = array();
-        $blocks = array();
+        $tmpblocks  = $wf->getParam('editor.theme_advanced_blockformats', 'p,div,address,pre,h1,h2,h3,h4,h5,h6,code,samp,span,section,article,hgroup,aside,figure,dt,dd', 'p,address,pre,h1,h2,h3,h4,h5,h6');
+        $list       = array();
+        $blocks     = array();
 
         // make an array
         if (is_string($tmpblocks)) {
@@ -106,6 +104,10 @@ class WFFormatPluginConfig {
             }
 
             $blocks[] = $v;
+            
+            if ($v == 'div') {
+                $list['advanced.div_container'] = 'div_container';
+            }
         }
 
         $selector = $settings['removeformat_selector'] == '' ? 'span,b,strong,em,i,font,u,strike' : $settings['removeformat_selector'];

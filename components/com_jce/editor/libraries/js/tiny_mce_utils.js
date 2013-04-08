@@ -1,22 +1,4 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 TinyMCE_Utils={getColorPickerHTML:function(id){var h="";h+='<a id="'+id+'_pick_link" href="javascript:;" onclick="tinyMCEPopup.pickColor(event,\''+id+'\');" onmousedown="return false;" class="pickcolor">';h+='<span id="'+id+'_pick" title="'+tinyMCEPopup.getLang('browse')+'"></span></a>';return h;},updateColor:function(parent){if(typeof parent=='string'){parent=document.getElementById(parent);}
 document.getElementById(parent.id+'_pick').style.backgroundColor=parent.value;},setBrowserDisabled:function(id,state){var img=document.getElementById(id);var lnk=document.getElementById(id+"_link");if(lnk){if(state){lnk.setAttribute("realhref",lnk.getAttribute("href"));lnk.removeAttribute("href");tinyMCEPopup.dom.addClass(img,'disabled');}else{lnk.setAttribute("href",lnk.getAttribute("realhref"));tinyMCEPopup.dom.removeClass(img,'disabled');}}},getBrowserHTML:function(id,target_form_element,type,prefix){var option=prefix+"_"+type+"_browser_callback",cb,html;var cb,html;cb=tinyMCEPopup.getParam(option,tinyMCEPopup.getParam("file_browser_callback"));if(!cb){return"";}
 html="";html+='<a id="'+id+'_link" href="javascript:TinyMCE_Utils.openBrowser(\''+id+'\',\''+target_form_element+'\', \''+type+'\',\''+option+'\');" onmousedown="return false;" class="browse">';html+='<span class="'+type+'" id="'+id+'" title="'+tinyMCEPopup.getLang('browse')+'"></span></a>';return html;},openBrowser:function(img,input,type,option){if(typeof img=='string'){img=document.getElementById(img);}

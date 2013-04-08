@@ -1,28 +1,10 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 function IeCursorFix(){return true;}
 function jInsertEditorText(text,editor){WFEditor.insert(editor,text);}
 (function(){var winLoaded=false,each=tinymce.each,explode=tinymce.explode;var WFEditor={_bookmark:{},getSite:function(base){var site,host;var u=document.location.href;if(base.indexOf('http')!==-1){host=base.substr(base.indexOf('://')+3);site=host.substr(host.indexOf('/'));}else{site=u.substr(0,u.indexOf(base)+base.length);}
 if(u.indexOf('/administrator/')!==-1){site=site+'administrator/';}
 return site;},init:function(settings){var self=this;var base=settings.base_url;var site=this.getSite(base);if(/https:\/\//.test(document.location.href)){base=base.replace(/http:/,'https:');}
-settings.token=settings.token||0;settings.component_id=settings.component_id||0;window.tinyMCEPreInit={};tinymce.extend(tinymce,{baseURL:base+'components/com_jce/editor/tiny_mce',suffix:'',query:settings.token+'=1&component_id='+settings.component_id});var indent='p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,ul,li,area,table,thead,tfoot,tbody,tr,section,article,hgroup,aside,figure,object,video,audio';this.settings=tinymce.extend({document_base_url:base,site_url:site,mode:'textareas',editor_selector:'wfEditor',editor_deselector:'wfNoEditor',urlconverter_callback:'WFEditor.convertURL',popup_css:base+'components/com_jce/editor/libraries/css/popup.css',add_form_submit_trigger:false,submit_patch:false,theme:'none',invalid_elements:'applet,iframe,object,embed,script,style,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',plugins:'',whitespace_elements:'pre,script,style,textarea,code',fix_list_elements:true,formats:{'span':{inline:'span'},'section':{block:'section',wrapper:true,merge_siblings:false},'article':{block:'article',wrapper:true,merge_siblings:false},'hroup':{block:'hgroup',wrapper:true},'aside':{block:'aside',wrapper:true},'figure':{block:'figure',wrapper:true},'dl':{block:'dl',wrapper:true}},indent_before:indent,indent_after:indent,compress:{'css':false,'javascript':false}},settings);if(this.settings){try{if(this.settings.compress.css){tinymce.extend(this.settings,{content_css:false,editor_css:false});}
+settings.token=settings.token||0;settings.component_id=settings.component_id||0;window.tinyMCEPreInit={};tinymce.extend(tinymce,{baseURL:base+'components/com_jce/editor/tiny_mce',suffix:'',query:settings.token+'=1&component_id='+settings.component_id});var indent='p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,ul,li,area,table,thead,tfoot,tbody,tr,section,article,hgroup,aside,figure,object,video,audio';this.settings=tinymce.extend({document_base_url:base,site_url:site,mode:'textareas',editor_selector:'wfEditor',editor_deselector:'wfNoEditor',urlconverter_callback:'WFEditor.convertURL',popup_css:base+'components/com_jce/editor/libraries/css/popup.css',add_form_submit_trigger:false,submit_patch:false,theme:'none',invalid_elements:'applet,iframe,object,embed,script,style,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',plugins:'',whitespace_elements:'pre,script,style,textarea,code',fix_list_elements:true,formats:{'div_container':{block:'div',wrapper:true},'span':{inline:'span'},'section':{block:'section',wrapper:true,merge_siblings:false},'article':{block:'article',wrapper:true,merge_siblings:false},'hroup':{block:'hgroup',wrapper:true},'aside':{block:'aside',wrapper:true},'figure':{block:'figure',wrapper:true},'dl':{block:'dl',wrapper:true},'code':{inline:'code'},'samp':{inline:'samp'}},indent_before:indent,indent_after:indent,compress:{'css':false,'javascript':false}},settings);if(this.settings){try{if(this.settings.compress.css){tinymce.extend(this.settings,{content_css:false,editor_css:false});}
 if(this.settings.compress.javascript){this._markLoaded();}
 var s=this.settings;if(s.skip_plugin_languages){var sl=tinymce.ScriptLoader,URI=tinyMCE.baseURI;each(s.skip_plugin_languages.split(','),function(n){if(n){sl.markDone(URI.toAbsolute('plugins/'+n+'/langs/'+s.language+'.js'));sl.add(URI.toAbsolute('plugins/'+n+'/langs/en.js'));}});}
 WFEditor.load();}catch(e){}}},_markLoaded:function(){var self=this,s=this.settings,each=tinymce.each,ln=s.language.split(',');var suffix=s.suffix||'';function load(u){tinymce.ScriptLoader.markDone(tinyMCE.baseURI.toAbsolute(u));}

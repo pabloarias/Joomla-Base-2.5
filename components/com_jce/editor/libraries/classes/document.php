@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -249,6 +249,9 @@ class WFDocument extends JObject {
                 case 'jquery':
                     $pre = $base . 'libraries/jquery/' . $type;
                     break;
+                case 'mediaelement':
+                    $pre = $base . 'libraries/mediaelement/' . $type;
+                    break;
                 case 'bootstrap':
                     $pre = $base . 'libraries/bootstrap/' . $type;
                     break;
@@ -378,7 +381,7 @@ class WFDocument extends JObject {
 
         foreach ($files as $file) {
             // external link
-            if (preg_match('#^(http:)?\/\/#i', $file) || strpos($file, 'index.php?option=com_jce') !== false) {
+            if (strpos($file, '://') !== false || strpos($file, 'index.php?option=com_jce') !== false) {
                 $this->_scripts[$file] = $type;
             } else {
                 $file = $this->buildScriptPath($file, $root);
@@ -426,6 +429,10 @@ class WFDocument extends JObject {
         } else {
             $this->_script[strtolower($type)] .= chr(13) . $content;
         }
+    }
+
+    private function getScriptDeclarations() {
+        return $this->_script;
     }
 
     private function getScripts() {
@@ -481,7 +488,7 @@ class WFDocument extends JObject {
 
         if (preg_match('/\d+/', $version)) {
             // set version
-            $query['version'] = preg_replace('/[^a-z0-9]/i', '', $version);
+            $query['v'] = preg_replace('#[^a-z0-9]#i', '', $version);
         }
 
         $output = array();
@@ -500,8 +507,6 @@ class WFDocument extends JObject {
         $version = $this->get('version', '000000');
         // set title		
         $output = '<title>' . $this->getTitle() . '</title>' . "\n";
-        // create timestamp
-        $stamp = preg_match('/\d+/', $version) ? '?version=' . $version : '';
 
         // render stylesheets
         if ($this->get('compress_css', 0)) {
@@ -509,8 +514,15 @@ class WFDocument extends JObject {
 
             $output .= "\t\t<link href=\"" . $file . "\" rel=\"stylesheet\" type=\"text/css\" />\n";
         } else {
-            foreach ($this->_styles as $k => $v) {
-                $output .= "\t\t<link href=\"" . $k . $stamp . "\" rel=\"stylesheet\" type=\"" . $v . "\" />\n";
+            foreach ($this->_styles as $src => $type) {
+                
+                $stamp = '';
+                
+                if (strpos($src, '://') === false) {
+                    $stamp = strpos($src, '?') === false ? '?v=' . $version : '&v=' . $version;
+                }
+                
+                $output .= "\t\t<link href=\"" . $src . $stamp . "\" rel=\"stylesheet\" type=\"" . $type . "\" />\n";
             }
         }
 
@@ -520,13 +532,19 @@ class WFDocument extends JObject {
             $output .= "\t\t<script type=\"text/javascript\" src=\"" . $script . "\"></script>\n";
         } else {
             foreach ($this->_scripts as $src => $type) {
+                $stamp = '';
+                
+                if (strpos($src, '://') === false) {
+                    $stamp = strpos($src, '?') === false ? '?v=' . $version : '&v=' . $version;
+                }
+                
                 $output .= "\t\t<script type=\"" . $type . "\" src=\"" . $src . $stamp . "\"></script>\n";
             }
-        }
 
-        // Script declarations
-        foreach ($this->_script as $type => $content) {
-            $output .= "\t\t<script type=\"" . $type . "\">" . $content . "</script>";
+            // Script declarations
+            foreach ($this->_script as $type => $content) {
+                $output .= "\t\t<script type=\"" . $type . "\">" . $content . "</script>";
+            }
         }
 
         // Other head data
@@ -587,38 +605,41 @@ class WFDocument extends JObject {
             WFToken::checkToken('GET') or die('RESTRICTED');
 
             wfimport('admin.classes.packer');
+            wfimport('admin.classes.language');
 
             $component = WFExtensionHelper::getComponent();
             $params = new WFParameter($component->params);
 
             $type = JRequest::getWord('type', 'javascript');
 
-            // javascript
-            $packer = new WFPacker(array(
-                        'type' => $type
-                    ));
+            // create packer
+            $packer = new WFPacker(array('type' => $type));
 
-            $files = array();
+            $files  = array();
 
             switch ($type) {
                 case 'javascript':
+                    $data = '';
+
                     foreach ($this->getScripts() as $script => $type) {
                         $script .= preg_match('/\.js$/', $script) ? '' : '.js';
                         $files[] = $this->urlToPath($script);
                     }
 
-                    if (WF_INI_LANG) {
-                        wfimport('admin.classes.language');
+                    // parse ini language files
+                    $parser = new WFLanguageParser(array(
+                                'plugins' => array($this->getName()),
+                                'sections' => array('dlg', $this->getName() . '_dlg'),
+                                'mode' => 'plugin'
+                            ));
+                    $data .= $parser->load();
 
-                        $parser = new WFLanguageParser(array(
-                            'plugins'   => array($this->getName()),
-                            'sections'  => array('dlg', $this->getName() . '_dlg'),
-                            'mode'      => 'plugin'
-                        ));
-
-                        $data = $parser->load();
-                        $packer->setContentEnd($data);
+                    // add script declarations
+                    foreach ($this->getScriptDeclarations() as $script) {
+                        $data .= $script;
                     }
+
+                    $packer->setContentEnd($data);
 
                     break;
                 case 'css':

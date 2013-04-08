@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -37,8 +37,9 @@ class WFLinkSearchExtension extends WFSearchExtension {
         }
 
         foreach ($plugins as $plugin) {
-            // get saerch plugins
-            JPluginHelper::importPlugin('search', $plugin);
+            if (JPluginHelper::isEnabled('search', $plugin)) {
+                JPluginHelper::importPlugin('search', $plugin);
+            }
         }
     }
 
@@ -119,7 +120,7 @@ class WFLinkSearchExtension extends WFSearchExtension {
         $view = $this->getView('search');
 
         $view->assign('searchareas', self::getAreas());
-        $view->assignRef('lists', $lists);
+        $view->assign('lists', $lists);
         $view->display();
     }
 
@@ -133,6 +134,7 @@ class WFLinkSearchExtension extends WFSearchExtension {
      */
     public function doSearch($query) {
         $wf = WFEditorPlugin::getInstance();
+        $filter = JFilterInput::getInstance();
 
         $app = JFactory::getApplication('site');
         // get SearchHelper
@@ -143,8 +145,7 @@ class WFLinkSearchExtension extends WFSearchExtension {
         $router->setMode(0);
 
         // slashes cause errors, <> get stripped anyway later on. # causes problems.
-        $badchars = array('#', '>', '<', '\\');
-        $searchword = trim(str_replace($badchars, '', $query));
+        $searchword = trim(str_replace(array('#', '>', '<', '\\'), '', $filter->clean($query)));
 
         $ordering = JRequest::getWord('ordering', null, 'post');
         $searchphrase = JRequest::getWord('searchphrase', 'all', 'post');
@@ -156,9 +157,10 @@ class WFLinkSearchExtension extends WFSearchExtension {
             $searchphrase = 'exact';
         }
 
+        // clean areas
         if (!empty($areas)) {
             foreach ($areas as $area) {
-                $areas[] = JFilterInput::getInstance()->clean($area, 'cmd');
+                $areas[] = $filter->clean($area, 'cmd');
             }
         }
 
@@ -175,7 +177,7 @@ class WFLinkSearchExtension extends WFSearchExtension {
             $searchphrase,
             $ordering,
             $areas
-                ));
+        ));
 
         $results = array();
         $rows = array();

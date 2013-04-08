@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -109,14 +109,11 @@ final class WFRequest extends JObject {
      */
     public function process($array = false) {
         // Check for request forgeries
-        WFToken::checkToken() or die('RESTRICTED ACCESS');
+        WFToken::checkToken() or die('Access to this resource is restricted');
 
-        // check referrer       
-        /* if (!$_SERVER['HTTP_REFERER'] || strpos($_SERVER['HTTP_REFERER'], JURI::base()) === false) {
-          throw new InvalidArgumentException('Invalid Referrer');
-          } */
+        $filter = JFilterInput::getInstance();
 
-        $json = JRequest::getVar('json', '', 'POST', 'STRING', 2);
+        $json   = JRequest::getVar('json', '', 'POST', 'STRING', 2);
         $action = JRequest::getWord('action');
 
         // set error handling for requests
@@ -133,23 +130,35 @@ final class WFRequest extends JObject {
             );
 
             if ($json) {                
+                // remove slashes
                 if (get_magic_quotes_gpc()) {
                     $json = stripslashes($json);
                 }
-                
+                // convert to JSON object
                 $json = json_decode($json);
-
+                
+                // invalid JSON
+                if (is_null($json)) {
+                    throw new InvalidArgumentException('Invalid JSON');
+                }
+                
+                // no function call
                 if (isset($json->fn) === false) {
                     throw new InvalidArgumentException('Invalid Function Call');
                 }
-
+                
+                // get function call
                 $fn = $json->fn;
-
+                
+                // get arguments
                 $args = isset($json->args) ? $json->args : array();
             } else {
-                $fn = $action;
-                $args = array();
+                $fn     = $action;
+                $args   = array();
             }
+            
+            // clean function
+            $fn = $filter->clean($fn, 'cmd');
 
             // check query
             $this->checkQuery($args);

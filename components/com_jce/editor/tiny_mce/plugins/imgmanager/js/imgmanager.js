@@ -1,22 +1,4 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 (function(){var ImageManagerDialog={settings:{},init:function(){var ed=tinyMCEPopup.editor,n=ed.selection.getNode(),self=this,br,el;$('#insert').click(function(e){self.insert();e.preventDefault();});tinyMCEPopup.resizeToInnerSize();tinyMCEPopup.restoreSelection();var src=decodeURIComponent(ed.dom.getAttrib(n,'src'));src=ed.convertURL(src);TinyMCE_Utils.fillClassList('classlist');$.each(this.settings.attributes,function(k,v){if(!parseFloat(v)){$('#attributes-'+k).hide();}});$('#onmouseover, #onmouseout').focus(function(){$('#onmouseover, #onmouseout').removeClass('focus');$(this).addClass('focus');});$.Plugin.init({selectChange:function(){ImageManagerDialog.updateStyles();}});if(n&&n.nodeName=='IMG'){$('#insert').button('option','label',tinyMCEPopup.getLang('update','Update',true));$('#src').val(src);$('#sample').attr({'src':n.src}).attr($.Plugin.sizeToFit(n,{width:80,height:60}));var w=this.getAttrib(n,'width'),h=this.getAttrib(n,'height');if(w||h){$('#width, #height').addClass('edited');}else{w=n.width,h=n.height;}
 $('#width, #tmp_width').val(w);$('#height, #tmp_height').val(h);$('#constrain').prop('checked',w&&h);$('#alt').val(ed.dom.getAttrib(n,'alt'));$('#title').val(ed.dom.getAttrib(n,'title'));$.each(['top','right','bottom','left'],function(){$('#margin_'+this).val(ImageManagerDialog.getAttrib(n,'margin-'+this));});$('#border_width').val(function(){var v=self.getAttrib(n,'border-width');if($('option[value="'+v+'"]',this).length==0){$(this).append(new Option(v,v));}
 return v;});$('#border_style').val(this.getAttrib(n,'border-style'));$('#border_color').val(this.getAttrib(n,'border-color')).change();if(!$('#border').is(':checked')){$.each(['border_width','border_style','border_color'],function(i,k){$('#'+k).val(self.settings.defaults[k]).change();});}

@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @package      JCE
- * @copyright    Copyright (C) 2005 - 2012 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license      GNU/GPL
+ * @package   	JCE
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -36,6 +35,7 @@ class WFTablePluginConfig {
         $settings['table_cell_limit'] = $wf->getParam('table.cell_limit', 0, 0);
         $settings['table_row_limit'] = $wf->getParam('table.row_limit', 0, 0);
         $settings['table_col_limit'] = $wf->getParam('table.col_limit', 0, 0);   
+        $settings['table_pad_empty_cells'] = $wf->getParam('table.pad_empty_cells', 1, 1);
         
         $settings['table_classes'] = $wf->getParam('table.classes', "", "");
     }

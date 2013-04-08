@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -85,7 +85,23 @@ class WFMediaManager extends WFEditorPlugin {
         $browser->display();
 
         $browser->set('position', $this->getParam('editor.browser_position', 'bottom'));
-        $view->assignRef('browser', $browser);
+        $view->assign('browser', $browser);
+    }
+    
+    private function getFileSystem() {
+        $filesystem = $this->getParam('filesystem.name', '', '', 'string', false);
+        
+        // if an object, get the name
+        if (is_object($filesystem)) {
+            $filesystem = isset($filesystem->name) ? $filesystem->name : 'joomla';
+        }
+
+        // if no value, default to "joomla"
+        if (empty($filesystem)) {
+            $filesystem = 'joomla';
+        }
+        
+        return $filesystem;
     }
 
     /**
@@ -94,7 +110,8 @@ class WFMediaManager extends WFEditorPlugin {
      * @return array
      */
     private function getConfig() {
-        $filesystem = $this->getParam('filesystem.name', 'joomla', '', 'string', false);        
+        $filesystem = $this->getFileSystem();
+
         $filetypes  = $this->getParam('extensions', $this->get('_filetypes', 'images=jpg,jpeg,png,gif'));
 
         $config = array(
@@ -102,7 +119,7 @@ class WFMediaManager extends WFEditorPlugin {
             'filesystem' => $filesystem,
             'filetypes' => $filetypes,
             'upload' => array(
-                'runtimes' => $this->getParam('editor.upload_runtimes', array('html5', 'flash', 'silverlight'), '', 'array', false),
+                'runtimes' => $this->getParam('editor.upload_runtimes', array('html5', 'flash', 'silverlight', 'html4'), '', 'array', false),
                 'chunk_size' => null,
                 'max_size' => $this->getParam('max_size', 1024, '', 'string', false),
                 'validate_mimetype' => $this->getParam('validate_mimetype', 1),

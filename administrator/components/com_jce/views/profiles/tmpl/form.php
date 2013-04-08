@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -9,10 +10,11 @@
  * other free or open source software licenses.
  */
 defined('_JEXEC') or die('RESTRICTED');
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="form-horizontal">
-    <div id="jce">
-        <div id="tabs" class="">
+    <div id="jce" class="loading">
+        <div id="tabs">
             <ul class="nav nav-tabs">
                 <li class="active wf-tooltip" title="<?php echo JText :: _('WF_PROFILES_SETUP') . '::' . JText :: _('WF_PROFILES_SETUP_DESC'); ?>"><a href="#tabs-setup"><?php echo JText :: _('WF_PROFILES_SETUP'); ?></a></li>
                 <li class="wf-tooltip" title="<?php echo JText :: _('WF_PROFILES_FEATURES') . '::' . JText :: _('WF_PROFILES_FEATURES_DESC'); ?>"><a href="#tabs-features"><?php echo JText :: _('WF_PROFILES_FEATURES'); ?></a></li>

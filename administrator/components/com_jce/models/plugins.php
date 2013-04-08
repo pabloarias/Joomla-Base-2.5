@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -63,18 +63,17 @@ class WFModelPlugins extends WFModel {
                     $plugins[$name] = new StdClass();
 
                     foreach ($plugin->children() as $item) {
-                        $key = $item->getName();
-                        $value = (string) $item;
+                        $key    = $item->getName();
+                        $value  = (string) $item;
 
+                        if (is_numeric($value)) {
+                            $value = (int) $value;
+                        }
+                        
                         $plugins[$name]->$key = $value;
                     }
 
                     $plugins[$name]->type = 'plugin';
-
-                    //$plugins[$name]->author = '';
-                    //$plugins[$name]->version = '';
-                    //$plugins[$name]->creationdate = '';
-                    //$plugins[$name]->description = '';
 
                     $plugins[$name]->path = str_replace(JPATH_SITE, '', WF_EDITOR_PLUGINS) . '/' . $name;
                 }
@@ -109,8 +108,8 @@ class WFModelPlugins extends WFModel {
 
                         $row = (int) $xml->attributes()->row;
 
-                        $plugins[$name]->row = $row ? $row : 4;
-                        $plugins[$name]->core = (int) $xml->attributes()->core ? 1 : 0;
+                        $plugins[$name]->row    = $row ? $row : 4;
+                        $plugins[$name]->core   = (int) $xml->attributes()->core ? 1 : 0;
                     }
                     // relative path
                     $plugins[$name]->path = str_replace(JPATH_SITE, '', $folder);

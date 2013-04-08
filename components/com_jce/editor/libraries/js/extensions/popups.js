@@ -1,22 +1,4 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 var WFPopups=WFExtensions.add('Popups',{popups:{},popup:'',config:{},addPopup:function(n,o){this.popups[n]=o;WFExtensions.addExtension('popups',n,o);},getPopups:function(){return this.popups;},setup:function(){var self=this,ed=tinyMCEPopup.editor,s=ed.selection,n;$('#popup_list').change(function(){self.selectPopup(this.value);}).change();if(!s.isCollapsed()){n=s.getNode();var state=true,v;function setText(state,v){if(state&&v){$('#popup_text').val(v);$('#popup_text').attr('disabled',false);}else{$('#popup_text').val(tinyMCEPopup.getLang('dlg.element_selection','Element Selection'));$('#popup_text').attr('disabled',true);$('#popup_text').addClass('disabled');}}
 v=s.getContent({format:'text'});if(n){var children=tinymce.grep(n.childNodes,function(node){return ed.dom.is(node,'br[data-mce-bogus]')==false;});state=children.length==1&&children[0].nodeType==3;}
 setText(state,v);}

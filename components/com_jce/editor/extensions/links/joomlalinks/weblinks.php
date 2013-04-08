@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -96,7 +96,7 @@ class JoomlalinksWeblinks extends JObject {
                 break;
             // Get all links in the category
             case 'category':
-                if (!WF_JOOMLA15) {
+                if (defined('JPATH_PLATFORM')) {
                     $categories = WFLinkBrowser::getCategory('com_weblinks', $args->id);
 
                     if (count($categories)) {
@@ -135,9 +135,15 @@ class JoomlalinksWeblinks extends JObject {
                 $weblinks = self::_weblinks($args->id);
 
                 foreach ($weblinks as $weblink) {
+                    $id = WeblinksHelperRoute::getWeblinkRoute($weblink->slug, $weblink->catslug);
+
+                    if (defined('JPATH_PLATFORM')) {
+                        $id .= '&task=weblink.go'; 
+                    }
+                    
                     $items[] = array(
-                        'id' => WeblinksHelperRoute::getWeblinkRoute($weblink->slug, $weblink->catslug),
-                        'name' => $weblink->title . ' / ' . $weblink->alias,
+                        'id'    => $id,
+                        'name'  => $weblink->title . ' / ' . $weblink->alias,
                         'class' => 'file'
                     );
                 }
@@ -161,7 +167,7 @@ class JoomlalinksWeblinks extends JObject {
             if (is_object($dbquery) && method_exists($dbquery, 'charLength')) {
                 //sqlsrv changes
                 $case_when1 = ' CASE WHEN ';
-                $case_when1 .= $dbquery->charLength('a.alias');
+                $case_when1 .= $dbquery->charLength('a.alias', '!=', '0');
                 $case_when1 .= ' THEN ';
                 $a_id = $dbquery->castAsChar('a.id');
                 $case_when1 .= $dbquery->concatenate(array($a_id, 'a.alias'), ':');
@@ -169,7 +175,7 @@ class JoomlalinksWeblinks extends JObject {
                 $case_when1 .= $a_id . ' END as slug';
 
                 $case_when2 = ' CASE WHEN ';
-                $case_when2 .= $dbquery->charLength('b.alias');
+                $case_when2 .= $dbquery->charLength('b.alias', '!=', '0');
                 $case_when2 .= ' THEN ';
                 $c_id = $dbquery->castAsChar('b.id');
                 $case_when2 .= $dbquery->concatenate(array($c_id, 'b.alias'), ':');

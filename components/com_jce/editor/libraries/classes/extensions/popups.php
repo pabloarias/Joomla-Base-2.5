@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -14,10 +14,9 @@ defined('_JEXEC') or die('RESTRICTED');
 wfimport('editor.libraries.classes.extensions');
 
 class WFPopupsExtension extends WFExtension {
-    /*
-     *  @var varchar
-     */
-
+    
+    protected static $instance;
+    
     private $_popups = array();
     private $_templates = array();
 
@@ -43,13 +42,11 @@ class WFPopupsExtension extends WFExtension {
      * @since 1.5
      */
     public static function getInstance($config = array()) {
-        static $instance;
-
-        if (!is_object($instance)) {
-            $instance = new WFPopupsExtension($config);
+        if (!isset(self::$instance)) {
+            self::$instance = new WFPopupsExtension($config);
         }
 
-        return $instance;
+        return self::$instance;
     }
 
     public function display() {
@@ -92,6 +89,7 @@ class WFPopupsExtension extends WFExtension {
         // Add popup tab and assign popups reference to document
         if (count($this->getPopups())) {
             $tabs->addTab('popups', 1);
+            $tabs->getPanel('popups')->assign('popups', $this);
         }
     }
 

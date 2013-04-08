@@ -2,12 +2,12 @@
 <extension version="1.6" type="component" method="upgrade">
     <name>JCE</name>
     <author>Ryan Demmer</author>
-    <creationDate>10 December 2012</creationDate>
-    <copyright>Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved</copyright>
+    <creationDate>27 March 2013</creationDate>
+    <copyright>Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved</copyright>
     <license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
     <authorEmail>info@joomlacontenteditor.net</authorEmail>
     <authorUrl>www.joomlacontenteditor.net</authorUrl>
-    <version>2.3.1</version>
+    <version>2.3.2.4</version>
     <description>WF_ADMIN_DESC</description>
     
     <scriptfile>install.script.php</scriptfile>
@@ -34,9 +34,12 @@
 	<!-- SQL query files to execute on installation -->
     <install>
         <sql>
+            <file charset="utf8" driver="mysql">sql/mysql.sql</file>
             <file charset="utf8" driver="mysqli">sql/mysql.sql</file>
             <file charset="utf8" driver="sqlsrv">sql/sqlsrv.sql</file>
+            <file charset="utf8" driver="sqlzure">sql/sqlsrv.sql</file>
             <file charset="utf8" driver="sqlazure">sql/sqlsrv.sql</file>
+            <!--file charset="utf8" driver="postgresql">sql/postgresql.sql</file-->
         </sql>
     </install>
 	
@@ -59,7 +62,6 @@
             <folder>includes</folder>
             <folder>media</folder>
             <folder>models</folder>
-            <folder>packages</folder>
             <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>
@@ -84,7 +86,6 @@
 		
     </administration>
     <updateservers>
-        <server type="extension" priority="1" name="JCE Editor Updates"><![CDATA[https://www.joomlacontenteditor.net/index.php?option=com_updates&view=update&format=xml&id=1]]>
-        </server>
+        <server type="extension" priority="1" name="JCE Editor Updates"><![CDATA[https://www.joomlacontenteditor.net/index.php?option=com_updates&view=update&format=xml&id=1]]></server>
     </updateservers>
 </extension>

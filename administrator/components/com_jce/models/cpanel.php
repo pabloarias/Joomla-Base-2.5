@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -15,7 +16,7 @@ require_once(dirname(__FILE__) . '/model.php');
 
 class WFModelCpanel extends WFModel {
 
-    function iconButton($link, $image, $text, $description = '', $disabled = false) {
+    public function iconButton($link, $image, $text, $description = '', $disabled = false) {
         $lang = JFactory::getLanguage();
 
         if ($disabled) {
@@ -30,17 +31,17 @@ class WFModelCpanel extends WFModel {
         <?php
     }
 
-    function getVersion() {
+    public function getVersion() {
         $xml = WFXMLHelper::parseInstallManifest(JPATH_ADMINISTRATOR . '/components/com_jce/jce.xml');
 
         return $xml['version'];
     }
 
-    function getLicense() {
+    public function getLicense() {
         return '<a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" title="GNU General Public License, version 2" target="_blank">GNU General Public License, version 2</a>';
     }
 
-    function getFeeds() {
+    public function getFeeds() {
         $app = JFactory::getApplication();
         $params = JComponentHelper::getParams('com_jce');
         $limit = $params->get('feed_limit', 2);
@@ -50,8 +51,11 @@ class WFModelCpanel extends WFModel {
             'rssUrl' => 'http://www.joomlacontenteditor.net/news/feed/rss/latest-news?format=feed',
             'cache_time' => $params->get('feed_cachetime', 86400)
         );
+        
+        // prevent Strict Standards errors in simplepie
+        error_reporting(32767 ^ 2048);
 
-        // use this directly instead of JFactory::getXMLParserto avoid the feed data error
+        // use this directly instead of JFactory::getXMLParser to avoid the feed data error
         jimport('simplepie.simplepie');
 
         if (!is_writable(JPATH_BASE . '/cache')) {

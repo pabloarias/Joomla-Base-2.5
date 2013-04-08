@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -46,7 +46,7 @@ abstract class WFMimeType {
         'application/mbox' => 'mbox',
         'application/mediaservercontrol+xml' => 'mscml',
         'application/mp4' => 'mp4s',
-        'application/msword' => 'doc dot',
+        'application/msword' => 'doc dot ppt xls docx pptx ppsx xlsx sldx potx xltx dotx',
         'application/mxf' => 'mxf',
         'application/octet-stream' => 'bin dms lha lrf lzh so iso dmg dist distz pkg bpk dump elc deploy',
         'application/oda' => 'oda',
@@ -276,7 +276,7 @@ abstract class WFMimeType {
         'application/vnd.ms-lrm' => 'lrm',
         'application/vnd.ms-pki.seccat' => 'cat',
         'application/vnd.ms-pki.stl' => 'stl',
-        'application/vnd.ms-powerpoint' => 'ppt pps pot',
+        'application/vnd.ms-powerpoint' => 'ppt pps pot pptx',
         'application/vnd.ms-powerpoint.addin.macroenabled.12' => 'ppam',
         'application/vnd.ms-powerpoint.presentation.macroenabled.12' => 'pptm',
         'application/vnd.ms-powerpoint.slide.macroenabled.12' => 'sldm',
@@ -509,7 +509,7 @@ abstract class WFMimeType {
         'application/xslt+xml' => 'xslt',
         'application/xspf+xml' => 'xspf',
         'application/xv+xml' => 'mxml xhvml xvml xvm',
-        'application/zip' => 'zip',
+        'application/zip' => 'zip docx pptx ppsx xlsx sldx potx xltx dotx',
         'audio/adpcm' => 'adp',
         'audio/basic' => 'au snd',
         'audio/midi' => 'mid midi kar rmi',
@@ -684,32 +684,24 @@ abstract class WFMimeType {
     public function check($name, $path) {
         $extension = strtolower(substr($name, strrpos($name, '.') + 1));
 
-        $ms_x = array('docx', 'pptx', 'ppsx', 'xlsx', 'sldx', 'potx', 'xltx', 'dotx');
-
         if (function_exists('finfo_open')) {
             if ($finfo = @finfo_open(FILEINFO_MIME_TYPE)) {
                 if ($mimetype = @finfo_file($finfo, $path)) {
                     @finfo_close($finfo);
 
-                    // we can't validate these files...
-                    if ($mimetype === 'application/zip' && in_array($extension, $ms_x)) {
-                        return true;
-                    }
+                    $mime = self::getMime($mimetype);
 
-                    if ($mime = self::getMime($mimetype)) {
+                    if ($mime) {                        
                         return in_array($extension, $mime);
                     }
                 }
             }
         } else if (function_exists('mime_content_type')) {
             if ($mimetype = @mime_content_type($path)) {
-                
-                // we can't validate these files...
-                if ($mimetype === 'application/zip' && in_array($extension, $ms_x)) {
-                    return true;
-                }
 
-                if ($mime = self::getMime($mimetype)) {
+                $mime = self::getMime($mimetype);
+
+                if ($mime) {
                     return in_array($extension, $mime);
                 }
             }

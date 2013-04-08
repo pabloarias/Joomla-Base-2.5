@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -14,12 +14,12 @@ defined('_JEXEC') or die('RESTRICTED');
 require_once (WF_EDITOR_LIBRARIES . '/classes/plugin.php');
 
 class WFTablesPlugin extends WFEditorPlugin {
-
+    
     public function __construct() {
-        parent::__construct();
+        parent::__construct(array('colorpicker' => true));
     }
-
-    function getContext() {
+    
+    public function getContext() {
         return JRequest::getWord('context', 'table');
     }
 
@@ -44,31 +44,12 @@ class WFTablesPlugin extends WFEditorPlugin {
             // Add tabs
             $tabs->addTab('merge');
         } else {
-            $tabs->addTab('general', 1);
-            $tabs->addTab('advanced', 1);
+            $tabs->addTab('general', 1, array('plugin' => $this));
+            $tabs->addTab('advanced', 1, array('plugin' => $this));
         }
     }
 
-    /**
-     * Returns a reference to a manager object
-     *
-     * This method must be invoked as:
-     * 		<pre>  $manager =FileManager::getInstance();</pre>
-     *
-     * @access	public
-     * @return	FileManager  The manager object.
-     * @since	1.5
-     */
-    public function & getInstance() {
-        static $instance;
-
-        if (!is_object($instance)) {
-            $instance = new WFTablesPlugin();
-        }
-        return $instance;
-    }
-
-    function getSettings() {
+    public function getSettings() {
         $profile = $this->getProfile();
 
         $settings = array(
@@ -83,7 +64,7 @@ class WFTablesPlugin extends WFEditorPlugin {
      * Get default parameters
      * @return string parameters
      */
-    function getDefaults() {        
+    public function getDefaults() {        
         return parent::getDefaults(array());
     }
 

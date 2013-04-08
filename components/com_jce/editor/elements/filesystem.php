@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -59,8 +59,15 @@ class WFElementFilesystem extends WFElement {
                 $options[] = JHTML::_('select.option', basename($file, '.xml'), WFText::_($xml['name']));
             }
         }
+        
+        // if a group is sepcified, setup to be an object
+        if ((string) $node->attributes()->group) {
+            $name = $control_name . '[filesystem][' . $name . ']';
+        } else {
+            $name = $control_name . '[filesystem]';
+        }
 
-        return JHTML::_('select.genericlist', $options, '' . $control_name . '[filesystem][' . $name . ']', 'class="inputbox"', 'value', 'text', $value, $id);
+        return JHTML::_('select.genericlist', $options, $name, 'class="inputbox"', 'value', 'text', $value, $id);
     }
 
 }

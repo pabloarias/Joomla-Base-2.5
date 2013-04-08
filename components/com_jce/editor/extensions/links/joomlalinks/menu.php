@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -91,7 +91,7 @@ class JoomlalinksMenu extends JObject {
                             break;
 
                         case 'alias':
-                            $params = new JParameter($menu->params);
+                            $params = new JRegistry($menu->params);
 
                             // If this is an alias use the item id stored in the parameters to make the link.
                             $link = 'index.php?Itemid=' . $params->get('aliasoptions');
@@ -103,7 +103,7 @@ class JoomlalinksMenu extends JObject {
                             break;
                     }
 
-                    $children = self::_children($menu->id);
+                    $children = (int) self::_children($menu->id);
                     $title = isset($menu->name) ? $menu->name : $menu->title;
 
                     if ($children) {
@@ -194,7 +194,7 @@ class JoomlalinksMenu extends JObject {
         }
 
         $db->setQuery($query, 0);
-        $params = new JParameter($db->loadResult());
+        $params = new JRegistry($db->loadResult());
         
         $query->clear();
 
@@ -227,7 +227,7 @@ class JoomlalinksMenu extends JObject {
             }
         } else {
             if ($id) {
-                $where = 'parent = ' . (int) $id;
+                $where = ' AND parent = ' . (int) $id;
             }
 
             $query = 'SELECT COUNT(id)'

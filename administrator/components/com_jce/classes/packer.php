@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -13,11 +13,11 @@ defined('_JEXEC') or die('RESTRICTED');
 
 class WFPacker extends JObject {
 
-    protected $files    = array();
-    protected $type     = 'javascript';
-    protected $text     = '';
-    protected $start    = '';
-    protected $end      = '';
+    protected $files = array();
+    protected $type = 'javascript';
+    protected $text = '';
+    protected $start = '';
+    protected $end = '';
 
     /**
      * Constructor activating the default information of the class
@@ -28,39 +28,39 @@ class WFPacker extends JObject {
         $this->setProperties($config);
     }
 
-    function setFiles($files = array()) {
+    public function setFiles($files = array()) {
         $this->files = $files;
     }
 
-    function getFiles() {
+    public function getFiles() {
         return $this->files;
     }
 
-    function setText($text = '') {
+    public function setText($text = '') {
         $this->text = $text;
     }
 
-    function setContentStart($start = '') {
+    public function setContentStart($start = '') {
         $this->start = $start;
     }
 
-    function getContentStart() {
+    public function getContentStart() {
         return $this->start;
     }
 
-    function setContentEnd($end = '') {
+    public function setContentEnd($end = '') {
         $this->end = $end;
     }
 
-    function getContentEnd() {
+    public function getContentEnd() {
         return $this->end;
     }
 
-    function setType($type) {
+    public function setType($type) {
         $this->type = $type;
     }
 
-    function getType() {
+    public function getType() {
         return $this->type;
     }
 
@@ -68,21 +68,31 @@ class WFPacker extends JObject {
      * Get encoding
      * @copyright Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
      */
-    private function _getEncoding() {
-        // Check if it supports gzip
-        $encodings = (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) ? strtolower($_SERVER['HTTP_ACCEPT_ENCODING']) : "";
-        $encoding = preg_match('/\b(x-gzip|gzip)\b/', $encodings, $match) ? $match[1] : "";
+    private static function getEncoding() {
+        if (!isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+            return false;
+        }
 
-        // Is northon antivirus header
-        if (isset($_SERVER['---------------'])) {
-            $encoding = "x-gzip";
+        $encoding = false;
+
+        if (false !== strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
+            $encoding = 'gzip';
+        }
+
+        if (false !== strpos($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip')) {
+            $encoding = 'x-gzip';
         }
 
         return $encoding;
     }
 
-    function pack($minify = true, $gzip = false) {
+    public function pack($minify = true, $gzip = false) {
         $type = $this->getType();
+        
+        /*$encoding = self::getEncoding();
+
+        $zlib = extension_loaded('zlib') && !ini_get('zlib.output_compression');
+        $gzip = $gzip && !empty($encoding) && $zlib && function_exists('gzencode');*/
         
         ob_start();
 
@@ -107,55 +117,45 @@ class WFPacker extends JObject {
 
         $files = $this->getFiles();
 
-        $encoding = self::_getEncoding();
+        $encoding = self::getEncoding();
 
         $zlib = extension_loaded('zlib') && ini_get('zlib.output_compression');
         $gzip = $gzip && !empty($encoding) && $zlib && function_exists('gzencode');
 
         $content = $this->getContentStart();
-        
+
         if (empty($files)) {
             $content .= $this->getText();
         } else {
             foreach ($files as $file) {
-                $content .= $this->getText($file);
+                $content .= $this->getText($file, $minify);
             }
         }
 
         $content .= $this->getContentEnd();
 
-        // pack javascript
-        if ($minify) {
-            if ($this->getType() == 'javascript') {
-                $content = $this->jsmin($content);
-            }
-
-            if ($this->getType() == 'css') {
-                $content = $this->cssmin($content);
-            }
-        }
-
         // Generate GZIP'd content
         if ($gzip) {
             header("Content-Encoding: " . $encoding);
-            $content = gzencode($content, 9, FORCE_GZIP);
+            $content = gzencode($content, 4, FORCE_GZIP);
         }
 
         // stream to client
         echo $content;
-        
+
         exit(ob_get_clean());
     }
 
-    function jsmin($data) {
-        return $data;
+    protected function jsmin($data) {
+        // remove header comments
+        return preg_replace('#^\/\*[\s\S]+?\*\/#', '', $data);
     }
 
     /**
      * Simple CSS Minifier
      * @param $data Data string to minify
      */
-    function cssmin($data) {
+    protected function cssmin($data) {
         $data = str_replace('\r\n', '\n', $data);
 
         $data = preg_replace('#\s+#', ' ', $data);
@@ -172,7 +172,7 @@ class WFPacker extends JObject {
      * @param file File path where data comes from
      * @param $data Data from file
      */
-    function importCss($data) {
+    protected function importCss($data) {
         if (preg_match_all('#@import url\([\'"]?([^\'"\)]+)[\'"]?\);#i', $data, $matches)) {
 
             $data = '';
@@ -187,7 +187,7 @@ class WFPacker extends JObject {
         return '';
     }
 
-    function getText($file = null) {
+    protected function getText($file = null, $minify = true) {
 
         if ($file && is_file($file)) {
 
@@ -208,10 +208,19 @@ class WFPacker extends JObject {
 
                     // process urls
                     $text = preg_replace_callback('#url\s?\([\'"]?([^\'"\))]+)[\'"]?\)#', array('WFPacker', 'processPaths'), $text);
+                    
+                    if ($minify) {
+                        // minify
+                        $text = $this->cssmin($text);
+                    }
                 }
                 // make sure text ends in a semi-colon;
                 if ($this->getType() == 'javascript') {
                     $text = rtrim(trim($text), ';') . ';';
+                    
+                    if ($minify) {
+                        $text = $this->jsmin($text);
+                    }
                 }
 
                 return $text;
@@ -221,7 +230,7 @@ class WFPacker extends JObject {
         return $this->text;
     }
 
-    function processPaths($data) {
+    protected function processPaths($data) {
         $path = str_replace(JPATH_SITE, '', realpath($this->get('_imgbase') . '/' . $data[1]));
 
         if ($path) {

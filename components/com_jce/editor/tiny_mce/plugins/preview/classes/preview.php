@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -29,25 +29,6 @@ class WFPreviewPlugin extends WFEditorPlugin {
         $request->setRequest(array($this, 'showPreview'));
 
         $this->execute();
-    }
-
-    /**
-     * Returns a reference to a plugin object
-     *
-     * This method must be invoked as:
-     * 		<pre>  $advlink =AdvLink::getInstance();</pre>
-     *
-     * @access	public
-     * @return	JCE  The editor object.
-     * @since	1.5
-     */
-    function &getInstance() {
-        static $instance;
-
-        if (!is_object($instance)) {
-            $instance = new WFPreviewPlugin();
-        }
-        return $instance;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -22,28 +22,10 @@ final class WFImageManagerPlugin extends WFMediaManager {
      * @access	protected
      */
     public function __construct() {
-        parent::__construct();
+        parent::__construct(array('colorpicker' => true));
 
         $browser = $this->getBrowser();
         $browser->addEvent('onUpload', array($this, 'onUpload'));
-    }
-
-    /**
-     * Returns a reference to the Image Manager object
-     *
-     * This method must be invoked as:
-     * 		<pre>  $imgmanager = WFImageManagerPlugin::getInstance();</pre>
-     *
-     * @access	public
-     * @return	object WFImageManagerPlugin
-     */
-    public function &getInstance() {
-        static $instance;
-
-        if (!is_object($instance)) {
-            $instance = new WFImageManagerPlugin();
-        }
-        return $instance;
     }
 
     /**
@@ -72,7 +54,7 @@ final class WFImageManagerPlugin extends WFMediaManager {
         $document->addScriptDeclaration('ImageManagerDialog.settings=' . json_encode($this->getSettings()) . ';');
     }
 
-    function onUpload($file) {
+    function onUpload($file, $relative = '') {
         $browser = $this->getBrowser();
         $filesystem = $browser->getFileSystem();
 
@@ -80,8 +62,8 @@ final class WFImageManagerPlugin extends WFMediaManager {
 
         if (JRequest::getWord('method') === 'dragdrop') {
             $result = array(
-                'file' => str_replace(JPATH_SITE . '/', '', $file),
-                'name' => basename($file)
+                'file' => $relative,
+                'name' => basename($relative)
             );
 
             if ($params->get('always_include_dimensions', 1)) {
@@ -179,7 +161,7 @@ final class WFImageManagerPlugin extends WFMediaManager {
         return $browser->getResult();
     }
 
-    function getSettings() {
+    public function getSettings() {
         $params = $this->getParams();
 
         $settings = array(
@@ -199,7 +181,7 @@ final class WFImageManagerPlugin extends WFMediaManager {
      * Get default parameters
      * @return string parameters
      */
-    function getDefaults() {
+    public function getDefaults() {
         return parent::getDefaults(array());
     }
 

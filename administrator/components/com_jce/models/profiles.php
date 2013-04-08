@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -69,17 +69,17 @@ class WFModelProfiles extends WFModel {
 
         foreach ($model->getExtensions() as $extension) {
             $type = $extension->folder;
-            
+
             // the plugin only supports some extensions, move along
             if (!in_array($type, $supported)) {
                 continue;
             }
-            
+
             // this extension only supports some plugins, move along
             if (!empty($extension->plugins) && !in_array($plugin, $extension->plugins)) {
                 continue;
             }
-            
+
             $extensions[$type][] = $extension;
         }
 
@@ -191,77 +191,59 @@ class WFModelProfiles extends WFModel {
         $driver = strtolower($db->name);
 
         switch ($driver) {
-            default :
-            case 'mysqli' :
+            default:
+            case 'mysql':
+            case 'mysqli':
                 $driver = 'mysql';
                 break;
             case 'sqlsrv':
-            case 'sqlazure' :
+            case 'sqlazure':
+            case 'sqlzure':
                 $driver = 'sqlsrv';
                 break;
+            case 'postgresql' :
+                $driver = 'postgresql';
+                break;
         }
-        // speed up for mysql - most common
-        if ($driver == 'mysql') {
-            $query = "CREATE TABLE IF NOT EXISTS `#__wf_profiles` (
-	        `id` int(11) NOT NULL AUTO_INCREMENT,
-	        `name` varchar(255) NOT NULL,
-	        `description` varchar(255) NOT NULL,
-	        `users` text NOT NULL,
-	        `types` varchar(255) NOT NULL,
-	        `components` text NOT NULL,
-	        `area` tinyint(3) NOT NULL,
-                `device` varchar(255) NOT NULL,
-	        `rows` text NOT NULL,
-	        `plugins` text NOT NULL,
-	        `published` tinyint(3) NOT NULL,
-	        `ordering` int(11) NOT NULL,
-	        `checked_out` tinyint(3) NOT NULL,
-	        `checked_out_time` datetime NOT NULL,
-	        `params` text NOT NULL,
-	        PRIMARY KEY (`id`)
-	        );";
-            $db->setQuery($query);
 
-            if ($db->query()) {
-                return true;
-            } else {
-                $error = $db->stdErr();
-            }
-            // sqlsrv
-        } else {
-            $file = dirname(dirname(__FILE__)) . '/sql/' . $driver . '.sql';
-            $error = null;
+        $file = dirname(dirname(__FILE__)) . '/sql/' . $driver . '.sql';
+        $error = null;
 
-            if (is_file($file)) {
-                $buffer = file_get_contents($file);
+        if (is_file($file)) {
+            $query = file_get_contents($file);
 
-                if ($buffer) {
-                    $queries = JInstallerHelper::splitSql($buffer);
+            if ($query) {
+                // replace prefix
+                $query = $db->replacePrefix((string) $query);
 
-                    if (count($queries)) {
-                        $query = $queries[0];
+                // Postgresql needs special attention because of the query syntax
+                if ($driver == 'postgresql') {
+                    $query = "CREATE OR REPLACE FUNCTION create_table_if_not_exists (create_sql text) 
+                    RETURNS bool as $$ 
+                    BEGIN 
+                        BEGIN 
+                            EXECUTE create_sql; 
+                            EXCEPTION WHEN duplicate_table THEN RETURN false; 
+                        END; 
+                        RETURN true; 
+                    END; $$ 
+                    LANGUAGE plpgsql; 
+                    SELECT create_table_if_not_exists ('" . $query . "');";
+                }
+                // set query
+                $db->setQuery(trim($query));
 
-                        if ($query) {
-                            $db->setQuery(trim($query));
-
-                            if (!$db->query()) {
-                                $mainframe->enqueueMessage(WFText::_('WF_INSTALL_TABLE_PROFILES_ERROR') . $db->stdErr(), 'error');
-                                return false;
-                            } else {
-                                return true;
-                            }
-                        } else {
-                            $error = 'NO SQL QUERY';
-                        }
-                    } else {
-                        $error = 'NO SQL QUERIES';
-                    }
+                if (!$db->query()) {
+                    $mainframe->enqueueMessage(WFText::_('WF_INSTALL_TABLE_PROFILES_ERROR') . $db->stdErr(), 'error');
+                    return false;
                 } else {
-                    $error = 'SQL FILE EMPTY';
+                    return true;
                 }
             } else {
-                $error = 'SQL FILE MISSING';
+                $error = 'NO SQL QUERY';
             }
+        } else {
+            $error = 'SQL FILE MISSING';
         }
 
         $mainframe->enqueueMessage(WFText::_('WF_INSTALL_TABLE_PROFILES_ERROR') . !is_null($error) ? ' - ' . $error : '', 'error');
@@ -604,11 +586,11 @@ class WFModelProfiles extends WFModel {
 
         return $span;
     }
-    
+
     public function saveOrder($cid, $order) {
-        $db     = JFactory::getDBO();
-        $total  = count($cid);
-        
+        $db = JFactory::getDBO();
+        $total = count($cid);
+
         JArrayHelper::toInteger($cid, array(0));
         JArrayHelper::toInteger($order, array(0));
 
@@ -642,7 +624,7 @@ class WFModelProfiles extends WFModel {
             $row->load($cond[0]);
             $row->reorder($cond[1]);
         }
-        
+
         return true;
     }
 

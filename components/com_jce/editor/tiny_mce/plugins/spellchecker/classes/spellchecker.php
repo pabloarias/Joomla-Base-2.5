@@ -1,11 +1,9 @@
 <?php
 
 /**
- * @version		$Id: spellchecker.php 221 2011-06-11 17:30:33Z happy_noodle_boy $
- * @package      JCE
- * @copyright    Copyright (C) 2005 - 2009 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license      GNU/GPL
+ * @package   	JCE
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -42,25 +40,6 @@ class WFSpellCheckerPlugin extends WFEditorPlugin {
         $this->execute();
     }
 
-    /**
-     * Returns a reference to a plugin object
-     *
-     * This method must be invoked as:
-     * 		<pre>  $advlink =AdvLink::getInstance();</pre>
-     *
-     * @access	public
-     * @return	JCE  The editor object.
-     * @since	1.5
-     */
-    public function &getInstance() {
-        static $instance;
-
-        if (!is_object($instance)) {
-            $instance = new WFSpellCheckerPlugin();
-        }
-        return $instance;
-    }
-
     private function getConfig() {
         static $config;
 
@@ -90,7 +69,7 @@ class WFSpellCheckerPlugin extends WFEditorPlugin {
         return $config;
     }
 
-    private function &getEngine() {
+    private function getEngine() {
         static $engine;
 
         $config = $this->getConfig();

@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -42,7 +42,7 @@ class WFFileBrowser extends JObject {
             'filesystem' => 'joomla',
             'filetypes' => 'images=jpg,jpeg,png,gif',
             'upload' => array(
-                'runtimes' => 'html5,flash,silverlight',
+                'runtimes' => 'html5,flash,silverlight,html4',
                 'chunk_size' => null,
                 'max_size' => 1024,
                 'validate_mimetype' => 1,
@@ -69,7 +69,6 @@ class WFFileBrowser extends JObject {
         );
 
         $config = array_merge($default, $config);
-
 
         $this->setProperties($config);
 
@@ -147,7 +146,7 @@ class WFFileBrowser extends JObject {
                 ));
 
         // assign session data
-        $view->assignRef('session', $session);
+        $view->assign('session', $session);
         // assign form action
         $view->assign('action', $this->getFormAction());
         // return view output
@@ -202,7 +201,8 @@ class WFFileBrowser extends JObject {
 
             $config = array(
                 'dir' => $this->get('dir'),
-                'upload_conflict' => $wf->getParam('editor.upload_conflict', 'overwrite')
+                'upload_conflict' => $wf->getParam('editor.upload_conflict', 'overwrite'),
+                'filetypes' => $this->getFileTypes('array')
             );
 
             $filesystem = WFFileSystem::getInstance($this->get('filesystem'), $config);
@@ -416,13 +416,11 @@ class WFFileBrowser extends JObject {
 
             foreach ($items as $item) {
                 $item['classes'] = '';
-
                 if ($item['type'] == 'folders') {
                     $folderArray[] = $item;
                 } else {
                     // check for selected item
                     $item['selected'] = $filesystem->isMatch($item['url'], $path);
-
                     $fileArray[] = $item;
                 }
             }
@@ -851,20 +849,19 @@ class WFFileBrowser extends JObject {
         }
 
         // check for invalid extension in file name
-        if (preg_match('#\.(php|php(3|4|5)|phtml|pl|py|jsp|asp|htm|html|shtml|sh|cgi)\b#i', $file['name'])) {
+        if (preg_match('#\.(php|php(3|4|5)|phtml|pl|py|jsp|asp|htm|html|shtml|sh|cgi)\.#i', $file['name'])) {
             @unlink($file['tmp_name']);
 
             throw new InvalidArgumentException('INVALID FILE NAME');
         }
 
-        clearstatcache();
-
+        //clearstatcache();
         // check the file sizes match
-        if ((int) @filesize($file['tmp_name']) !== (int) $file['size']) {
-            @unlink($file['tmp_name']);
+        /* if ((int) @filesize($file['tmp_name']) !== (int) $file['size']) {
+          @unlink($file['tmp_name']);
 
-            throw new InvalidArgumentException('INVALID FILE SIZE');
-        }
+          throw new InvalidArgumentException('INVALID FILE SIZE');
+          } */
 
         // get extension
         $ext = WFUtility::getExtension($file['name']);
@@ -946,7 +943,7 @@ class WFFileBrowser extends JObject {
         //JError::setErrorHandling(E_ALL, 'callback', array('WFError', 'raiseError'));
         // check for feature access	
         if (!$this->checkFeature('upload')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         jimport('joomla.filesystem.file');
@@ -1046,9 +1043,16 @@ class WFFileBrowser extends JObject {
             if ($result instanceof WFFileSystemResult) {
                 if ($result->state === true) {
 
-                    $path = $result->path;
+                    $path       = $result->path;
+                    // get root dir eg: JPATH_SITE
+                    $root       = substr($filesystem->getBaseDir(), 0, -(strlen($filesystem->getRootDir())));
+                    
+                    // get relative path
+                    $relative   = substr($path, strlen($root)); 
+                    // clean
+                    $relative   = WFUtility::cleanPath($relative, '/');
 
-                    $this->setResult($this->fireEvent('onUpload', array($result->path)));
+                    $this->setResult($this->fireEvent('onUpload', array($result->path, $relative)));
                     $this->setResult(basename($result->path), 'files');
                 } else {
                     $this->setResult($result->message, 'error');
@@ -1067,7 +1071,7 @@ class WFFileBrowser extends JObject {
     public function deleteItem($items) {
         // check for feature access	
         if (!$this->checkFeature('delete', 'folder') && !$this->checkFeature('delete', 'file')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         $filesystem = $this->getFileSystem();
@@ -1079,6 +1083,16 @@ class WFFileBrowser extends JObject {
 
             // check path	
             WFUtility::checkPath($item);
+
+            if ($filesystem->is_file($item)) {
+                if ($this->checkFeature('delete', 'file') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            } elseif ($filesystem->is_dir($item)) {
+                if ($this->checkFeature('delete', 'folder') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            }
 
             $result = $filesystem->delete($item);
 
@@ -1108,7 +1122,7 @@ class WFFileBrowser extends JObject {
     public function renameItem() {
         // check for feature access	
         if (!$this->checkFeature('rename', 'folder') && !$this->checkFeature('rename', 'file')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         $args = func_get_args();
@@ -1128,6 +1142,17 @@ class WFFileBrowser extends JObject {
         }
 
         $filesystem = $this->getFileSystem();
+
+        if ($filesystem->is_file($source)) {
+            if ($this->checkFeature('rename', 'file') === false) {
+                JError::raiseError(403, 'Access to this resource is restricted');
+            }
+        } elseif ($filesystem->is_dir($source)) {
+            if ($this->checkFeature('rename', 'folder') === false) {
+                JError::raiseError(403, 'Access to this resource is restricted');
+            }
+        }
+
         $result = $filesystem->rename($source, WFUtility::makeSafe($destination, $this->get('websafe_mode'), $this->get('websafe_spaces')), $args);
 
         if ($result instanceof WFFileSystemResult) {
@@ -1154,7 +1179,7 @@ class WFFileBrowser extends JObject {
     public function copyItem($items, $destination) {
         // check for feature access	
         if (!$this->checkFeature('move', 'folder') && !$this->checkFeature('move', 'file')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         $filesystem = $this->getFileSystem();
@@ -1173,6 +1198,16 @@ class WFFileBrowser extends JObject {
 
             // check source path
             WFUtility::checkPath($item);
+
+            if ($filesystem->is_file($item)) {
+                if ($this->checkFeature('move', 'file') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            } elseif ($filesystem->is_dir($item)) {
+                if ($this->checkFeature('move', 'folder') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            }
 
             $result = $filesystem->copy($item, $destination);
 
@@ -1201,7 +1236,7 @@ class WFFileBrowser extends JObject {
     public function moveItem($items, $destination) {
         // check for feature access	
         if (!$this->checkFeature('move', 'folder') && !$this->checkFeature('move', 'file')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         $filesystem = $this->getFileSystem();
@@ -1219,6 +1254,16 @@ class WFFileBrowser extends JObject {
             $item = rawurldecode($item);
             // check source path
             WFUtility::checkPath($item);
+
+            if ($filesystem->is_file($item)) {
+                if ($this->checkFeature('move', 'file') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            } elseif ($filesystem->is_dir($item)) {
+                if ($this->checkFeature('move', 'folder') === false) {
+                    JError::raiseError(403, 'Access to this resource is restricted');
+                }
+            }
 
             $result = $filesystem->move($item, $destination);
 
@@ -1245,8 +1290,8 @@ class WFFileBrowser extends JObject {
      * @return string $error on failure
      */
     public function folderNew() {
-        if (!$this->checkFeature('create', 'folder')) {
-            JError::raiseError(403, 'RESTRICTED ACCESS');
+        if ($this->checkFeature('create', 'folder') === false) {
+            JError::raiseError(403, 'Access to this resource is restricted');
         }
 
         $args = func_get_args();
@@ -1300,14 +1345,10 @@ class WFFileBrowser extends JObject {
 
         $upload = $this->get('upload');
 
-        /* $chunk_size = '512KB'; //$upload_max ? $upload_max / 1024 . 'KB' : '1MB';
-          $chunk_size = isset($upload['chunk_size']) ? $upload['chunk_size'] : $chunk_size;
-
-          // chunking not yet supported in safe_mode, check base directory is writable and chunking supported by filesystem
-          if (!$features['chunking']) {
-          $chunk_size = 0;
-          } */
-
+        if (empty($upload['max_size'])) {
+            $upload['max_size'] = 1024;
+        }
+        
         // get upload size
         $size = intval(preg_replace('/[^0-9]/', '', $upload['max_size'])) . 'kb';
 
@@ -1325,9 +1366,6 @@ class WFFileBrowser extends JObject {
                 $runtimes[] = $v;
             }
         }
-
-        // add html4
-        $runtimes[] = 'html4';
 
         // remove flash runtime if $chunk_size is 0 (no chunking)
         /* if (!$chunk_size) {

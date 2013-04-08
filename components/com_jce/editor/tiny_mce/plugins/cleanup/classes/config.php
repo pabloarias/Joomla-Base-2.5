@@ -1,10 +1,9 @@
 <?php
 
 /**
- * @package     JCE
- * @copyright   Copyright (C) 2005 - 2011 Ryan Demmer. All rights reserved.
- * @author		Ryan Demmer
- * @license     GNU/GPL 2 or later
+ * @package   	JCE
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
+ * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
@@ -18,9 +17,24 @@ class WFCleanupPluginConfig {
         $wf = WFEditor::getInstance();
         wfimport('admin.models.editor');
         $model = new WFModelEditor();
+        
+        // Encoding
+        $settings['entity_encoding'] = $wf->getParam('editor.entity_encoding', 'raw', 'named');
+        
+        // keep &nbsp;
+        $nbsp = (bool) $wf->getParam('editor.keep_nbsp', 1);
+        
+        // use named encoding with limited entities set if raw/utf-8 and keep_nbsp === true
+        if ($settings['entity_encoding'] == 'raw' && $nbsp) {
+            $settings['entity_encoding'] = '';
+            $settings['entities'] = '160,nbsp';
+        }
 
-        $settings['cleanup_pluginmode'] = $wf->getParam('cleanup.pluginmode', 0, 0, 'boolean');
-        $settings['verify_html'] = $wf->getParam('editor.verify_html', 0, 1, 'boolean');
+        // set "plugin mode"
+        $settings['cleanup_pluginmode'] = $wf->getParam('cleanup.pluginmode', 0, 0);
+        
+        // get verify html (default is true)
+        $settings['verify_html'] = $wf->getParam('editor.verify_html', 1, 1, 'boolean');
 
         // set schema
         $settings['schema'] = $wf->getParam('editor.schema', 'html4', 'html4');

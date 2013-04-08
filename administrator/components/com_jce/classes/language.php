@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -37,6 +37,11 @@ class WFLanguageParser extends JObject {
             $ini = @parse_ini_file($file, true);
 
             if ($ini && is_array($ini)) {
+                // only include these keys
+                if (!empty($sections)) {
+                    $ini = array_intersect_key($ini, array_flip($sections));
+                }
+                
                 // filter keys by regular expression
                 if ($filter) {
                     foreach (array_keys($ini) as $key) {
@@ -44,10 +49,6 @@ class WFLanguageParser extends JObject {
                             unset($ini[$key]);
                         }
                     }
-                }
-                // only include these keys
-                if (!empty($section)) {
-                    $ini = array_intersect_key($ini, array_flip($section));
                 }
 
                 $data = array_merge($data, $ini);
@@ -105,7 +106,7 @@ class WFLanguageParser extends JObject {
             case 'editor':
                 return '(dlg|_dlg)$';
                 break;
-            case 'plugin':
+            case 'plugin':                
                 return '';
                 break;
         }
@@ -125,7 +126,7 @@ class WFLanguageParser extends JObject {
             $files[] = JPATH_SITE . '/language/en-GB/en-GB.com_jce.ini';
 
             // non-english language
-            if ($tag !== 'en-GB') {
+            if ($tag != 'en-GB') {
                 if (is_dir($path)) {
                     $file = $path . '/' . $tag . '.com_jce.ini';
 
@@ -151,7 +152,7 @@ class WFLanguageParser extends JObject {
                     }
 
                     // non-english language
-                    if ($tag !== 'en-GB') {
+                    if ($tag != 'en-GB') {
                         $ini = JPATH_SITE . '/language/' . $tag . '/' . $tag . '.com_jce_' . $plugin . '.ini';
 
                         if (is_file($ini)) {
@@ -163,7 +164,7 @@ class WFLanguageParser extends JObject {
         }
         
         $sections   = $this->get('sections');
-        $filter     = $this->get('filter');
+        $filter     = $this->getFilter();
 
         $data   = self::processLanguageINI($files, $sections, $filter);
         // shorten the tag, eg: en-GB -> en

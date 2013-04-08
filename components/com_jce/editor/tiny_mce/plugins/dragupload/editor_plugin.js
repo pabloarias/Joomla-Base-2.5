@@ -1,22 +1,4 @@
-/*  
- * JCE Editor                 2.3.1
- * @package                 JCE
- * @url                     http://www.joomlacontenteditor.net
- * @copyright               Copyright (C) 2006 - 2012 Ryan Demmer. All rights reserved
- * @license                 GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html
- * @date                    10 December 2012
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * NOTE : Javascript files have been compressed for speed and can be uncompressed using http://jsbeautifier.org/
- */
+/* JCE Editor - 2.3.2.4 | 27 March 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 (function(){var each=tinymce.each,extend=tinymce.extend,JSON=tinymce.util.JSON;var isWin=navigator.platform.indexOf('Win')!==-1,isSafari=tinymce.isWebKit&&navigator.vendor.indexOf('Apple')!==-1;var mimes={};function toArray(list){return Array.prototype.slice.call(list||[],0);}
 (function(mime_data){var items=mime_data.split(/,/),i,y,ext;for(i=0;i<items.length;i+=2){ext=items[i+1].split(/ /);for(y=0;y<ext.length;y++){mimes[ext[y]]=items[i];}}})("application/msword,doc dot,"+"application/pdf,pdf,"+"application/pgp-signature,pgp,"+"application/postscript,ps ai eps,"+"application/rtf,rtf,"+"application/vnd.ms-excel,xls xlb,"+"application/vnd.ms-powerpoint,ppt pps pot,"+"application/zip,zip,"+"application/x-shockwave-flash,swf swfl,"+"application/vnd.openxmlformats-officedocument.wordprocessingml.document,docx,"+"application/vnd.openxmlformats-officedocument.wordprocessingml.template,dotx,"+"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,xlsx,"+"application/vnd.openxmlformats-officedocument.presentationml.presentation,pptx,"+"application/vnd.openxmlformats-officedocument.presentationml.template,potx,"+"application/vnd.openxmlformats-officedocument.presentationml.slideshow,ppsx,"+"application/x-javascript,js,"+"application/json,json,"+"audio/mpeg,mpga mpega mp2 mp3,"+"audio/x-wav,wav,"+"audio/mp4,m4a,"+"image/bmp,bmp,"+"image/gif,gif,"+"image/jpeg,jpeg jpg jpe,"+"image/photoshop,psd,"+"image/png,png,"+"image/svg+xml,svg svgz,"+"image/tiff,tiff tif,"+"text/plain,asc txt text diff log,"+"text/html,htm html xhtml,"+"text/css,css,"+"text/csv,csv,"+"text/rtf,rtf,"+"video/mpeg,mpeg mpg mpe,"+"video/quicktime,qt mov,"+"video/mp4,mp4,"+"video/x-m4v,m4v,"+"video/x-flv,flv,"+"video/x-ms-wmv,wmv,"+"video/avi,avi,"+"video/webm,webm,"+"video/vnd.rn-realvideo,rv,"+"application/vnd.oasis.opendocument.formula-template,otf,"+"application/octet-stream,exe");var state={STOPPED:1,STARTED:2,QUEUED:1,UPLOADING:2,FAILED:4,DONE:5,GENERIC_ERROR:-100,HTTP_ERROR:-200,IO_ERROR:-300,SECURITY_ERROR:-400}
 tinymce.create('tinymce.plugins.DragUpload',{files:[],plugins:[],init:function(ed,url){function cancel(){ed.dom.bind(ed.getBody(),'dragover',function(e){var dataTransfer=e.dataTransfer;if(dataTransfer&&dataTransfer.files&&dataTransfer.files.length){e.preventDefault();}});ed.dom.bind(ed.getBody(),'drop',function(e){var dataTransfer=e.dataTransfer;if(dataTransfer&&dataTransfer.files&&dataTransfer.files.length){e.preventDefault();}});}
@@ -37,4 +19,4 @@ var n=ed.dom.get('__mce_tmp');ed.dom.setAttrib(n,'id','');ed.dom.setStyles(n,{'w
 xhr.onreadystatechange=function(){var httpStatus;if(xhr.readyState==4&&self.state!==state.STOPPED){try{httpStatus=xhr.status;}catch(ex){httpStatus=0;}
 if(httpStatus>=400){self.UploadError.dispatch({code:state.HTTP_ERROR,message:ed.getLang('upload.http_error','HTTP Error'),file:file,status:httpStatus});}else{file.loaded=file.size;self.UploadProgress.dispatch(file);bin=formData=null;file.status=state.DONE;self.FileUploaded.dispatch(file,{response:xhr.responseText,status:httpStatus});}}};extend(args,{'name':file.target_name||file.name});xhr.open("post",url,true);each(self.settings.headers,function(value,name){xhr.setRequestHeader(name,value);});each(extend(args,self.settings.multipart_params),function(value,name){formData.append(name,value);});formData.append(self.settings.file_data_name,bin);xhr.send(formData);return;}
 if(file.status==state.DONE||file.status==state.FAILED||self.state==state.STOPPED){return;}
-extend(args,{name:file.target_name||file.name});sendFile(file);},getInfo:function(){return{longname:'Drag & Drop Upload',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.1'};}});tinymce.PluginManager.add('dragupload',tinymce.plugins.DragUpload);})();
+extend(args,{name:file.target_name||file.name});sendFile(file);},getInfo:function(){return{longname:'Drag & Drop Upload',author:'Ryan Demmer',authorurl:'http://www.joomlacontenteditor.net',infourl:'http://www.joomlacontenteditor.net',version:'2.3.2.4'};}});tinymce.PluginManager.add('dragupload',tinymce.plugins.DragUpload);})();

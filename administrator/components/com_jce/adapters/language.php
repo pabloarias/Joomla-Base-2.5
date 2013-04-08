@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -65,8 +65,8 @@ class WFInstallerLanguage extends JObject {
         $folder = $this->parent->get('tag');
 
         // Set the installation target paths
-        $this->parent->setPath('extension_site', JPATH_SITE . '/' . "language" . '/' . $folder);
-        $this->parent->setPath('extension_administrator', JPATH_ADMINISTRATOR . '/' . "language" . '/' . $folder);
+        $this->parent->setPath('extension_site', JPATH_SITE . '/language/' . $folder);
+        $this->parent->setPath('extension_administrator', JPATH_ADMINISTRATOR . '/language/' . $folder);
 
         // Set overwrite flag if not set by Manifest
         $this->parent->setOverwrite(true);
@@ -94,7 +94,7 @@ class WFInstallerLanguage extends JObject {
         $this->addIndexfiles($this->parent->getPath('site'));
 
         // Set path back to site for manifest
-        $this->parent->setPath('extension_site', JPATH_SITE . '/' . "language" . '/' . $folder);
+        $this->parent->setPath('extension_site', JPATH_SITE . '/language/' . $folder);
         // Lastly, we will copy the manifest file to its appropriate place.
         if (!$this->parent->copyManifest(0)) {
             // Install failed, rollback changes

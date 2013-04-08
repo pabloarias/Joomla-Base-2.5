@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -16,9 +17,8 @@ defined('_JEXEC') or die('RESTRICTED');
 	<div class="span4 well">
             <div id="help-menu"><?php echo $this->model->renderTopics();?></div>
 	</div>
+        <div id="help-menu-toggle"><div class="toggle-handle"></div><div class="resize-handle"></div></div>
         <div class="span8">
-            <div id="help-menu-toggle"><div class="toggle-handle"></div></div>
-            
             <div id="help-frame"><iframe id="help-iframe" src="javascript:;" scrolling="auto" frameborder="0"></iframe></div>
 	</div>
     </div>

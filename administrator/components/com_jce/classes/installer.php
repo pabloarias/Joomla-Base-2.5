@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -236,12 +236,12 @@ class WFInstaller extends JObject {
             }
 
             // None of the XML files found were valid install files
-            JError::addWarning(JText::_('JLIB_INSTALLER_ERROR_NOTFINDJOOMLAXMLSETUPFILE'));
+            JError::raiseWarning(JText::_('WF_INSTALLER_MANIFEST_INVALID'));
 
             return false;
         } else {
             // No XML files were found in the install folder
-            JError::addWarning(JText::_('JLIB_INSTALLER_ERROR_NOTFINDXMLSETUPFILE'));
+            JError::raiseWarning(JText::_('WF_INSTALLER_MANIFEST_LOAD_ERROR'));
             return false;
         }
     }

@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -102,7 +103,7 @@ foreach ($this->plugins as $plugin) :
                                     $enabled = (int) $params->get('enable', 1);
                                     $checked = $enabled ? ' checked="checked"' : '';
 
-                                    $html .= '<h3><input type="hidden" id="params' . implode('', $key) . 'enable" name="params[' . implode('][', $key) . '][enable]" value="' . $enabled . '" /><input type="checkbox" data-name="' . $extension->extension . '" class="plugins-enable-checkbox"' . $checked . '/>' . WFText::_($extension->name) . '</h3>';
+                                    $html .= '<h3><input type="checkbox" id="params' . implode('', $key) . 'enable" data-name="' . $extension->extension . '" name="params[' . implode('][', $key) . '][enable]" class="plugins-enable-checkbox" value="' . $enabled . '"' . $checked . ' />' . WFText::_($extension->name) . '</h3>';
                                     $html .= '<p>' . WFText::_($extension->description) . '</p>';
                                     foreach ($params->getGroups() as $group) :
                                         $html .= $params->render('params[' . implode('][', $key) . ']', $group, array('enable'));

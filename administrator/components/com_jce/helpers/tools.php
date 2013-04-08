@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,11 +19,11 @@ abstract class WFToolsHelper {
         $query = $db->getQuery(true);
 
         if (is_object($query)) {
-            $query->select('template')->from('#__template_styles')->where(array('client_id = 0', 'home = 1'));
+            $query->select('template')->from('#__template_styles')->where(array("client_id = 0", "home = '1'"));
         } else {
             $query = 'SELECT template'
-            . ' FROM #__templates_menu'
-            . ' WHERE client_id = 0'
+                    . ' FROM #__templates_menu'
+                    . ' WHERE client_id = 0'
             ;
         }
 
@@ -46,10 +46,10 @@ abstract class WFToolsHelper {
 
         if ($data) {
             if (preg_match_all('/@import url\(([^\)]+)\)/', $data, $matches)) {
-                $template = self::getTemplates();
-
+                $templates = self::getTemplates();
+                
                 foreach ($matches[1] as $match) {
-                    $file = JPATH_SITE . '/templates/' . $template . '/css/' . $match;
+                    $file = JPATH_SITE . '/templates/' . $templates[0] . '/css/' . $match;
 
                     if ($file) {
                         self::parseColors($file);
@@ -63,7 +63,58 @@ abstract class WFToolsHelper {
 
         return $colors;
     }
-
+    
+    /*
+     * Sort hex colors from dark to light - https://gist.github.com/2158428
+     * @param $colors Array Hex colors to sort
+     * @return Array
+     */
+    protected static function sort_hex_colors($colors) {
+        $map = array(
+            '0' => 0,
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+            '6' => 6,
+            '7' => 7,
+            '8' => 8,
+            '9' => 9,
+            'a' => 10,
+            'b' => 11,
+            'c' => 12,
+            'd' => 13,
+            'e' => 14,
+            'f' => 15,
+        );
+        $c = 0;
+        $sorted = array();
+        foreach ($colors as $color) {
+            $color = strtolower(str_replace('#', '', $color));
+            if (strlen($color) == 6) {
+                $condensed = '';
+                $i = 0;
+                foreach (preg_split('//', $color, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                    if ($i % 2 == 0) {
+                        $condensed .= $char;
+                    }
+                    $i++;
+                }
+                $color_str = $condensed;
+            }
+            $value = 0;
+            foreach (preg_split('//', $color_str, -1, PREG_SPLIT_NO_EMPTY) as $char) {
+                $value += intval($map[$char]);
+            }
+            $value = str_pad($value, 5, '0', STR_PAD_LEFT);
+            $sorted['_' . $value . $c] = '#' . $color;
+            $c++;
+        }
+        ksort($sorted);
+        return $sorted;
+    }
+    
     public static function getTemplateColors() {
         jimport('joomla.filesystem.folder');
         jimport('joomla.filesystem.file');
@@ -91,6 +142,16 @@ abstract class WFToolsHelper {
                 $colors = array_merge($colors, WFToolsHelper::parseColors($file));
             }
         }
+
+        // make all colors 6 character hex, eg: #333 to #333333
+        for ($i = 0; $i < count($colors); $i++) {
+            if ($colors[$i][0] == '#' && strlen($colors[$i]) == 4) {
+                $colors[$i] .= substr($colors[$i], -3);
+            }
+        }
+
+        // sort
+        $colors = self::sort_hex_colors($colors);
 
         return implode(",", array_unique($colors));
     }

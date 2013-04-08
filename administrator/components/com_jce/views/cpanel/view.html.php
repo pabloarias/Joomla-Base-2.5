@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -42,7 +42,7 @@ class WFViewCpanel extends WFView {
 
         JHtml::_('behavior.modal');
 
-        $this->addScript('components/com_jce/media/js/cpanel.js?version=' . $model->getVersion());
+        $this->addScript('components/com_jce/media/js/cpanel.js');
 
         $this->addScriptDeclaration('jQuery(document).ready(function($){$.jce.CPanel.init(' . json_encode($options) . ')});');
 
@@ -77,14 +77,19 @@ class WFViewCpanel extends WFView {
             if ($view == 'browser') {
                 $link = WFModel::getBrowserLink();
                 
+                $component = WFExtensionHelper::getComponent();
+
+                // get params definitions
+                $params = new WFParameter($component->params, '', 'preferences');
+                
+                $width      = (int) $params->get('browser_width', 780);
+                $height     = (int) $params->get('browser_height', 560);
+                
                 if (empty($link)) {
                     continue;
                 }
                 
-                $options        = str_replace('"', "'", json_encode(array('width' => 780, 'height' => 560)));
-                $rel            = str_replace('"', "'", json_encode(array('handler' => 'iframe', 'size' => array('x' => 780, 'y' => 560))));
-                
-                $attribs        = array('target="_blank"', 'class="browser modal"', 'rel="' . $rel . '"', 'data-options="' . $options . '"');
+                $attribs        = array('target="_blank"', 'class="browser"', 'onclick="Joomla.modal(this, \'' . $link . '\', '. $width .', '. $height .');return false;"');
                 
                 $title          = 'WF_' . strtoupper($view) . '_TITLE';
                 $description    = 'WF_CPANEL_' . strtoupper($view);
@@ -95,15 +100,14 @@ class WFViewCpanel extends WFView {
                 continue;
             }
 
-            $icons[] = '<li class="cpanel-icon wf-tooltip" title="' . WFText::_($title) . '::' . WFText::_($description) . '"><a href="' . $link . '"' . implode(' ', $attribs) . '><span class="' . $view . '"></span>' . WFText::_($title) . '</a></li>';
+            $icons[] = '<li class="cpanel-icon wf-tooltip" title="' . WFText::_($title) . '::' . WFText::_($description) . '"><a id="wf-browser-link" href="' . $link . '"' . implode(' ', $attribs) . '><span class="' . $view . '"></span>' . WFText::_($title) . '</a></li>';
         }
 
         $this->assign('icons', $icons);
-        $this->assignRef('model', $model);
-        $this->assignRef('installer', $installer);
-        $this->assignRef('params', $params);
+        $this->assign('model', $model);
+        $this->assign('params', $params);
 
-        $this->assignRef('version', $version);
+        $this->assign('version', $version);
 
         parent::display($tpl);
     }

@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright � 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -16,7 +16,7 @@ class WFControllerProfiles extends WFController {
     /**
      * Custom Constructor
      */
-    function __construct($default = array()) {
+    public function __construct($default = array()) {
         parent::__construct();
 
         $this->registerTask('apply', 'save');
@@ -94,62 +94,99 @@ class WFControllerProfiles extends WFController {
         // Check for request forgeries
         JRequest::checkToken() or die('RESTRICTED');
 
-        $db = JFactory::getDBO();
-        $row = JTable::getInstance('profiles', 'WFTable');
-        $task = $this->getTask();
+        $db         = JFactory::getDBO();
+        $filter     = JFilterInput::getInstance();
+        $row        = JTable::getInstance('profiles', 'WFTable');
+        $task       = $this->getTask();
 
-        // get components
-        $components = JRequest::getVar('components', array(), 'post', 'array');
-        // get usertypes
-        $types = JRequest::getVar('usergroups', array(), 'post', 'array');
-        // get users
-        $users = JRequest::getVar('users', array(), 'post', 'array');
-
-        // get device
-        $device = JRequest::getVar('device', array(), 'post', 'array');
-
-        // get area
-        $area = JRequest::getVar('area', array(), 'post', 'array');
+        $result     = array('error' => false);
 
         if (!$row->bind(JRequest::get('post'))) {
-            JError::raiseError(500, $row->getError());
+            JError::raiseError(500, $db->getErrorMsg());
         }
+        
+        // add types from usergroups
+        $row->types = JRequest::getVar('usergroups', array(), 'post', 'array');
 
-        $row->types = implode(',', $types);
-        $row->components = implode(',', $components);
-        $row->users = implode(',', $users);
-        $row->device = implode(',', $device);
+        foreach (get_object_vars($row) as $key => $value) {
+            switch ($key) {
+                case 'name':
+                case 'description':
+                    $value = $filter->clean($value);
+                    break;
+                case 'components':
+                case 'device':
+                    $value = implode(',', $this->cleanInput($value));
+                    break;
+                case 'types':
+                case 'users':
+                    $value = implode(',', $this->cleanInput($value, 'int'));
+                    break;
+                case 'area':
+                    if (empty($value) || count($value) == 2) {
+                        $value = 0;
+                    } else {
+                        $value = $value[0];
+                    }
+                    break;
+                case 'plugins':
+                    $value = preg_replace('#[^\w,]+#', '', $value);
+                    break;
+                case 'rows':
+                    $value = preg_replace('#[^\w,;]+#', '', $value);
+                    break;
+                case 'params':
+                    $json = array();
 
-        // ugly hack for area array to integer conversion
-        if (empty($area) || count($area) == 2) {
-            $row->area = 0;
-        } else {
-            $row->area = $area[0];
-        }
+                    // suhosin - params submitted as string
+                    if (is_string($value)) {
+                        $value = trim($value);
+                        // base64 decode
+                        //$value = base64_decode($value);
+                        parse_str(rawurldecode($value), $json);
+                    } else {
+                        if (array_key_exists('editor', $value)) {
+                            $json['editor'] = $value['editor'];
+                        }
+                        // get plugins
+                        $plugins = explode(',', $row->plugins);
 
-        $data = new StdClass();
-        // get params array
-        $params = JRequest::getVar('params', array(), 'POST', 'array');
+                        foreach ($plugins as $plugin) {
+                            // add plugin params to array
+                            if (array_key_exists($plugin, $value)) {
+                                $json[$plugin] = $value[$plugin];
+                            }
+                        }
+                    }
+                    // clean data
+                    $json = $this->cleanInput($json);
+                    
+                    // encode as json string
+                    $value = json_encode($json);
 
-        if (isset($params['editor'])) {
-            $data->editor = WFParameterHelper::toObject($params['editor']);
-        }
-        $plugins = explode(',', $row->plugins);
+                    break;
+                case 'params-string':
+                    $value = trim($value);
 
-        foreach ($plugins as $plugin) {
-            // add plugin params to array
-            if (isset($params[$plugin])) {
-                $data->$plugin = WFParameterHelper::toObject($params[$plugin]);
+                    parse_str(rawurldecode($value), $json);
+
+                    $key = 'params';
+                    $value = json_encode($json);
+
+                    break;
             }
+
+            $row->$key = $value;
         }
-        $row->params = json_encode($data);
 
         if (!$row->check()) {
-            JError::raiseError(500, $row->getError());
+            JError::raiseError(500, $db->getErrorMsg());
         }
+
         if (!$row->store()) {
-            JError::raiseError(500, $row->getError());
+            JError::raiseError(500, $db->getErrorMsg());
         }
+
         $row->checkin();
 
         switch ($task) {
@@ -244,7 +281,7 @@ class WFControllerProfiles extends WFController {
         $order = JRequest::getVar('order', array(0), 'post', 'array');
 
         if (!empty($cid)) {
-            $model  = $this->getModel('profiles', 'WFModel');
+            $model = $this->getModel('profiles', 'WFModel');
             $result = $model->saveOrder($cid, $order);
         }
 
@@ -361,39 +398,49 @@ class WFControllerProfiles extends WFController {
         // Check for request forgeries
         JRequest::checkToken() or die('RESTRICTED');
 
-        $mainframe = JFactory::getApplication();
-        $tmp = $mainframe->getCfg('tmp_path');
+        $app = JFactory::getApplication();
         $file = JRequest::getVar('import', '', 'files', 'array');
         $input = JRequest::getVar('import_input');
-
+        $tmp = $app->getCfg('tmp_path');
         $model = $this->getModel('profiles', 'WFModel');
+
+        $filter = JFilterInput::getInstance();
 
         jimport('joomla.filesystem.file');
 
         if (!is_array($file)) {
-            $mainframe->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_NOFILE'), 'error');
+            $app->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_NOFILE'), 'error');
         } else {
-            if (!$file['name'] || !$file['tmp_name']) {
-                if (JFile::exists($input)) {
-                    $this->processImport($input);
+            // check for valid uploaded file
+            if (is_uploaded_file($file['tmp_name']) && $file['name']) {
+                // create destination path
+                $destination = $tmp . '/' . $file['name'];
+                if (JFile::upload($file['tmp_name'], $destination)) {
+                    // check it exists, was uploaded properly
+                    if (JFile::exists($destination)) {
+                        // process import
+                        $model->processImport($destination);
+                    } else {
+                        $app->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
+                    }
                 } else {
-                    $mainframe->enqueueMessage(WFText::_('WF_PROFILES_IMPORT_NOFILE'), 'error');
+                    $app->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
                 }
             } else {
-                // Check if there was a problem uploading the file.
-                if ($file['error'] || $file['size'] < 1) {
-                    $mainframe->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
-                } else {
-                    $dest = $tmp . '/' . $file['name'];
-                    if (JFile::upload($file['tmp_name'], $dest)) {
-                        if (JFile::exists($dest)) {
-                            $model->processImport($dest);
-                        } else {
-                            $mainframe->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
-                        }
+                // clean input
+                $input = $filter->clean($input, 'path');
+
+                // check for file input value instead
+                if ($input) {
+                    // check file exists
+                    if (JFile::exists($input)) {
+                        // process import
+                        $model->processImport($input);
                     } else {
-                        $mainframe->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
+                        $app->enqueueMessage(WFText::_('WF_PROFILES_IMPORT_NOFILE'), 'error');
                     }
+                } else {
+                    $app->enqueueMessage(WFText::_('WF_PROFILES_UPLOAD_FAILED'), 'error');
                 }
             }
         }

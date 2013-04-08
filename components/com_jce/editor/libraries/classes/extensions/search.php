@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -14,11 +14,8 @@ defined('_JEXEC') or die('RESTRICTED');
 wfimport('editor.libraries.classes.extensions');
 
 class WFSearchExtension extends WFExtension {
-    /*
-     *  @var varchar
-     */
 
-    private $extensions = array();
+    private static $instances  = array();
 
     /**
      * Constructor activating the default information of the class
@@ -40,33 +37,31 @@ class WFSearchExtension extends WFExtension {
      * @since	1.5
      */
     public function getInstance($type, $config = array()) {
-        static $instances;
-
-        if (!isset($instances)) {
-            $instances = array();
+        if (!isset(self::$instances)) {
+            self::$instances = array();
         }
 
-        if (empty($instances[$type])) {
+        if (empty(self::$instances[$type])) {
             require_once(WF_EDITOR . '/extensions/search/' . $type . '.php');
 
             $classname = 'WF' . ucfirst($type) . 'SearchExtension';
 
             if (class_exists($classname)) {
-                $instances[$type] = new $classname($config);
+                self::$instances[$type] = new $classname($config);
             } else {
-                $instances[$type] = new WFSearchExtension();
+                self::$instances[$type] = new WFSearchExtension();
             }
         }
 
-        return $instances[$type];
+        return self::$instances[$type];
     }
 
     public function display() {
         parent::display();
     }
 
-    protected function getView($layout) {
-        return parent::getView('search', $layout);
+    public function getView($layout) {        
+        return parent::getView(array('name' => 'search', 'layout' => $layout));
     }
 
 }

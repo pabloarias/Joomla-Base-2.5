@@ -2,7 +2,7 @@
 
 /**
  * @package   	JCE
- * @copyright 	Copyright (c) 2009-2012 Ryan Demmer. All rights reserved.
+ * @copyright 	Copyright (c) 2009-2013 Ryan Demmer. All rights reserved.
  * @license   	GNU/GPL 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * JCE is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -73,8 +73,7 @@ class WFModelInstaller extends WFModel {
 
         // Cleanup the install files
         if (!is_file($package['packagefile'])) {
-            $config = JFactory::getConfig();
-            $package['packagefile'] = $config->get('tmp_path') . '/' . $package['packagefile'];
+            $package['packagefile'] = $app->getCfg('tmp_path') . '/' . $package['packagefile'];
         }
         if (is_file($package['packagefile'])) {
             JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
@@ -122,7 +121,7 @@ class WFModelInstaller extends WFModel {
      * @return Array $package
      */
     private function getPackage() {
-        $config = JFactory::getConfig();
+        $app = JFactory::getApplication();
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.archive');
 
@@ -139,13 +138,13 @@ class WFModelInstaller extends WFModel {
             $upload = false;
             // no path either!
             if (!$path) {
-                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WARNINSTALLFILE'));
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_NO_FILE'));
                 return false;
             }
         }
 
         // Install failed
-        if ((!$file['tmp_name'] && !$file['name']) || ($file['error'] || $file['size'] < 1)) {
+        if (!is_uploaded_file($file['tmp_name']) || !$file['tmp_name'] || !$file['name'] || $file['error']) {
             $upload = false;
             // no path either!
             if (!$path) {
@@ -154,24 +153,27 @@ class WFModelInstaller extends WFModel {
             }
         }
 
-        if (defined('JPATH_PLATFORM')) {
-            $tmp = $config->get('tmp_path');
-        } else {
-            $tmp = $config->getValue('config.tmp_path');
-        }
-
         // uploaded file
-        if ($upload && $file['tmp_name'] && $file['name']) {
+        if ($upload) {
             // check extension
             if (!preg_match('/\.(zip|tar|gz|gzip|tgz|tbz2|bz2|bzip2)$/i', $file['name'])) {
-                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WARNINSTALLFILE'));
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_INVALID_FILE'));
                 return false;
             }
 
-            $dest = $tmp . '/' . $file['name'];
-            $src = $file['tmp_name'];
+            $dest   = JPath::clean($app->getCfg('tmp_path') . '/' . $file['name']);
+            $src    = $file['tmp_name'];
             // upload file
-            JFile::upload($src, $dest);
+            if (!JFile::upload($src, $dest)) {
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_UPLOAD_FAILED'));
+                return false;
+            }
+            
+            if (!is_file($dest)) {
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_UPLOAD_FAILED'));
+                return false;
+            }
+            
             // path to file
         } else {
             $dest = JPath::clean($path);
@@ -184,14 +186,14 @@ class WFModelInstaller extends WFModel {
         if (preg_match('/\.(zip|tar|gz|gzip|tgz|tbz2|bz2|bzip2)/i', $dest)) {
             // Make sure that zlib is loaded so that the package can be unpacked
             if (!extension_loaded('zlib')) {
-                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WARNINSTALLZLIB'));
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_WARNINSTALLZLIB'));
                 return false;
             }
 
             $package = JPath::clean(dirname($dest) . '/' . uniqid('install_'));
 
             if (!JArchive::extract($dest, $package)) {
-                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_EXTRACT'));
+                JError::raiseWarning('SOME_ERROR_CODE', WFText::_('WF_INSTALLER_EXTRACT_ERROR'));
                 return false;
             }
 
