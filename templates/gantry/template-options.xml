@@ -326,7 +326,6 @@
             <field name="debugheader" type="toggle" default="0" label="LESS_DEBUGHEADER" description="LESS_DEBUGHEADER_DESC"/>
             <field name="clear" type="ajaxbutton" text="LESS_COMPILE_CLEAR_TEXT" model="lesscompiler" action="clear" label="LESS_COMPILE_CLEAR" setinoverride="false" />
         </fields>
-        <field name="isis-dropdowns" type="toggle" default="0" label="ISIS_DROPDOWNS" description="ISIS_DROPDOWNS_DESC" />
     </fieldset>
     <fieldset name="assignment" label="ASSIGNMENTS">
         <field name="assignments" type="assignments" panel_position="left" setinoverride="false"/>

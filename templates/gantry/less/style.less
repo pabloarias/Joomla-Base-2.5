@@ -1,5 +1,5 @@
 /**
- * @version   $Id: style.less 4738 2012-10-30 09:35:45Z james $
+ * @version   $Id: style.less 8181 2013-03-11 18:34:17Z james $
  * @author    RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -182,6 +182,9 @@ ul.menu {
 	}
 }
 .article-info {
+	&.muted {
+		color: inherit;
+	}
 	dd:before {
 		text-shadow: 1px 1px 0 @bodycontrast;
 	}
@@ -306,6 +309,9 @@ textarea[readonly] {
     background-color: @bodybackground2;
     border: 1px solid @bodyborder;
   }
+  &.input-append .media-preview {
+  	margin: 0;
+  }
 }
 
 // Form Actions
@@ -327,9 +333,13 @@ textarea[readonly] {
 }
 
 // Extras
-.well,
 .table-bordered th {
 	background-color: @bodybackground2;
+}
+.well {
+	background-color: transparent;
+	border: none;
+	.box-shadow(none);
 }
 
 .nav-tabs.nav-stacked > li > a {
@@ -353,6 +363,15 @@ textarea[readonly] {
 .row-striped .row-fluid:hover,
 .cat-list-row0:hover, .cat-list-row1:hover {
 	background-color: @bodybackground3;
+}
+
+.filter-search.alert-info {
+	background-color: transparent;
+	border-color: transparent;
+	color: inherit;
+	.inputbox {
+		color: @bodyTextDark;
+	}
 }
 
 // Notice Styles

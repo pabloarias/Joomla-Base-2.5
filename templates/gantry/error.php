@@ -1,6 +1,6 @@
 <?php
 /**
-* @version   $Id: error.php 5279 2012-11-19 20:11:52Z kevin $
+* @version   $Id: error.php 8130 2013-03-08 15:17:55Z james $
 * @author    RocketTheme http://www.rockettheme.com
 * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -23,6 +23,7 @@ $doc = JFactory::getDocument();
 $doc->setTitle($this->error->getCode() . ' - '.$this->title);
 
 $gantry->addStyle('grid-responsive.css', 5);
+$gantry->addLess('bootstrap.less', 'bootstrap.css', 6);
 $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 if ($gantry->browser->name == 'ie') {
 	if ($gantry->browser->shortversion == 8) {

@@ -1,5 +1,5 @@
 /**
-* @version   $Id: joomla-core.less 7305 2013-02-06 19:41:39Z james $
+* @version   $Id: joomla-core.less 8179 2013-03-11 18:09:27Z james $
 * @author    RocketTheme http://www.rockettheme.com
 * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
 * @license   http://www.rockettheme.com/legal/license.php RocketTheme Proprietary Use License
@@ -153,12 +153,12 @@
 				font-size: @baseFontSize;
 				margin-left: 8px;
 			}
-			i {
+			i, [class^="icon-"], [class*=" icon-"] {
 				display: none;
 			}
 		}
 		.print-icon {
-			img, [class^="icon-"], [class*=" icon-"] {
+			img {
 				display: none;
 			}
 			a:before {
@@ -167,7 +167,7 @@
 			}
 		}
 		.email-icon {
-			img, [class^="icon-"], [class*=" icon-"] {
+			img {
 				display: none;
 			}
 			a:before {
@@ -176,7 +176,7 @@
 			}
 		}
 		.edit-icon {
-			img, [class^="icon-"], [class*=" icon-"] {
+			img {
 				display: none;
 			}
 			a:before {
@@ -192,8 +192,13 @@
 		dd {
 			margin-left: 0;
 			display: block;
+			div {
+				[class^="icon-"], [class*="icon-"] {
+					display: none;
+				}
+			}
 		}
-		dd:before {
+		dd:before, dd div:before {
 			font-family: FontAwesome;
 			margin-right: 2px;
 		}
@@ -201,7 +206,7 @@
 			content: "\f0c9";
 		}
 		.category-name:before {
-			content: "\f0c9";
+			content: "\f0c9";            
 		}
 		.create:before {
 			content: "\f017";
@@ -253,6 +258,9 @@
 		li {
 			list-style: none;
 			.border-radius(4px);
+			.box-shadow(none);
+			border-color: transparent;
+			background-color: transparent;
 			a {
 				padding: 4px 10px;
 				font-size: @baseFontSize;
@@ -361,6 +369,9 @@
 				padding: 20px 15px;
 				margin: 10px 0 15px 0;
 			}
+			.title {
+				font-size: 100%;
+			}
 			.formelm-area {
 				padding: 5px 0;
 				label {
@@ -369,6 +380,11 @@
 					width: 7em;
 				}
 			}
+		}
+	}
+	#adminForm {
+		.title {
+			font-size: 100%;
 		}
 	}
 	.formelm {
@@ -395,7 +411,30 @@
 			text-shadow: none;
 			font-size: inherit;
 			text-transform: inherit;
+			box-shadow: none;
 		}
+	}
+}
+
+// Image Popup
+.manager.thumbnails {
+	> li {
+		float: left !important;
+		margin-left: 20px !important;
+		list-style: none;
+	}
+}
+.control-label {
+	color: @bodyTitle;
+}
+.control-group {
+	margin-left: 0 !important;
+}
+
+// Article PopUp
+.adminlist {
+	.title > a {
+		font-weight: bold;
 	}
 }
 
@@ -411,12 +450,32 @@
 		text-transform: inherit;
 		color: @black;
 		display: table-cell;
+		.box-shadow(none);
+		.border-radius(0);
+		line-height: inherit;
+		&:hover {
+			color: @black !important;
+		}
+	}
+	tbody {
+		td.hilite, td.selected {
+			border: none;
+			padding: 2px 4px 2px 2px;
+		}
 	}
 	td.button:after {
 		position: relative;
 	}
 	td.title {
 		font-size: 1.4em;
+		display: table-cell;
+		line-height: inherit;
+		text-shadow: none;
+	}
+	tr.daynames {
+		td {
+			border: none !important;
+		}
 	}
 }
 
@@ -580,7 +639,7 @@
 
 // Breadcrumbs Module
 #rt-breadcrumbs {
-	.breadcrumb {
+	.breadcrumb, [class^="breadcrumb"] {
 		padding: 0;
 		margin: 0;
 		a {
@@ -588,9 +647,9 @@
 				margin: 0 10px;
 			}
 		}
-	}
-	img[src $="arrow.png"] {
-		display: none;
+		img {
+			display: none;
+		}
 	}
 	a {
 		font-size: @baseFontSize;
@@ -681,6 +740,10 @@
 	.archive {
 		.filter-search {
 			float: none;
+			padding-left: 0;
+			.button {
+				margin-top: -10px;
+			}
 		}
 		.filters {
 			margin-bottom: 25px;
@@ -704,6 +767,10 @@
 		select {
 			margin-bottom: 0;
 		}
+	}
+	.even, .odd {
+		background: inherit;
+		border-bottom: inherit;
 	}
 }
 
@@ -990,11 +1057,22 @@ input[type="radio"], input[type="checkbox"] {
 	}
 	.formelm {
 		margin: 5px 0;
+		.fltlft {
+			float: left;
 	}
-	.formelm label {
+		label {
 		width: 13em;
 		display: inline-block;
 		vertical-align: top;
+			width: 100%;			
+		}
+		.button2-left, .media-preview {
+			margin: 3px 0 0 10px;
+			a {
+				padding: 3px 10px !important;
+				.border-radius(4px);
+			}
+		}
 	}
 	#adminForm .formelm-area {
 		padding: 5px 0;

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version   $Id: index.php 6263 2013-01-01 22:00:40Z kevin $
+* @version   $Id: index.php 7321 2013-02-07 05:15:16Z kevin $
  * @author RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -33,6 +33,7 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
         $gantry->displayHead();
 
 		$gantry->addStyle('grid-responsive.css', 5);
+		$gantry->addLess('bootstrap.less', 'bootstrap.css', 6);
         $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 
         if ($gantry->browser->name == 'ie'){

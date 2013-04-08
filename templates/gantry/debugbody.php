@@ -58,7 +58,11 @@ $gantry->init();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $gantry->language; ?>" lang="<?php echo $gantry->language;?>" >
 <head>
 	<jdoc:include type="head" />
-	<?php $gantry->addStyles(array('template.css')); ?>
+	<?php
+		$gantry->addStyle('grid-responsive.css', 5);
+		$gantry->addLess('bootstrap.less', 'bootstrap.css', 6); 
+		$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
+	?>
 </head>
 	<body id="debug">
 		<div class="rt-container">

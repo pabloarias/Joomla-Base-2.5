@@ -1,6 +1,6 @@
 <?php
 /**
-* @version   $Id: component.php 5057 2012-11-06 04:48:10Z rhuk $
+* @version   $Id: component.php 8130 2013-03-08 15:17:55Z james $
  * @author RocketTheme http://www.rockettheme.com
  * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -31,6 +31,7 @@ $gantry->init();
 			<?php endif; ?>
 			<?php
 				$gantry->displayHead();
+				$gantry->addLess('bootstrap.less', 'bootstrap.css', 6);
 				$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
 			?>
 		</head>
