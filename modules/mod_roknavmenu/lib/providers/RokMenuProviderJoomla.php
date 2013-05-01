@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   $Id: RokMenuProviderJoomla.php 4585 2012-10-27 01:44:54Z btowles $
+ * @version   $Id: RokMenuProviderJoomla.php 8586 2013-03-20 14:15:35Z steph $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 require_once(dirname(__FILE__) . '/JoomlaRokMenuNode.php');
@@ -12,7 +12,7 @@ if (!class_exists('RokMenuProviderJoomla')) {
         protected function getMenuItems() {
             //Cache this basd on access level
             $conf =JFactory::getConfig();
-            if ($conf->get('config.caching') && $this->args["module_cache"]) {
+            if ($conf->get('caching') && $this->args["cache"]) {
                 $user =JFactory::getUser();
                 $cache =JFactory::getCache('mod_roknavmenu');
                 $cache->setCaching(true);

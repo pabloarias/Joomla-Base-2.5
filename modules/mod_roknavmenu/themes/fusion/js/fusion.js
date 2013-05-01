@@ -1,7 +1,7 @@
 /*
  * @version   $Id: fusion.js 4586 2012-10-27 01:50:24Z btowles $
  * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2012 RocketTheme, LLC
+ * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 var Fusion=new Class({Implements:[Options],version:"1.9.8",options:{centered:false,tweakInitial:{x:0,y:0},tweakSubsequent:{x:0,y:0},tweakSizes:{width:0,height:0},pill:true,direction:{x:"right",y:"down"},effect:"slide and fade",orientation:"horizontal",opacity:1,hideDelay:50000,menuFx:{duration:500,transition:"quad:out"},pillFx:{duration:400,transition:"back:out"}},initialize:function(f,k){this.element=$$(f)[0];
