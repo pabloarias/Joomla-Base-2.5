@@ -25,9 +25,12 @@ class AkeebaViewCpanel extends FOFViewHtml
 		// Used in FOF 1.x where the behaviour was kinda clunky
 		$model = $this->getModel();
 
+		/**
 		$selfhealModel = FOFModel::getTmpInstance('Selfheal','AkeebaModel');
 		$schemaok = $selfhealModel->healSchema();
-		$this->assign('schemaok', $schemaok);		
+		**/
+		$schemaok = true;
+		$this->assign('schemaok', $schemaok);
 		
 		$aeconfig = AEFactory::getConfiguration();
 

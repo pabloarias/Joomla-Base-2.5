@@ -34,11 +34,11 @@ if(defined('PHP_VERSION')) {
 if(!version_compare($version, '5.2.7', '>=')) return;
 
 // Basic check #2 - is Akeeba Backup installed?
-jimport('joomla.filesystem.file');
+JLoader::import('joomla.filesystem.file');
 if( !JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_akeeba'.DS.'version.php') ) return;
 
 // Basic check #3: Make sure Akeeba Backup is enabled
-jimport('joomla.application.component.helper');
+JLoader::import('joomla.application.component.helper');
 if (!JComponentHelper::isEnabled('com_akeeba', true))
 {
 	//JError::raiseError('E_JPNOTENABLED', JText('MOD_AKADMIN_AKEEBA_NOT_ENABLED'));
@@ -106,7 +106,7 @@ class plgJmonitoringAkeebabackup extends JMonitoringPluginMonitoring
 		// Process "failed backup" warnings, if specified
 		if(!is_null($record))
 		{
-			jimport('joomla.utilities.date');
+			JLoader::import('joomla.utilities.date');
 			$jOn = new JDate($record->backupstart);
 			
 			// Warn on failed backups

@@ -55,24 +55,26 @@ class AkeebaStrapper
     public static function isCli()
     {
         static $isCli = null;
+
         if (is_null($isCli))
         {
             try
             {
                 if (is_null(JFactory::$application))
                 {
-                    $isCLI = true;
+                    $isCli = true;
                 }
                 else
                 {
-                    $isCLI = version_compare(JVERSION, '1.6.0', 'ge') ? (JFactory::getApplication() instanceof JException) : false;
+                    $isCli = version_compare(JVERSION, '1.6.0', 'ge') ? (JFactory::getApplication() instanceof JException) : false;
                 }
             }
             catch (Exception $e)
             {
-                $isCLI = true;
+                $isCli = true;
             }
         }
+
         return $isCli;
     }
 
@@ -102,7 +104,9 @@ class AkeebaStrapper
     public static function jQuery()
     {
         if (self::isCli())
+		{
             return;
+		}
 
 		$jQueryLoad = self::getPreference('jquery_load', 'auto');
 		if (!in_array($jQueryLoad, array('auto', 'full', 'namespace', 'none')))
@@ -157,7 +161,9 @@ ENDSCRIPT;
     public static function setjQueryUItheme($theme)
     {
         if (self::isCli())
+		{
             return;
+		}
 
         self::$jqUItheme = $theme;
     }
@@ -168,7 +174,9 @@ ENDSCRIPT;
     public static function jQueryUI()
     {
         if (self::isCli())
+		{
             return;
+		}
 
         if (!self::$_includedJQuery)
         {
@@ -198,7 +206,9 @@ ENDSCRIPT;
     public static function bootstrap()
     {
         if (self::isCli())
+		{
             return;
+		}
 
 		if (version_compare(JVERSION, '3.0', 'gt'))
 		{
@@ -283,6 +293,11 @@ ENDSCRIPT;
      */
     public static function addJSfile($path)
     {
+		if (self::isCli())
+		{
+            return;
+		}
+
         self::$scriptURLs[] = FOFTemplateUtils::parsePath($path);
     }
 
@@ -293,6 +308,11 @@ ENDSCRIPT;
      */
     public static function addJSdef($script)
     {
+		if (self::isCli())
+		{
+            return;
+		}
+
         self::$scriptDefs[] = $script;
     }
 
@@ -303,6 +323,11 @@ ENDSCRIPT;
      */
     public static function addCSSfile($path)
     {
+		if (self::isCli())
+		{
+            return;
+		}
+
         self::$cssURLs[] = FOFTemplateUtils::parsePath($path);
     }
 
@@ -314,6 +339,11 @@ ENDSCRIPT;
      */
     public static function addLESSfile($path, $altPaths = null)
     {
+		if (self::isCli())
+		{
+            return;
+		}
+
         self::$lessURLs[] = array($path, $altPaths);
     }
 
@@ -324,6 +354,11 @@ ENDSCRIPT;
      */
     public static function addCSSdef($style)
     {
+		if (self::isCli())
+		{
+            return;
+		}
+
         self::$cssDefs[] = $style;
     }
 

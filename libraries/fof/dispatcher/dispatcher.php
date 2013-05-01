@@ -269,7 +269,7 @@ class FOFDispatcher extends JObject
 				}
 			}
 		}
-		else
+		elseif (!$isCli)
 		{
 			// Perform transparent authentication for front-end requests
 			$this->transparentAuthentication();
@@ -291,16 +291,17 @@ class FOFDispatcher extends JObject
 		$jlang->load($this->component, $paths[1], 'en-GB', true);
 		$jlang->load($this->component, $paths[1], null, true);
 
-		if (!$this->onBeforeDispatch())
+		$canDispatch = true;
+		if($isCli)
 		{
+			$canDispatch = $canDispatch && $this->onBeforeDispatchCLI();
+		}
 
-			// For json, don't use normal 403 page, but a json encoded message
+		$canDispatch = $canDispatch && $this->onBeforeDispatch();
 
-			if ($this->input->get('format', '') == 'json')
-			{
-				echo json_encode(array('code'	 => '403', 'error'	 => $this->getError()));
-				exit();
-			}
+		if (!$canDispatch)
+		{
+			JResponse::setHeader('Status', '403 Forbidden', true);
 
 			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
@@ -342,20 +343,10 @@ class FOFDispatcher extends JObject
 		$controller = FOFController::getTmpInstance($option, $view, $config);
 		$status = $controller->execute($task);
 
-		if ($status === false)
-		{
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
-			}
-			else
-			{
-				return JError::raiseError('403', JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
-			}
-		}
-
 		if (!$this->onAfterDispatch())
 		{
+			JResponse::setHeader('Status', '403 Forbidden', true);
+
 			if (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
@@ -366,7 +357,26 @@ class FOFDispatcher extends JObject
 			}
 		}
 
-		$controller->redirect();
+		$format = $this->input->get('format', 'html', 'cmd');
+		$format = empty($format) ? 'html' : $format;
+
+		if ($format == 'html')
+		{
+			// In HTML views perform a redirection
+			if ($controller->redirect())
+			{
+				return;
+			}
+		}
+		else
+		{
+			// In non-HTML views just exit the application with the proper HTTP headers
+			if ($controller->hasRedirect())
+			{
+				$headers = JResponse::sendHeaders();
+				jexit();
+			}
+		}
 	}
 
 	/**
@@ -383,7 +393,7 @@ class FOFDispatcher extends JObject
 		$task = FOFInflector::isPlural($view) ? 'browse' : 'edit';
 
 		// Get a potential ID, we might need it later
-		$id = $this->input->get('id', null);
+		$id = $this->input->get('id', null, 'int');
 
 		if ($id == 0)
 		{
@@ -445,6 +455,42 @@ class FOFDispatcher extends JObject
 	 */
 	public function onBeforeDispatch()
 	{
+		return true;
+	}
+
+	/**
+	 * Sets up some environment variables, so we can work as usually on CLI, too.
+	 *
+	 * @return  boolean  Return false to abort
+	 */
+	public function onBeforeDispatchCLI()
+	{
+		JLoader::import('joomla.environment.uri');
+		JLoader::import('joomla.application.component.helper');
+
+		// Trick to create a valid url used by JURI
+		$this->_originalPhpScript = '';
+
+		// We have no Application Helper (there is no Application!), so I have to define these constants manually
+		$option = $this->input->get('option', '', 'cmd');
+		if($option)
+		{
+			if(!defined('JPATH_COMPONENT'))
+			{
+				define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
+			}
+
+			if(!defined('JPATH_COMPONENT_SITE'))
+			{
+				define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
+			}
+
+			if(!defined('JPATH_COMPONENT_ADMINISTRATOR'))
+			{
+				define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
+			}
+		}
+
 		return true;
 	}
 
@@ -531,7 +577,7 @@ class FOFDispatcher extends JObject
 					break;
 
 				case 'QueryString_TOTP':
-					$encryptedData = $this->input->get('_fofauthentication', '');
+					$encryptedData = $this->input->get('_fofauthentication', '', 'raw');
 
 					if (empty($encryptedData))
 					{
@@ -559,7 +605,7 @@ class FOFDispatcher extends JObject
 					break;
 
 				case 'QueryString_Plaintext':
-					$jsonencoded = $this->input->get('_fofauthentication', '');
+					$jsonencoded = $this->input->get('_fofauthentication', '', 'raw');
 
 					if (empty($jsonencoded))
 					{
@@ -580,8 +626,8 @@ class FOFDispatcher extends JObject
 
 				case 'SplitQueryString_Plaintext':
 					$authInfo = array(
-						'username'	 => $this->input->get('_fofauthentication_username', ''),
-						'password'	 => $this->input->get('_fofauthentication_password', ''),
+						'username'	 => $this->input->get('_fofauthentication_username', '', 'raw'),
+						'password'	 => $this->input->get('_fofauthentication_password', '', 'raw'),
 					);
 
 					if (empty($authInfo['username']))

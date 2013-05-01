@@ -37,7 +37,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 
 	/** @var string The database driver to use */
 	protected $driver = '';
-	
+
 	// **********************************************************************
 	// File handling fields
 	// **********************************************************************
@@ -65,7 +65,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 
 	/** @var string Relative path of how the file should be saved in the archive */
 	protected $saveAsName = '';
-	
+
 	// **********************************************************************
 	// Protected fields (data handling)
 	// **********************************************************************
@@ -102,7 +102,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 
 	/** @var int Dump part's maximum size */
 	protected $partSize = 0;
-	
+
 	/**
 	 * Find where to store the backup files
 	 * @param $partNumber int The SQL part number, default is 0 (.sql)
@@ -127,7 +127,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 				$baseName = $baseName.'.s'.sprintf('%02u', $partNumber);
 			}
 		}
-		
+
 		if(empty($this->installerSettings)) {
 			// Fetch the installer settings
 			$this->installerSettings = (object)array(
@@ -190,14 +190,14 @@ abstract class AEAbstractDump extends AEAbstractPart
 
 	/**
 	 * Populates the table arrays with the information for the db entities to backup
-	 * 
+	 *
 	 * @return null
 	 */
 	protected abstract function getTablesToBackup();
-	
+
 	/**
 	 * Runs a step of the database dump
-	 * 
+	 *
 	 * @return null
 	 */
 	protected abstract function stepDatabaseDump();
@@ -273,7 +273,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 		// Finally, mark ourselves "prepared".
 		$this->setState('prepared');
 	}
-	
+
 	/**
 	 * Implements the _run() abstract method
 	 */
@@ -355,11 +355,11 @@ abstract class AEAbstractDump extends AEAbstractPart
 		}
 
 		$this->stepDatabaseDump();
-		
+
 		$null = null;
 		$this->writeline($null);
 	}
-	
+
 	/**
 	 * Implements the _finalize() abstract method
 	 *
@@ -426,7 +426,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 			$this->setState('finished');
 		}
 	}
-	
+
 /**
 	 * Creates a new dump part
 	 */
@@ -464,8 +464,8 @@ abstract class AEAbstractDump extends AEAbstractPart
 
 	/**
 	 * Creates a new dump part, but only if required to do so
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	protected function createNewPartIfRequired()
 	{
@@ -485,8 +485,8 @@ abstract class AEAbstractDump extends AEAbstractPart
 			return $this->getNextDumpPart();
 		}
 		return true;
-	}	
-	
+	}
+
 	/**
 	 * Returns a table's abstract name (replacing the prefix with the magic #__ string)
 	 *
@@ -606,7 +606,7 @@ abstract class AEAbstractDump extends AEAbstractPart
 	public function closeFile()
 	{
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "Closing SQL dump file.");
-		if (is_resource($this->fp)) 
+		if (is_resource($this->fp))
 		{
 			@fclose($this->fp);
 			$this->fp = null;
@@ -654,11 +654,11 @@ abstract class AEAbstractDump extends AEAbstractPart
 			case '_prepare':
 				return $this->_prepare();
 				break;
-			
+
 			case '_run':
 				return $this->_run();
 				break;
-			
+
 			case '_finalize':
 				return $this->_finalize();
 				break;

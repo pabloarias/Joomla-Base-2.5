@@ -22,14 +22,14 @@ class AkeebaControllerCpanel extends FOFController
 		}
 		parent::execute($task);
 	}
-	
+
 	public function onBeforeBrowse() {
 		$result = parent::onBeforeBrowse();
 		if($result) {
 			$model = $this->getThisModel();
 			$view = $this->getThisView();
 			$view->setModel($model);
-			
+
 			$aeconfig = AEFactory::getConfiguration();
 
 			// Invalidate stale backups
@@ -46,6 +46,8 @@ class AkeebaControllerCpanel extends FOFController
 			$model->checkSettingsEncryption();
 			// Update the magic component parameters
 			$model->updateMagicParameters();
+			// Run the automatic database check
+			$model->checkAndFixDatabase();
 
 			// Check the last installed version
 			$versionLast = null;
@@ -64,20 +66,20 @@ class AkeebaControllerCpanel extends FOFController
 			}
 			if(version_compare(AKEEBA_VERSION, $versionLast, 'ne') || empty($versionLast)) {
 				$this->setRedirect('index.php?option=com_akeeba&view=postsetup');
-				return;
+				return true;
 			}
 		}
 		return $result;
 	}
-	
+
 	public function switchprofile()
 	{
 		// CSRF prevention
 		if($this->csrfProtection) {
 			$this->_csrfProtection();
 		}
-		
-		$newProfile = FOFInput::getInt('profileid', -10, $this->input);
+
+		$newProfile = $this->input->get('profileid', -10, 'int');
 
 		if(!is_numeric($newProfile) || ($newProfile <= 0))
 		{
@@ -88,7 +90,7 @@ class AkeebaControllerCpanel extends FOFController
 		$session = JFactory::getSession();
 		$session->set('profile', $newProfile, 'akeeba');
 		$url = '';
-		$returnurl = FOFInput::getBase64('returnurl', '', $this->input);
+		$returnurl = $this->input->get('returnurl', '', 'base64');
 		if(!empty($returnurl)) {
 			$url = base64_decode($returnurl);
 		}
@@ -129,11 +131,11 @@ class AkeebaControllerCpanel extends FOFController
 			->where($db->qn('element').' = '.$db->q('com_akeeba'));
 
 		$db->setQuery($sql);
-		$db->query();
-		
+		$db->execute();
+
 		// Redirect back to the control panel
 		$url = '';
-		$returnurl = FOFInput::getBase64('returnurl', '', $this->input);
+		$returnurl = $this->input->get('returnurl', '', 'base64');
 		if(!empty($returnurl)) {
 			$url = base64_decode($returnurl);
 		}

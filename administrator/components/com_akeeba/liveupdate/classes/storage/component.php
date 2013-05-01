@@ -47,7 +47,7 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 
 		$data = $params->get(self::$key, '');
 
-		jimport('joomla.registry.registry');
+		JLoader::import('joomla.registry.registry');
 		self::$registry = new JRegistry('update');
 
 		self::$registry->loadString($data, 'INI');
@@ -87,6 +87,6 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 			->where($db->qn('element').' = '.$db->q(self::$component));
 
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 	}
 }

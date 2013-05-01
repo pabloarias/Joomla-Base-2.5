@@ -16,10 +16,11 @@ END;
 
 SET IDENTITY_INSERT #__ak_profiles ON;
 IF NOT EXISTS (SELECT * FROM #__ak_profiles WHERE id = 1)
+BEGIN
 INSERT INTO #__ak_profiles (id, description, configuration, filters)
-SELECT 1, 'Default Backup profile', '', '';
-SET IDENTITY_INSERT #__ak_profiles  OFF
+SELECT 1, 'Default Backup profile', '', ''
 END;
+SET IDENTITY_INSERT #__ak_profiles  OFF;
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__ak_stats]') AND type in (N'U'))
 BEGIN
@@ -48,18 +49,22 @@ CREATE TABLE [#__ak_stats] (
 END;
 
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[#__ak_stats]') AND name = N'idx_fullstatus')
-CREATE NONCLUSTERED INDEX [idx_fullstatus] ON [#__ak_stats] 
+BEGIN
+CREATE NONCLUSTERED INDEX [idx_fullstatus] ON [#__ak_stats]
 (
 	[filesexist] ASC,
 	[status] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF);
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+END;
 
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[#__ak_stats]') AND name = N'idx_stale')
-CREATE NONCLUSTERED INDEX [idx_stale] ON [#__ak_stats] 
+BEGIN
+CREATE NONCLUSTERED INDEX [idx_stale] ON [#__ak_stats]
 (
 	[status] ASC,
 	[origin] ASC
-)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF);
+)WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF)
+END;
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[#__ak_storage]') AND type in (N'U'))
 BEGIN

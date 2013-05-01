@@ -28,7 +28,7 @@ if(!version_compare($version, '5.3.0', '>='))
 	return JError::raise(E_ERROR, 500, 'PHP versions 4.x, 5.0, 5.1 and 5.2 are no longer supported by Akeeba Backup.<br/><br/>The version of PHP used on your site is obsolete and contains known security vulenrabilities. Moreover, it is missing features required by Akeeba Backup to work properly or at all. Please ask your host to upgrade your server to the latest PHP 5.3 release. Thank you!');
 }
 
-jimport('joomla.application.component.model');
+JLoader::import('joomla.application.component.model');
 
 // Load FOF
 include_once JPATH_SITE.'/libraries/fof/include.php';

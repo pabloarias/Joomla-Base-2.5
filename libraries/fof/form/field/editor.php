@@ -90,7 +90,9 @@ class FOFFormFieldEditor extends JFormFieldEditor implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		return '<div class="' . $this->id . ' ' . $class . '">' . $this->value . '</div>';
 	}
 
 }

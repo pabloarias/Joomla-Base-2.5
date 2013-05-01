@@ -36,10 +36,14 @@ class FOFRenderJoomla3 extends FOFRenderStrapper
 		if ($format != 'html')
 			return;
 
-		// Wrap output in a Joomla-versioned div
-		$version = new JVersion;
-		$version = str_replace('.', '', $version->RELEASE);
-		echo "<div class=\"joomla-version-$version\">\n";
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if(!$isCli)
+		{
+			// Wrap output in a Joomla-versioned div
+			$version = new JVersion;
+			$version = str_replace('.', '', $version->RELEASE);
+			echo "<div class=\"joomla-version-$version\">\n";
+		}
 
 		// Render the submenu and toolbar
 		$this->renderButtons($view, $task, $input, $config);
@@ -55,8 +59,9 @@ class FOFRenderJoomla3 extends FOFRenderStrapper
 	 */
 	public function postRender($view, $task, $input, $config = array())
 	{
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
 		$format = $input->getCmd('format', 'html');
-		if ($format != 'html')
+		if ($format != 'html' || $isCli)
 			return;
 
 		echo "</div>\n";

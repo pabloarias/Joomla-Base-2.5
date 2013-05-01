@@ -25,10 +25,10 @@ class LiveUpdateStorageFile extends LiveUpdateStorage
 		
 		self::$filename = $filename;
 		
-		jimport('joomla.registry.registry');
+		JLoader::import('joomla.registry.registry');
 		self::$registry = new JRegistry('update');
 		
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		if(JFile::exists(self::$filename)) {
 			self::$registry->loadFile(self::$filename, 'INI');
 		}
@@ -36,7 +36,7 @@ class LiveUpdateStorageFile extends LiveUpdateStorage
 	
 	public function save()
 	{
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		$data = self::$registry->toString('INI');
 		JFile::write(self::$filename, $data);
 	}

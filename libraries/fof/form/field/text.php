@@ -7,10 +7,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-if (!class_exists('JFormFieldText'))
-{
-	require_once JPATH_LIBRARIES . '/joomla/form/fields/text.php';
-}
+JFormHelper::loadFieldClass('text');
 
 /**
  * Form Field class for the FOF framework
@@ -101,7 +98,7 @@ class FOFFormFieldText extends JFormFieldText implements FOFFormField
 	public function getRepeatable()
 	{
 		// Initialise
-		$class             = '';
+		$class             = $this->id;
 		$format_string     = '';
 		$show_link         = false;
 		$link_url          = '';
@@ -110,7 +107,7 @@ class FOFFormFieldText extends JFormFieldText implements FOFFormField
 		// Get field parameters
 		if ($this->element['class'])
 		{
-			$class = ' class="' . (string) $this->element['class'] . '"';
+			$class = (string) $this->element['class'];
 		}
 		if ($this->element['format'])
 		{
@@ -172,7 +169,7 @@ class FOFFormFieldText extends JFormFieldText implements FOFFormField
 		}
 
 		// Create the HTML
-		$html = '<span id="' . $this->id . '" ' . $class . '>';
+		$html = '<span class="' . $class . '">';
 
 		if ($show_link)
 		{

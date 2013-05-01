@@ -11,18 +11,18 @@ defined('_JEXEC') or die();
 $data = $this->item->getData();
 if(substr($data['configuration'], 0, 12) == '###AES128###') {
 	// Load the server key file if necessary
-	jimport('joomla.filesystem.file');
+	JLoader::import('joomla.filesystem.file');
 	if(!defined('AKEEBA_SERVERKEY')) {
 		$filename = JPATH_COMPONENT_ADMINISTRATOR.'/akeeba/serverkey.php';
 		include_once $filename;
 	}
 	$key = AEUtilSecuresettings::getKey();
-	
+
 	$data['configuration'] = AEUtilSecuresettings::decryptSettings($data['configuration'], $key);
 }
 
-$defaultName = FOFInput::getCmd('view', 'joomla', $this->input);
-$filename = FOFInput::getCmd('basename', $defaultName, $this->input);
+$defaultName = $this->input->get('view', 'joomla', 'cmd');
+$filename = $this->input->get('basename', $defaultName, 'cmd');
 $document = JFactory::getDocument();
 $document->setName($filename);
 

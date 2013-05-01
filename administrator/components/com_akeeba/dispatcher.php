@@ -13,7 +13,7 @@ class AkeebaDispatcher extends FOFDispatcher
 {
 	public function onBeforeDispatch() {
 		$result = parent::onBeforeDispatch();
-		
+
 		if($result) {
 			// Load Akeeba Strapper
 			include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
@@ -25,16 +25,16 @@ class AkeebaDispatcher extends FOFDispatcher
 			AkeebaStrapper::addJSfile('media://com_akeeba/plugins/js/akeebaui.js');
 			AkeebaStrapper::addCSSfile('media://com_akeeba/theme/akeebaui.css');
 		}
-		
+
 		return $result;
 	}
-	
+
 	public function dispatch() {
 		if(!class_exists('AkeebaControllerDefault'))
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_akeeba/controllers/default.php';
 		}
-		
+
 		// Merge the language overrides
 		$paths = array(JPATH_ROOT, JPATH_ADMINISTRATOR);
 		$jlang = JFactory::getLanguage();
@@ -68,7 +68,7 @@ class AkeebaDispatcher extends FOFDispatcher
 		// Necessary defines for Akeeba Engine
 		if(!defined('AKEEBAENGINE')) {
 			define('AKEEBAENGINE', 1); // Required for accessing Akeeba Engine's factory class
-			define('AKEEBAROOT', dirname(__FILE__).'/akeeba'); 
+			define('AKEEBAROOT', dirname(__FILE__).'/akeeba');
 		}
 
 		// Setup Akeeba's ACLs, honoring laxed permissions in component's parameters, if set
@@ -115,27 +115,27 @@ class AkeebaDispatcher extends FOFDispatcher
 		// Handle Live Update requests
 		if(!class_exists('LiveUpdate')) {
 			require_once JPATH_ADMINISTRATOR.'/components/com_akeeba/liveupdate/liveupdate.php';
-			if((FOFInput::getCmd('view','',$this->input) == 'liveupdate')) {
+			if(($this->input->get('view','', 'cmd') == 'liveupdate')) {
 				LiveUpdate::handleRequest();
 				return true;
 			}
 		}
-		
+
 		// Look for controllers in the plugins folder
-		$option = FOFInput::getCmd('option','com_foobar',$this->input);
-		$view = FOFInput::getCmd('view',$this->defaultView, $this->input);
+		$option = $this->input->get('option','com_foobar', 'cmd');
+		$view = $this->input->get('view',$this->defaultView, 'cmd');
 		$c = FOFInflector::singularize($view);
 		$alt_path = JPATH_ADMINISTRATOR.'/components/'.$option.'/plugins/controllers/'.$c.'.php';
-		
-		jimport('joomla.filesystem.file');
+
+		JLoader::import('joomla.filesystem.file');
 		if(JFile::exists($alt_path))
 		{
 			// The requested controller exists and there you load it...
 			require_once($alt_path);
 		}
-		
-		FOFInput::setVar('view', $this->view, $this->input);
-		
+
+		$this->input->set('view', $this->view);
+
 		parent::dispatch();
 	}
 }

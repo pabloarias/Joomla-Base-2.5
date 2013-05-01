@@ -40,6 +40,15 @@ class FOFToolbar
 	{
 		static $instances = array();
 
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
 		$hash = $option;
 		if (!array_key_exists($hash, $instances))
 		{
@@ -90,7 +99,7 @@ class FOFToolbar
 					array_unshift($searchPaths, $config['searchpath']);
 				}
 
-				jimport('joomla.filesystem.path');
+				JLoader::import('joomla.filesystem.path');
 				$path = JPath::find(
 						$searchPaths, 'toolbar.php'
 				);
@@ -115,6 +124,15 @@ class FOFToolbar
 
 	public function __construct($config = array())
 	{
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
 		// Cache the config
 		$this->config = $config;
 
@@ -125,7 +143,7 @@ class FOFToolbar
 		}
 		else
 		{
-			$this->input = JRequest::get('default', 3);
+			$this->input = new FOFInput();
 		}
 
 		// Get the default values for the component and view names
@@ -520,8 +538,8 @@ class FOFToolbar
 		}
 		$searchPath = $basePath . '/components/' . $this->component . '/views';
 
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.utilities.arrayhelper');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.utilities.arrayhelper');
 
 		$allFolders = JFolder::folders($searchPath);
 

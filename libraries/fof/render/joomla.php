@@ -36,14 +36,21 @@ class FOFRenderJoomla extends FOFRenderAbstract
 		if ($format != 'html')
 			return;
 
-		// Wrap output in a Joomla-versioned div
-		$version = new JVersion;
-		$version = str_replace('.', '', $version->RELEASE);
-		echo "<div class=\"joomla-version-$version\">\n";
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if(!$isCli)
+		{
+			// Wrap output in a Joomla-versioned div
+			$version = new JVersion;
+			$version = str_replace('.', '', $version->RELEASE);
+			echo "<div class=\"joomla-version-$version\">\n";
+		}
 
-		// Render submenu and toolbar
-		$this->renderButtons($view, $task, $input, $config);
-		$this->renderLinkbar($view, $task, $input, $config);
+		// Render submenu and toolbar (only if asked to)
+		if ($input->getBool('render.toolbar', true))
+		{
+			$this->renderButtons($view, $task, $input, $config);
+			$this->renderLinkbar($view, $task, $input, $config);
+		}
 	}
 
 	/**
@@ -55,6 +62,19 @@ class FOFRenderJoomla extends FOFRenderAbstract
 	 */
 	public function postRender($view, $task, $input, $config = array())
 	{
+		list($isCli,) = FOFDispatcher::isCliAdmin();
+		$format = $input->getCmd('format', 'html');
+		if (empty($format))
+			$format = 'html';
+		if ($format != 'html')
+			return;
+
+		// Closing tag only if we're not in CLI
+		if($isCli)
+		{
+			return;
+		}
+
 		echo "</div>\n";
 	}
 
@@ -314,6 +334,8 @@ class FOFRenderJoomla extends FOFRenderAbstract
 		$key = $model->getTable()->getKeyName();
 		$keyValue = $model->getId();
 
+		JHTML::_('behavior.tooltip');
+
 		$html = '';
 
 		if ($validate = $form->getAttribute('validate'))
@@ -407,11 +429,19 @@ ENDJAVASCRIPT;
 	 */
 	protected function renderLinkbar($view, $task, $input, $config = array())
 	{
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
+		// On command line don't do anything
+		if($isCli)
+		{
+			return;
+		}
+
 		// Do not render a submenu unless we are in the the admin area
 		$toolbar = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
 		$renderFrontendSubmenu = $toolbar->getRenderFrontendSubmenu();
 
-		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
 		if (!$isAdmin && !$renderFrontendSubmenu)
 			return;
 
@@ -435,11 +465,19 @@ ENDJAVASCRIPT;
 	 */
 	protected function renderButtons($view, $task, $input, $config = array())
 	{
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
+		// On command line don't do anything
+		if($isCli)
+		{
+			return;
+		}
+
 		// Do not render buttons unless we are in the the frontend area and we are asked to do so
 		$toolbar = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
 		$renderFrontendButtons = $toolbar->getRenderFrontendButtons();
 
-		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
 		if ($isAdmin || !$renderFrontendButtons)
 			return;
 

@@ -18,14 +18,14 @@ class AkeebaControllerBackup extends FOFController
 		$config['csrf_protection'] = false;
 		parent::__construct($config);
 	}
-	
+
 	public function execute($task) {
 		if($task != 'step') {
 			$task = 'browse';
 		}
 		parent::execute($task);
 	}
-	
+
 	public function browse()
 	{
 		// Check permissions
@@ -34,7 +34,7 @@ class AkeebaControllerBackup extends FOFController
 		$this->_setProfile();
 
 		// Start the backup
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		AECoreKettenrad::reset(array(
 			'maxrun'	=> 0
 		));
@@ -58,7 +58,7 @@ class AkeebaControllerBackup extends FOFController
 		$kettenrad->tick();
 		$array = $kettenrad->getStatusArray();
 		AECoreKettenrad::save(AKEEBA_BACKUP_ORIGIN);
-		
+
 		if($array['Error'] != '')
 		{
 			// An error occured
@@ -66,7 +66,7 @@ class AkeebaControllerBackup extends FOFController
 		}
 		else
 		{
-			$noredirect = FOFInput::getInt('noredirect', 0, $this->input);
+			$noredirect = $this->input->get('noredirect', 0, 'int');
 			if($noredirect != 0)
 			{
 				@ob_end_clean();
@@ -76,7 +76,7 @@ class AkeebaControllerBackup extends FOFController
 			}
 			else
 			{
-				$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=backup&task=step&key='.FOFInput::getVar('key', '', $this->input).'&profile='.FOFInput::getInt('profile', 1, $this->input));
+				$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=backup&task=step&key='.$this->input->get('key', '', 'none', 2).'&profile='.$this->input->get('profile', 1, 'int'));
 			}
 		}
 	}
@@ -113,7 +113,7 @@ class AkeebaControllerBackup extends FOFController
 		}
 		else
 		{
-			$noredirect = FOFInput::getInt('noredirect', 0, $this->input);
+			$noredirect = $this->input->get('noredirect', 0, 'int');
 			if($noredirect != 0)
 			{
 				@ob_end_clean();
@@ -123,7 +123,7 @@ class AkeebaControllerBackup extends FOFController
 			}
 			else
 			{
-				$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=backup&task=step&key='.FOFInput::getVar('key', '', $this->input).'&profile='.FOFInput::getInt('profile', 1, $this->input));
+				$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=backup&task=step&key='.$this->input->get('key', '', 'none', 2).'&profile='.$this->input->get('profile', 1, 'int'));
 			}
 		}
 	}
@@ -134,7 +134,7 @@ class AkeebaControllerBackup extends FOFController
 	private function _checkPermissions()
 	{
 		// Is frontend backup enabled?
-		$febEnabled = AEPlatform::getInstance()->get_platform_configuration_option('frontend_enable', 0) != 0; 
+		$febEnabled = AEPlatform::getInstance()->get_platform_configuration_option('frontend_enable', 0) != 0;
 		if(!$febEnabled)
 		{
 			@ob_end_clean();
@@ -144,7 +144,7 @@ class AkeebaControllerBackup extends FOFController
 		}
 
 		// Is the key good?
-		$key = FOFInput::getVar('key', '', $this->input);
+		$key = $this->input->get('key', '', 'none', 2);
 		$validKey=AEPlatform::getInstance()->get_platform_configuration_option('frontend_secret_word','');
 		$validKeyTrim = trim($validKey);
 		if( ($key != $validKey) || (empty($validKeyTrim)) )
@@ -159,7 +159,7 @@ class AkeebaControllerBackup extends FOFController
 	private function _setProfile()
 	{
 		// Set profile
-		$profile = FOFInput::getInt('profile', 1, $this->input);
+		$profile = $this->input->get('profile', 1, 'int');
 		if(!is_numeric($profile)) $profile = 1;
 		$session = JFactory::getSession();
 		$session->set('profile', $profile, 'akeeba');

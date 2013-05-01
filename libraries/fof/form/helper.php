@@ -7,7 +7,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-jimport('joomla.form.helper');
+JLoader::import('joomla.form.helper');
 
 class FOFFormHelper extends JFormHelper
 {

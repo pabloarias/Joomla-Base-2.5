@@ -65,7 +65,7 @@ class LiveUpdateFetch extends JObject
 		// Use the version strategy to determine the availability of an update
 		switch($config->getVersionStrategy()) {
 			case 'newest':
-				jimport('joomla.utilities.date');
+				JLoader::import('joomla.utilities.date');
 				if(empty($extInfo)) {
 					$mine = new JDate('2000-01-01 00:00:00');
 				} else {

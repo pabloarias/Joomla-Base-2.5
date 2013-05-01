@@ -18,7 +18,7 @@ class AkeebaControllerLight extends FOFController
 		$config['csrf_protection'] = false;
 		parent::__construct($config);
 	}
-	
+
 	public function execute($task)
 	{
 		// Enforce raw mode - I need to be in full control!
@@ -28,9 +28,9 @@ class AkeebaControllerLight extends FOFController
 			$url = JURI::base().'index.php?option=com_akeeba&view=light&format=raw';
 			$this->setRedirect($url);
 			$this->redirect();
-			return;
+			return true;
 		}
-		
+
 		// Map default/unknown tasks to "browse"
 		if(!in_array($task, array('authenticate','step','error','done')))
 		{
@@ -38,7 +38,7 @@ class AkeebaControllerLight extends FOFController
 		}
 		parent::execute($task);
 	}
-	
+
 	/**
 	 * Controller for the default task (login & profile selection)
 	 */
@@ -48,7 +48,7 @@ class AkeebaControllerLight extends FOFController
 		if(!$febEnabled) {
 			JError::raiseError('500','Access Denied');
 		}
-		
+
 		parent::display(false);
 	}
 
@@ -66,9 +66,9 @@ class AkeebaControllerLight extends FOFController
 		{
 			$session = JFactory::getSession();
 			$session->set('litemodeauthorized', 1, 'akeeba');
-			
+
 			$this->_setProfile();
-			jimport('joomla.utilities.date');
+			JLoader::import('joomla.utilities.date');
 			AECoreKettenrad::reset(array(
 				'maxrun'	=> 0
 			));
@@ -89,7 +89,7 @@ class AkeebaControllerLight extends FOFController
 			$kettenrad->setup($options);
 			$ret = $kettenrad->tick();
 			AECoreKettenrad::save(AKEEBA_BACKUP_ORIGIN);
-			$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=light&task=step&key='.urlencode(FOFInput::getVar('key', '', $this->input)).'&profile='.FOFInput::getInt('profile', 1, $this->input).'&format=raw');
+			$this->setRedirect(JURI::base().'index.php?option=com_akeeba&view=light&task=step&key='.urlencode($this->input->get('key', '', 'none', 2)).'&profile='.$this->input->get('profile', 1, 'int').'&format=raw');
 		}
 	}
 
@@ -98,13 +98,13 @@ class AkeebaControllerLight extends FOFController
 	 */
 	public function step()
 	{
-		$key = FOFInput::getVar('key', '', $this->input);
-		
+		$key = $this->input->get('key', '', 'none', 2);
+
 		if(!$this->_checkPermissions()) {
 			parent::redirect();
-			return;
+			return true;
 		}
-		
+
 		$model = $this->getThisModel();
 		$model->setState('key', $key);
 
@@ -138,13 +138,13 @@ class AkeebaControllerLight extends FOFController
 	{
 		if(!$this->_checkPermissions()) {
 			parent::redirect();
-			return;
+			return true;
 		}
-		
+
 		$model = $this->getThisModel();
 		$error = JRequest::getString('error', '', $this->input);
 		$model->setState('error', $error);
-		
+
 		parent::display();
 	}
 
@@ -155,9 +155,9 @@ class AkeebaControllerLight extends FOFController
 	{
 		if(!$this->_checkPermissions()) {
 			parent::redirect();
-			return;
+			return true;
 		}
-		
+
 		parent::display();
 	}
 
@@ -177,7 +177,7 @@ class AkeebaControllerLight extends FOFController
 		}
 
 		// Is the key good?
-		$key = FOFInput::getVar('key', '', $this->input);
+		$key = $this->input->get('key', '', 'none', 2);
 		$validKey=AEPlatform::getInstance()->get_platform_configuration_option('frontend_secret_word','');
 		$validKeyTrim = trim($validKey);
 		if( ($key != $validKey) || (empty($validKeyTrim)) )
@@ -193,7 +193,7 @@ class AkeebaControllerLight extends FOFController
 	private function _setProfile()
 	{
 		// Set profile
-		$profile = FOFInput::getInt('profile', 1, $this->input);
+		$profile = $this->input->get('profile', 1, 'int');
 		if(!is_numeric($profile)) $profile = 1;
 		$session = JFactory::getSession();
 		$session->set('profile', $profile, 'akeeba');

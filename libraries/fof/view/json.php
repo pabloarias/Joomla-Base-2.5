@@ -7,7 +7,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.view');
+JLoader::import('joomla.application.component.view');
 
 /**
  * FrameworkOnFramework JSON View class
@@ -110,7 +110,7 @@ class FOFViewJson extends FOFViewHtml
 		$hasFailed = false;
 		try
 		{
-			$result = $this->loadTemplate($tpl);
+			$result = $this->loadTemplate($tpl, true);
 		}
 		catch (Exception $e)
 		{
@@ -119,7 +119,7 @@ class FOFViewJson extends FOFViewHtml
 
 		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
-			if ($result instanceof JException)
+			if ($result instanceof Exception)
 			{
 				$hasFailed = true;
 			}

@@ -1,4 +1,42 @@
 <?php die();?>
+Akeeba Backup 3.7.6
+================================================================================
+! [HIGH] 403, memory outage errors (all Joomla! versions) and lack of system messages (Joomla! 3.x)
+# [MEDIUM] RackSpace CloudFiles authentication broken; apparently the updated documentation in RackSpace's site isn't accurate?!
+
+Akeeba Backup 3.7.5
+================================================================================
++ ANGIE: Warn users of IE9 or earlier that they need to upgrade or switch to another browser
++ ANGIE: Reset some configuration.php settings when restoring to a different location, hopefully preventing broken sites due to server incompatibilities
++ ANGIE: Better session handling, making restoration more resilient to accidental information disclosure (when used with the password protection feature)
++ iDriveSync integration (Pro only)
++ PRO: Adding the possibility to password-protect the ANGIE installer
++ PRO: Allow editing the virtual directory name of external folders; if it's empty, the files will end up inside the archive's root
+~ ANGIE: Expect web.config to have been renamed to web.config.bak during extraction (req. Kickstart 3.7.0)
+~ ANGIE: Always use a file to store session data, as the PHP session storage seems to be causing db restoration issues
+# [MEDIUM] ANGIE: Default log and tmp path wouldn't work properly on Windows hosts
+# [LOW] ANGIE: State wasn't reset after the end of restoration, causing a subsequent restoration on the same site / local server and browser session to fail
+# [LOW] ANGIE: Wrong database information put in configuration.php when restoring multiple databases (thanks Spring)
+
+Akeeba Backup 3.7.4
+================================================================================
+! [HIGH] ANGIE: Database settings not saved when restoring sites
+! [HIGH] ANGIE: Failed Joomla! 3 restoration due to typo in default configuration
+
+Akeeba Backup 3.7.3
+================================================================================
++ New backup installation script (ANGIE)
+~ The Lazy Scheduling plugin which is deprecated since 2011 is now reduced to printing a warning which reminds you to disable it on your site
+# [HIGH] Internal server error on ancient versions of PHP 5.3 with broken late static binding implementations
+# [LOW] #445 Switching profiles in Backup Now page does not update the form properly
+
+Akeeba Backup 3.7.2
+================================================================================
+# [HIGH] The component's menu item was removed if the installation couldn't proceed (too low PHP or Joomla! version)
+# [HIGH] Joomla! doesn't run the database upgrade scripts when upgrading from a very old version or when the #__schemas entry is somehow missing
+# [HIGH] After a failed installation, even if the subsequent installation is reported successful Joomla! does not install the database tables causing a broken installation
+# [MEDIUM] The reason why the installation was aborted is not shown due to a Joomla! bug; worked around
+
 Akeeba Backup 3.7.1
 ================================================================================
 ! Performance issue (too much RAM required) the first time Akeeba Backup would run

@@ -102,7 +102,24 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		$selected = self::getOptionName($this->getOptions(), $this->value);
+
+		if (is_null($selected))
+		{
+			$selected = array(
+				'group'	 => '',
+				'item'	 => ''
+			);
+		}
+
+		return '<span class="' . $this->id . '-group fof-groupedlist-group ' . $class . '">' .
+			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
+			'</span>' .
+			'<span class="' . $this->id . '-item fof-groupedlist-item ' . $class . '">' .
+			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
+			'</span>';
 	}
 
 	/**

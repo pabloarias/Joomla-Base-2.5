@@ -115,7 +115,37 @@ class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormFi
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		$params = $this->getOptions();
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('a.id AS value, a.title AS text');
+		$query->from('#__viewlevels AS a');
+		$query->group('a.id, a.title, a.ordering');
+		$query->order('a.ordering ASC');
+		$query->order($query->qn('title') . ' ASC');
+
+		// Get the options.
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		// If params is an array, push these options to the array
+		if (is_array($params))
+		{
+			$options = array_merge($params, $options);
+		}
+		// If all levels is allowed, push it into the array.
+		elseif ($params)
+		{
+			array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+		}
+
+		return '<span class="' . $this->id . ' ' . $class . '">' .
+			htmlspecialchars(FOFFormFieldList::getOptionName($options, $this->value), ENT_COMPAT, 'UTF-8') .
+			'</span>';
 	}
 
 }

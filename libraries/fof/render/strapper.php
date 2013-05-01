@@ -36,15 +36,32 @@ class FOFRenderStrapper extends FOFRenderAbstract
 		if ($format != 'html')
 			return;
 
-		// Wrap output in a Joomla-versioned div
-		$version = new JVersion;
-		$version = str_replace('.', '', $version->RELEASE);
-		echo "<div class=\"joomla-version-$version\">\n";
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if(!$isCli)
+		{
+			// Wrap output in a Joomla-versioned div
+			$version = new JVersion;
+			$version = str_replace('.', '', $version->RELEASE);
+			echo "<div class=\"joomla-version-$version\">\n";
 
-		// Wrap output in an akeeba-bootstrap class div
-		echo "<div class=\"akeeba-bootstrap\">\n";
+			// Wrap output in an akeeba-bootstrap class div
+			echo "<div class=\"akeeba-bootstrap\">\n";
+		}
 		$this->renderButtons($view, $task, $input, $config);
 		$this->renderLinkbar($view, $task, $input, $config);
+
+		if (!$isCli && version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$sidebarEntries = JHtmlSidebar::getEntries();
+			if (!empty($sidebarEntries))
+			{
+				$html = '<div id="j-sidebar-container" class="span2">' . "\n";
+				$html .= "\t" . JHtmlSidebar::render() ."\n";
+				$html .= "</div>\n";
+				$html .= '<div id="j-main-container" class="span10">' . "\n";
+				echo $html;
+			}
+		}
 	}
 
 	/**
@@ -56,9 +73,19 @@ class FOFRenderStrapper extends FOFRenderAbstract
 	 */
 	public function postRender($view, $task, $input, $config = array())
 	{
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
 		$format = $input->getCmd('format', 'html');
-		if ($format != 'html')
+		if ($format != 'html' || $isCli)
 			return;
+
+		if (!$isCli && version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$sidebarEntries = JHtmlSidebar::getEntries();
+			if (!empty($sidebarEntries))
+			{
+				echo '</div>';
+			}
+		}
 
 		echo "</div>\n";
 		echo "</div>\n";
@@ -97,6 +124,47 @@ ENDJAVASCRIPT;
 	 */
 	protected function renderLinkbar($view, $task, $input, $config = array())
 	{
+		$style = 'classic';
+
+		if(array_key_exists('linkbar_style', $config))
+		{
+			$style = $config['linkbar_style'];
+		}
+
+		if (!version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			$style = 'classic';
+		}
+
+		switch ($style)
+		{
+			case 'joomla':
+				$this->renderLinkbar_joomla($view, $task, $input);
+				break;
+
+			case 'classic':
+			default:
+				$this->renderLinkbar_classic($view, $task, $input);
+				break;
+		}
+	}
+
+	/**
+	 * Renders the submenu (link bar)
+	 *
+	 * @param   string    $view    The active view name
+	 * @param   string    $task    The current task
+	 * @param   FOFInput  $input   The input object
+	 * @param   array     $config  Extra configuration variables for the toolbar
+	 */
+	protected function renderLinkbar_classic($view, $task, $input, $config = array())
+	{
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if($isCli)
+		{
+			return;
+		}
+
 		// Do not render a submenu unless we are in the the admin area
 		$toolbar = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
 		$renderFrontendSubmenu = $toolbar->getRenderFrontendSubmenu();
@@ -185,6 +253,41 @@ ENDJAVASCRIPT;
 	}
 
 	/**
+	 * Renders the submenu (link bar) using Joomla!'s style
+	 *
+	 * @param   string    $view    The active view name
+	 * @param   string    $task    The current task
+	 * @param   FOFInput  $input   The input object
+	 * @param   array     $config  Extra configuration variables for the toolbar
+	 */
+	protected function renderLinkbar_joomla($view, $task, $input, $config = array())
+	{
+		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+
+		// On command line don't do anything
+		if($isCli)
+		{
+			return;
+		}
+
+		// Do not render a submenu unless we are in the the admin area
+		$toolbar = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
+		$renderFrontendSubmenu = $toolbar->getRenderFrontendSubmenu();
+
+		if (!$isAdmin && !$renderFrontendSubmenu)
+			return;
+
+		$links = $toolbar->getLinks();
+		if (!empty($links))
+		{
+			foreach ($links as $link)
+			{
+				JHtmlSidebar::addEntry($link['name'], $link['link'], $link['active']);
+			}
+		}
+	}
+
+	/**
 	 * Renders the toolbar buttons
 	 *
 	 * @param   string    $view    The active view name
@@ -194,6 +297,11 @@ ENDJAVASCRIPT;
 	 */
 	protected function renderButtons($view, $task, $input, $config = array())
 	{
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if($isCli)
+		{
+			return;
+		}
 		// Do not render buttons unless we are in the the frontend area and we are asked to do so
 		$toolbar = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
 		$renderFrontendButtons = $toolbar->getRenderFrontendButtons();
@@ -260,6 +368,12 @@ ENDJAVASCRIPT;
 	 */
 	protected function renderFormBrowse(FOFForm &$form, FOFModel $model, FOFInput $input)
 	{
+		static $isCli = null, $isAdmin = null;
+		if (is_null($isCli))
+		{
+			list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+		}
+
 		$html = '';
 
 		// Joomla! 3.0+ support
@@ -413,6 +527,11 @@ ENDJS;
 		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="view" value="' . FOFInflector::pluralize($input->getCmd('view')) . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="task" value="' . $input->getCmd('task', 'browse') . '" />' . PHP_EOL;
+		// The id field is required in Joomla! 3 front-end to prevent the pagination limit box from screwing it up. Huh!!
+		if (version_compare(JVERSION, '3.0', 'ge') && !$isAdmin && !$isCli)
+		{
+			$html .= "\t" . '<input type="hidden" name="id" value="' . $input->getCmd('id', '') . '" />' . PHP_EOL;
+		}
 		$html .= "\t" . '<input type="hidden" name="boxchecked" value="" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="hidemainmenu" value="" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="filter_order" value="' . $filter_order . '" />' . PHP_EOL;
@@ -697,7 +816,7 @@ ENDJS;
 		{
 			$class = '';
 		}
-		
+
 		$html .= '<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-horizontal' . $class . '">' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="view" value="' . $input->getCmd('view', 'edit') . '" />' . PHP_EOL;

@@ -89,7 +89,11 @@ class FOFFormFieldSql extends JFormFieldSql implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		return '<span class="' . $this->id . ' ' . $class . '">' .
+			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+			'</span>';
 	}
 
 }

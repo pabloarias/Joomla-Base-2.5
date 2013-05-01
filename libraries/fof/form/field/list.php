@@ -89,7 +89,65 @@ class FOFFormFieldList extends JFormFieldList implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		$show_link         = false;
+		$link_url          = '';
+
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		if ($this->element['show_link'] == 'true')
+		{
+			$show_link = true;
+		}
+		if ($this->element['url'])
+		{
+			$link_url = $this->element['url'];
+		}
+		else
+		{
+			$show_link = false;
+		}
+
+		if ($show_link && ($this->item instanceof FOFTable))
+		{
+			// Replace [ITEM:ID] in the URL with the item's key value (usually:
+			// the auto-incrementing numeric ID)
+			$keyfield = $this->item->getKeyName();
+			$replace  = $this->item->$keyfield;
+			$link_url = str_replace('[ITEM:ID]', $replace, $link_url);
+
+			// Replace other field variables in the URL
+			$fields = $this->item->getFields();
+
+			foreach ($fields as $fielddata)
+			{
+				$fieldname = $fielddata->Field;
+				$search    = '[ITEM:' . strtoupper($fieldname) . ']';
+				$replace   = $this->item->$fieldname;
+				$link_url  = str_replace($search, $replace, $link_url);
+			}
+		}
+		else
+		{
+			$show_link = false;
+		}
+
+		$html = '<span class="' . $this->id . ' ' . $class . '">';
+
+		if ($show_link)
+		{
+			$html .= '<a href="' . $link_url . '">';
+		}
+
+		$html .= htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8');
+
+		if ($show_link)
+		{
+			$html .= '</a>';
+		}
+
+		$html .= '</span>';
+
+		return $html;
 	}
 
 	/**

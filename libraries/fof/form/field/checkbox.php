@@ -101,7 +101,7 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
 
 		$value = $this->element['value'] ? (string) $this->element['value'] : '1';
 
@@ -114,9 +114,9 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 			$checked = ' checked="checked"';
 		}
 
-		return '<span id="' . $this->id . '" ' . $class . '>' .
-			'<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="'
-			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . ' />' .
+		return '<span class="' . $this->id . ' ' . $class . '">' .
+			'<input type="checkbox" name="' . $this->name . '" class="' . $this->id . ' ' . $class . '"' . ' value="'
+			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $disabled . $onclick . ' />' .
 			'</span>';
 	}
 

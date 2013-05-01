@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldMedia'))
 {
-	require_once JPATH_LIBRARIES . '/cms/form/field/media.php';
+	require_once JPATH_LIBRARIES . '/joomla/form/fields/media.php';
 }
 
 /**

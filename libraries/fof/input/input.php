@@ -22,6 +22,7 @@ class FOFInput extends JInput
 	 */
 	public function __construct($source = null, array $options = array())
 	{
+		$hash = null;
 		if (is_string($source))
 		{
 			$hash = strtoupper($source);
@@ -70,6 +71,13 @@ class FOFInput extends JInput
 		{
 			// Any other case
 			$source = $_REQUEST;
+			$hash = 'REQUEST';
+		}
+
+		// Magic quotes GPC handling (something JInput simply can't handle at all)
+		if(($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('JRequest', true))
+		{
+			$source = JRequest::get('REQUEST', 2);
 		}
 
 		parent::__construct($source, $options);
@@ -82,6 +90,7 @@ class FOFInput extends JInput
 	 * @param   string  $name     Name of the value to get.
 	 * @param   mixed   $default  Default value to return if variable does not exist.
 	 * @param   string  $filter   Filter to apply to the value.
+	 * @param   int		$mask	  The filter mask
 	 *
 	 * @return  mixed  The filtered input value.
 	 */
@@ -153,6 +162,35 @@ class FOFInput extends JInput
 	}
 
 	/**
+	 * Magic method to get filtered input data.
+	 *
+	 * @param   mixed   $name       Name of the value to get.
+	 * @param   string  $arguments  Default value to return if variable does not exist.
+	 *
+	 * @return  boolean  The filtered boolean input value.
+	 */
+	public function __call($name, $arguments)
+	{
+		if (substr($name, 0, 3) == 'get')
+		{
+			$filter = substr($name, 3);
+
+			$default = null;
+			$mask = 0;
+			if (isset($arguments[1]))
+			{
+				$default = $arguments[1];
+			}
+			if (isset($arguments[2]))
+			{
+				$mask = $arguments[2];
+			}
+
+			return $this->get($arguments[0], $default, $filter, $mask);
+		}
+	}
+
+	/**
 	 * Sets an input variable. WARNING: IT SHOULD NO LONGER BE USED!
 	 *
 	 * @param type $name
@@ -197,13 +235,6 @@ class FOFInput extends JInput
 		}
 	}
 
-	public static function getString($name, $default = '', $input = array(), $mask = 0)
-	{
-		JLog::add('FOFInput::getString() is deprecated. Use get() instead.', JLog::WARNING, 'deprecated');
-		// Cast to string, in case JREQUEST_ALLOWRAW was specified for mask
-		return (string) self::getVar($name, $default, $input, 'string', $mask);
-	}
-
 	/**
 	 * Custom filter implementation. Works better with arrays and allows the use
 	 * of a filter mask.
@@ -246,7 +277,7 @@ class FOFInput extends JInput
 		}
 		else
 		{
-			$this->filter->clean($var, $type);
+			$var = $this->filter->clean($var, $type);
 		}
 		return $var;
 	}

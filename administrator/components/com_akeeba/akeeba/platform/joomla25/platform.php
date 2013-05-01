@@ -185,7 +185,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 	 */
 	public function get_timestamp_database($date = 'now')
 	{
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$jdate = new JDate($date);
 		if(version_compare(JVERSION, '3.0', 'ge')) {
 			return $jdate->toSql();
@@ -202,7 +202,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 	 */
 	public function get_local_timestamp($format)
 	{
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 
 		$jregistry = JFactory::getConfig();
 		if(version_compare(JVERSION, '3.0', 'ge')) {
@@ -392,7 +392,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 		if(!defined('AKEEBA_VERSION')) define("AKEEBA_VERSION", "svn");
 		if(!defined('AKEEBA_PRO')) define('AKEEBA_PRO', false);
 		if(!defined('AKEEBA_DATE')) {
-			jimport('joomla.utilities.date');
+			JLoader::import('joomla.utilities.date');
 			$date = new JDate();
 			define( "AKEEBA_DATE", $date->format('Y-m-d') );
 		}
@@ -587,7 +587,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 	public function unlink($file)
 	{
 		if(function_exists('jimport')) {
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.file');
 			$result = JFile::delete($file);
 			if(!$result) $result = @unlink($file);
 		} else {
@@ -605,7 +605,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 	public function move($from, $to)
 	{
 		if(function_exists('jimport')) {
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.file');
 			$result = JFile::move($from, $to);
 			// JFile failed. Let's try rename()
 			if(!$result)
@@ -638,7 +638,7 @@ class AEPlatformJoomla25 extends AEPlatformAbstract
 	protected function register_akeeba_engine_classes($path_prefix)
 	{
 		global $Akeeba_Class_Map;
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 		foreach($Akeeba_Class_Map as $class_prefix => $path_suffix)
 		{
 			// Bail out if there is such directory, so as not to have Joomla! throw errors

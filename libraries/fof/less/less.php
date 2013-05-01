@@ -59,7 +59,7 @@ class FOFLess
 	protected function fileExists($name)
 	{
 		/** FOF - BEGIN CHANGE * */
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		return JFile::exists($name);
 		/** FOF - END CHANGE * */
 	}
@@ -1893,7 +1893,7 @@ class FOFLess
 		if ($outFname !== null)
 		{
 			/** FOF - BEGIN CHANGE * */
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.file');
 			return JFile::write($outFname, $out);
 			/** FOF - END CHANGE * */
 		}

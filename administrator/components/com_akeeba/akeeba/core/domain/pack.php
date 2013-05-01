@@ -79,14 +79,14 @@ class AECoreDomainPack extends AEAbstractPart {
 
 	/** @var string Current root directory being processed */
 	private $root = '[SITEROOT]';
-	
+
 	private $total_roots = 0;
 
 	private $total_files = 0;
 	private $done_files = 0;
 	private $total_folders = 0;
 	private $done_folders = 0;
-	
+
 	/**
 	 * Public constructor of the class
 	 *
@@ -110,12 +110,17 @@ class AECoreDomainPack extends AEAbstractPart {
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, __CLASS__." :: Getting directory inclusion filters");
 		$filters = AEFactory::getFilters();
 		$this->root_definitions = $filters->getInclusions('dir');
-		
+
 		$this->total_roots = count($this->root_definitions);
 
 		// Add the mapping text file if there are external directories defined!
 		if(count($this->root_definitions) > 1)
 		{
+			// The site's root is the last directory to be backed up. Um, no,
+			// this is not what we need
+			$temp = array_pop($this->root_definitions);
+			array_unshift($this->root_definitions, $temp);
+
 			// We add a README.txt file in our virtual directory...
 			AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "Creating README.txt in the EFF virtual folder");
 			$virtualContents = <<<ENDVCONTENT
@@ -126,18 +131,37 @@ structure. You'll have to restore these files manually!
 
 
 ENDVCONTENT;
+			$registry = AEFactory::getConfiguration();
 			$counter = 0;
+			$effini = "[eff]\n";
+			$vdir = trim($registry->get('akeeba.advanced.virtual_folder'), '/') . '/';
 			foreach($this->root_definitions as $dir)
 			{
 				$counter++;
 				// Skip over the first filter, because it's the site's root
 				if($counter == 1) continue;
+				$test = trim($dir[1]);
+				if ($test == '/')
+				{
+					$counter--;
+					continue;
+				}
 				$virtualContents .= $dir[1]."\tis the backup of\t".$dir[0]."\n";
+
+				$effini .= '"' . $dir[0] . '"="' . $vdir . $dir[1] . '"';
 			}
 			// Add the file to our archive
-			$registry = AEFactory::getConfiguration();
+
 			$archiver = AEFactory::getArchiverEngine();
-			$archiver->addVirtualFile('README.txt', $registry->get('akeeba.advanced.virtual_folder'), $virtualContents);
+			if ($counter > 1)
+			{
+				$archiver->addVirtualFile('README.txt', $registry->get('akeeba.advanced.virtual_folder'), $virtualContents);
+				$archiver->addVirtualFile('eff.ini', $this->installerSettings->installerroot, $effini);
+			}
+			else
+			{
+				AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "README.txt was not created; all EFF directories are being backed up to the archive's root");
+			}
 		}
 
 		// Find the site's root element and shift it into the directory list
@@ -155,7 +179,6 @@ ENDVCONTENT;
 		$this->remove_path_prefix = $dir_definition[0]; // Remove absolute path to directory when storing the file
 		if(is_null($dir_definition[1]))
 		{
-			
 			$this->path_prefix = ''; // No added path for main site
 			if(empty($dir_definition[0])) {
 				$this->root = '[SITEROOT]';
@@ -165,7 +188,15 @@ ENDVCONTENT;
 		}
 		else
 		{
-			$this->path_prefix = $registry->get('akeeba.advanced.virtual_folder').'/'.$dir_definition[1];
+			$dir_definition[1] = trim($dir_definition[1]);
+			if (empty($dir_definition[1]) || $dir_definition[1] == '/')
+			{
+				$this->path_prefix = '';
+			}
+			else
+			{
+				$this->path_prefix = $registry->get('akeeba.advanced.virtual_folder') . '/' . $dir_definition[1];
+			}
 			$this->root = $dir_definition[0];
 		}
 		// Translate the root into an absolute path
@@ -237,7 +268,15 @@ ENDVCONTENT;
 							}
 							else
 							{
-								$this->path_prefix = $registry->get('akeeba.advanced.virtual_folder').'/'.$dir_definition[1];
+								$dir_definition[1] = trim($dir_definition[1]);
+								if (empty($dir_definition[1]) || $dir_definition[1] == '/')
+								{
+									$this->path_prefix = '';
+								}
+								else
+								{
+									$this->path_prefix = $registry->get('akeeba.advanced.virtual_folder') . '/' . $dir_definition[1];
+								}
 							}
 
 							$this->done_scanning = false; // Make sure we process this file list!
@@ -257,12 +296,12 @@ ENDVCONTENT;
 							$this->remove_path_prefix = $absolute_dir;
 
 							$registry->set('volatile.filesystem.current_root', $absolute_dir);
-							
+
 							$this->total_files = 0;
 							$this->done_files = 0;
 							$this->total_folders = 0;
 							$this->done_folders = 0;
-							
+
 							AEUtilLogger::WriteLog(_AE_LOG_INFO, "Including new off-site directory to ".$dir_definition[1]);
 						}
 						else
@@ -346,12 +385,12 @@ ENDVCONTENT;
 			$translated_root = $this->remove_path_prefix;
 		}
 		$dir = AEUtilFilesystem::TrimTrailingSlash($this->current_directory);
-		
+
 		if(strtoupper(substr(PHP_OS,0,3)) == 'WIN') {
 			$translated_root = AEUtilFilesystem::TranslateWinPath($translated_root);
 			$dir = AEUtilFilesystem::TranslateWinPath($dir);
 		}
-		
+
 		if(substr($dir,0,strlen($translated_root)) == $translated_root) {
 			$dir = substr($dir,strlen($translated_root));
 		} elseif(in_array(substr($translated_root,-1),array('/','\\'))) {
@@ -361,7 +400,7 @@ ENDVCONTENT;
 			}
 		}
 		if(substr($dir,0,1) == '/') $dir = substr($dir,1);
-		
+
 		// get a filters instance
 		$filters = AEFactory::getFilters();
 
@@ -385,7 +424,7 @@ ENDVCONTENT;
 			else
 			{
 				AEUtilLogger::WriteLog(_AE_LOG_INFO, "Scanning directories of ".$this->current_directory);
-				
+
 				// Get subdirectories
 				$subdirs = $engine->getFolders($this->current_directory);
 				// Error propagation
@@ -626,7 +665,7 @@ ENDVCONTENT;
 					$configuration->set('volatile.breakflag', true);
 					return true;
 				}
-				
+
 				// This is required to let the backup continue even after a post-proc failure
 				$this->resetErrors();
 				$this->setState('running');
@@ -643,7 +682,7 @@ ENDVCONTENT;
 			{
 				return false;
 			}
-			
+
 			// If that was the last step, mark a file done
 			if( !$configuration->get('volatile.engine.archiver.processingfile',false) ) {
 				$this->progressMarkFileDone();
@@ -663,7 +702,7 @@ ENDVCONTENT;
 			// No files left to pack -- This should never happen! We catch this condition at the end of this method!
 			$this->done_scanning = false;
 			$this->progressMarkFolderDone();
-			
+
 			return false;
 		}
 		else
@@ -749,16 +788,16 @@ ENDVCONTENT;
 						return true;
 					}
 				}
-				
+
 				// If we have to continue processing the file, break the file packing loop forcibly
 				if( $configuration->get('volatile.engine.archiver.processingfile',false) ) {
 					return true;
-				}				
+				}
 			}
 
 			$this->done_scanning = count($this->file_list) > 0;
 			if(!$this->done_scanning) $this->progressMarkFolderDone();
-			
+
 			return true;
 		}
 	}
@@ -767,7 +806,7 @@ ENDVCONTENT;
 	 * Implements the getProgress() percentage calculation based on how many
 	 * roots we have fully backed up and how much of the current root we
 	 * have backed up.
-	 * 
+	 *
 	 * @see backend/akeeba/abstract/AEAbstractPart#getProgress()
 	 */
 	public function getProgress()
@@ -781,7 +820,7 @@ ENDVCONTENT;
 
 		// How much is this step worth?
 		$this_max = 1 / $this->total_roots;
-		
+
 		// Get the percentage done of the current root. Hey, the calculation *is* dodgy, I know it!
 		$local = 0;
 		if($this->total_files > 0)
@@ -792,29 +831,29 @@ ENDVCONTENT;
 		{
 			$local += 0.95 * $this->done_folders / $this->total_folders;
 		}
-		
+
 		$percentage = $overall + $local * $this_max;
 		if($percentage < 0) $percentage = 0;
 		if($percentage > 1) $percentage = 1;
-		
+
 		return $percentage;
 	}
-	
+
 	private function progressAddFile()
 	{
 		$this->total_files++;
 	}
-	
+
 	private function progressMarkFileDone()
 	{
 		$this->done_files++;
 	}
-	
+
 	private function progressAddFolder()
 	{
 		$this->total_folders++;
 	}
-	
+
 	private function progressMarkFolderDone()
 	{
 		$this->done_folders++;

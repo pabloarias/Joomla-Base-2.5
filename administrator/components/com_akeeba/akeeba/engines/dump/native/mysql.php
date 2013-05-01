@@ -65,13 +65,13 @@ class AEDumpNativeMysql extends AEAbstractDump
 		} catch(Exception $e) {
 			// Do nothing; some versions of MySQL don't allow you to use the BIG_SELECTS option.
 		}
-		
+
 		$db->resetErrors();
 	}
 
 	/**
 	 * Performs one more step of dumping database data
-	 * @return type 
+	 * @return type
 	 */
 	protected function stepDatabaseDump()
 	{
@@ -109,7 +109,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 					$outCreate = $this->tables_data[$tableName]['create'];
 				}
 			}
-			
+
 			if(empty($outCreate) && !empty($tableName)) {
 				// The CREATE command wasn't cached. Time to create it. The $type and $dependencies
 				// variables will be thrown away.
@@ -117,9 +117,6 @@ class AEDumpNativeMysql extends AEAbstractDump
 				$dependencies = array();
 				$outCreate = $this->get_create($tableAbstract, $tableName, $type, $dependencies);
 			}
-
-			// Write the CREATE command
-			if(!$this->writeDump($outCreate)) return;
 
 			// Create drop statements if required (the key is defined by the scripting engine)
 			$configuration = AEFactory::getConfiguration();
@@ -135,9 +132,13 @@ class AEDumpNativeMysql extends AEAbstractDump
 				}
 				if(!empty($dropStatement))
 				{
-					if(!$this->writeDump($outCreate)) return;
+					$dropStatement .= "\n";
+					if(!$this->writeDump($dropStatement)) return;
 				}
 			}
+
+			// Write the CREATE command after any DROP command which might be necessary.
+			if(!$this->writeDump($outCreate)) return;
 
 			if( $dump_records )
 			{
@@ -164,7 +165,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			$timer = AEFactory::getTimer();
 
 			// Get the number of rows left to dump from the current table
-			$sql = "SELECT * FROM `$tableAbstract`";
+			$sql = "SELECT * FROM " . $db->nameQuote($tableAbstract);
 			if( $this->nextRange == 0 )
 			{
 				// First run, get a cursor to all records
@@ -181,15 +182,21 @@ class AEDumpNativeMysql extends AEAbstractDump
 			$this->query = '';
 			$numRows = 0;
 			$use_abstract = AEUtilScripting::getScriptingParameter('db.abstractnames', 1);
-			
+
 			$filters = AEFactory::getFilters();
 			$mustFilter = $filters->hasFilterType('dbobject', 'children');
-			
+
 			$cursor = $db->query();
 			while( is_array($myRow = $db->fetchAssoc()) && ( $numRows < ($this->maxRange - $this->nextRange) ) ) {
 				$this->createNewPartIfRequired();
 				$numRows++;
 				$numOfFields = count( $myRow );
+
+				// On MS SQL Server there's always a RowNumber pseudocolumn added at the end, screwing up the backup (GRRRR!)
+				if ($db->getDriverType() == 'mssql')
+				{
+					$numOfFields--;
+				}
 
 				// If row-level filtering is enabled, please run the filtering
 				if($mustFilter)	{
@@ -202,14 +209,14 @@ class AEDumpNativeMysql extends AEAbstractDump
 						'dbobject', 'children');
 					if($isFiltered) continue;
 				}
-				
+
 				if(
 					(!$this->extendedInserts) || // Add header on simple INSERTs, or...
 					( $this->extendedInserts && empty($this->query) ) //...on extended INSERTs if there are no other data, yet
 				)
 				{
 					$newQuery = true;
-					if( $numOfFields > 0 ) $this->query = "INSERT INTO `" . (!$use_abstract ? $tableName : $tableAbstract) . "` VALUES ";
+					if( $numOfFields > 0 ) $this->query = "INSERT INTO " . $db->nameQuote((!$use_abstract ? $tableName : $tableAbstract)) . " VALUES ";
 				}
 				else
 				{
@@ -230,6 +237,12 @@ class AEDumpNativeMysql extends AEAbstractDump
 				{
 					// The ID of the field, used to determine placement of commas
 					$fieldID++;
+
+					if ($fieldID > $numOfFields)
+					{
+						// This is required for SQL Server backups, do NOT remove!
+						continue;
+					}
 
 					// Fix 2.0: Mark currently running backup as successful in the DB snapshot
 					if($tableAbstract == '#__ak_stats')
@@ -275,7 +288,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 							if(!$this->writeDump($this->query)) return;
 							// Then, start a new query
 							$this->query = '';
-							$this->query = "INSERT INTO `" . (!$use_abstract ? $tableName : $tableAbstract) . "` VALUES ";
+							$this->query = "INSERT INTO " . $db->nameQuote((!$use_abstract ? $tableName : $tableAbstract)) . " VALUES ";
 							$this->query .= $outData;
 						}
 						else
@@ -316,7 +329,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 				$outData = '';
 
 				unset($myRow);
-				
+
 				// Check for imminent timeout
 				if( $timer->getTimeLeft() <= 0 ) {
 					AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "Breaking dump of $tableAbstract after $numRows rows; will continue on next step");
@@ -369,7 +382,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the row count for table $tableAbstract. Also updates the $this->maxRange variable.
 	 *
@@ -381,7 +394,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 		$db = $this->getDB();
 		if($this->getError()) return;
 
-		$sql = "SELECT COUNT(*) FROM `$tableAbstract`";
+		$sql = "SELECT COUNT(*) FROM " . $db->nameQuote($tableAbstract);
 		$db->setQuery( $sql );
 		$this->maxRange = $db->loadResult();
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, "Rows on " . $tableAbstract . " : " . $this->maxRange);
@@ -402,10 +415,10 @@ class AEDumpNativeMysql extends AEAbstractDump
 		// Joomla! always sets MySQL 4.0 compatibility? Most likely, we have to
 		// work around it.
 		$this->enforceSQLCompatibility();
-		
+
 		$configuration = AEFactory::getConfiguration();
 		$notracking = $configuration->get('engine.dump.native.nodependencies', 0);
-		
+
 		// First, get a map of table names <--> abstract names
 		$this->get_tables_mapping();
 		if($this->getError()) return;
@@ -416,17 +429,17 @@ class AEDumpNativeMysql extends AEAbstractDump
 			if($this->getError()) return;
 		} else {
 			// Process table & view dependencies (default)
-			
+
 			// Find the type and CREATE command of each table/view in the database
 			$this->get_tables_data();
 			if($this->getError()) return;
-	
+
 			// Process dependencies and rearrange tables respecting them
 			$this->process_dependencies();
 			if($this->getError()) return;
-	
+
 			// Remove dependencies array
-			$this->dependencies = array();			
+			$this->dependencies = array();
 		}
 	}
 
@@ -551,7 +564,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 	 * dependency information for views and merge tables
 	 */
 	private function get_tables_data()
-	{		
+	{
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, __CLASS__." :: Starting CREATE TABLE and dependency scanning");
 
 		// Get a database connection
@@ -780,7 +793,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 	 * Populates the _tables array with the metadata of each table
 	 */
 	private function get_tables_data_without_dependencies()
-	{		
+	{
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, __CLASS__." :: Pushing table data (without dependency tracking)");
 
 		// Reset internal tables
@@ -810,8 +823,8 @@ class AEDumpNativeMysql extends AEAbstractDump
 		} // foreach
 
 		AEUtilLogger::WriteLog(_AE_LOG_DEBUG, __CLASS__." :: Got table list");
-	}	
-	
+	}
+
 	/**
 	 * Gets the CREATE TABLE command for a given table/view/procedure/function/trigger
 	 * @param string $table_abstract The abstracted name of the entity
@@ -824,7 +837,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 	{
 		$configuration = AEFactory::getConfiguration();
 		$notracking = $configuration->get('engine.dump.native.nodependencies', 0);
-		
+
 		$db = $this->getDB();
 		if($this->getError()) return;
 
@@ -854,7 +867,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 		if( in_array($type, array('procedure','function','trigger')) )
 		{
 			$table_sql = $temp[0][2];
-			
+
 			// These can contain comment lines, starting with a double dash. Remove them.
 			$lines = explode("\n", $table_sql);
 			$table_sql = '';
@@ -889,7 +902,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			{
 				// This is a table.
 				$type = 'table';
-				
+
 				// # Fix 3.2.1: USING BTREE / USING HASH in indices causes issues migrating Joomla! 1.6 from MySQL 5.1 to MySQL 5.0
 				if($configuration->get('engine.dump.native.nobtree',1)) {
 					$table_sql = str_replace(' USING BTREE',' ',$table_sql);
@@ -932,7 +945,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 				}
 			}
 		}
-		
+
 		// On DB only backup we don't want any replacing to take place, do we?
 		if( !AEUtilScripting::getScriptingParameter('db.abstractnames',1) ) $table_sql = $old_table_sql;
 
@@ -990,17 +1003,17 @@ class AEDumpNativeMysql extends AEAbstractDump
 			if( ($type == 'table') || ($type == 'merge') )
 			{
 				// Table or merge tables, get a DROP TABLE statement
-				$drop = "DROP TABLE IF EXISTS `$table_name`;\n";
+				$drop = "DROP TABLE IF EXISTS " . $db->quoteName($table_name) . ";\n";
 			}
 			elseif($type == 'view')
 			{
 				// Views get a DROP VIEW statement
-				$drop = "DROP VIEW IF EXISTS `$table_name`;\n";
+				$drop = "DROP VIEW IF EXISTS " . $db->quoteName($table_name) . ";\n";
 			}
 			elseif($type == 'procedure')
 			{
 				// Procedures get a DROP PROCEDURE statement and proper delimiter strings
-				$drop = "DROP PROCEDURE IF EXISTS `$table_name`;\n";
+				$drop = "DROP PROCEDURE IF EXISTS " . $db->quoteName($table_name) . ";\n";
 				$drop .= "DELIMITER // ";
 				$table_sql = str_replace( "\r", " ", $table_sql );
 				$table_sql = str_replace( "\t", " ", $table_sql );
@@ -1009,7 +1022,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			elseif($type == 'function')
 			{
 				// Procedures get a DROP FUNCTION statement and proper delimiter strings
-				$drop = "DROP FUNCTION IF EXISTS `$table_name`;\n";
+				$drop = "DROP FUNCTION IF EXISTS " . $db->quoteName($table_name) . ";\n";
 				$drop .= "DELIMITER // ";
 				$table_sql = str_replace( "\r", " ", $table_sql );
 				$table_sql = rtrim($table_sql,";\n")."// DELIMITER ;\n";
@@ -1017,7 +1030,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			elseif($type == 'trigger')
 			{
 				// Procedures get a DROP TRIGGER statement and proper delimiter strings
-				$drop = "DROP TRIGGER IF EXISTS `$table_name`;\n";
+				$drop = "DROP TRIGGER IF EXISTS " . $db->quoteName($table_name) . ";\n";
 				$drop .= "DELIMITER // ";
 				$table_sql = str_replace( "\r", " ", $table_sql );
 				$table_sql = str_replace( "\t", " ", $table_sql );
@@ -1031,10 +1044,10 @@ class AEDumpNativeMysql extends AEAbstractDump
 
 	/**
 	 * Process all table dependencies
-	 * 
+	 *
 	 * @return null
 	 */
-	private function process_dependencies()
+	protected function process_dependencies()
 	{
 		if(count($this->table_name_map) > 0) {
 			foreach($this->table_name_map as $table_name => $table_abstract) {
@@ -1137,8 +1150,10 @@ class AEDumpNativeMysql extends AEAbstractDump
 	 * @param $query string The CREATE query to process
 	 * @return string The DROP statement
 	 */
-	private function createDrop($query)
+	protected function createDrop($query)
 	{
+		$db = $this->getDB();
+
 		// Initialize
 		$dropQuery = '';
 
@@ -1162,7 +1177,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 			}
 			unset($restOfQuery);
 			// Try to drop the table anyway
-			$dropQuery = 'DROP TABLE IF EXISTS `'.$tableName.'`;';
+			$dropQuery = 'DROP TABLE IF EXISTS ' . $db->nameQuote($tableName) . ';';
 		}
 		// Parse CREATE VIEW commands
 		elseif( (substr($query, 0, 7) == 'CREATE ') && (strpos($query, ' VIEW ') !== false) )
@@ -1184,7 +1199,7 @@ class AEDumpNativeMysql extends AEAbstractDump
 				$tableName = substr($restOfQuery,1,$pos - 1);
 			}
 			unset($restOfQuery);
-			$dropQuery = 'DROP VIEW IF EXISTS `'.$tableName.'`;';
+			$dropQuery = 'DROP VIEW IF EXISTS ' . $db->nameQuote($tableName) . ';';
 		}
 		// CREATE PROCEDURE pre-processing
 		elseif( (substr($query, 0, 7) == 'CREATE ') && (strpos($query, 'PROCEDURE ') !== false) )

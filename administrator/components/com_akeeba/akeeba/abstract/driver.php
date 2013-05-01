@@ -12,7 +12,7 @@ defined('AKEEBAENGINE') or die();
 
 /**
  * Database interface class.
- * 
+ *
  * Based on Joomla! Platform 11.2
  */
 interface AEAbstractDriverInterface
@@ -34,10 +34,10 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 {
 	/** @var string The name of the database. */
 	private $_database;
-	
+
 	/** @var string The name of the database driver. */
 	public $name;
-	
+
 	/** @var resource The db conenction resource */
 	protected $connection = '';
 
@@ -46,13 +46,13 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 
 	/** @var int Query's limit */
 	protected $limit = 0;
-	
+
 	/** @var string Quote for named objects */
 	protected $nameQuote = '';
 
 	/** @var string  The null or zero representation of a timestamp for the database driver. */
 	protected $nullDate;
-	
+
 	/** @var int Query's offset */
 	protected $offset = 0;
 
@@ -61,19 +61,19 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 
 	/** @var string The prefix used in the database, if any */
 	protected $tablePrefix = '';
-	
+
 	/** @var bool Support for UTF-8 */
 	protected $utf = true;
-	
+
 	/** @var int The db server's error number */
 	protected $errorNum = 0;
 
 	/** @var string The db server's error string */
 	protected $errorMsg = '';
-	
+
 	/** @var string Driver type, e.g. mysql, mssql, pgsql and so on */
 	protected $driverType = '';
-	
+
 	/**
 	 * Magic method to provide method alias support for quote() and quoteName().
 	 *
@@ -100,7 +100,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 				break;
 		}
 	}
-	
+
 	/**
 	 * Database object constructor
 	 * @param	array	List of options used to configure the connection
@@ -115,7 +115,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 		$this->_database	= $database;
 		$this->connection	= $connection;
 		$this->errorNum		= 0;
-		
+
 		$this->setUTF();
 	}
 
@@ -149,7 +149,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	{
 		// Don't try to reconnect if we're already connected
 		if(is_resource($this->connection) && !is_null($this->connection)) return $this;
-		
+
 		// Determine utf-8 support
 		$this->utf = $this->hasUTF();
 
@@ -160,7 +160,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 
 		// Select the current database
 		$this->select($this->database);
-		
+
 		return $this;
 	}
 
@@ -232,7 +232,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	 * @return  void
 	 */
 	abstract public function freeResult($cursor = null);
-	
+
 	/**
 	 * Get the number of affected rows for the previous executed SQL statement.
 	 *
@@ -261,8 +261,8 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	/**
 	 * Inherits the connection of another database driver. Useful for cloning
 	 * the CMS database connection into an Akeeba Engine database driver.
-	 * 
-	 * @param resource $connection 
+	 *
+	 * @param resource $connection
 	 */
 	public function setConnection($connection)
 	{
@@ -288,7 +288,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	{
 		return 'Y-m-d H:i:s';
 	}
-	
+
 	/**
 	 * Get the null or zero representation of a timestamp for the database driver.
 	 *
@@ -307,10 +307,10 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	 * @return  integer   The number of returned rows.
 	 */
 	abstract public function getNumRows($cursor = null);
-	
+
 	/**
 	 * Get the database table prefix
-	 * 
+	 *
 	 * @return string The database prefix
 	 */
 	public final function getPrefix()
@@ -326,7 +326,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	 * @return  AEAbstractQuery  The current query object or a new object extending the AEAbstractQuery class.
 	 */
 	abstract public function getQuery($new = false);
-	
+
 	/**
 	 * Retrieves field information about the given tables.
 	 *
@@ -345,7 +345,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	 * @return  array  A list of the create SQL for the tables.
 	 */
 	abstract public function getTableCreate($tables);
-	
+
 	/**
 	 * Retrieves field information about the given tables.
 	 *
@@ -798,6 +798,17 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	abstract public function query();
 
 	/**
+	 * An alias for query(), for compatibility with Joomla! 2.5+ which has deprecated
+	 * query() in favour of execute()
+	 *
+	 * @return  mixed  A database cursor resource on success, boolean false on failure.
+	 */
+	public function execute()
+	{
+		return $this->query();
+	}
+
+	/**
 	 * Method to quote and optionally escape a string to database requirements for insertion into the database.
 	 *
 	 * @param   string   $text    The string to quote.
@@ -1136,7 +1147,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 	 * @return  AEAbstractDriver  Returns this object to support chaining.
 	 */
 	public abstract function unlockTables();
-	
+
 	/**
 	 * Get the error message
 	 * @return string The error message for the most recent query
@@ -1253,7 +1264,7 @@ abstract class AEAbstractDriver extends AEAbstractObject implements AEAbstractDr
 				break;
 		}
 	}
-	
+
 	public final function getDriverType()
 	{
 		return $this->driverType;

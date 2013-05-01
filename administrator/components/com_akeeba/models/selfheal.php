@@ -158,7 +158,7 @@ ENDSQL;
 		$db = JFactory::getDBO();
 		$db->setQuery($sql);
 		try {
-			$db->query();
+			$db->execute();
 		} catch(DatabaseException $e) {
 			return false;
 		}

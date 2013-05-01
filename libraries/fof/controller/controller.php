@@ -8,8 +8,6 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-JLoader::import('legacy.controller.legacy');
-
 /**
  * FrameworkOnFramework controller class. FOF is based on the thin controller
  * paradigm, where the controller is mainly used to set up the model state and
@@ -18,41 +16,10 @@ JLoader::import('legacy.controller.legacy');
  * @package  FrameworkOnFramework.Controller
  * @since    1.0
  */
-class FOFController extends JControllerLegacy
+class FOFController extends JObject
 {
-
-	/** @var string The current view name; you can override it in the configuration */
-	protected $view = '';
-
-	/** @var string The current component's name; you can override it in the configuration */
-	protected $component = 'com_foobar';
-
-	/** @var string The current component's name without the com_ prefix */
-	protected $bareComponent = 'foobar';
-
-	/** @var string The current layout; you can override it in the configuration */
-	protected $layout = null;
-
-	/** @var array A cached copy of the class configuration parameter passed during initialisation */
-	protected $config = array();
-
-	/** @var FOFInput The input object for this MVC triad; you can override it in the configuration */
-	protected $input = array();
-
-	/** @var bool Set to true to enable CSRF protection on selected tasks */
-	protected $csrfProtection = true;
-
-	/** @var string Overrides the name of the view's default model */
-	protected $modelName = null;
-
-	/** @var string Overrides the name of the view's default view */
-	protected $viewName = null;
-
-	/** @var array The tasks for which caching should be enabled by default */
-	protected $cacheableTasks = array('browse', 'read');
-
 	/**
-	 * @var int Bit mask to enable JRouting on redirects.
+	 * @var int Bit mask to enable JRoute'ing on redirects.
 	 * 0 = never
 	 * 1 = frontend only
 	 * 2 = backend  only
@@ -60,13 +27,184 @@ class FOFController extends JControllerLegacy
 	 */
 	protected $autoRouting = 0;
 
-	/** @var FOFView A copy of the FOFView object used in this triad */
+	/**
+	 * The current component's name without the com_ prefix
+	 *
+	 * @var    string
+	 */
+	protected $bareComponent = 'foobar';
+
+	/**
+	 * The base path of the controller
+	 *
+	 * @var    string
+	 */
+	protected $basePath;
+
+	/**
+	 * The tasks for which caching should be enabled by default
+	 *
+	 * @var array
+	 */
+	protected $cacheableTasks = array('browse', 'read');
+
+	/**
+	 * The current component's name; you can override it in the configuration
+	 *
+	 * @var    string
+	 */
+	protected $component = 'com_foobar';
+
+	/**
+	 * A cached copy of the class configuration parameter passed during initialisation
+	 *
+	 * @var    array
+	 */
+	protected $config = array();
+
+	/**
+	 * Set to true to enable CSRF protection on selected tasks. The possible
+	 * values are:
+	 * 0	Disabled; no token checks are performed
+	 * 1	Enabled; token checks are always performed
+	 * 2	Only on HTML requests and backend; token checks are always performed in the back-end and in in the front-end only when format is not 'html'
+	 * 3	Only on back-end; token checks are performer only in the back-end
+	 *
+	 * @var    integer
+	 */
+	protected $csrfProtection = 2;
+
+	/**
+	 * The default view for the display method.
+	 *
+	 * @var    string
+	 */
+	protected $default_view;
+
+	/**
+	 * The mapped task that was performed.
+	 *
+	 * @var    string
+	 */
+	protected $doTask;
+
+	/**
+	 * The input object for this MVC triad; you can override it in the configuration
+	 *
+	 * @var    FOFInput
+	 */
+	protected $input = array();
+
+	/**
+	 * Redirect message.
+	 *
+	 * @var    string
+	 */
+	protected $message;
+
+	/**
+	 * Redirect message type.
+	 *
+	 * @var    string
+	 */
+	protected $messageType;
+
+	/**
+	 * The current layout; you can override it in the configuration
+	 *
+	 * @var    string
+	 */
+	protected $layout = null;
+
+	/**
+	 * Array of class methods
+	 *
+	 * @var    array
+	 */
+	protected $methods;
+
+	/**
+	 * The prefix of the models
+	 *
+	 * @var    string
+	 */
+	protected $model_prefix;
+
+	/**
+	 * Overrides the name of the view's default model
+	 *
+	 * @var    string
+	 */
+	protected $modelName = null;
+
+	/**
+	 * The set of search directories for resources (views).
+	 *
+	 * @var    array
+	 */
+	protected $paths;
+
+	/**
+	 * URL for redirection.
+	 *
+	 * @var    string
+	 */
+	protected $redirect;
+
+	/**
+	 * Current or most recently performed task.
+	 *
+	 * @var    string
+	 */
+	protected $task;
+
+	/**
+	 * Array of class methods to call for a given task.
+	 *
+	 * @var    array
+	 */
+	protected $taskMap;
+
+	/**
+	 * The name of the controller
+	 *
+	 * @var    array
+	 */
+	protected $name;
+
+	/**
+	 * The current view name; you can override it in the configuration
+	 *
+	 * @var    string
+	 */
+	protected $view = '';
+
+	/**
+	 * Overrides the name of the view's default view
+	 *
+	 * @var    string
+	 */
+	protected $viewName = null;
+
+	/**
+	 * A copy of the FOFView object used in this triad
+	 *
+	 * @var    FOFView
+	 */
 	private $_viewObject = null;
 
-	/** @var FOFModel A copy of the FOFModel object used in this triad */
+	/**
+	 * A copy of the FOFModel object used in this triad
+	 *
+	 * @var    FOFModel
+	 */
 	private $_modelObject = null;
 
-	/** @var bool Does this tried have a FOFForm which will be used to render it? */
+	/**
+	 * Does this tried have a FOFForm which will be used to render it?
+	 *
+	 * @var    boolean
+	 */
 	private $_hasForm = false;
 
 	/**
@@ -83,6 +221,15 @@ class FOFController extends JControllerLegacy
 	public static function &getAnInstance($option = null, $view = null, $config = array())
 	{
 		static $instances = array();
+
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
 
 		$hash = $option . $view;
 
@@ -106,9 +253,18 @@ class FOFController extends JControllerLegacy
 	 */
 	public static function &getTmpInstance($option = null, $view = null, $config = array())
 	{
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
 		// Determine the option (component name) and view
-		$config['option'] = !is_null($option) ? $option : JRequest::getCmd('option', 'com_foobar');
-		$config['view'] = !is_null($view) ? $view : JRequest::getCmd('view', 'cpanel');
+		$config['option'] = !is_null($option) ? $option : $this->input->getCmd('option', 'com_foobar');
+		$config['view'] = !is_null($view) ? $view : $this->input->getCmd('view', 'cpanel');
 
 		// Get the class base name, e.g. FoobarController
 		$classBaseName = ucfirst(str_replace('com_', '', $config['option'])) . 'Controller';
@@ -199,7 +355,21 @@ class FOFController extends JControllerLegacy
 	 */
 	public function __construct($config = array())
 	{
-		parent::__construct();
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
+		$this->methods = array();
+		$this->message = null;
+		$this->messageType = 'message';
+		$this->paths = array();
+		$this->redirect = null;
+		$this->taskMap = array();
 
 		// Cache the config
 		$this->config = $config;
@@ -233,13 +403,50 @@ class FOFController extends JControllerLegacy
 			$this->input = new FOFInput($input, $input_options);
 		}
 
+		// Determine the methods to exclude from the base class.
+		$xMethods = get_class_methods('FOFController');
+
+		// Some methods must always be considered valid tasks
+		$iMethods = array('accesspublic', 'accessregistered', 'accessspecial',
+			'add', 'apply', 'browse', 'cancel', 'copy', 'edit', 'orderdown',
+			'orderup', 'publish', 'read', 'remove', 'save', 'savenew',
+			'saveorder', 'unpublish', 'display');
+
+		// Get the public methods in this class using reflection.
+		$r = new ReflectionClass($this);
+		$rMethods = $r->getMethods(ReflectionMethod::IS_PUBLIC);
+
+		foreach ($rMethods as $rMethod)
+		{
+			$mName = $rMethod->getName();
+
+			// Add default display method if not explicitly declared.
+			if (!in_array($mName, $xMethods) || in_array($mName, $iMethods))
+			{
+				$this->methods[] = strtolower($mName);
+
+				// Auto register the methods as tasks.
+				$this->taskMap[strtolower($mName)] = $mName;
+			}
+		}
+
 		// Get the default values for the component and view names
-		$this->component = $this->input->get('option', 'com_filter', 'cmd');
-		$this->view = $this->input->get('view', 'cpanel', 'cmd');
+		$classNameParts = FOFInflector::explode(get_class($this));
+		if (count($classNameParts) == 3)
+		{
+			$defComponent = "com_" . $classNameParts[0];
+			$defView = $classNameParts[2];
+		}
+		else
+		{
+			$defComponent = 'com_foobar';
+			$defView = 'cpanel';
+		}
+		$this->component = $this->input->get('option', $defComponent, 'cmd');
+		$this->view = $this->input->get('view', $defView, 'cmd');
 		$this->layout = $this->input->get('layout', null, 'cmd');
 
 		// Overrides from the config
-
 		if (array_key_exists('option', $config))
 		{
 			$this->component = $config['option'];
@@ -260,10 +467,10 @@ class FOFController extends JControllerLegacy
 		// Set the bareComponent variable
 		$this->bareComponent = str_replace('com_', '', strtolower($this->component));
 
-		// Set the $name/$_name variable
+		// Set the $name variable
 		$this->name = $this->bareComponent;
 
-		// Set the _basePath / basePath variable
+		// Set the basePath variable
 		list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
 		$basePath = $isAdmin ? JPATH_ADMINISTRATOR : JPATH_ROOT;
 		$basePath .= '/components/' . $this->component;
@@ -275,15 +482,69 @@ class FOFController extends JControllerLegacy
 
 		$this->basePath = $basePath;
 
-		// Set the CSRF protection
+		// If the default task is set, register it as such
+		if (array_key_exists('default_task', $config))
+		{
+			$this->registerDefaultTask($config['default_task']);
+		}
+		else
+		{
+			$this->registerDefaultTask('display');
+		}
 
+		// Set the models prefix
+		if (empty($this->model_prefix))
+		{
+			if (array_key_exists('model_prefix', $config))
+			{
+				// User-defined prefix
+				$this->model_prefix = $config['model_prefix'];
+			}
+			else
+			{
+				$this->model_prefix = $this->name . 'Model';
+			}
+		}
+
+		// Set the default model search path
+		if (array_key_exists('model_path', $config))
+		{
+			// User-defined dirs
+			$this->addModelPath($config['model_path'], $this->model_prefix);
+		}
+		else
+		{
+			$this->addModelPath($this->basePath . '/models', $this->model_prefix);
+		}
+
+		// Set the default view search path
+		if (array_key_exists('view_path', $config))
+		{
+			// User-defined dirs
+			$this->setPath('view', $config['view_path']);
+		}
+		else
+		{
+			$this->setPath('view', $this->basePath . '/views');
+		}
+
+		// Set the default view.
+		if (array_key_exists('default_view', $config))
+		{
+			$this->default_view = $config['default_view'];
+		}
+		elseif (empty($this->default_view))
+		{
+			$this->default_view = $this->getName();
+		}
+
+		// Set the CSRF protection
 		if (array_key_exists('csrf_protection', $config))
 		{
 			$this->csrfProtection = $config['csrf_protection'];
 		}
 
 		// Set any model/view name overrides
-
 		if (array_key_exists('viewName', $config))
 		{
 			$this->setThisViewName($config['viewName']);
@@ -295,7 +556,6 @@ class FOFController extends JControllerLegacy
 		}
 
 		// Caching
-
 		if (array_key_exists('cacheableTasks', $config))
 		{
 			if (is_array($config['cacheableTasks']))
@@ -305,11 +565,136 @@ class FOFController extends JControllerLegacy
 		}
 
 		// Bit mask for auto routing on setRedirect
-
 		if (array_key_exists('autoRouting', $config))
 		{
 			$this->autoRouting = $config['autoRouting'];
 		}
+	}
+
+	/**
+	 * Adds to the stack of model paths in LIFO order.
+	 *
+	 * @param   mixed   $path    The directory (string), or list of directories (array) to add.
+	 * @param   string  $prefix  A prefix for models
+	 *
+	 * @return  void
+	 */
+	public static function addModelPath($path, $prefix = '')
+	{
+		FOFModel::addIncludePath($path, $prefix);
+	}
+
+	/**
+	 * Adds to the search path for templates and resources.
+	 *
+	 * @param   string  $type  The path type (e.g. 'model', 'view').
+	 * @param   mixed   $path  The directory string  or stream array to search.
+	 *
+	 * @return  FOFController  A FOFController object to support chaining.
+	 */
+	protected function addPath($type, $path)
+	{
+		// Just force path to array
+		settype($path, 'array');
+
+		if (!isset($this->paths[$type]))
+		{
+			$this->paths[$type] = array();
+		}
+
+		// Loop through the path directories
+		foreach ($path as $dir)
+		{
+			// No surrounding spaces allowed!
+			$dir = rtrim(JPath::check($dir, '/'), '/') . '/';
+
+			// Add to the top of the search dirs
+			array_unshift($this->paths[$type], $dir);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Add one or more view paths to the controller's stack, in LIFO order.
+	 *
+	 * @param   mixed  $path  The directory (string) or list of directories (array) to add.
+	 *
+	 * @return  FOFController  This object to support chaining.
+	 */
+	public function addViewPath($path)
+	{
+		$this->addPath('view', $path);
+
+		return $this;
+	}
+
+	/**
+	 * Authorisation check
+	 *
+	 * @param   string  $task  The ACO Section Value to check access on.
+	 *
+	 * @return  boolean  True if authorised
+	 *
+	 * @since   12.2
+	 * @deprecated  13.3  Use JAccess instead.
+	 */
+	public function authorise($task)
+	{
+		JLog::add(__METHOD__ . ' is deprecated. Use checkACL() instead.', JLog::WARNING, 'deprecated');
+
+		return true;
+	}
+
+	/**
+	 * Create the filename for a resource.
+	 *
+	 * @param   string  $type   The resource type to create the filename for.
+	 * @param   array   $parts  An associative array of filename information. Optional.
+	 *
+	 * @return  string  The filename.
+	 */
+	protected static function createFileName($type, $parts = array())
+	{
+		$filename = '';
+
+		switch ($type)
+		{
+			case 'controller':
+				if (!empty($parts['format']))
+				{
+					if ($parts['format'] == 'html')
+					{
+						$parts['format'] = '';
+					}
+					else
+					{
+						$parts['format'] = '.' . $parts['format'];
+					}
+				}
+				else
+				{
+					$parts['format'] = '';
+				}
+
+				$filename = strtolower($parts['name'] . $parts['format'] . '.php');
+				break;
+
+			case 'view':
+				if (!empty($parts['type']))
+				{
+					$parts['type'] = '.' . $parts['type'];
+				}
+				else
+				{
+					$parts['type'] = '';
+				}
+
+				$filename = strtolower($parts['name'] . '/view' . $parts['type'] . '.php');
+				break;
+		}
+
+		return $filename;
 	}
 
 	/**
@@ -332,7 +717,7 @@ class FOFController extends JControllerLegacy
 
 			if (!$result)
 			{
-				return false;
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
 		}
 
@@ -354,17 +739,14 @@ class FOFController extends JControllerLegacy
 
 		if ($doTask == 'display')
 		{
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				throw new Exception('Bad Request', 400);
-			}
-			else
-			{
-				JError::raiseError(400, 'Bad Request');
-			}
+			JResponse::setHeader('Status', '400 Bad Request', true);
+
+			throw new Exception('Bad Request', 400);
 		}
 
-		parent::execute($task);
+		$this->doTask = $doTask;
+
+		$ret = $this->$doTask();
 
 		$method_name = 'onAfter' . ucfirst($task);
 
@@ -374,9 +756,11 @@ class FOFController extends JControllerLegacy
 
 			if (!$result)
 			{
-				return false;
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
 		}
+
+		return $ret;
 	}
 
 	/**
@@ -411,11 +795,26 @@ class FOFController extends JControllerLegacy
 		// Display the view
 		$conf = JFactory::getConfig();
 
-		if (JFactory::getApplication()->isSite() && $cachable && $viewType != 'feed' && $conf->get('caching') >= 1)
+		list($isCli, ) = FOFDispatcher::isCliAdmin();
+		if (!$isCli && JFactory::getApplication()->isSite() && $cachable && $viewType != 'feed' && $conf->get('caching') >= 1)
 		{
+			// Get a JCache object
 			$option = $this->input->get('option', 'com_foobar', 'cmd');
 			$cache = JFactory::getCache($option, 'view');
 
+			// Set up a cache ID based on component, view, task and user group assignment
+			$user = JFactory::getUser();
+			if ($user->guest)
+			{
+				$groups = array();
+			}
+			else
+			{
+				$groups = $user->groups;
+			}
+			$cacheId = md5(serialize(array(JCache::makeId(), $view->getName(), $this->doTask, $groups)));
+
+			// Set up safe URL parameters
 			if (is_array($urlparams))
 			{
 				$app = JFactory::getApplication();
@@ -435,12 +834,17 @@ class FOFController extends JControllerLegacy
 
 				$app->set('registeredurlparams', $registeredurlparams);
 			}
-			$cache->get($view, 'display');
+
+			// Get the cached view or cache the current view
+			$cache->get($view, 'display', $cacheId);
 		}
 		else
 		{
+			// Display without caching
 			$view->display();
 		}
+
+		return true;
 	}
 
 	/**
@@ -479,6 +883,8 @@ class FOFController extends JControllerLegacy
 		}
 
 		$this->display(in_array('browse', $this->cacheableTasks));
+
+		return true;
 	}
 
 	/**
@@ -514,6 +920,8 @@ class FOFController extends JControllerLegacy
 
 		// Display
 		$this->display(in_array('read', $this->cacheableTasks));
+
+		return true;
 	}
 
 	/**
@@ -575,7 +983,7 @@ class FOFController extends JControllerLegacy
 			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . FOFInflector::pluralize($this->view);
 			$this->setRedirect($url, $model->getError(), 'error');
 
-			return;
+			return false;
 		}
 
 		// Set the layout to form, if it's not set in the URL
@@ -597,6 +1005,8 @@ class FOFController extends JControllerLegacy
 
 		// Display
 		$this->display(in_array('edit', $this->cacheableTasks));
+
+		return true;
 	}
 
 	/**
@@ -620,16 +1030,6 @@ class FOFController extends JControllerLegacy
 
 		if ($result)
 		{
-			// Check if i'm using an AJAX call, in this case there is no need to redirect
-			$format = $this->input->get('format', '', 'string');
-
-			if ($format == 'json')
-			{
-				echo json_encode($result);
-
-				return;
-			}
-
 			$id = $this->input->get('id', 0, 'int');
 			$textkey = strtoupper($this->component) . '_LBL_' . strtoupper($this->view) . '_SAVED';
 
@@ -640,6 +1040,8 @@ class FOFController extends JControllerLegacy
 			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . $this->view . '&task=edit&id=' . $id;
 			$this->setRedirect($url, JText::_($textkey));
 		}
+
+		return $result;
 	}
 
 	/**
@@ -662,16 +1064,6 @@ class FOFController extends JControllerLegacy
 
 		$status = $model->copy();
 
-		// Check if i'm using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -683,10 +1075,13 @@ class FOFController extends JControllerLegacy
 		if (!$status)
 		{
 			$this->setRedirect($url, $model->getError(), 'error');
+			return false;
 		}
 		else
 		{
+			JResponse::setHeader('Status', '201 Created', true);
 			$this->setRedirect($url);
+			return true;
 		}
 	}
 
@@ -709,16 +1104,6 @@ class FOFController extends JControllerLegacy
 
 		if ($result)
 		{
-			// Check if i'm using an AJAX call, in this case there is no need to redirect
-			$format = $this->input->get('format', '', 'string');
-
-			if ($format == 'json')
-			{
-				echo json_encode($result);
-
-				return;
-			}
-
 			$textkey = strtoupper($this->component) . '_LBL_' . strtoupper($this->view) . '_SAVED';
 
 			if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -728,6 +1113,8 @@ class FOFController extends JControllerLegacy
 			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . FOFInflector::pluralize($this->view);
 			$this->setRedirect($url, JText::_($textkey));
 		}
+
+		return $result;
 	}
 
 	/**
@@ -757,6 +1144,8 @@ class FOFController extends JControllerLegacy
 			$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . $this->view . '&task=add';
 			$this->setRedirect($url, JText::_($textkey));
 		}
+
+		return $result;
 	}
 
 	/**
@@ -781,6 +1170,8 @@ class FOFController extends JControllerLegacy
 		}
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . FOFInflector::pluralize($this->view);
 		$this->setRedirect($url);
+
+		return true;
 	}
 
 	/**
@@ -798,7 +1189,7 @@ class FOFController extends JControllerLegacy
 			$this->_csrfProtection();
 		}
 
-		$this->setaccess(0);
+		return $this->setaccess(0);
 	}
 
 	/**
@@ -816,7 +1207,7 @@ class FOFController extends JControllerLegacy
 			$this->_csrfProtection();
 		}
 
-		$this->setaccess(1);
+		return $this->setaccess(1);
 	}
 
 	/**
@@ -834,7 +1225,7 @@ class FOFController extends JControllerLegacy
 			$this->_csrfProtection();
 		}
 
-		$this->setaccess(2);
+		return $this->setaccess(2);
 	}
 
 	/**
@@ -850,7 +1241,7 @@ class FOFController extends JControllerLegacy
 			$this->_csrfProtection();
 		}
 
-		$this->setstate(1);
+		return $this->setstate(1);
 	}
 
 	/**
@@ -866,7 +1257,7 @@ class FOFController extends JControllerLegacy
 			$this->_csrfProtection();
 		}
 
-		$this->setstate(0);
+		return $this->setstate(0);
 	}
 
 	/**
@@ -909,16 +1300,6 @@ class FOFController extends JControllerLegacy
 
 		$status = $model->reorder();
 
-		// Check if i'm using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -927,6 +1308,8 @@ class FOFController extends JControllerLegacy
 		}
 		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . FOFInflector::pluralize($this->view);
 		$this->setRedirect($url);
+
+		return $status;
 	}
 
 	/**
@@ -951,16 +1334,6 @@ class FOFController extends JControllerLegacy
 
 		$status = $model->move(1);
 
-		// Check if i'm using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -977,6 +1350,8 @@ class FOFController extends JControllerLegacy
 		{
 			$this->setRedirect($url);
 		}
+
+		return $status;
 	}
 
 	/**
@@ -998,16 +1373,6 @@ class FOFController extends JControllerLegacy
 
 		$status = $model->move(-1);
 
-		// Check if i'm using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -1024,6 +1389,8 @@ class FOFController extends JControllerLegacy
 		{
 			$this->setRedirect($url);
 		}
+
+		return $status;
 	}
 
 	/**
@@ -1045,16 +1412,6 @@ class FOFController extends JControllerLegacy
 			$model->setIDsFromRequest();
 		$status = $model->delete();
 
-		// Check if i'm deleting using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'input'))
@@ -1071,6 +1428,115 @@ class FOFController extends JControllerLegacy
 		{
 			$this->setRedirect($url);
 		}
+
+		return $status;
+	}
+
+	/**
+	 * Redirects the browser or returns false if no redirect is set.
+	 *
+	 * @return  boolean  False if no redirect exists.
+	 */
+	public function redirect()
+	{
+		if ($this->redirect)
+		{
+			$app = JFactory::getApplication();
+			$app->redirect($this->redirect, $this->message, $this->messageType);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns true if there is a redirect set in the controller
+	 *
+	 * @return  boolean
+	 */
+	public function hasRedirect()
+	{
+		return !empty($this->redirect);
+	}
+
+	/**
+	 * Register the default task to perform if a mapping is not found.
+	 *
+	 * @param   string  $method  The name of the method in the derived class to perform if a named task is not found.
+	 *
+	 * @return  FOFController  A FOFController object to support chaining.
+	 */
+	public function registerDefaultTask($method)
+	{
+		$this->registerTask('__default', $method);
+
+		return $this;
+	}
+
+	/**
+	 * Register (map) a task to a method in the class.
+	 *
+	 * @param   string  $task    The task.
+	 * @param   string  $method  The name of the method in the derived class to perform for this task.
+	 *
+	 * @return  FOFController  A FOFController object to support chaining.
+	 */
+	public function registerTask($task, $method)
+	{
+		if (in_array(strtolower($method), $this->methods))
+		{
+			$this->taskMap[strtolower($task)] = $method;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Unregister (unmap) a task in the class.
+	 *
+	 * @param   string  $task  The task.
+	 *
+	 * @return  FOFController  This object to support chaining.
+	 */
+	public function unregisterTask($task)
+	{
+		unset($this->taskMap[strtolower($task)]);
+
+		return $this;
+	}
+
+	/**
+	 * Sets the internal message that is passed with a redirect
+	 *
+	 * @param   string  $text  Message to display on redirect.
+	 * @param   string  $type  Message type. Optional, defaults to 'message'.
+	 *
+	 * @return  string  Previous message
+	 */
+	public function setMessage($text, $type = 'message')
+	{
+		$previous = $this->message;
+		$this->message = $text;
+		$this->messageType = $type;
+
+		return $previous;
+	}
+
+	/**
+	 * Sets an entire array of search paths for resources.
+	 *
+	 * @param   string  $type  The type of path to set, typically 'view' or 'model'.
+	 * @param   string  $path  The new set of search paths. If null or false, resets to the current directory only.
+	 *
+	 * @return  void
+	 */
+	protected function setPath($type, $path)
+	{
+		// Clear out the prior search dirs
+		$this->paths[$type] = array();
+
+		// Actually add the user-specified directories
+		$this->addPath($type, $path);
 	}
 
 	/**
@@ -1081,7 +1547,7 @@ class FOFController extends JControllerLegacy
 	 * @param   string  $msg   The message to be pushed to the application
 	 * @param   string  $type  The message type to be pushed to the application, e.g. 'error'
 	 *
-	 * @return  void
+	 * @return  FOFController  This object to support chaining
 	 */
 	public function setRedirect($url, $msg = null, $type = null)
 	{
@@ -1104,7 +1570,28 @@ class FOFController extends JControllerLegacy
 				$url = JRoute::_($url, false);
 		}
 
-		parent::setRedirect($url, $msg, $type);
+		$this->redirect = $url;
+		if ($msg !== null)
+		{
+			// Controller may have set this directly
+			$this->message = $msg;
+		}
+
+		// Ensure the type is not overwritten by a previous call to setMessage.
+		if (empty($type))
+		{
+			if (empty($this->messageType))
+			{
+				$this->messageType = 'message';
+			}
+		}
+		// If the type is explicitly set, set it.
+		else
+		{
+			$this->messageType = $type;
+		}
+
+		return $this;
 	}
 
 	/**
@@ -1125,16 +1612,6 @@ class FOFController extends JControllerLegacy
 
 		$status = $model->publish($state);
 
-		// Check if i'm using an AJAX call, in this case there is no need to redirect
-		$format = $this->input->get('format', '', 'string');
-
-		if ($format == 'json')
-		{
-			echo json_encode($status);
-
-			return;
-		}
-
 		// Redirect
 
 		if ($customURL = $this->input->get('returnurl', '', 'string'))
@@ -1151,6 +1628,8 @@ class FOFController extends JControllerLegacy
 		{
 			$this->setRedirect($url);
 		}
+
+		return $status;
 	}
 
 	/**
@@ -1200,6 +1679,8 @@ class FOFController extends JControllerLegacy
 		{
 			$this->setRedirect($url);
 		}
+
+		return $status;
 	}
 
 	/**
@@ -1224,6 +1705,8 @@ class FOFController extends JControllerLegacy
 
 		if ($status && ($id != 0))
 		{
+			JResponse::setHeader('Status', '201 Created', true);
+
 			// Try to check-in the record if it's not a new one
 			$status = $model->checkin();
 
@@ -1237,16 +1720,6 @@ class FOFController extends JControllerLegacy
 
 		if (!$status)
 		{
-			// Check if i'm using an AJAX call, in this case there is no need to redirect
-			$format = $this->input->get('format', '', 'string');
-
-			if ($format == 'json')
-			{
-				echo json_encode($status);
-
-				return;
-			}
-
 			// Redirect on error
 			$id = $model->getId();
 
@@ -1279,6 +1752,15 @@ class FOFController extends JControllerLegacy
 	{
 		if (!is_object($this->_modelObject))
 		{
+			// Make sure $config is an array
+			if (is_object($config))
+			{
+				$config = (array)$config;
+			} elseif (!is_array($config))
+			{
+				$config = array();
+			}
+
 			if (!empty($this->modelName))
 			{
 				$parts = FOFInflector::explode($this->modelName);
@@ -1302,6 +1784,63 @@ class FOFController extends JControllerLegacy
 	}
 
 	/**
+	 * Method to get a model object, loading it if required.
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  object  The model.
+	 */
+	public function getModel($name = '', $prefix = '', $config = array())
+	{
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
+		if (empty($name))
+		{
+			$name = $this->getName();
+		}
+
+		if (empty($prefix))
+		{
+			$prefix = $this->model_prefix;
+		}
+
+		if ($model = $this->createModel($name, $prefix, $config))
+		{
+			// Task is a reserved state
+			$model->setState('task', $this->task);
+
+			list($isCLI, ) = FOFDispatcher::isCliAdmin();
+
+			// Let's get the application object and set menu information if it's available
+			if(!$isCLI)
+			{
+				$app = JFactory::getApplication();
+				$menu = $app->getMenu();
+
+				if (is_object($menu))
+				{
+					if ($item = $menu->getActive())
+					{
+						$params = $menu->getParams($item->id);
+						// Set default state data
+						$model->setState('parameters.menu', $params);
+					}
+				}
+			}
+		}
+		return $model;
+	}
+
+	/**
 	 * Returns current view object
 	 *
 	 * @param   array  $config  Configuration variables for the model
@@ -1312,6 +1851,15 @@ class FOFController extends JControllerLegacy
 	{
 		if (!is_object($this->_viewObject))
 		{
+			// Make sure $config is an array
+			if (is_object($config))
+			{
+				$config = (array)$config;
+			} elseif (!is_array($config))
+			{
+				$config = array();
+			}
+
 			$prefix = null;
 			$viewName = null;
 			$viewType = null;
@@ -1349,6 +1897,109 @@ class FOFController extends JControllerLegacy
 	}
 
 	/**
+	 * Method to get the controller name
+	 *
+	 * The dispatcher name is set by default parsed using the classname, or it can be set
+	 * by passing a $config['name'] in the class constructor
+	 *
+	 * @return  string  The name of the dispatcher
+	 */
+	public function getName()
+	{
+		if (empty($this->name))
+		{
+			if (empty($this->bareComponent))
+			{
+				$r = null;
+				if (!preg_match('/(.*)Controller/i', get_class($this), $r))
+				{
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_CONTROLLER_GET_NAME'), 500);
+				}
+				$this->name = strtolower($r[1]);
+			}
+			else
+			{
+				$this->name = $this->bareComponent;
+			}
+		}
+
+		return $this->name;
+	}
+
+	/**
+	 * Get the last task that is being performed or was most recently performed.
+	 *
+	 * @return  string  The task that is being performed or was most recently performed.
+	 */
+	public function getTask()
+	{
+		return $this->task;
+	}
+
+	/**
+	 * Gets the available tasks in the controller.
+	 *
+	 * @return  array  Array[i] of task names.
+	 */
+	public function getTasks()
+	{
+		return $this->methods;
+	}
+
+	/**
+	 * Method to get a reference to the current view and load it if necessary.
+	 *
+	 * @param   string  $name    The view name. Optional, defaults to the controller name.
+	 * @param   string  $type    The view type. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for view. Optional.
+	 *
+	 * @return  FOFView  Reference to the view or an error.
+	 */
+	public function getView($name = '', $type = '', $prefix = '', $config = array())
+	{
+		static $views;
+
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
+		if (!isset($views))
+		{
+			$views = array();
+		}
+
+		if (empty($name))
+		{
+			$name = $this->getName();
+		}
+
+		if (empty($prefix))
+		{
+			$prefix = $this->getName() . 'View';
+		}
+
+		if (empty($views[$name]))
+		{
+			if ($view = $this->createView($name, $prefix, $type, $config))
+			{
+				$views[$name] = & $view;
+			}
+			else
+			{
+				throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_VIEW_NOT_FOUND', $name, $type, $prefix), 500);
+			}
+		}
+
+		return $views[$name];
+	}
+
+	/**
 	 * Creates a new model object
 	 *
 	 * @param   string  $name    The name of the model class, e.g. Items
@@ -1359,6 +2010,15 @@ class FOFController extends JControllerLegacy
 	 */
 	protected function createModel($name, $prefix = '', $config = array())
 	{
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
 		$result = null;
 
 		// Clean the model name
@@ -1381,7 +2041,7 @@ class FOFController extends JControllerLegacy
 	 */
 	function &_createModel($name, $prefix = '', $config = array())
 	{
-		JLog::add('FOFController::_createModel is deprecated. Use createModel() instead.', JLog::WARNING, 'deprecated');
+		JLog::add(__METHOD__ . ' is deprecated. Use createModel() instead.', JLog::WARNING, 'deprecated');
 
 		return $this->createModel($name, $prefix, $config);
 	}
@@ -1398,6 +2058,15 @@ class FOFController extends JControllerLegacy
 	 */
 	protected function createView($name, $prefix = '', $type = '', $config = array())
 	{
+		// Make sure $config is an array
+		if (is_object($config))
+		{
+			$config = (array)$config;
+		} elseif (!is_array($config))
+		{
+			$config = array();
+		}
+
 		$result = null;
 
 		// Clean the view name
@@ -1471,7 +2140,7 @@ class FOFController extends JControllerLegacy
 			JPATH_ADMINISTRATOR . '/components/' . $config['option'] . '/views'
 		);
 
-		if ($isAdmin)
+		if ($isAdmin || $isCli)
 		{
 			$basePaths = array_reverse($basePaths);
 			$basePaths = array_merge($basePaths, $this->paths['view'], $basePaths);
@@ -1539,14 +2208,23 @@ class FOFController extends JControllerLegacy
 
 		if (!array_key_exists('template_path', $config))
 		{
-			$config['template_path'] = array(
-				$basePath . '/components/' . $config['option'] . '/views/' . FOFInflector::pluralize($config['view']) . '/tmpl',
-				JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . FOFInflector::pluralize($config['view']),
-				$basePath . '/components/' . $config['option'] . '/views/' . FOFInflector::singularize($config['view']) . '/tmpl',
-				JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . FOFInflector::singularize($config['view']),
-				$basePath . '/components/' . $config['option'] . '/views/' . $config['view'] . '/tmpl',
-				JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . $config['view'],
-			);
+			$config['template_path'][] = $basePath . '/components/' . $config['option'] . '/views/' . FOFInflector::pluralize($config['view']) . '/tmpl';
+			if(!$isCli)
+			{
+				$config['template_path'][] = JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . FOFInflector::pluralize($config['view']);
+			}
+
+			$config['template_path'][] = $basePath . '/components/' . $config['option'] . '/views/' . FOFInflector::singularize($config['view']) . '/tmpl';
+			if(!$isCli)
+			{
+				$config['template_path'][] = JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . FOFInflector::singularize($config['view']);
+			}
+
+			$config['template_path'][] = $basePath . '/components/' . $config['option'] . '/views/' . $config['view'] . '/tmpl';
+			if(!$isCli)
+			{
+				$config['template_path'][] = JPATH_BASE . '/templates/' . JFactory::getApplication()->getTemplate() . '/html/' . $config['option'] . '/' . $config['view'];
+			}
 		}
 
 		if (!array_key_exists('helper_path', $config))
@@ -1578,7 +2256,7 @@ class FOFController extends JControllerLegacy
 	 */
 	function &_createView($name, $prefix = '', $type = '', $config = array())
 	{
-		JLog::add('FOFController::_createView is deprecated. Use createView() instead.', JLog::WARNING, 'deprecated');
+		JLog::add(__METHOD__ . ' is deprecated. Use createView() instead.', JLog::WARNING, 'deprecated');
 
 		return $this->createView($name, $prefix, $type, $config);
 	}
@@ -1617,7 +2295,21 @@ class FOFController extends JControllerLegacy
 	 */
 	protected function checkACL($area)
 	{
-		return JFactory::getUser()->authorise($area, $this->component);
+		static $isAdmin = null, $isCli = null;
+
+		if (is_null($isAdmin))
+		{
+			list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+		}
+
+		if ($isCli)
+		{
+			return true;
+		}
+		else
+		{
+			return JFactory::getUser()->authorise($area, $this->component);
+		}
 	}
 
 	/**
@@ -1821,6 +2513,45 @@ class FOFController extends JControllerLegacy
 	 */
 	protected function _csrfProtection()
 	{
+		static $isCli = null, $isAdmin = null;
+
+		if (is_null($isCli))
+		{
+			list($isCli, $isAdmin) = FOFDispatcher::isCliAdmin();
+		}
+
+		switch ($this->csrfProtection)
+		{
+			// Never
+			case 0:
+				return true;
+				break;
+
+			// Always
+			case 1:
+				break;
+
+			// Only back-end and non-HTML format
+			case 2:
+				if ($isCli)
+				{
+					return true;
+				}
+				elseif (!$isAdmin && ($this->input->get('format', 'html', 'cmd') != 'html'))
+				{
+					return true;
+				}
+				break;
+
+			// Only back-end
+			case 3:
+				if (!$isAdmin)
+				{
+					return true;
+				}
+				break;
+		}
+
 		$hasToken = false;
 		$session = JFactory::getSession();
 

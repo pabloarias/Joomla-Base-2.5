@@ -125,7 +125,48 @@ class FOFFormFieldCalendar extends JFormFieldCalendar implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		return $this->getStatic();
+		// Initialize some field attributes.
+		$format = $this->element['format'] ? (string) $this->element['format'] : '%Y-%m-%d';
+
+		$class = $this->element['class'] ? (string) $this->element['class'] : '';
+
+		// Get some system objects.
+		$config = JFactory::getConfig();
+		$user = JFactory::getUser();
+
+		// If a known filter is given use it.
+		switch (strtoupper((string) $this->element['filter']))
+		{
+			case 'SERVER_UTC':
+				// Convert a date to UTC based on the server timezone.
+				if ((int) $this->value)
+				{
+					// Get a date object based on the correct timezone.
+					$date = JFactory::getDate($this->value, 'UTC');
+					$date->setTimezone(new DateTimeZone($config->get('offset')));
+
+					// Transform the date string.
+					$this->value = $date->format('Y-m-d H:i:s', true, false);
+				}
+				break;
+
+			case 'USER_UTC':
+				// Convert a date to UTC based on the user timezone.
+				if ((int) $this->value)
+				{
+					// Get a date object based on the correct timezone.
+					$date = JFactory::getDate($this->value, 'UTC');
+					$date->setTimezone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
+
+					// Transform the date string.
+					$this->value = $date->format('Y-m-d H:i:s', true, false);
+				}
+				break;
+		}
+
+		return '<span class="' . $this->id . ' ' . $class . '">' .
+			htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+			'</span>';
 	}
 
 }

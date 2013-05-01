@@ -28,7 +28,7 @@ if(!version_compare($version, '5.3.0', '>='))
 	return JError::raise(E_ERROR, 500, 'This version of PHP is not compatible with Akeeba Backup');
 }
 
-jimport('joomla.application.component.model');
+JLoader::import('joomla.application.component.model');
 
 // Load FOF
 include_once JPATH_SITE.'/libraries/fof/include.php';

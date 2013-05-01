@@ -110,7 +110,7 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 	public function getRepeatable()
 	{
 		// Initialise
-		$class             = '';
+		$class             = '$this->id';
 		$show_link         = false;
 		$empty_replacement = '';
 
@@ -119,7 +119,7 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		// Get field parameters
 		if ($this->element['class'])
 		{
-			$class = ' class="' . (string) $this->element['class'] . '"';
+			$class .= ' ' . (string) $this->element['class'];
 		}
 		if ($this->element['show_link'] == 'true')
 		{
@@ -139,7 +139,7 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		$value = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 
 		// Create the HTML
-		$html = '<span id="' . $this->id . '" ' . $class . '>';
+		$html = '<span class="' . $class . '">';
 
 		if ($show_link)
 		{
