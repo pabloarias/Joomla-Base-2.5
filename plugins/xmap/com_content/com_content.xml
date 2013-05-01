@@ -9,20 +9,22 @@
     <authorEmail>guille@vargas.co.cr</authorEmail>
     <authorUrl>joomla.vargas.co.cr</authorUrl>
     <version>2.0.4</version>
-    <description>Add support for articles and categories on Joomla 1.6 or newer</description>
+    <description>XMAP_CONTENT_PLUGIN_DESCRIPTION</description>
     <files>
         <filename plugin="com_content">com_content.php</filename>
         <filename>index.html</filename>
     </files>
-
     <languages folder="language">
         <!--
         these files will be installed in the administrator/language folder.
         -->
         <language tag="en-GB">en-GB.plg_xmap_com_content.ini</language>
         <language tag="es-ES">es-ES.plg_xmap_com_content.ini</language>
+        <language tag="fa-IR">fa-IR.plg_xmap_com_content.ini</language>
+        <language tag="cs-CZ">cs-CZ.plg_xmap_com_content.ini</language>
+        <language tag="nl-NL">nl-NL.plg_xmap_com_content.ini</language>
+        <language tag="ru-RU">ru-RU.plg_xmap_com_content.ini</language>
     </languages>
-
     <config>
         <fields name="params">
             <fieldset name="basic">
@@ -60,7 +62,7 @@
                 <field name="max_art_age" type="text" default="0" label="XMAP_SETTING_MAX_ART_AGE" description="XMAP_SETTING_MAX_ART_AGE_DESC" />
             </fieldset>
             <fieldset name="xml">
-                <field name="add_images" type="list" default="0" label="XMAP_SETTING_ADD_IMAGES_LABEL" description="XMAP_SETTING_ADD_IMAGES_DESC">
+                <field name="add_images" type="list" default="1" label="XMAP_SETTING_ADD_IMAGES_LABEL" description="XMAP_SETTING_ADD_IMAGES_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
