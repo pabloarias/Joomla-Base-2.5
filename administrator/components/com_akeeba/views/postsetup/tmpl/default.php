@@ -25,6 +25,17 @@ window.addEvent('domready', function(){
 			}
 			$('#adminForm').submit();
 		});
+		$('#akeeba-postsetup-acceptandapply').click(function(e){
+			$('#acceptlicense').attr('checked','checked');
+			$('#acceptsupport').attr('checked','checked');
+			$('#acceptbackuptest').attr('checked','checked');
+			var minstability = $('#minstability').val();
+			if(minstability != 'stable') {
+				var reply=confirm("$confirmText");
+				if(!reply) return false;
+			}
+			$('#adminForm').submit();
+		});
 	})(akeeba.jQuery);
 });
 
@@ -111,6 +122,8 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<?php endif; ?>
 	<br/>
 
+	<h3><?php echo JText::_('AKEEBA_POSTSETUP_LBL_MANDATORYINFO') ?></h3>
+
 	<label for="acceptlicense" class="postsetup-main">
 		<input type="checkbox" id="acceptlicense" name="acceptlicense" <?php if($this->acceptlicense): ?>checked="checked"<?php endif; ?> />
 		<?php echo JText::_('AKEEBA_POSTSETUP_LBL_ACCEPTLICENSE')?>
@@ -128,13 +141,17 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<br/>
 
 	<label for="acceptbackuptest" class="postsetup-main">
-		<input type="checkbox" id="acceptsupport" name="acceptbackuptest" <?php if($this->acceptbackuptest): ?>checked="checked"<?php endif; ?> />
+		<input type="checkbox" id="acceptbackuptest" name="acceptbackuptest" <?php if($this->acceptbackuptest): ?>checked="checked"<?php endif; ?> />
 		<?php echo JText::_('AKEEBA_POSTSETUP_LBL_ACCEPTBACKUPTEST')?>
 	</label>
 	</br>
 	<div class="postsetup-desc"><?php echo JText::_('AKEEBA_POSTSETUP_DESC_ACCEPTBACKUPTEST');?></div>
 	<br/>
 
-	<button id="akeeba-postsetup-apply" class="btn-primary btn-large" onclick="return false;"><?php echo JText::_('AKEEBA_POSTSETUP_LBL_APPLY');?></button>
+	<button id="akeeba-postsetup-apply" class="btn btn-primary btn-large" onclick="return false;"><?php echo JText::_('AKEEBA_POSTSETUP_LBL_APPLY');?></button>
+	<button id="akeeba-postsetup-acceptandapply" class="btn btn-warning" onclick="return false;">
+		<span class="icon icon-white icon-check"></span>
+		<?php echo JText::_('AKEEBA_POSTSETUP_LBL_ACCEPTANDAPPLY');?>
+	</button>
 
 </form>

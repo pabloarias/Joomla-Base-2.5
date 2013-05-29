@@ -468,7 +468,7 @@ class FOFToolbar
 			'active' => $active,
 			'icon'	 => $icon
 		);
-		array_unshift($this->linkbar[], $linkDefinition);
+		array_unshift($this->linkbar, $linkDefinition);
 	}
 
 	/**

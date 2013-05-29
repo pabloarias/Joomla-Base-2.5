@@ -192,7 +192,7 @@ akeeba.jQuery(document).ready(function($){
 			</div>
 		</div>
 		<?php endif; ?>
-		<?php if($this->showangiekey && AKEEBA_PRO): ?>
+		<?php if(AKEEBA_PRO && $this->showangiekey): ?>
 		<div class="control-group">
 			<label class="control-label" for="angiekey">
 				<?php echo JText::_('CONFIG_ANGIE_KEY_TITLE'); ?>

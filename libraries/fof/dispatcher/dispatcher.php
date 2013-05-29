@@ -209,9 +209,26 @@ class FOFDispatcher extends JObject
 			$this->input = JRequest::get('default', 3);
 		}
 
-		// Get the default values for the component and view names
+		// Get the default values for the component name
 		$this->component = $this->input->getCmd('option', 'com_foobar');
-		$this->view = $this->input->getCmd('view', $this->defaultView);
+
+		// Load the component's fof.xml configuration file
+		$configProvider = new FOFConfigProvider;
+		$this->defaultView = $configProvider->get($this->component . '.dispatcher.default_view', $this->defaultView);
+
+		// Get the default values for the view name
+		$this->view = $this->input->getCmd('view', null);
+
+		if (empty($this->view))
+		{
+			// Do we have a task formatted as controller.task?
+			$task = $this->input->getCmd('task', '');
+			if (!empty($task) && (strstr($task, '.') !== false))
+			{
+				list($this->view, $task) = explode('.', $task, 2);
+				$this->input->set('task', $task);
+			}
+		}
 
 		if (empty($this->view))
 		{
@@ -407,7 +424,7 @@ class FOFDispatcher extends JObject
 
 		// Check the request method
 
-		if (!array_key_exists('REQUEST_METHOD', $_SERVER))
+		if (!isset($_SERVER['REQUEST_METHOD']))
 		{
 			$_SERVER['REQUEST_METHOD'] = 'GET';
 		}
@@ -418,8 +435,7 @@ class FOFDispatcher extends JObject
 		{
 			case 'POST':
 			case 'PUT':
-				if ($id != 0)
-					$task = 'save';
+				$task = 'save';
 				break;
 
 			case 'DELETE':

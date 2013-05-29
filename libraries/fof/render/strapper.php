@@ -459,9 +459,12 @@ ENDJS;
 					$tdwidth = '';
 				}
 
-				$header_html .= "\t\t\t\t\t<th $tdwidth>" . PHP_EOL;
-				$header_html .= "\t\t\t\t\t\t" . $header;
-				$header_html .= "\t\t\t\t\t</th>" . PHP_EOL;
+				if(!empty($header))
+				{
+					$header_html .= "\t\t\t\t\t<th $tdwidth>" . PHP_EOL;
+					$header_html .= "\t\t\t\t\t\t" . $header;
+					$header_html .= "\t\t\t\t\t</th>" . PHP_EOL;
+				}
 
 				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
@@ -817,7 +820,37 @@ ENDJS;
 			$class = '';
 		}
 
-		$html .= '<form action="index.php" method="post" name="adminForm" id="adminForm" class="form-horizontal' . $class . '">' . PHP_EOL;
+		// Check form enctype. Use enctype="multipart/form-data" to upload binary files in your form.
+		$template_form_enctype = $form->getAttribute('enctype');
+
+		if (!empty($template_form_enctype))
+		{
+			$enctype = ' enctype="' . $form->getAttribute('enctype') . '" ';
+		}
+		else
+		{
+			$enctype = '';
+		}
+
+		// Check form name. Use name="yourformname" to modify the name of your form.
+		$formname = $form->getAttribute('name');
+
+		if (empty($formname))
+		{
+			$formname = 'adminForm';
+		}
+
+		// Check form ID. Use id="yourformname" to modify the id of your form.
+		$formid = $form->getAttribute('name');
+
+		if (empty($formname))
+		{
+			$formid = 'adminForm';
+		}
+
+		$html .= '<form action="index.php" method="post" name="' . $formname .
+			'" id="' . $formid . '"' . $enctype . ' class="form-horizontal' .
+			$class . '">' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="view" value="' . $input->getCmd('view', 'edit') . '" />' . PHP_EOL;
 		$html .= "\t" . '<input type="hidden" name="task" value="" />' . PHP_EOL;
@@ -854,23 +887,31 @@ ENDJS;
 
 				$input = $field->input;
 
-				$html .= "\t\t\t" . '<div class="control-group">' . PHP_EOL;
-				$html .= "\t\t\t\t" . '<label class="control-label ' . $labelClass . '" for="' . $field->id . '">' . PHP_EOL;
-				$html .= "\t\t\t\t" . JText::_($title) . PHP_EOL;
-				if ($required)
+				if (!is_null($title))
 				{
-					$html .= ' *';
+
+					$html .= "\t\t\t" . '<div class="control-group">' . PHP_EOL;
+					$html .= "\t\t\t\t" . '<label class="control-label ' . $labelClass . '" for="' . $field->id . '">' . PHP_EOL;
+					$html .= "\t\t\t\t" . JText::_($title) . PHP_EOL;
+					if ($required)
+					{
+						$html .= ' *';
+					}
+					$html .= "\t\t\t\t" . '</label>' . PHP_EOL;
+					$html .= "\t\t\t\t" . '<div class="controls">' . PHP_EOL;
+					$html .= "\t\t\t\t" . $input . PHP_EOL;
+					if (!empty($description))
+					{
+						$html .= "\t\t\t\t" . '<span class="help-block">';
+						$html .= JText::_($description) . '</span>' . PHP_EOL;
+					}
+					$html .= "\t\t\t\t" . '</div>' . PHP_EOL;
+					$html .= "\t\t\t" . '</div>' . PHP_EOL;
 				}
-				$html .= "\t\t\t\t" . '</label>' . PHP_EOL;
-				$html .= "\t\t\t\t" . '<div class="controls">' . PHP_EOL;
-				$html .= "\t\t\t\t" . $input . PHP_EOL;
-				if (!empty($description))
+				else
 				{
-					$html .= "\t\t\t\t" . '<span class="help-block">';
-					$html .= JText::_($description) . '</span>' . PHP_EOL;
+					$html .= "\t\t\t\t" . $input . PHP_EOL;
 				}
-				$html .= "\t\t\t\t" . '</div>' . PHP_EOL;
-				$html .= "\t\t\t" . '</div>' . PHP_EOL;
 			}
 
 			$html .= "\t" . '</div>' . PHP_EOL;

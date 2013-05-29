@@ -1,4 +1,11 @@
 <?php die();?>
+Akeeba Backup 3.7.7
+================================================================================
++ Added "Robert button" (accept the mandatory information in the post-setup page without ticking each box)
+~ Making MySQLi the default database engine in ANGIE
+# [LOW] ANGIE: Division by zero on dead slow servers
+# [LOW] ANGIE: The FTP layer's status sticks to the value of the backed up site
+
 Akeeba Backup 3.7.6
 ================================================================================
 ! [HIGH] 403, memory outage errors (all Joomla! versions) and lack of system messages (Joomla! 3.x)

@@ -127,9 +127,10 @@ class FOFTable extends JObject
 	/**
 	 * Returns a static object instance of a particular table type
 	 *
-	 * @param string $type The table name
-	 * @param string $prefix The prefix of the table class
-	 * @param array $config Optional configuration variables
+	 * @param   string  $type    The table name
+	 * @param   string  $prefix  The prefix of the table class
+	 * @param   array   $config  Optional configuration variables
+	 *
 	 * @return FOFTable
 	 */
 	public static function &getAnInstance($type = null, $prefix = 'JTable', $config = array())
@@ -139,8 +140,9 @@ class FOFTable extends JObject
 		// Make sure $config is an array
 		if (is_object($config))
 		{
-			$config = (array)$config;
-		} elseif (!is_array($config))
+			$config = (array) $config;
+		}
+		elseif (!is_array($config))
 		{
 			$config = array();
 		}
@@ -148,7 +150,7 @@ class FOFTable extends JObject
 		// Guess the component name
 		if (!array_key_exists('input', $config))
 		{
-			$config['input'] = new FOFInput();
+			$config['input'] = new FOFInput;
 		}
 
 		if ($config['input'] instanceof FOFInput)
@@ -159,6 +161,7 @@ class FOFTable extends JObject
 		{
 			$tmpInput = new FOFInput($config['input']);
 		}
+
 		$option = $tmpInput->getCmd('option', '');
 		$tmpInput->set('option', $option);
 		$config['input'] = $tmpInput;
@@ -173,6 +176,7 @@ class FOFTable extends JObject
 		{
 			$option = $config['option'];
 		}
+
 		$config['option'] = $option;
 
 		if (!array_key_exists('view', $config))
@@ -186,17 +190,22 @@ class FOFTable extends JObject
 			{
 				$prefix = 'Table';
 			}
+
 			$type = $config['view'];
 		}
 
-		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+		$type       = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
 		$tableClass = $prefix . ucfirst($type);
+
+		$configProvider = new FOFConfigProvider;
+		$configProviderKey = $option . '.views.' . FOFInflector::singularize($type) . '.config.';
 
 		if (!array_key_exists($tableClass, $instances))
 		{
 			if (!class_exists($tableClass))
 			{
 				list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+
 				if (!$isAdmin)
 				{
 					$basePath = JPATH_SITE;
@@ -210,14 +219,21 @@ class FOFTable extends JObject
 					$basePath . '/components/' . $config['option'] . '/tables',
 					JPATH_ADMINISTRATOR . '/components/' . $config['option'] . '/tables'
 				);
+
 				if (array_key_exists('tablepath', $config))
 				{
 					array_unshift($searchPaths, $config['tablepath']);
 				}
 
+				$altPath = $configProvider->get($configProviderKey . 'table_path', null);
+				if ($altPath)
+				{
+					array_unshift($searchPaths, JPATH_ADMINISTRATOR . '/components/' . $option . '/' . $altPath);
+				}
+
 				JLoader::import('joomla.filesystem.path');
 				$path = JPath::find(
-						$searchPaths, strtolower($type) . '.php'
+					$searchPaths, strtolower($type) . '.php'
 				);
 
 				if ($path)
@@ -232,15 +248,30 @@ class FOFTable extends JObject
 			}
 
 			$tbl_common = str_replace('com_', '', $config['option']) . '_';
+
 			if (!array_key_exists('tbl', $config))
 			{
 				$config['tbl'] = strtolower('#__' . $tbl_common . strtolower(FOFInflector::pluralize($type)));
 			}
+
+			$altTbl = $configProvider->get($configProviderKey . 'tbl', null);
+			if ($altTbl)
+			{
+				$config['tbl'] = $altTbl;
+			}
+
 			if (!array_key_exists('tbl_key', $config))
 			{
-				$keyName = FOFInflector::singularize($type);
+				$keyName           = FOFInflector::singularize($type);
 				$config['tbl_key'] = strtolower($tbl_common . $keyName . '_id');
 			}
+
+			$altTblKey = $configProvider->get($configProviderKey . 'tbl_key', null);
+			if ($altTblKey)
+			{
+				$config['tbl_key'] = $altTblKey;
+			}
+
 			if (!array_key_exists('db', $config))
 			{
 				$config['db'] = JFactory::getDBO();
@@ -260,11 +291,18 @@ class FOFTable extends JObject
 		return $instances[$tableClass];
 	}
 
+	/**
+	 * Class Constructor.
+	 *
+	 * @param   string           $table  Name of the database table to model.
+	 * @param   string           $key    Name of the primary key field in the table.
+	 * @param   JDatabaseDriver  &$db    Database driver
+	 */
 	function __construct($table, $key, &$db)
 	{
-		$this->_tbl = $table;
+		$this->_tbl     = $table;
 		$this->_tbl_key = $key;
-		$this->_db = $db;
+		$this->_db      = $db;
 
 		// Initialise the table properties.
 		if ($fields = $this->getTableFields())
@@ -272,7 +310,7 @@ class FOFTable extends JObject
 			// Do I have anything joined?
 			$j_fields = $this->getQueryJoinFields();
 
-			if($j_fields)
+			if ($j_fields)
 			{
 				$fields = array_merge($fields, $j_fields);
 			}
@@ -308,7 +346,7 @@ class FOFTable extends JObject
 	/**
 	 * Sets the events trigger switch state
 	 *
-	 * @param bool $newState
+	 * @param   bool  $newState
 	 */
 	public function setTriggerEvents($newState = false)
 	{
@@ -328,7 +366,9 @@ class FOFTable extends JObject
 	/**
 	 * Sets fields to be skipped from automatic checks.
 	 *
-	 * @param array/string	$skip	Fields to be skipped by automatic checks
+	 * @param   array/string  $skip  Fields to be skipped by automatic checks
+	 *
+	 * @return void
 	 */
 	function setSkipChecks($skip)
 	{
@@ -359,6 +399,7 @@ class FOFTable extends JObject
 		{
 			// If empty, use the value of the current key
 			$keyName = $this->_tbl_key;
+
 			if (isset($this->$keyName))
 			{
 				$keyValue = $this->$keyName;
@@ -372,6 +413,7 @@ class FOFTable extends JObject
 			if (empty($keyValue))
 			{
 				$result = true;
+
 				return $this->onAfterLoad($result);
 			}
 
@@ -390,7 +432,7 @@ class FOFTable extends JObject
 
 		// Initialise the query.
 		$query = $this->_db->getQuery(true);
-		$query->select($this->_tbl.'.*');
+		$query->select($this->_tbl . '.*');
 		$query->from($this->_tbl);
 
 		// Joined fields are ok, since I initialized them in the constructor
@@ -403,31 +445,34 @@ class FOFTable extends JObject
 			{
 				throw new UnexpectedValueException(sprintf('Missing field in database: %s &#160; %s.', get_class($this), $field));
 			}
+
 			// Add the search tuple to the query.
 			$query->where($this->_db->qn($field) . ' = ' . $this->_db->q($value));
 		}
 
 		// Do I have any joined table?
 		$j_query = $this->getQueryJoin();
-		if($j_query)
+
+		if ($j_query)
 		{
-			if($j_query->select && $j_query->select->getElements())
+			if ($j_query->select && $j_query->select->getElements())
 			{
 				$query->select($this->normalizeSelectFields($j_query->select->getElements(), true));
 			}
 
-			if($j_query->join)
+			if ($j_query->join)
 			{
-				foreach($j_query->join as $join)
+				foreach ($j_query->join as $join)
 				{
 					$t = (string) $join;
+
 					// Guess what? Joomla doesn't provide any access to the "name" variable, so
 					// I have to work with strings... -.-
-					if(stripos($t, 'inner') !== false)
+					if (stripos($t, 'inner') !== false)
 					{
 						$query->innerJoin($join->getElements());
 					}
-					elseif(stripos($t, 'left') !== false)
+					elseif (stripos($t, 'left') !== false)
 					{
 						$query->leftJoin($join->getElements());
 					}
@@ -443,6 +488,7 @@ class FOFTable extends JObject
 		if (empty($row))
 		{
 			$result = true;
+
 			return $this->onAfterLoad($result);
 		}
 
@@ -497,12 +543,15 @@ class FOFTable extends JObject
 	public function reset()
 	{
 		if (!$this->onBeforeReset())
+		{
 			return false;
+		}
+
 		// Get the default values for the class from the table.
 		$fields   = $this->getTableFields();
 		$j_fields = $this->getQueryJoinFields();
 
-		if($j_fields)
+		if ($j_fields)
 		{
 			$fields = array_merge($fields, $j_fields);
 		}
@@ -515,8 +564,11 @@ class FOFTable extends JObject
 				$this->$k = $v->Default;
 			}
 		}
+
 		if (!$this->onAfterReset())
+		{
 			return false;
+		}
 	}
 
 	/**
@@ -525,6 +577,7 @@ class FOFTable extends JObject
 	public function canDelete($oid = null, $joins = null)
 	{
 		$k = $this->_tbl_key;
+
 		if ($oid)
 		{
 			$this->$k = intval($oid);
@@ -532,17 +585,20 @@ class FOFTable extends JObject
 
 		if (is_array($joins))
 		{
-			$db = $this->_db;
-			$query = $db->getQuery(true)
+			$db      = $this->_db;
+			$query   = $db->getQuery(true)
 				->select($db->qn('master') . '.' . $db->qn($k))
 				->from($db->qn($this->_tbl) . ' AS ' . $db->qn('master'));
 			$tableNo = 0;
+
 			foreach ($joins as $table)
 			{
 				$tableNo++;
-				$query->select(array(
-					'COUNT(DISTINCT ' . $db->qn('t' . $tableNo) . '.' . $db->qn($table['idfield']) . ') AS ' . $db->qn($table['idalias'])
-				));
+				$query->select(
+					array(
+						'COUNT(DISTINCT ' . $db->qn('t' . $tableNo) . '.' . $db->qn($table['idfield']) . ') AS ' . $db->qn($table['idalias'])
+					)
+				);
 				$query->join('LEFT', $db->qn($table['name']) .
 					' AS ' . $db->qn('t' . $tableNo) .
 					' ON ' . $db->qn('t' . $tableNo) . '.' . $db->qn($table['joinfield']) .
@@ -570,32 +626,38 @@ class FOFTable extends JObject
 				if (!$obj = $this->_db->loadObject())
 				{
 					$this->setError($this->_db->getErrorMsg());
+
 					return false;
 				}
 			}
+
 			$msg = array();
-			$i = 0;
+			$i   = 0;
+
 			foreach ($joins as $table)
 			{
 				$k = $table['idalias'];
+
 				if ($obj->$k > 0)
 				{
 					$msg[] = JText::_($table['label']);
 				}
+
 				$i++;
 			}
 
 			if (count($msg))
 			{
-				$option = $this->input->getCmd('option', 'com_foobar');
+				$option  = $this->input->getCmd('option', 'com_foobar');
 				$comName = str_replace('com_', '', $option);
-				$tview = str_replace('#__' . $comName . '_', '', $this->_tbl);
-				$prefix = $option . '_' . $tview . '_NODELETE_';
+				$tview   = str_replace('#__' . $comName . '_', '', $this->_tbl);
+				$prefix  = $option . '_' . $tview . '_NODELETE_';
 
 				foreach ($msg as $key)
 				{
 					$this->setError(JText::_($prefix . $key));
 				}
+
 				return false;
 			}
 			else
@@ -618,7 +680,8 @@ class FOFTable extends JObject
 	 * @return  boolean  True on success.
 	 *
 	 * @throws  UnexpectedValueException
-	 */	public function bind($src, $ignore = array())
+	 */
+	public function bind($src, $ignore = array())
 	{
 		if (!$this->onBeforeBind($src))
 		{
@@ -678,6 +741,7 @@ class FOFTable extends JObject
 		}
 
 		$k = $this->_tbl_key;
+
 		if (!empty($this->asset_id))
 		{
 			$currentAssetId = $this->asset_id;
@@ -708,6 +772,7 @@ class FOFTable extends JObject
 		if (!$this->_trackAssets)
 		{
 			$result = true;
+
 			return $this->onAfterStore();
 		}
 
@@ -721,8 +786,8 @@ class FOFTable extends JObject
 		 */
 
 		$parentId = $this->_getAssetParentId();
-		$name = $this->_getAssetName();
-		$title = $this->_getAssetTitle();
+		$name     = $this->_getAssetName();
+		$title    = $this->_getAssetTitle();
 
 		$asset = Jtable::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
 		$asset->loadByName($name);
@@ -732,9 +797,11 @@ class FOFTable extends JObject
 
 		// Check for an error.
 		$error = $asset->getError();
+
 		if ($error)
 		{
 			$this->setError($error);
+
 			return false;
 		}
 
@@ -746,8 +813,8 @@ class FOFTable extends JObject
 
 		// Prepare the asset to be stored.
 		$asset->parent_id = $parentId;
-		$asset->name = $name;
-		$asset->title = $title;
+		$asset->name      = $name;
+		$asset->title     = $title;
 
 		if ($this->_rules instanceof JAccessRules)
 		{
@@ -757,6 +824,7 @@ class FOFTable extends JObject
 		if (!$asset->check() || !$asset->store($updateNulls))
 		{
 			$this->setError($asset->getError());
+
 			return false;
 		}
 
@@ -777,6 +845,7 @@ class FOFTable extends JObject
 
 		$result = true;
 		$result = $this->onAfterStore();
+
 		return $result;
 	}
 
@@ -809,11 +878,12 @@ class FOFTable extends JObject
 		if (empty($delta))
 		{
 			$result = $this->onAfterMove();
+
 			return $result;
 		}
 
-		$k = $this->_tbl_key;
-		$row = null;
+		$k     = $this->_tbl_key;
+		$row   = null;
 		$query = $this->_db->getQuery(true);
 
 		// Select the primary key and ordering values from the table.
@@ -826,6 +896,7 @@ class FOFTable extends JObject
 			$query->where('ordering < ' . (int) $this->ordering);
 			$query->order('ordering DESC');
 		}
+
 		// If the movement delta is positive move the row down.
 		elseif ($delta > 0)
 		{
@@ -877,6 +948,7 @@ class FOFTable extends JObject
 		}
 
 		$result = $this->onAfterMove();
+
 		return $result;
 	}
 
@@ -943,19 +1015,22 @@ class FOFTable extends JObject
 
 		if (!(
 			in_array($fldLockedBy, array_keys($this->getProperties())) ||
-			in_array($fldLockedOn, array_keys($this->getProperties()))
-			))
+				in_array($fldLockedOn, array_keys($this->getProperties()))
+		)
+		)
 		{
 			return true;
 		}
 
 		$k = $this->_tbl_key;
+
 		if ($oid !== null)
 		{
 			$this->$k = $oid;
 		}
 
 		$date = JFactory::getDate();
+
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$time = $date->toSql();
@@ -967,10 +1042,12 @@ class FOFTable extends JObject
 
 		$query = $this->_db->getQuery(true)
 			->update($this->_db->qn($this->_tbl))
-			->set(array(
-				$this->_db->qn($fldLockedBy) . ' = ' . (int) $userId,
-				$this->_db->qn($fldLockedOn) . ' = ' . $this->_db->q($time)
-			))
+			->set(
+				array(
+					$this->_db->qn($fldLockedBy) . ' = ' . (int) $userId,
+					$this->_db->qn($fldLockedOn) . ' = ' . $this->_db->q($time)
+				)
+			)
 			->where($this->_db->qn($this->_tbl_key) . ' = ' . $this->_db->q($this->$k));
 		$this->_db->setQuery((string) $query);
 
@@ -987,8 +1064,9 @@ class FOFTable extends JObject
 
 		if (!(
 			in_array($fldLockedBy, array_keys($this->getProperties())) ||
-			in_array($fldLockedOn, array_keys($this->getProperties()))
-			))
+				in_array($fldLockedOn, array_keys($this->getProperties()))
+		)
+		)
 		{
 			return true;
 		}
@@ -1000,7 +1078,7 @@ class FOFTable extends JObject
 			$this->$k = $oid;
 		}
 
-		if ($this->$k == NULL)
+		if ($this->$k == null)
 		{
 			return false;
 		}
@@ -1036,13 +1114,13 @@ class FOFTable extends JObject
 		}
 
 		$session = JTable::getInstance('session');
+
 		return $session->exists($against);
 	}
 
 	public function copy($cid = null)
 	{
 		JArrayHelper::toInteger($cid);
-		$user_id = (int) $user_id;
 		$k = $this->_tbl_key;
 
 		if (count($cid) < 1)
@@ -1054,17 +1132,18 @@ class FOFTable extends JObject
 			else
 			{
 				$this->setError("No items selected.");
+
 				return false;
 			}
 		}
 
-		$created_by = $this->getColumnAlias('created_by');
-		$created_on = $this->getColumnAlias('created_on');
+		$created_by  = $this->getColumnAlias('created_by');
+		$created_on  = $this->getColumnAlias('created_on');
 		$modified_by = $this->getColumnAlias('modified_by');
 		$modified_on = $this->getColumnAlias('modified_on');
 
 		$locked_byName = $this->getColumnAlias('locked_by');
-		$checkin = in_array($locked_byName, array_keys($this->getProperties()));
+		$checkin       = in_array($locked_byName, array_keys($this->getProperties()));
 
 		foreach ($cid as $item)
 		{
@@ -1084,9 +1163,9 @@ class FOFTable extends JObject
 			if (!$this->onBeforeCopy($item))
 				continue;
 
-			$this->$k = null;
-			$this->$created_by = null;
-			$this->$created_on = null;
+			$this->$k           = null;
+			$this->$created_by  = null;
+			$this->$created_on  = null;
 			$this->$modified_on = null;
 			$this->$modified_by = null;
 
@@ -1107,7 +1186,7 @@ class FOFTable extends JObject
 		JArrayHelper::toInteger($cid);
 		$user_id = (int) $user_id;
 		$publish = (int) $publish;
-		$k = $this->_tbl_key;
+		$k       = $this->_tbl_key;
 
 		if (count($cid) < 1)
 		{
@@ -1118,6 +1197,7 @@ class FOFTable extends JObject
 			else
 			{
 				$this->setError("No items selected.");
+
 				return false;
 			}
 		}
@@ -1125,7 +1205,7 @@ class FOFTable extends JObject
 		if (!$this->onBeforePublish($cid, $publish))
 			return false;
 
-		$enabledName = $this->getColumnAlias('enabled');
+		$enabledName   = $this->getColumnAlias('enabled');
 		$locked_byName = $this->getColumnAlias('locked_by');
 
 		$query = $this->_db->getQuery(true)
@@ -1133,11 +1213,12 @@ class FOFTable extends JObject
 			->set($this->_db->qn($enabledName) . ' = ' . (int) $publish);
 
 		$checkin = in_array($locked_byName, array_keys($this->getProperties()));
+
 		if ($checkin)
 		{
 			$query->where(
 				' (' . $this->_db->qn($locked_byName) .
-				' = 0 OR ' . $this->_db->qn($locked_byName) . ' = ' . (int) $user_id . ')', 'AND'
+					' = 0 OR ' . $this->_db->qn($locked_byName) . ' = ' . (int) $user_id . ')', 'AND'
 			);
 		}
 
@@ -1147,6 +1228,7 @@ class FOFTable extends JObject
 		$query->where('(' . $cids . ')');
 
 		$this->_db->setQuery((string) $query);
+
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			try
@@ -1163,6 +1245,7 @@ class FOFTable extends JObject
 			if (!$this->_db->execute())
 			{
 				$this->setError($this->_db->getErrorMsg());
+
 				return false;
 			}
 		}
@@ -1172,13 +1255,16 @@ class FOFTable extends JObject
 			if ($this->_db->getAffectedRows() == 1)
 			{
 				$this->checkin($cid[0]);
+
 				if ($this->$k == $cid[0])
 				{
 					$this->published = $publish;
 				}
 			}
 		}
+
 		$this->setError('');
+
 		return true;
 	}
 
@@ -1194,7 +1280,7 @@ class FOFTable extends JObject
 			return false;
 		}
 
-		$k = $this->_tbl_key;
+		$k  = $this->_tbl_key;
 		$pk = (is_null($oid)) ? $this->$k : $oid;
 
 		// If no primary key is given, return false.
@@ -1208,20 +1294,22 @@ class FOFTable extends JObject
 		{
 			// Get and the asset name.
 			$this->$k = $pk;
-			$name = $this->_getAssetName();
-			$asset = self::getInstance('Asset');
+			$name     = $this->_getAssetName();
+			$asset    = self::getInstance('Asset');
 
 			if ($asset->loadByName($name))
 			{
 				if (!$asset->delete())
 				{
 					$this->setError($asset->getError());
+
 					return false;
 				}
 			}
 			else
 			{
 				$this->setError($asset->getError());
+
 				return false;
 			}
 		}
@@ -1237,6 +1325,7 @@ class FOFTable extends JObject
 		$this->_db->execute();
 
 		$result = $this->onAfterDelete($oid);
+
 		return $result;
 	}
 
@@ -1253,7 +1342,7 @@ class FOFTable extends JObject
 			return true;
 		}
 
-		$k = $this->_tbl_key;
+		$k  = $this->_tbl_key;
 		$pk = (is_null($oid)) ? $this->$k : $oid;
 
 		// If no primary key is given, return false.
@@ -1294,16 +1383,20 @@ class FOFTable extends JObject
 
 		foreach (get_object_vars($this) as $k => $v)
 		{
-			if (is_array($v) or is_object($v) or $v === NULL)
+			if (is_array($v) or is_object($v) or $v === null)
 			{
 				continue;
 			}
+
 			if ($k[0] == '_')
-			{ // internal field
+			{
+				// Internal field
 				continue;
 			}
+
 			$csv[] = '"' . str_replace('"', '""', $v) . '"';
 		}
+
 		$csv = implode($separator, $csv);
 
 		return $csv;
@@ -1319,9 +1412,11 @@ class FOFTable extends JObject
 		foreach (get_object_vars($this) as $k => $v)
 		{
 			if (($k[0] == '_') || ($k[0] == '*'))
-			{ // internal field
+			{
+				// Internal field
 				continue;
 			}
+
 			$ret[$k] = $v;
 		}
 
@@ -1337,16 +1432,20 @@ class FOFTable extends JObject
 
 		foreach (get_object_vars($this) as $k => $v)
 		{
-			if (is_array($v) or is_object($v) or $v === NULL)
+			if (is_array($v) or is_object($v) or $v === null)
 			{
 				continue;
 			}
+
 			if ($k[0] == '_')
-			{ // internal field
+			{
+				// Internal field
 				continue;
 			}
+
 			$csv[] = '"' . str_replace('"', '\"', $k) . '"';
 		}
+
 		$csv = implode($separator, $csv);
 
 		return $csv;
@@ -1370,7 +1469,7 @@ class FOFTable extends JObject
 			$tables = $this->_db->getTableList();
 		}
 
-		if(!$tableName)
+		if (!$tableName)
 		{
 			$tableName = $this->_tbl;
 		}
@@ -1381,6 +1480,7 @@ class FOFTable extends JObject
 			$name = $tableName;
 
 			$prefix = $this->_db->getPrefix();
+
 			if (substr($name, 0, 3) == '#__')
 			{
 				$checkName = $prefix . substr($name, 3);
@@ -1398,19 +1498,23 @@ class FOFTable extends JObject
 			elseif (version_compare(JVERSION, '3.0', 'ge'))
 			{
 				$fields = $this->_db->getTableColumns($name, false);
+
 				if (empty($fields))
 				{
 					$fields = false;
 				}
+
 				$cache[$tableName] = $fields;
 			}
 			else
 			{
 				$fields = $this->_db->getTableFields($name, false);
+
 				if (!isset($fields[$name]))
 				{
 					$fields = false;
 				}
+
 				$cache[$tableName] = $fields[$name];
 			}
 		}
@@ -1437,6 +1541,7 @@ class FOFTable extends JObject
 		{
 			$return = $column;
 		}
+
 		$return = preg_replace('#[^A-Z0-9_]#i', '', $return);
 
 		return $return;
@@ -1455,7 +1560,7 @@ class FOFTable extends JObject
 	{
 		$column = strtolower($column);
 
-		$column = preg_replace('#[^A-Z0-9_]#i', '', $column);
+		$column                      = preg_replace('#[^A-Z0-9_]#i', '', $column);
 		$this->_columnAlias[$column] = $columnAlias;
 	}
 
@@ -1467,13 +1572,13 @@ class FOFTable extends JObject
 	 */
 	public function getQueryJoin($asReference = false)
 	{
-		if($asReference)
+		if ($asReference)
 		{
 			return $this->_queryJoin;
 		}
 		else
 		{
-			if($this->_queryJoin)
+			if ($this->_queryJoin)
 			{
 				return clone $this->_queryJoin;
 			}
@@ -1502,41 +1607,45 @@ class FOFTable extends JObject
 	protected function getQueryJoinFields()
 	{
 		$query = $this->getQueryJoin();
-		if(!$query)
+
+		if (!$query)
 		{
 			return array();
 		}
 
 		// Get joined tables. Ignore FROM clause, since it should not be used (the starting point is the table "table")
 		$tables = array();
-		$joins = $query->join;
-		foreach($joins as $join)
+		$joins  = $query->join;
+
+		foreach ($joins as $join)
 		{
 			$tables = array_merge($tables, $join->getElements());
 		}
 
-		// clean up table names
-		for($i = 0; $i < count($tables); $i++)
+		// Clean up table names
+		for ($i = 0; $i < count($tables); $i++)
 		{
 			preg_match('#\#__.*?\s#', $tables[$i], $matches);
-			$tables[$i] = str_replace(' ', '',$matches[0]);
+			$tables[$i] = str_replace(' ', '', $matches[0]);
 		}
 
-		// get table fields
+		// Get table fields
 		$fields = array();
-		foreach($tables as $table)
+
+		foreach ($tables as $table)
 		{
 			$t_fields = $this->getTableFields($table);
 
-			if($t_fields)
+			if ($t_fields)
 			{
 				$fields = array_merge($fields, $t_fields);
 			}
 		}
 
-		// remove any fields that aren't in the joined select
+		// Remove any fields that aren't in the joined select
 		$j_select = $query->select;
-		if($j_select && $j_select->getElements())
+
+		if ($j_select && $j_select->getElements())
 		{
 			$j_fields = $this->normalizeSelectFields($j_select->getElements());
 		}
@@ -1545,9 +1654,9 @@ class FOFTable extends JObject
 		$fields = array_intersect_key($fields, $j_fields);
 
 		// Now I walk again the array to change the key of columns that have an alias
-		foreach($j_fields as $column => $alias)
+		foreach ($j_fields as $column => $alias)
 		{
-			if($column != $alias)
+			if ($column != $alias)
 			{
 				$fields[$alias] = $fields[$column];
 				unset($fields[$column]);
@@ -1569,10 +1678,12 @@ class FOFTable extends JObject
 	protected function normalizeSelectFields($fields, $extended = false)
 	{
 		$return = array();
-		foreach($fields as $field)
+
+		foreach ($fields as $field)
 		{
 			$t_fields = explode(',', $field);
-			foreach($t_fields as $t_field)
+
+			foreach ($t_fields as $t_field)
 			{
 				// Is there any alias for this column?
 				preg_match('#\sas\s`?\w+`?#i', $t_field, $match);
@@ -1585,17 +1696,17 @@ class FOFTable extends JObject
 				$column = $match[1];
 				$column = preg_replace('#\sas\s?#i', '', $column);
 
-				// trim whitespace
+				// Trim whitespace
 				$alias  = preg_replace('#^[\s-`]+|[\s-`]+$#', '', $alias);
 				$column = preg_replace('#^[\s-`]+|[\s-`]+$#', '', $column);
 
 				// Do I want the column name with the original name + alias?
-				if($extended && $alias)
+				if ($extended && $alias)
 				{
-					$alias = $column.' AS '.$alias;
+					$alias = $column . ' AS ' . $alias;
 				}
 
-				if(!$alias)
+				if (!$alias)
 				{
 					$alias = $column;
 				}
@@ -1616,7 +1727,7 @@ class FOFTable extends JObject
 	 *
 	 * Example:
 	 * protected function onAfterStore(){
-	 * 	   // Your code here
+	 *       // Your code here
 	 *     return parent::onAfterStore() && $your_result;
 	 * }
 	 *
@@ -1631,7 +1742,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeBind' . ucfirst($name), array(&$this, &$from));
+			$result     = $dispatcher->trigger('onBeforeBind' . ucfirst($name), array(&$this, &$from));
 
 			if (in_array(false, $result, true))
 			{
@@ -1642,6 +1753,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1659,26 +1771,26 @@ class FOFTable extends JObject
 	protected function onBeforeStore($updateNulls)
 	{
 		// Do we have a "Created" set of fields?
-		$created_on = $this->getColumnAlias('created_on');
-		$created_by = $this->getColumnAlias('created_by');
+		$created_on  = $this->getColumnAlias('created_on');
+		$created_by  = $this->getColumnAlias('created_by');
 		$modified_on = $this->getColumnAlias('modified_on');
 		$modified_by = $this->getColumnAlias('modified_by');
-		$locked_on = $this->getColumnAlias('locked_on');
-		$locked_by = $this->getColumnAlias('locked_by');
-		$title = $this->getColumnAlias('title');
-		$slug = $this->getColumnAlias('slug');
+		$locked_on   = $this->getColumnAlias('locked_on');
+		$locked_by   = $this->getColumnAlias('locked_by');
+		$title       = $this->getColumnAlias('title');
+		$slug        = $this->getColumnAlias('slug');
 
 		$hasCreatedOn = isset($this->$created_on) || property_exists($this, $created_on);
 		$hasCreatedBy = isset($this->$created_by) || property_exists($this, $created_by);
 
 		// first of all, let's unset fields that aren't related to the table (ie joined fields)
-		$fields 	= $this->getTableFields();
+		$fields     = $this->getTableFields();
 		$properties = $this->getProperties();
-		foreach($properties as $property => $value)
+		foreach ($properties as $property => $value)
 		{
 			// 'input' property is a reserved name
-			if($property == 'input') continue;
-			if(!isset($fields[$property]))
+			if ($property == 'input') continue;
+			if (!isset($fields[$property]))
 			{
 				unset($this->$property);
 			}
@@ -1688,15 +1800,18 @@ class FOFTable extends JObject
 		{
 			$hasModifiedOn = isset($this->$modified_on) || property_exists($this, $modified_on);
 			$hasModifiedBy = isset($this->$modified_by) || property_exists($this, $modified_by);
+
 			if (empty($this->$created_by) || ($this->$created_on == '0000-00-00 00:00:00') || empty($this->$created_on))
 			{
 				$uid = JFactory::getUser()->id;
+
 				if ($uid)
 				{
 					$this->$created_by = JFactory::getUser()->id;
 				}
 				JLoader::import('joomla.utilities.date');
 				$date = new JDate();
+
 				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
 					$this->$created_on = $date->toSql();
@@ -1709,12 +1824,14 @@ class FOFTable extends JObject
 			elseif ($hasModifiedOn && $hasModifiedBy)
 			{
 				$uid = JFactory::getUser()->id;
+
 				if ($uid)
 				{
 					$this->$modified_by = JFactory::getUser()->id;
 				}
 				JLoader::import('joomla.utilities.date');
 				$date = new JDate();
+
 				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
 					$this->$modified_on = $date->toSql();
@@ -1728,7 +1845,8 @@ class FOFTable extends JObject
 
 		// Do we have a set of title and slug fields?
 		$hasTitle = isset($this->$title) || property_exists($this, $title);
-		$hasSlug = isset($this->$slug) || property_exists($this, $slug);
+		$hasSlug  = isset($this->$slug) || property_exists($this, $slug);
+
 		if ($hasTitle && $hasSlug)
 		{
 			if (empty($this->$slug))
@@ -1743,7 +1861,7 @@ class FOFTable extends JObject
 			}
 
 			// Make sure we don't have a duplicate slug on this table
-			$db = $this->getDbo();
+			$db    = $this->getDbo();
 			$query = $db->getQuery(true)
 				->select($db->qn($slug))
 				->from($this->_tbl)
@@ -1752,13 +1870,13 @@ class FOFTable extends JObject
 			$db->setQuery($query);
 			$existingItems = $db->loadAssocList();
 
-			$count = 0;
+			$count   = 0;
 			$newSlug = $this->$slug;
 			while (!empty($existingItems))
 			{
 				$count++;
 				$newSlug = $this->$slug . '-' . $count;
-				$query = $db->getQuery(true)
+				$query   = $db->getQuery(true)
 					->select($db->qn($slug))
 					->from($this->_tbl)
 					->where($db->qn($slug) . ' = ' . $db->q($newSlug))
@@ -1766,15 +1884,16 @@ class FOFTable extends JObject
 				$db->setQuery($query);
 				$existingItems = $db->loadAssocList();
 			}
+
 			$this->$slug = $newSlug;
 		}
 
 		// Execute onBeforeStore<tablename> events in loaded plugins
 		if ($this->_trigger_events)
 		{
-			$name = FOFInflector::pluralize($this->getKeyName());
+			$name       = FOFInflector::pluralize($this->getKeyName());
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeStore' . ucfirst($name), array(&$this, $updateNulls));
+			$result     = $dispatcher->trigger('onBeforeStore' . ucfirst($name), array(&$this, $updateNulls));
 
 			if (in_array(false, $result, true))
 			{
@@ -1796,7 +1915,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterStore' . ucfirst($name), array(&$this));
+			$result     = $dispatcher->trigger('onAfterStore' . ucfirst($name), array(&$this));
 
 			if (in_array(false, $result, true))
 			{
@@ -1807,6 +1926,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1817,7 +1937,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeMove' . ucfirst($name), array(&$this, $updateNulls));
+			$result     = $dispatcher->trigger('onBeforeMove' . ucfirst($name), array(&$this, $updateNulls));
 
 			if (in_array(false, $result, true))
 			{
@@ -1828,6 +1948,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1838,7 +1959,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterMove' . ucfirst($name), array(&$this));
+			$result     = $dispatcher->trigger('onAfterMove' . ucfirst($name), array(&$this));
 
 			if (in_array(false, $result, true))
 			{
@@ -1849,6 +1970,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1859,7 +1981,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeReorder' . ucfirst($name), array(&$this, $where));
+			$result     = $dispatcher->trigger('onBeforeReorder' . ucfirst($name), array(&$this, $where));
 
 			if (in_array(false, $result, true))
 			{
@@ -1870,6 +1992,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1880,7 +2003,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterReorder' . ucfirst($name), array(&$this));
+			$result     = $dispatcher->trigger('onAfterReorder' . ucfirst($name), array(&$this));
 
 			if (in_array(false, $result, true))
 			{
@@ -1891,6 +2014,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1901,7 +2025,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeDelete' . ucfirst($name), array(&$this, $oid));
+			$result     = $dispatcher->trigger('onBeforeDelete' . ucfirst($name), array(&$this, $oid));
 
 			if (in_array(false, $result, true))
 			{
@@ -1912,6 +2036,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1922,7 +2047,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterDelete' . ucfirst($name), array(&$this, $oid));
+			$result     = $dispatcher->trigger('onAfterDelete' . ucfirst($name), array(&$this, $oid));
 
 			if (in_array(false, $result, true))
 			{
@@ -1933,6 +2058,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1943,7 +2069,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeHit' . ucfirst($name), array(&$this, $oid, $log));
+			$result     = $dispatcher->trigger('onBeforeHit' . ucfirst($name), array(&$this, $oid, $log));
 
 			if (in_array(false, $result, true))
 			{
@@ -1954,6 +2080,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1964,7 +2091,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterHit' . ucfirst($name), array(&$this, $oid));
+			$result     = $dispatcher->trigger('onAfterHit' . ucfirst($name), array(&$this, $oid));
 
 			if (in_array(false, $result, true))
 			{
@@ -1975,6 +2102,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -1985,7 +2113,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeCopy' . ucfirst($name), array(&$this, $oid));
+			$result     = $dispatcher->trigger('onBeforeCopy' . ucfirst($name), array(&$this, $oid));
 
 			if (in_array(false, $result, true))
 			{
@@ -1996,6 +2124,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -2006,7 +2135,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterCopy' . ucfirst($name), array(&$this, $oid));
+			$result     = $dispatcher->trigger('onAfterCopy' . ucfirst($name), array(&$this, $oid));
 
 			if (in_array(false, $result, true))
 			{
@@ -2017,6 +2146,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -2027,7 +2157,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforePublish' . ucfirst($name), array(&$this, &$cid, $publish));
+			$result     = $dispatcher->trigger('onBeforePublish' . ucfirst($name), array(&$this, &$cid, $publish));
 
 			if (in_array(false, $result, true))
 			{
@@ -2038,6 +2168,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -2048,7 +2179,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onAfterReset' . ucfirst($name), array(&$this));
+			$result     = $dispatcher->trigger('onAfterReset' . ucfirst($name), array(&$this));
 
 			if (in_array(false, $result, true))
 			{
@@ -2059,6 +2190,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -2069,7 +2201,7 @@ class FOFTable extends JObject
 			$name = FOFInflector::pluralize($this->getKeyName());
 
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger('onBeforeReset' . ucfirst($name), array(&$this));
+			$result     = $dispatcher->trigger('onBeforeReset' . ucfirst($name), array(&$this));
 
 			if (in_array(false, $result, true))
 			{
@@ -2080,6 +2212,7 @@ class FOFTable extends JObject
 				return true;
 			}
 		}
+
 		return true;
 	}
 
@@ -2146,6 +2279,7 @@ class FOFTable extends JObject
 	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
+
 		return $this->_tbl . '.' . (int) $this->$k;
 	}
 
@@ -2180,6 +2314,7 @@ class FOFTable extends JObject
 		// For simple cases, parent to the asset root.
 		$assets = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
 		$rootId = $assets->getRootId();
+
 		if (!empty($rootId))
 		{
 			return $rootId;
