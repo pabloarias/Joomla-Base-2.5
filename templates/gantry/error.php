@@ -1,6 +1,6 @@
 <?php
 /**
-* @version   $Id: error.php 8130 2013-03-08 15:17:55Z james $
+* @version   $Id: error.php 9775 2013-04-26 18:11:22Z kevin $
 * @author    RocketTheme http://www.rockettheme.com
 * @copyright Copyright (C) 2007 - 2013 RocketTheme, LLC
 * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
@@ -24,8 +24,11 @@ $doc->setTitle($this->error->getCode() . ' - '.$this->title);
 
 $gantry->addStyle('grid-responsive.css', 5);
 $gantry->addLess('bootstrap.less', 'bootstrap.css', 6);
-$gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
+
 if ($gantry->browser->name == 'ie') {
+        	if ($gantry->browser->shortversion == 9){
+        		$gantry->addInlineScript("if (typeof RokMediaQueries !== 'undefined') window.addEvent('domready', function(){ RokMediaQueries._fireEvent(RokMediaQueries.getQuery()); });");
+        	}
 	if ($gantry->browser->shortversion == 8) {
 		$gantry->addScript('html5shim.js');
 	}
