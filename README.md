@@ -7,9 +7,9 @@ Paquetes utilizados:
 - Joomla 2.5.11
 - Idioma español 2.5.10
 - Akeeba Backup 3.7.7 y traducción al español.
-- JCE 2.3.2.4 y traducción al español 2.2.7.2
+- JCE 2.3.3.1 y traducción al español 2.2.7.2
 - Xmap 2.3.3
-- Framework Gantry 4.1.10 (incluye template y RokNavMenu 2.0.2)
+- Framework Gantry 4.1.12 (incluye template y RokNavMenu 2.0.3)
 - aiContactSafe 2.0.19
 - Google Maps plugin 2.18
 - JLSecure My Site 1.0.1
