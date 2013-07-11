@@ -21,7 +21,7 @@ if ((int) ini_get('memory_limit') < 32) {
 
 abstract class WFInstall {
 
-    private static function cleanupInstall() {
+    public static function cleanupInstall() {
         $path = JPATH_ADMINISTRATOR . '/components/com_jce';
 
         if (!is_file($path . '/jce.php')) {
@@ -705,6 +705,8 @@ abstract class WFInstall {
             $admin . '/packages',
             // remove tinymce langs
             $site . '/editor/tiny_mce/langs',
+            // remove dragupload folder (ranamed to upload)
+            $site . '/editor/tiny_mce/plugins/dragupload'
         );
 
         foreach ($folders as $folder) {
@@ -753,7 +755,22 @@ abstract class WFInstall {
             $site . '/editor/libraries/classes/theme.php',
             $site . '/editor/tiny_mce/themes/advanced/theme.php',
             // remove system helper
-            $admin . '/helpers/system.php'
+            $admin . '/helpers/system.php',
+            // remove tools helper
+            $admin . '/helpers/tools.php',
+            // old language files
+            $site . '/language/en-GB/en-GB.com_jce_advlink.ini',
+            $site . '/language/en-GB/en-GB.com_jce_browser.ini',
+            $site . '/language/en-GB/en-GB.com_jce_imgmanager.ini',
+            $site . '/language/en-GB/en-GB.com_jce_media.ini',
+            $site . '/language/en-GB/en-GB.com_jce_paste.ini',
+            $site . '/language/en-GB/en-GB.com_jce_spellchecker.ini',
+            // remove redundant parameter.js
+            $admin . '/media/js/parameter.js',
+            // remove build.xml files
+            $site . '/editor/extensions/filesystem/build.xml',
+            $site . '/editor/extensions/links/build.xml',
+            $site . '/editor/extensions/popups/build.xml'
         );
 
         foreach ($files as $file) {
