@@ -15,11 +15,11 @@ class JConfig {
 	public $host = 'localhost';
 	public $user = 'root';
 	public $password = '';
-	public $db = 'joomlabase';
+	public $db = 'joomla-base';
 	public $dbprefix = 'oel6t_';
 	public $live_site = '';
 	public $secret = '7VWux2gePz6iuXVy';
-	public $gzip = '0';
+	public $gzip = '1';
 	public $error_reporting = 'default';
 	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&keyref=Help{major}{minor}:{keyref}';
 	public $ftp_host = '127.0.0.1';
@@ -53,8 +53,8 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
-	public $log_path = 'C:\\xampp\\htdocs\\Joomla-Base/logs';
-	public $tmp_path = 'C:\\xampp\\htdocs\\Joomla-Base/tmp';
+	public $log_path = '/home/pablo/public_html/Joomla-Base/logs';
+	public $tmp_path = '/home/pablo/public_html/Joomla-Base/tmp';
 	public $lifetime = '480';
 	public $session_handler = 'database';
 	public $MetaRights = '';
