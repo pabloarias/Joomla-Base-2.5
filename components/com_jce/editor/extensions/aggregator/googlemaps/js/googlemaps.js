@@ -1,4 +1,4 @@
-/* JCE Editor - 2.3.3.1 | 11 July 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
+/* JCE Editor - 2.3.3.2 | 13 July 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 WFAggregator.add('googlemaps',{params:{width:425,height:350},props:{},setup:function(){},getTitle:function(){return this.title||this.name;},getType:function(){return'iframe';},isSupported:function(v){if(typeof v=='object'){v=v.src||v.data||'';}
 if(/maps\.google\./i.test(v)){return'googlemaps';}
 return false;},getValues:function(src){var self=this,data={},args={},type=this.getType();if(!/\&(amp;)?output=embed/.test(src)){src+='&output=embed';}

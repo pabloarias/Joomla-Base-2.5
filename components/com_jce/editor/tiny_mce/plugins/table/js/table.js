@@ -1,4 +1,4 @@
-/* JCE Editor - 2.3.3.1 | 11 July 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
+/* JCE Editor - 2.3.3.2 | 13 July 2013 | http://www.joomlacontenteditor.net | Copyright (C) 2006 - 2013 Ryan Demmer. All rights reserved | GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html */
 var TableDialog={settings:{},init:function(){var self=this,ed=tinyMCEPopup.editor;this.html5=ed.settings.schema=='html5'&&ed.settings.validate;if(!this.settings.file_browser){$('input.browser').removeClass('browser');}
 $.Plugin.init();if(this.settings.context=='merge'){return this.initMerge();}
 addClassesToList('classlist',"table_styles");if(this.html5){$('#axis, #abbr, #scope, #summary, #char, #charoff, #tframe, #nowrap, #rules').parent().parent().hide();$('#cellspacing').change(function(){var st=tinyMCEPopup.dom.parseStyle($('#style').val());var v=this.value;if(v!==''){if(v==0){st['border-collapse']='collapse';}else{st['border-collapse']='separate';st['border-spacing']=self.cssSize(v);}}
