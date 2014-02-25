@@ -5,8 +5,8 @@
 8a3edb0428f11a404535d9134c90063f fields/debuglink/index.html
 8a3edb0428f11a404535d9134c90063f fields/index.html
 357dd365352da3b689535db68cc2355d functions.php
-3ae1da87e52cf171b97fb121a6a68068 gantry.php
-817d3d3288d1156a79a0433424118adc gantry.xml
+bcba000d9455f482258131b0d3070019 gantry.php
+2c463440a18885b3dd6558465a94d856 gantry.xml
 8a3edb0428f11a404535d9134c90063f index.html
 a46e79d587e1dc6fca23d48211010d80 language/en-GB/en-GB.plg_system_gantry.ini
 8a3edb0428f11a404535d9134c90063f language/en-GB/index.html
@@ -32,7 +32,7 @@ c946d37e83fd5eee0f1742cb5bd16d40 overrides/3.0/2.5/com_contact/contact/default_f
 86e9b16ac3f66b480e8b411fb829f25a overrides/3.0/2.5/com_content/archive/default.php
 da996e1610ffd0f24e784d7fa3ed877f overrides/3.0/2.5/com_content/archive/default_items.php
 8a3edb0428f11a404535d9134c90063f overrides/3.0/2.5/com_content/archive/index.html
-77aca09e17fee54871fac3c25bb404b8 overrides/3.0/2.5/com_content/article/default.php
+d7d6cf8d3a73b5e777c814a81ee90258 overrides/3.0/2.5/com_content/article/default.php
 616c5ba6a137f5cb45e82ae56f62e60d overrides/3.0/2.5/com_content/article/default_links.php
 8a3edb0428f11a404535d9134c90063f overrides/3.0/2.5/com_content/article/index.html
 52376420d076cba95f39fe3d972abce0 overrides/3.0/2.5/com_content/categories/default.php
@@ -169,4 +169,11 @@ b891109cd3b0b696b314aebbeac20082 overrides/3.0/2.5/mod_whosonline/default.php
 e1a2c55be85d48a7b6f77f6c73c6fda0 overrides/3.0/2.5/mod_wrapper/default.php
 8a3edb0428f11a404535d9134c90063f overrides/3.0/2.5/mod_wrapper/index.html
 8a3edb0428f11a404535d9134c90063f overrides/3.0/index.html
+ee0e87973d9fdc61c5c6013435f2f042 overrides/3.2/2.5/com_content/category/blog.php
+8a3edb0428f11a404535d9134c90063f overrides/3.2/2.5/com_content/category/index.html
+8a3edb0428f11a404535d9134c90063f overrides/3.2/2.5/com_content/index.html
+8a3edb0428f11a404535d9134c90063f overrides/3.2/2.5/index.html
+f2a69a2682be84aa3e56fce9f65d0dcc overrides/3.2/2.5/mod_login/default.php
+8a3edb0428f11a404535d9134c90063f overrides/3.2/2.5/mod_login/index.html
+8a3edb0428f11a404535d9134c90063f overrides/3.2/index.html
 8a3edb0428f11a404535d9134c90063f overrides/index.html
