@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -83,7 +83,7 @@ class plgAuthenticationGMail extends JPlugin {
 				$message = JText::_('JGLOBAL_AUTH_USER_BLACKLISTED');
 			}
 		} else {
-			$message = 'curl isn\'t insalled';
+			$message = 'curl isn\'t installed';
 		}
 		$response->type = 'GMail';
 		if ($success) {
