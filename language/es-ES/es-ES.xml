@@ -2,14 +2,14 @@
 <!-- $Id -->
 <metafile version="2.5"  client="site">
 	<name>Spanish (ES)</name>
-	<version>2.5.14.1</version>
-    	<creationDate>2013-8-1</creationDate>
+	<version>2.5.18.1</version>
+    	<creationDate>2014-2-6</creationDate>
     	<author>Spanish Translation Team: Comunidad Joomla</author>
 	<authorEmail>info@comunidadjoomla.org</authorEmail>
 	<authorUrl>www.comunidadjoomla.org</authorUrl>
-	<copyright>Copyright (C) 2005 - 2013 Open Source Matters and comunidadjoomla.org. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2005 - 2014 Open Source Matters and comunidadjoomla.org. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<description>Spanish language pack for Joomla! 2.5.14 - Site</description>
+	<description>Spanish language pack for Joomla! 2.5.18 - Site</description>
 	<metadata>
 		<name>Spanish (español)</name>
 		<tag>es-ES</tag>
